@@ -1,0 +1,46 @@
+{
+  "view" : [
+      [
+     "static/imgs/Background/bg.jpg",
+     {
+       "dynamic":
+         {
+           "index": "0",
+           "dataIndex": "0",
+           "op": "==",
+           "value": "2000",
+           "priority": "1"
+         },
+         "bytecode" : "0xa76778hubjk",
+         "alerts": [
+            {"dataIndex": 0, "op": ">", "value": 4000, "index": -2 }
+         ]
+     },[
+        {
+          "module": "Linear",
+          "path": "static/imgs/Linear/",
+          "args": {
+                "themeConfig": "Linear",
+                "MinMax": [0, 8000]
+            }
+        },
+        {
+            "module": "Radial",
+            "path": "static/imgs/Stock/",
+            "args": {
+                  "themeConfig": "Stock",
+                  "MinMax": [0, 25]
+              }
+          },
+        {
+          "module": "Ellipse",
+          "path": "static/imgs/Dirt/",
+          "args": {
+                "themeConfig": "Dirt",
+                "MinMax": [0, 100]
+            }
+        }
+      ]
+    ]
+  ]
+}

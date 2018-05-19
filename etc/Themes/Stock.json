@@ -1,0 +1,18 @@
+{
+  "degrees": 240,
+    "labels":
+      [{
+       "pos": [100, -100], "font_size": 25, "default": "Max: ",
+       "data": 1
+       },
+      {
+       "pos": [-100, -100], "font_size": 25, "default": "Min: ",
+       "data": 1
+       },
+      {
+       "pos": [0, 0], "font_size": 25, "default": "current:  ",
+       "data": 1
+       }
+    ]
+}
+

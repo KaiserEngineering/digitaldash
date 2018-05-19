@@ -1,0 +1,47 @@
+#:kivy 1.9.1
+<NeedleRadial>:
+    canvas.before:
+        PushMatrix
+        Translate:
+            xy: (self.x + self.width / 2, self.y + self.height / 2)
+        Rotate:
+            angle: self.update
+            axis: (0, 0, 1.0)
+        Translate:
+            xy: (-self.x - self.width / 2, - self.y - self.height / 2)
+    canvas.after:
+        PopMatrix
+
+<Background>:
+    canvas:
+        Rectangle:
+            source: app.background
+            size: self.size
+            pos: self.pos
+
+<NeedleLinear>:
+    canvas:
+        Color:
+            rgba: self.r, self.g, self.b, self.a
+        Rectangle:
+            size: self.update, self.height + self.height / 2
+            pos: self.x, root.center_y - 200
+            source: self.source
+
+<NeedleEllipse>:
+    canvas:
+        Color:
+            rgba: self.r, self.g, self.b, self.a
+        Ellipse:
+            size: self.height, self.height
+            pos: self.x + (self.width - self.height) / 2, self.y
+            source: self.source
+            angle_start: self.degrees
+            angle_end: self.update
+
+<TickMarks>:
+    canvas:
+        Color:
+            rgba: self.r, self.g, self.b, self.a
+# TO BE CONTINUED
+# Add a bunch of Rectangles around Arc?

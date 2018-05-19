@@ -1,0 +1,132 @@
+{
+  "view" : [
+      [
+     "static/imgs/Background/bg.jpg",
+     {
+       "dynamic":
+         {
+           "index": "0",
+           "dataIndex": "0",
+           "op": "==",
+           "value": "2000",
+           "priority": "1"
+         },
+         "bytecode" : "0xa76778hubjk",
+         "alerts": [
+            {"dataIndex": 0, "op": ">", "value": 4000, "index": -2 }
+         ]
+     },[
+        {
+          "module": "Dial",
+          "path": "static/imgs/Classy/",
+          "args": {
+                "themeConfig": "Stock",
+                "MinMax": [0, 8000]
+            }
+        },
+        {
+            "module": "Dial",
+            "path": "static/imgs/Stock/",
+            "args": {
+                  "themeConfig": "Stock",
+                  "MinMax": [0, 25]
+              }
+          },
+        {
+          "module": "Dial",
+          "path": "static/imgs/Stock/",
+          "args": {
+                "themeConfig": "Stock",
+                "MinMax": [0, 100]
+            }
+        }
+      ]
+    ],
+    [
+     "static/imgs/Background/CarbonFiber.png",
+     {
+       "dynamic":
+         {
+           "index": "1",
+           "dataIndex": "0",
+           "op": "==",
+           "value":"3000",
+           "priority": "1"
+         },
+         "bytecode" : "0xa76778hubjk",
+         "alerts": [
+            {"dataIndex": 0, "op": ">", "value": 1000, "index": -1 }
+         ]
+     },
+     [
+      {
+          "module": "Dial",
+          "path": "static/imgs/StockRS/",
+          "args": {
+                "themeConfig": "Stock",
+                "MinMax": [0, 8000]
+            }
+        },
+        {
+          "module": "Dial",
+          "path": "static/imgs/StockRS/",
+          "args": {
+                "themeConfig": "Stock",
+                "MinMax": [-10, 22]
+            }
+        },
+        {
+          "module": "Dial",
+          "path": "static/imgs/StockRS/",
+          "args": {
+                "themeConfig": "Stock",
+                "MinMax": [0, 100]
+            }
+        }
+      ]
+    ],
+    [
+     "static/imgs/Background/banner1.jpg",
+     {
+       "dynamic":
+         {
+           "index": "2",
+           "dataIndex": "0",
+           "op": "==",
+           "value":"5000",
+           "priority": "1"
+         },
+         "bytecode" : "0xa76778hubjk",
+         "alerts": [
+            {"dataIndex": 0, "op": ">", "value": 1000, "index": -1 }
+         ]
+     },
+     [
+      {
+          "module": "Linear",
+          "path": "static/imgs/Linear/",
+          "args": {
+                "themeConfig": "Linear",
+                "MinMax": [0, 8000]
+            }
+        },
+        {
+          "module": "Linear",
+          "path": "static/imgs/Linear/",
+          "args": {
+                "themeConfig": "Linear",
+                "MinMax": [-10, 22]
+            }
+        },
+        {
+          "module": "Linear",
+          "path": "static/imgs/Linear/",
+          "args": {
+                "themeConfig": "Linear",
+                "MinMax": [0, 100]
+            }
+        }
+      ]
+    ]
+  ]
+}
