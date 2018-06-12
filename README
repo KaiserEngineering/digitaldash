@@ -1,7 +1,7 @@
 ![alt text](static/imgs/logo1.png "KE Logo")
 # KaiserEngineering DigitalDash GUI Docs
 ## Running the app
-    pyyhon3.6 sbin/run.py 
+    pyyhon3.6 sbin/run.py
 ## Testing
     $ nosetest -s test/my_test.py
     $ nosetests --with-coverage --cover-package=myPackage test/my_test.py
@@ -42,7 +42,7 @@ This is the loop in *run.py* that creates the Kivy App and loop. The important p
 ####setData():
 Method will be called for any *LiveWidgets*, the data can be handled on a widget by widget case.
 
-##### Example 
+##### Example
     def setData(self, value):
         self.text = str(value)
 
