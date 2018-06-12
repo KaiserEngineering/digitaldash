@@ -4,17 +4,6 @@ Main file to start KE DigitalDash.
 
 Run python3.6 sbin/run.py to run GUI software.
 """
-import kivy
-from kivy.config import Config
-Config.set('graphics', 'position', 'custom')
-Config.set('graphics', 'borderless', 1)
-Config.set('graphics', 'resizable', '0')
-Config.set('graphics', 'top', '16')
-Config.set('graphics', 'left', '150')
-Config.set('graphics', 'fullscreen', '0')
-Config.set('graphics', 'width', '1000')
-Config.set('graphics', 'height', '250')
-Config.write()
 
 import sys
 import os
@@ -22,13 +11,14 @@ sys.path.append(os.getcwd())
 sys.path.append(os.getcwd() + '/lib')
 sys.path.append(os.getcwd() + '/etc')
 sys.path.append(os.getcwd() + '/KE')
+import kivy
 from kivy.clock import Clock
 import KE
 from kivy.app import App
 from kivy.properties import StringProperty
 
-# REMOVE ME
-from scripts.Alert import Alert
+from etc import Config
+Config.SetWindow
 
 try:
     import Serial

@@ -8,8 +8,8 @@ from DigitalDash.Widgets import Widgets
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from etc import Config
-from scripts.Dynamic import Dynamic
-from scripts.Alert import Alert
+from DigitalDash.Dynamic import Dynamic
+from DigitalDash.Alert import Alert
 
 class Background(AnchorLayout):
     """Uses Kivy language to create background."""
