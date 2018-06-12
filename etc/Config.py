@@ -22,6 +22,7 @@ def getThemeConfig(theme):
     return jsonData
 
 def SetWindow():
+    """Run config lines to set-up the kivy window."""
     from kivy.config import Config
     Config.set('graphics', 'position', 'custom')
     Config.set('graphics', 'borderless', 1)
@@ -32,3 +33,5 @@ def SetWindow():
     Config.set('graphics', 'width', '1000')
     Config.set('graphics', 'height', '250')
     Config.write()
+
+    return 1

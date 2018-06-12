@@ -11,14 +11,16 @@ sys.path.append(os.getcwd())
 sys.path.append(os.getcwd() + '/lib')
 sys.path.append(os.getcwd() + '/etc')
 sys.path.append(os.getcwd() + '/KE')
+
+from etc import Config
+Config.SetWindow()
+
 import kivy
 from kivy.clock import Clock
 import KE
 from kivy.app import App
 from kivy.properties import StringProperty
 
-from etc import Config
-Config.SetWindow
 
 try:
     import Serial
