@@ -34,8 +34,8 @@ def setup():
 
         # Create our callbacks
         callbacks.append(makeDynamic(view[1]['dynamic']))
-        # for alert in view[1]['alerts']:
-        #     callbacks.append(makeAlert(alert))
+        for alert in view[1]['alerts']:
+            callbacks.append(makeAlert(alert))
 
         bytecode = view[1]['bytecode']
 

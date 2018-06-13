@@ -1,8 +1,5 @@
 """Dynamic widget will monitour a specified value and make a view change."""
 
-import DigitalDash
-
-
 class Dynamic(object):
     """
     Dynamic class for changing cached views. Use this class to switch between the
@@ -13,11 +10,11 @@ class Dynamic(object):
             """Create Dynamic widget."""
             super(Dynamic, self).__init__()
 
-            self.value = int(args['value'])
-            self.op = args['op']
-            self.index = int(args['index'])
-            self.priority = int(args['priority'])
-            self.data = int(args['dataIndex'])
+            self.value        = int(args['value'])
+            self.op           = args['op']
+            self.index        = int(args['index'])
+            self.priority     = int(args['priority'])
+            self.dataIndex    = int(args['dataIndex'])
 
     def check(self, value):
         """Perform logic test."""
@@ -28,3 +25,5 @@ class Dynamic(object):
         App.app.clear_widgets()
         App.app.add_widget(App.containers[callback.index])
 
+        # Return true if a new view is to be loaded
+        return True

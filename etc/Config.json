@@ -8,12 +8,15 @@
            "index": "0",
            "dataIndex": "0",
            "op": "==",
-           "value": "2000",
+           "value": "20000",
            "priority": "1"
          },
          "bytecode" : "0xa76778hubjk",
          "alerts": [
-            {"dataIndex": 0, "op": ">", "value": 4000, "index": -2 }
+            {"dataIndex": 0, "op": "<", "value": 4000, "index": 1, "priority": 1, 
+                "message" : "Hello"},
+            {"dataIndex": 0, "op": ">", "value": 6000, "index": 2, "priority": 1, 
+              "message" : "Howdy"}
          ]
      },[
         {

@@ -15,11 +15,12 @@ class Alert(Label):
             """Create Alert widget."""
             super(Alert, self).__init__()
 
-            self.value = args['value']
-            self.op = args['op']
-            self.index = args['index']
-            self.priority = 1
-            self.data = int(args['dataIndex'])
+            self.value       = args['value']
+            self.op          = args['op']
+            self.index       = args['index']
+            self.priority    = args['priority']
+            self.dataIndex   = int(args['dataIndex'])
+            self.message     = args['message']
 
     def check(self, value):
         """Check logic here."""
@@ -27,7 +28,10 @@ class Alert(Label):
 
     def change(self, App, callback):
         """Perform view change."""
-        App.alerts.add_widget(self)
-        self.text='Danger Manifold!'
+
+        self.text      =  self.message
         self.font_size = 30
-        self.pos = 100, 100
+        self.pos       = 100, 100
+
+        # Return false if no new view is to be loaded
+        return False

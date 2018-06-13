@@ -20,7 +20,7 @@ from kivy.clock import Clock
 import KE
 from kivy.app import App
 from kivy.properties import StringProperty
-
+from DigitalDash.Alert import Alert
 
 try:
     import Serial
@@ -51,19 +51,25 @@ class DigitalDash(App):
                 priority = 0
                 data = Serial.serialLoop()
 
+                # Check if any dynamic changes need to be made
                 for callback in self.callbacks:
-                    if (self.current != callback.index and priority <= callback.priority and callback.check(data[callback.data])):
-                        priority = callback.priority
-                        my_callback = callback
+                    if ( callback.check(data[callback.dataIndex]) ):
+                        if (self.current != callback.index and priority <= callback.priority):
+                            priority = callback.priority
+                            my_callback = callback
+
+                    # Clear alert widgets so we don't end up with multiple parent error
+                    elif type(callback) is Alert:
+                        self.alerts.remove_widget(callback)
 
                 if(my_callback):
-                    self.current = my_callback.index
-                    my_callback.change(self, my_callback)
                     # We use blank here, because we want to keep our app instance alive
-                    (blank, self.background, self.alerts, self.ObjectsToUpdate, self.WidgetsInstance, self.bytecode) = self.views[my_callback.index].values()
+                    if ( my_callback.change(self, my_callback) ):
+                        self.current = my_callback.index
+                        (blank, self.background, self.alerts, self.ObjectsToUpdate, self.WidgetsInstance, self.bytecode) = self.views[self.current].values()
 
-                    # Send update Matts way
-                    Serial.updateSerial(self.bytecode)
+                    elif type(callback) is Alert and my_callback.parent is None:
+                        self.alerts.add_widget(my_callback)
 
                 iterator, i = iter(data), 0
                 for data in iterator:
