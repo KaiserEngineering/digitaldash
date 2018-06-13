@@ -47,38 +47,16 @@ class DigitalDash(App):
         """Perform main build loop for Kivy app."""
         def loop(dt):
             if (serial):
-                my_callback = None
-                priority = 0
-                data = Serial.serialLoop()
+                ( my_callback, priority, data ) = ( None, 0, Serial.serialLoop() )
 
-                # Check if any dynamic changes need to be made
                 for callback in self.callbacks:
-                    if ( callback.check(data[callback.dataIndex]) ):
-                        if (self.current != callback.index and priority <= callback.priority):
-                            priority = callback.priority
-                            my_callback = callback
+                    my_callback = self.check_callbacks(callback, priority, data)
 
-                    # Clear alert widgets so we don't end up with multiple parent error
-                    elif type(callback) is Alert:
-                        self.alerts.remove_widget(callback)
+                    if(my_callback):
+                        self.check_change(self, my_callback)
 
-                if(my_callback):
-                    # We use blank here, because we want to keep our app instance alive
-                    if ( my_callback.change(self, my_callback) ):
-                        self.current = my_callback.index
-                        (blank, self.background, self.alerts, self.ObjectsToUpdate, self.WidgetsInstance, self.bytecode) = self.views[self.current].values()
-
-                    elif type(callback) is Alert and my_callback.parent is None:
-                        self.alerts.add_widget(my_callback)
-
-                iterator, i = iter(data), 0
-                for data in iterator:
-                    widget = self.ObjectsToUpdate[i]
-                    for obj in widget:
-                        obj.setData(data)
-                    i += 1
-                    if (i >= len(self.ObjectsToUpdate)):
-                        break
+                self.update_values(data)
+        # END LOOP
 
         self.current = 0
         self.views, self.containers, self.callbacks = KE.setup()
@@ -91,5 +69,36 @@ class DigitalDash(App):
 
         return self.app
 
+    def check_callbacks(self, callback, priority, data):
+    # Check if any dynamic changes need to be made
+        if ( callback.check(data[callback.dataIndex]) ):
+            if (self.current != callback.index and priority <= callback.priority):
+                priority = callback.priority
+                return callback
 
-DigitalDash().run()
+        # Clear alert widgets so we don't end up with multiple parent error
+        elif type(callback) is Alert:
+            self.alerts.remove_widget(callback)
+
+        return False
+
+    def check_change(self, app, my_callback):
+    # We use blank here, because we want to keep our app instance alive
+        if ( my_callback.change(self, my_callback) ):
+            self.current = my_callback.index
+            (blank, self.background, self.alerts, self.ObjectsToUpdate, self.WidgetsInstance, self.bytecode) = self.views[self.current].values()
+
+        elif type(my_callback) is Alert and my_callback.parent is None:
+            self.alerts.add_widget(my_callback)
+
+    def update_values(self, data):
+        iterator, i = iter(data), 0
+        for data in iterator:
+            widget = self.ObjectsToUpdate[i]
+            for obj in widget:
+                obj.setData(data)
+            i += 1
+            if (i >= len(self.ObjectsToUpdate)):
+                break
+
+# DigitalDash().run()
