@@ -12,8 +12,26 @@ sys.path.append(os.getcwd() + '/lib')
 sys.path.append(os.getcwd() + '/etc')
 sys.path.append(os.getcwd() + '/KE')
 
+import getopt
+run = False
+
+opts, args = getopt.getopt(sys.argv[1:],"tdp",["test","production", "development"])
+
+for opt, arg in opts:
+    # test mode will not run GUI
+    if ( opt == '--test' or opt == '-t'):
+        run = False
+        sys.argv = ['sbin/run.py']
+
+    elif ( opt == '--production' or opt == '-p' ):
+        run = True
+
+    # Development mode runs with debug console - ctr + e to open it in GUI
+    elif ( opt == '--development' or opt == '-d'  ):
+        run = True
+        sys.argv = ['sbin/run.py -m console']
+
 from etc import Config
-Config.SetWindow()
 
 import kivy
 from kivy.clock import Clock
@@ -101,4 +119,5 @@ class DigitalDash(App):
             if (i >= len(self.ObjectsToUpdate)):
                 break
 
-# DigitalDash().run()
+if ( run ):
+    DigitalDash().run()
