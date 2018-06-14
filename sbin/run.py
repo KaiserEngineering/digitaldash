@@ -15,21 +15,20 @@ sys.path.append(os.getcwd() + '/KE')
 import getopt
 run = False
 
-opts, args = getopt.getopt(sys.argv[1:],"tdp",["test","production", "development"])
+opts, args = getopt.getopt(sys.argv[1:],"td",["test", "development"])
 
 for opt, arg in opts:
     # test mode will not run GUI
     if ( opt == '--test' or opt == '-t'):
         run = False
         sys.argv = ['sbin/run.py']
-
-    elif ( opt == '--production' or opt == '-p' ):
-        run = True
-
     # Development mode runs with debug console - ctr + e to open it in GUI
     elif ( opt == '--development' or opt == '-d'  ):
         run = True
         sys.argv = ['sbin/run.py -m console']
+    else:
+        sys.argv = ['sbin/run.py']
+        run = True
 
 from etc import Config
 
@@ -66,7 +65,6 @@ class DigitalDash(App):
         def loop(dt):
             if (serial):
                 ( my_callback, priority, data ) = ( None, 0, Serial.serialLoop() )
-
                 for callback in self.callbacks:
                     my_callback = self.check_callbacks(callback, priority, data)
 
@@ -105,6 +103,7 @@ class DigitalDash(App):
         if ( my_callback.change(self, my_callback) ):
             self.current = my_callback.index
             (blank, self.background, self.alerts, self.ObjectsToUpdate, self.WidgetsInstance, self.bytecode) = self.views[self.current].values()
+            self.app.add_widget(self.alerts)
 
         elif type(my_callback) is Alert and my_callback.parent is None:
             self.alerts.add_widget(my_callback)
