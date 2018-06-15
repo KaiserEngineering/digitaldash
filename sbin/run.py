@@ -95,6 +95,9 @@ class DigitalDash(App):
         # Clear alert widgets so we don't end up with multiple parent error
         elif type(callback) is Alert:
             self.alerts.remove_widget(callback)
+            priority = 0
+        else:
+            priority = 0
 
         return False
 

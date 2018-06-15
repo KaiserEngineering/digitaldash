@@ -5,7 +5,7 @@
         Translate:
             xy: (self.x + self.width / 2, self.y + self.height / 2)
         Rotate:
-            angle: self.update
+            angle: self.update + self.zero
             axis: (0, 0, 1.0)
         Translate:
             xy: (-self.x - self.width / 2, - self.y - self.height / 2)
@@ -36,7 +36,7 @@
             size: self.height, self.height
             pos: self.x + (self.width - self.height) / 2, self.y
             source: self.source
-            angle_start: self.degrees
+            angle_start: self.angle_start
             angle_end: self.update
 
 <TickMarks>:
