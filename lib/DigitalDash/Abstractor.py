@@ -16,8 +16,13 @@ class Animator(object):
         Abstract setData method most commonly used.
         Override it in Metaclass below if needed differently
         """
-        # negative?
-        self.update = float(value) * float(self.step) + self.degrees + self.offset
+
+        if type(self).__name__ == 'NeedleRadial':
+            self.update = -float(value) * float(self.step) + self.degrees / 2 + self.offset
+        elif (type(self).__name__ == 'NeedleEllipse'):
+            self.update = float(value) * float(self.step) - self.offset
+        else:
+            self.update = float(value) * float(self.step) + self.offset
 
 
 class MetaImage(Image, Animator):

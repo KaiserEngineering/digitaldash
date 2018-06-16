@@ -54,13 +54,13 @@ class NeedleRadial(MetaImage):
         """Initiate Needle widget."""
         super(NeedleRadial, self).__init__()
         self.source = path + 'needle.png'
-        self.step = themeArgs['degrees'] /  (args['MinMax'][1] - args['MinMax'][0])
-        self.degrees = themeArgs['degrees']
-    
+        self.step = float(themeArgs['degrees']) /  (abs(float(args['MinMax'][1])) + abs(float(args['MinMax'][0])))
+        self.degrees = float(themeArgs['degrees'])
+        self.update = self.degrees / 2
 
         # To handle negative values
         if ( args['MinMax'][0] < 0 ):
-            self.offset = args['MinMax'][0]
+            self.offset = args['MinMax'][0] * self.step
         else:
             self.offset = 0
 
@@ -88,11 +88,10 @@ class NeedleLinear(MetaWidget):
         self.source = path + 'needle.png'
         self.step = themeArgs['degrees'] / abs(args['MinMax'][0] - args['MinMax'][1])
         self.degrees = themeArgs['degrees']
-        (self.r, self.g, self.b, self.a) = (1, 1, 0, 1)    
+        (self.r, self.g, self.b, self.a) = (1, 1, 0, 1)
 
-        # To handle negative values
         if ( args['MinMax'][0] < 0 ):
-            self.offset = args['MinMax'][0]
+            self.offset = args['MinMax'][0] * self.step
         else:
             self.offset = 0
 
@@ -105,17 +104,17 @@ class NeedleEllipse(MetaWidget):
     g = NumericProperty()
     b = NumericProperty()
     a = NumericProperty()
+    angle_start = NumericProperty()
+
     def __init__(self, path, args, themeArgs):
         super(NeedleEllipse, self).__init__()
         self.source = path + 'needle.png'
         self.step = themeArgs['degrees'] / abs(args['MinMax'][0] - args['MinMax'][1])
-        (self.r, self.g, self.b, self.a) = (1, 1, 0, 1)
+        (self.r, self.g, self.b, self.a) = (0, 0, 255, 1)
+        self.angle_start = themeArgs['angle_start']
+        self.update = self.angle_start
 
-        # To handle negative values
         if ( args['MinMax'][0] < 0 ):
-            self.offset = args['MinMax'][0]
+            self.offset = args['MinMax'][0] - self.angle_start
         else:
-            self.offset = 0
-
-        self.degrees = themeArgs['degrees'] + self.offset
-
+            self.offset = 0 - self.angle_start

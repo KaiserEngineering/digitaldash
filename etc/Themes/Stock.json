@@ -1,5 +1,5 @@
 {
-  "degrees": 150,
+  "degrees": 120,
     "labels":
       [{
        "pos": [100, -100], "font_size": 25, "default": "Max: ",
