@@ -22,7 +22,7 @@ class Animator(object):
         elif (type(self).__name__ == 'NeedleEllipse'):
             self.update = float(value) * float(self.step) - self.offset
         else:
-            self.update = float(value) * float(self.step) + self.offset
+            self.update = float(value) + self.offset
 
 
 class MetaImage(Image, Animator):

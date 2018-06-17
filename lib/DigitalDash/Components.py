@@ -77,18 +77,18 @@ class NeedleLinear(MetaWidget):
 
     update = NumericProperty()
     source = StringProperty()
-    r = NumericProperty()
-    g = NumericProperty()
-    b = NumericProperty()
-    a = NumericProperty()
+    steps   = NumericProperty()
+    r      = NumericProperty()
+    g      = NumericProperty()
+    b      = NumericProperty()
+    a      = NumericProperty()
 
     def __init__(self, path, args, themeArgs):
         """Create Linear Slider."""
         super(NeedleLinear, self).__init__()
         self.source = path + 'needle.png'
-        self.step = themeArgs['degrees'] / abs(args['MinMax'][0] - args['MinMax'][1])
-        self.degrees = themeArgs['degrees']
-        (self.r, self.g, self.b, self.a) = (1, 1, 0, 1)
+        self.steps = abs(args['MinMax'][0] - args['MinMax'][1])
+        (self.r, self.g, self.b, self.a) = (0, 0, 255, 1)
 
         if ( args['MinMax'][0] < 0 ):
             self.offset = args['MinMax'][0] * self.step

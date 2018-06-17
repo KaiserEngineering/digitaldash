@@ -1,5 +1,5 @@
 {
-  "degrees": 260, "angle_start": 220,
+  "degrees": 260, "angle_start": 225,
     "labels":
       [{
        "pos": [100, -100], "font_size": 25, "default": "Max: ",

@@ -24,7 +24,7 @@
         Color:
             rgba: self.r, self.g, self.b, self.a
         Rectangle:
-            size: self.update, self.height + self.height / 2
+            size: self.update * ( self.width / (self.steps + 0.1) ), self.height + self.height / 2
             pos: self.x, root.center_y - 200
             source: self.source
 
