@@ -33,11 +33,14 @@ def setup():
         background = view[0]
 
         # Create our callbacks
-        callbacks.append(makeDynamic(view[1]['dynamic']))
-        for alert in view[1]['alerts']:
-            callbacks.append(makeAlert(alert))
+        if 'dynamic' in view[1].keys():
+            callbacks.append(makeDynamic(view[1]['dynamic']))
 
-        bytecode = view[1]['bytecode']
+            if 'alerts' in view[1]['dynamic'].keys():
+                for alert in view[1]['alerts']:
+                    callbacks.append(makeAlert(alert))
+
+            bytecode = view[1]['bytecode']
 
         container = BoxLayout(padding=(0, 0, 0, 0))
         ObjectsToUpdate = []
