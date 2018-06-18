@@ -17,16 +17,21 @@ class Animator(object):
         Override it in Metaclass below if needed differently
         """
 
-        if type(self).__name__ == 'NeedleRadial':
-            self.update = -float(value) * self.step + self.degrees / 2 + self.offset
-        elif (type(self).__name__ == 'NeedleEllipse'):
-            self.update = float(value) * float(self.step) + self.offset
-        else:
-            self.update = float(value) + self.offset
+        value = float(value)
 
-        # Incase we go past our expected max
-        # if value > self.max:
-        #     self.update = self.max
+        if type(self).__name__ == 'NeedleRadial':
+            self.update = -value * self.step + self.degrees / 2 + self.offset
+            if value > self.max:
+                self.update = -self.degrees / 2
+        elif (type(self).__name__ == 'NeedleEllipse'):
+            self.update = value * float(self.step) + self.offset
+            if value > self.max:
+                self.update = -self.degrees / 2
+        else:
+            self.update = value + self.offset
+            if value > self.max:
+                self.update = self.max + self.offset
+
 
 class MetaLabel(Label, Animator):
     """Handles meta classes for kivy.uix.label and our Animator classs."""
