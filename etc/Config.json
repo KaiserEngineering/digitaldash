@@ -40,7 +40,7 @@
           "path": "static/imgs/Dirt/",
           "args": {
                 "themeConfig": "Dirt",
-                "MinMax": [-1, 101]
+                "MinMax": [0, 101]
             }
         }
       ]

@@ -18,17 +18,15 @@ class Animator(object):
         """
 
         if type(self).__name__ == 'NeedleRadial':
-            self.update = -float(value) * float(self.step) + self.degrees / 2 + self.offset
+            self.update = -float(value) * float(self.step) + self.degrees / 2 - self.offset
         elif (type(self).__name__ == 'NeedleEllipse'):
-            self.update = float(value) * float(self.step) - self.offset
+            self.update = float(value) * float(self.step) + self.offset
         else:
             self.update = float(value) + self.offset
 
-
-class MetaImage(Image, Animator):
-    """Handles meta classes for kivy.uix.image and our Animator classs."""
-    pass
-
+        # Incase we go past our expected max
+        # if value > self.max:
+        #     self.update = self.max
 
 class MetaLabel(Label, Animator):
     """Handles meta classes for kivy.uix.label and our Animator classs."""
@@ -50,9 +48,42 @@ class MetaLabel(Label, Animator):
             self.text = self.default + str(value)
 
 
+class MetaImage(Image, Animator):
+    """Handles meta classes for kivy.uix.image and our Animator classs."""
+    def SetOffset(self):
+        """Set offset for negative values"""
+        if ( self.min < 0 ):
+            self.offset = self.min * self.step
+        else:
+            self.offset = 0
+
+    def SetAttrs(self, path, args, themeArgs):
+        """Set basic attributes for widget."""
+        (self.source, self.degrees, self.min, self.max) = ( path + 'needle.png', float(themeArgs['degrees']),
+                float(args['MinMax'][0]), float(args['MinMax'][1]) )
+        
+        self.step = float(themeArgs['degrees']) / ( self.min + self.max )
+        self.degrees = float(themeArgs['degrees'])
+
+        self.SetOffset()
+
+
 class MetaWidget(Widget, Animator):
     """Handles meta classes for kivy.uix.widget and our Animator classs."""
-    pass
+    def SetOffset(self):
+        if ( self.min < 0 ):
+            self.offset = self.min * self.step
+        else:
+            self.offset = 0
+
+    def SetAttrs(self, path, args, themeArgs):
+        """Set basic attributes for widget."""
+        (self.source, self.degrees, self.min, self.max) = ( path + 'needle.png', float(themeArgs['degrees']),
+                float(args['MinMax'][0]), float(args['MinMax'][1]) )
+        
+        self.step = self.degrees / ( self.min + self.max )
+
+        self.SetOffset()
 
 
 from DigitalDash.Components import *
