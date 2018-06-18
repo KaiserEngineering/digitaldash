@@ -101,8 +101,6 @@ class NeedleEllipse(MetaWidget):
         self.SetAttrs(path, args, themeArgs)
 
         (self.r, self.g, self.b, self.a) = (0, 0, 255, 1)
-        self.angle_start = themeArgs['angle_start']
-        self.update = self.angle_start
+        self.angle_start = themeArgs['angle_start'] - 12
 
         self.SetOffset()
-        self.update = 100 * self.step + self.offset

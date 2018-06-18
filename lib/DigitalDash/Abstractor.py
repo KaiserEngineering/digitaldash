@@ -18,7 +18,7 @@ class Animator(object):
         """
 
         if type(self).__name__ == 'NeedleRadial':
-            self.update = -float(value) * float(self.step) + self.degrees / 2 - self.offset
+            self.update = -float(value) * self.step + self.degrees / 2 + self.offset
         elif (type(self).__name__ == 'NeedleEllipse'):
             self.update = float(value) * float(self.step) + self.offset
         else:
@@ -62,8 +62,7 @@ class MetaImage(Image, Animator):
         (self.source, self.degrees, self.min, self.max) = ( path + 'needle.png', float(themeArgs['degrees']),
                 float(args['MinMax'][0]), float(args['MinMax'][1]) )
         
-        self.step = float(themeArgs['degrees']) / ( self.min + self.max )
-        self.degrees = float(themeArgs['degrees'])
+        self.step = self.degrees / ( abs(self.min) + abs(self.max) )
 
         self.SetOffset()
 
@@ -81,7 +80,7 @@ class MetaWidget(Widget, Animator):
         (self.source, self.degrees, self.min, self.max) = ( path + 'needle.png', float(themeArgs['degrees']),
                 float(args['MinMax'][0]), float(args['MinMax'][1]) )
         
-        self.step = self.degrees / ( self.min + self.max )
+        self.step = self.degrees / ( abs(self.min) + abs(self.max) )
 
         self.SetOffset()
 
