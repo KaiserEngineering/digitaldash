@@ -26,9 +26,10 @@ for opt, arg in opts:
     elif ( opt == '--development' or opt == '-d'  ):
         run = True
         sys.argv = ['sbin/run.py -m console']
-    else:
-        sys.argv = ['sbin/run.py']
-        run = True
+
+if not len(opts):
+    sys.argv = ['sbin/run.py']
+    run = True
 
 from etc import Config
 
