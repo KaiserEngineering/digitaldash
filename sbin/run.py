@@ -18,19 +18,19 @@ import getopt
 run = False
 Data_Source = 0
 
-opts, args = getopt.getopt(sys.argv[1:],"td",["test", "development"])
+opts, args = getopt.getopt(sys.argv[1:],"tdf:",["test", "development", "file"])
 
 for opt, arg in opts:
     # test mode will not run GUI
     if ( opt == '--test' or opt == '-t'):
         run = False
         sys.argv = ['sbin/run.py']
-        Data_Source = Test({'file': 'test/test.csv'})
     # Development mode runs with debug console - ctr + e to open it in GUI
     elif ( opt == '--development' or opt == '-d'  ):
         run = True
         sys.argv = ['sbin/run.py -m console']
-        Data_Source = Test({'file': 'test/test.csv'})
+    if ( opt == '--file' or opt == '-f' ):
+        Data_Source = Test({'file': arg})
 
 if not len(opts):
     sys.argv = ['sbin/run.py']
