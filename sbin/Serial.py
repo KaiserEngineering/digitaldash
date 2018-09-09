@@ -1,6 +1,8 @@
 """Serial handler class."""
 import serial
 
+class Serial():
+
 ser = serial.Serial(
     port='/dev/tty.usbmodem14311',
     baudrate=115200,
@@ -11,7 +13,7 @@ ser = serial.Serial(
 ser_val = [0, 0, 0, 0, 0,0]
 
 
-def serialLoop():
+def Start(self):
     """Loop for checking Serial connection for data."""
     # Handle grabbing data
     data_line = ser.readline().decode().strip()
@@ -22,7 +24,6 @@ def serialLoop():
             ser_val[count] = val
             count = count + 1
         except ValueError:
-            print('Null value')
             count = count + 1
 
     return ser_val

@@ -12,8 +12,11 @@ sys.path.append(os.getcwd() + '/lib')
 sys.path.append(os.getcwd() + '/etc')
 sys.path.append(os.getcwd() + '/KE')
 
+from DigitalDash.Test import Test
+
 import getopt
 run = False
+Data_Source = 0
 
 opts, args = getopt.getopt(sys.argv[1:],"td",["test", "development"])
 
@@ -22,10 +25,12 @@ for opt, arg in opts:
     if ( opt == '--test' or opt == '-t'):
         run = False
         sys.argv = ['sbin/run.py']
+        Data_Source = Test({'file': 'test/test.csv'})
     # Development mode runs with debug console - ctr + e to open it in GUI
     elif ( opt == '--development' or opt == '-d'  ):
         run = True
         sys.argv = ['sbin/run.py -m console']
+        Data_Source = Test({'file': 'test/test.csv'})
 
 if not len(opts):
     sys.argv = ['sbin/run.py']
@@ -43,6 +48,7 @@ from DigitalDash.Alert import Alert
 try:
     import Serial
     serial = True
+    Data_Source = Serial()
 except Exception as e:
     serial = False
 
@@ -64,8 +70,8 @@ class DigitalDash(App):
     def build(self):
         """Perform main build loop for Kivy app."""
         def loop(dt):
-            if (serial):
-                ( my_callback, priority, data ) = ( None, 0, Serial.serialLoop() )
+            if (Data_Source):
+                ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
                 for callback in self.callbacks:
                     my_callback = self.check_callbacks(callback, priority, data)
 

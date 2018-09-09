@@ -18,6 +18,8 @@ class Dynamic(object):
 
     def check(self, value):
         """Perform logic test."""
+        if( str(value) == 'nan' ):
+            return 0
         return (eval(str(value) + self.op + str(self.value)))
 
     def change(self, App, callback):
