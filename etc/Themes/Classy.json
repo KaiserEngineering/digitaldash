@@ -10,7 +10,7 @@
        "data": 1
        },
       {
-       "pos": [0, 0], "font_size": 25, "default": "current:  ",
+       "pos": [0, 0], "font_size": 25, "default": "",
        "data": 1
        }
     ]

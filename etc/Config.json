@@ -24,7 +24,7 @@
             "path": "static/imgs/Stock/",
             "args": {
                   "themeConfig": "Stock",
-                  "MinMax": [450, 8050]
+                  "MinMax": [0, 100]
               }
           },
           {
@@ -40,7 +40,7 @@
           "path": "static/imgs/Dirt/",
           "args": {
                 "themeConfig": "Dirt",
-                "MinMax": [0, 101]
+                "MinMax": [0, 45]
             }
         }
       ]
