@@ -6,6 +6,7 @@ from kivy.uix.widget import Widget
 from abc import ABCMeta
 from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
+from DigitalDash.Massager import Massager
 
 class Animator(object):
     """Class for putting data update into widgets."""
@@ -17,18 +18,26 @@ class Animator(object):
         Override it in Metaclass below if needed differently
         """
 
-        value = float(value)
+        value    = float(value)
+        massager = Massager()
+        val      = 0
+
+        if self.update == self.update:
+            val = massager.Smooth({'Current': self.update, 'New': value})
+        else:
+            val = value
 
         if type(self).__name__ == 'NeedleRadial':
-            self.update = -value * self.step + self.degrees / 2 + self.offset
+            # This is a check for 'NaN'
+            self.update = -val * self.step + self.degrees / 2 + self.offset
             if value > self.max:
                 self.update = -self.degrees / 2
         elif (type(self).__name__ == 'NeedleEllipse'):
-            self.update = value * float(self.step) + self.offset
+            self.update = val * float(self.step) + self.offset
             if value > self.max:
                 self.update = -self.degrees / 2
         else:
-            self.update = value + self.offset
+            self.update = val + self.offset
             if value > self.max:
                 self.update = self.max + self.offset
 
