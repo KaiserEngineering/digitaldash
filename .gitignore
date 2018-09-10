@@ -1,8 +1,6 @@
 .DS_STORE
 
-down vote
-
-Github has a great boilerplate .gitignore
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
