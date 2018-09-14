@@ -12,7 +12,7 @@ class Gauge(MetaImage):
     the gauge. Requires one argument of a path to the
     image dir, where **gauge.png** should be stored.
 
-        :param MetaWidget:
+        :param MetaWidget: <DigitalDash.Components.Gauge>
     """
 
     def __init__(self, path):
@@ -28,7 +28,7 @@ class KELabel(MetaLabel):
     Send a default value that will stay with the Label
     at all times 'default'.
 
-        :param MetaWidget:
+        :param MetaWidget: <DigitalDash.Components.KELabel>
     """
 
     def __init__(self, args):
@@ -51,7 +51,7 @@ class NeedleRadial(MetaImage):
     method, which can be called and update the needles
     angle value.
 
-        :param MetaWidget:
+        :param MetaWidget: <DigitalDash.Components.NeedleRadial>
     """
 
     update = NumericProperty()
@@ -72,7 +72,8 @@ class NeedleLinear(MetaWidget):
     gauges. This class also has the **setData()**
     method, which can be called and update the needles
     angle value.
-        :param MetaWidget:
+
+        :param MetaWidget: <DigitalDash.Components.NeedleLinear>
     """
     update = NumericProperty()
     source = StringProperty()
@@ -92,6 +93,11 @@ class NeedleLinear(MetaWidget):
 
 
 class NeedleEllipse(MetaWidget):
+    """
+    Create Ellipse widget.
+
+        :param MetaWidget: <DigitalDash.Components.NeedleEllipse>
+    """
     update = NumericProperty()
     source = StringProperty()
     degrees = NumericProperty()

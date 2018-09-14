@@ -27,14 +27,14 @@ class Alert(Label):
                     message   : <String>,
                 }
         """
-            super(Alert, self).__init__()
+        super(Alert, self).__init__()
 
-            self.value       = args['value']
-            self.op          = args['op']
-            self.index       = args['index']
-            self.priority    = args['priority']
-            self.dataIndex   = int(args['dataIndex'])
-            self.message     = args['message']
+        self.value       = args['value']
+        self.op          = args['op']
+        self.index       = args['index']
+        self.priority    = args['priority']
+        self.dataIndex   = int(args['dataIndex'])
+        self.message     = args['message']
 
     def check(self, value):
         """

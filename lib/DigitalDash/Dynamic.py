@@ -18,13 +18,13 @@ class Dynamic(object):
                     dataIndex : <Int>,
                 }
         """
-            super(Dynamic, self).__init__()
+        super(Dynamic, self).__init__()
 
-            self.value        = int(args['value'])
-            self.op           = args['op']
-            self.index        = int(args['index'])
-            self.priority     = int(args['priority'])
-            self.dataIndex    = int(args['dataIndex'])
+        self.value        = int(args['value'])
+        self.op           = args['op']
+        self.index        = int(args['index'])
+        self.priority     = int(args['priority'])
+        self.dataIndex    = int(args['dataIndex'])
 
     def check(self, value):
         """
@@ -39,8 +39,8 @@ class Dynamic(object):
     def change(self, App, callback):
         """
         Perform view change
-            :param self: Alert object
-            :param App: main application object
+            :param self: <DigitalDash.Dynamic.Dynamic>
+            :param App: <DigitalDash> main application object
             :param callback: current callback object
         """
         App.app.clear_widgets()
