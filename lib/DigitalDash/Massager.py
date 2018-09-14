@@ -3,14 +3,20 @@
 import DigitalDash
 
 class Massager():
-    """Main massager class, use to massage values."""
+    """
+    Main massager class, use to massage values.
+    """
     def __init__(self):
         pass
 
     def Smooth(self, args):
         """
-        Expects a hash:
-            { 'Current': Value, 'New' : Value }
+        Smoothing transitions between data points
+            :param self: 
+            :param args: { 
+                'Current': Value,
+                 'New' : Value,
+            }
         """
         if not args['Current'] and not args['New']:
             return 0

@@ -13,17 +13,27 @@ class Test():
         self.rows = len(self.data)
 
     def Load(self, file):
-        """Load data from file."""
+        """
+        Load data from file.
+            :param self: <KE.DigitalDash.Test>Test instance
+            :param file: <String>File path
+        """
         return genfromtxt(file, delimiter=',')
 
     def Start(self):
-        """Main start method for test data."""
+        """
+        Main start method for test data.
+            :param self: <KE.DigitalDash.Test>Test instance
+        """
         data = self.data[self.iteration]
         self.Enumerate()
         return data
 
     def Enumerate(self):
-        """Iterate over test data."""
+        """
+        Iterate over test data.
+            :param self: <KE.DigitalDash.Test>Test instance 
+        """
         self.iteration += 1
         if ( self.iteration >= self.rows ):
             self.iteration = 0

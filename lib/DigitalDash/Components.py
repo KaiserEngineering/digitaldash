@@ -11,6 +11,8 @@ class Gauge(MetaImage):
     Gauge class will return Kivy Image for the face of
     the gauge. Requires one argument of a path to the
     image dir, where **gauge.png** should be stored.
+
+        :param MetaWidget:
     """
 
     def __init__(self, path):
@@ -25,6 +27,8 @@ class KELabel(MetaLabel):
 
     Send a default value that will stay with the Label
     at all times 'default'.
+
+        :param MetaWidget:
     """
 
     def __init__(self, args):
@@ -46,6 +50,8 @@ class NeedleRadial(MetaImage):
     gauges. This class also has the **setData()**
     method, which can be called and update the needles
     angle value.
+
+        :param MetaWidget:
     """
 
     update = NumericProperty()
@@ -66,8 +72,8 @@ class NeedleLinear(MetaWidget):
     gauges. This class also has the **setData()**
     method, which can be called and update the needles
     angle value.
+        :param MetaWidget:
     """
-
     update = NumericProperty()
     source = StringProperty()
     steps  = NumericProperty()

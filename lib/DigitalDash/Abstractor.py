@@ -9,13 +9,18 @@ from etc import Config
 from DigitalDash.Massager import Massager
 
 class Animator(object):
-    """Class for putting data update into widgets."""
+    """
+        Class for putting data update into widgets.
+            :param object:
+    """
 
     @abstractmethod
     def setData(self, value):
         """
         Abstract setData method most commonly used.
         Override it in Metaclass below if needed differently
+            :param self: Widget Object
+            :param value: Update value for gauge needle
         """
 
         value    = float(value)
@@ -43,12 +48,17 @@ class Animator(object):
 
 
 class MetaLabel(Label, Animator):
-    """Handles meta classes for kivy.uix.label and our Animator classs."""
+    """
+    Handles meta classes for kivy.uix.label and our Animator object.
+        :param Label: Name of label
+        :param Animator: Animator object that handles data update
+    """
     def setData(self, value=''):
         """
         Send data to Label widget.
-
         Check for Min/Max key words to cache values with regex checks.
+            :param self: LabelWidget object
+            :param value='': Numeric value for label
         """
         if (re.match("(?i)(minimum|min)+", self.default)):
             if (self.min > float(value)):
@@ -63,7 +73,11 @@ class MetaLabel(Label, Animator):
 
 
 class MetaImage(Image, Animator):
-    """Handles meta classes for kivy.uix.image and our Animator classs."""
+    """
+    Handles meta classes for kivy.uix.image and our Animator classs.
+        :param Image: Kivy UI image class
+        :param Animator: Animator class that handles data update
+    """
     def SetOffset(self):
         """Set offset for negative values"""
         if ( self.min < 0 ):
@@ -82,7 +96,11 @@ class MetaImage(Image, Animator):
 
 
 class MetaWidget(Widget, Animator):
-    """Handles meta classes for kivy.uix.widget and our Animator classs."""
+    """
+    docstring here
+        :param Label: Name of label
+        :param Animator: Animator class that handles data update
+    """
     def SetOffset(self):
         if ( self.min < 0 ):
             self.offset = self.min * self.step
@@ -102,11 +120,17 @@ class MetaWidget(Widget, Animator):
 from DigitalDash.Components import *
 
 class AbstractWidget(object):
-    """Generic scaffolding for KE Widgets."""
+    """
+    Generic scaffolding for KE Widgets.
+        :param object: 
+    """
 
     @abstractmethod
     def build(**ARGS):
-        """Create widgets for Dial."""
+        """
+        Create widgets for Dial.
+            :param **ARGS: 
+        """   
         liveWidgets = []
         path = ARGS['args']['path']
         container = ARGS['container']

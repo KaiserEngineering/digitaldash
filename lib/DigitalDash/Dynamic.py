@@ -4,10 +4,20 @@ class Dynamic(object):
     """
     Dynamic class for changing cached views. Use this class to switch between the
     views in **views[]**.
+        :param object: 
     """
-
     def __init__(self, args):
-            """Create Dynamic widget."""
+        """
+        Create Dynamic widget.
+            :param self: Dynamic object
+            :param args: {
+                    value     : <Float>,
+                    op        : <String>,
+                    index     : <Int>,
+                    priority  : <Int>,
+                    dataIndex : <Int>,
+                }
+        """
             super(Dynamic, self).__init__()
 
             self.value        = int(args['value'])
@@ -17,13 +27,22 @@ class Dynamic(object):
             self.dataIndex    = int(args['dataIndex'])
 
     def check(self, value):
-        """Perform logic test."""
+        """
+        Check logic here.
+            :param self: Dynamic object
+            :param value: value to check Dynamic condition against
+        """
         if( str(value) == 'nan' ):
             return 0
         return (eval(str(value) + self.op + str(self.value)))
 
     def change(self, App, callback):
-        """Perform view change."""
+        """
+        Perform view change
+            :param self: Alert object
+            :param App: main application object
+            :param callback: current callback object
+        """
         App.app.clear_widgets()
         App.app.add_widget(App.containers[callback.index])
 
