@@ -42,7 +42,10 @@ class Alert(Label):
             :param self: Alert object
             :param value: value to check Alert condition against
         """
-        return (eval(str(value) + self.op + str(self.value)))
+
+        if value == value:
+            return (eval(str(value) + self.op + str(self.value)))
+        return 0
 
     def change(self, App, callback):
         """
@@ -51,9 +54,7 @@ class Alert(Label):
             :param App: main application object
             :param callback: current callback object
         """
-        self.text      =  self.message
+        self.text      = self.message
         self.font_size = 30
-        self.pos       = 100, 100
+        # self.pos       = 100, 100
 
-        # Return false if no new view is to be loaded
-        return False

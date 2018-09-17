@@ -72,8 +72,8 @@ class DigitalDash(App):
         def loop(dt):
             if (Data_Source):
                 ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
-                for callback in self.callbacks:
-                    my_callback = self.check_callbacks(callback, priority, data)
+                for callback in self.callbacks[self.current]:
+                    my_callback = self.check_callback(callback, priority, data)
 
                     if(my_callback):
                         self.check_change(self, my_callback)
@@ -82,7 +82,8 @@ class DigitalDash(App):
         # END LOOP
 
         self.current = 0
-        self.views, self.containers, self.callbacks = KE.setup()
+        (self.views, self.containers, self.callbacks) = KE.setup()
+
         (self.app, self.background, self.alerts, self.ObjectsToUpdate, self.WidgetsInstance, self.bytecode) = self.views[0].values()
 
         self.app.add_widget(self.containers[0])
@@ -92,7 +93,7 @@ class DigitalDash(App):
 
         return self.app
 
-    def check_callbacks(self, callback, priority, data):
+    def check_callback(self, callback, priority, data):
     # Check if any dynamic changes need to be made
         if ( callback.check(data[callback.dataIndex]) ):
             if (self.current != callback.index and priority <= callback.priority):
@@ -102,9 +103,8 @@ class DigitalDash(App):
         # Clear alert widgets so we don't end up with multiple parent error
         elif type(callback) is Alert:
             self.alerts.remove_widget(callback)
-            priority = 0
-        else:
-            priority = 0
+
+        priority = 0
 
         return False
 

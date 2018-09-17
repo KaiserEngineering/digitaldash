@@ -25,20 +25,21 @@ def setup():
     values for views. Then it will build the views and return them.
     """
 
-    callbacks = []
-    ret = []
+    callbacks  = {}
+    ret        = []
     containers = []
 
+    view_count = 0
     for view in Config.layouts():
         background = view[0]
 
         # Create our callbacks
         if 'dynamic' in view[1].keys():
-            callbacks.append(makeDynamic(view[1]['dynamic']))
+            callbacks[view_count] = callbacks[view_count].append(makeDynamic(view[1]['dynamic'])) if view_count in callbacks else []
 
-            if 'alerts' in view[1]['dynamic'].keys():
+            if 'alerts' in view[1].keys():
                 for alert in view[1]['alerts']:
-                    callbacks.append(makeAlert(alert))
+                    callbacks[view_count].append(makeAlert(alert)) if view_count in callbacks else []
 
             bytecode = view[1]['bytecode']
 
@@ -55,6 +56,7 @@ def setup():
 
         containers.append(container)
         ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'], 'ObjectsToUpdate': ObjectsToUpdate, 'WidgetsInstance': WidgetsInstance, 'bytecode': bytecode})
+        view_count += 1
 
     return (ret, containers, callbacks)
 
