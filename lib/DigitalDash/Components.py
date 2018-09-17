@@ -63,6 +63,27 @@ class NeedleRadial(MetaImage):
 
         self.update = self.degrees / 2
 
+    def setData(self, value):
+        """
+        Abstract setData method most commonly used.
+        Override it in Metaclass below if needed differently
+            :param self: Widget Object
+            :param value: Update value for gauge needle
+        """
+
+        value    = float(value)
+        massager = Massager()
+        val      = 0
+
+        if self.update == self.update:
+            val = massager.Smooth({'Current': self.update, 'New': value})
+        else:
+            val = value
+
+        self.update = -val * self.step + self.degrees / 2 + self.offset
+        if value > self.max:
+            self.update = -self.degrees / 2
+
 
 class NeedleLinear(MetaWidget):
     """
@@ -87,9 +108,42 @@ class NeedleLinear(MetaWidget):
         """Create Linear Slider."""
         super(NeedleLinear, self).__init__()
         self.SetAttrs(path, args, themeArgs)
+        self.bind(size=self.SizeUpdate)
+        self.size_accounted = 0
 
         self.steps = abs(self.max - self.min)
         (self.r, self.g, self.b, self.a) = (0, 0, 255, 1)
+
+    def SizeUpdate(self, *args):
+        # Hacky but we only want the size for the first add
+        if ( not self.size_accounted ):
+            self.step = self.size[0] / ( abs(self.min) + abs(self.max) )
+            self.size_accounted = 1
+
+    def SetStep(self):
+        self.step = self.parent.width / ( abs(self.min) + abs(self.max) )
+
+    def setData(self, value):
+        """
+        Abstract setData method most commonly used.
+        Override it in Metaclass below if needed differently
+            :param self: Widget Object
+            :param value: Update value for gauge needle
+        """
+
+        value    = float(value)
+        massager = Massager()
+        val      = 0
+
+        if self.update == self.update:
+            val = massager.Smooth({'Current': self.update, 'New': value})
+        else:
+            val = value
+
+        if value > self.max:
+            self.update = self.max + self.offset
+
+        self.update = ( val - self.offset ) * self.step
 
 
 class NeedleEllipse(MetaWidget):
@@ -112,7 +166,28 @@ class NeedleEllipse(MetaWidget):
         super(NeedleEllipse, self).__init__()
         self.SetAttrs(path, args, themeArgs)
 
-        (self.r, self.g, self.b, self.a) = (0, 0, 255, 1)
+        (self.r, self.g, self.b, self.a) = (255, 0, 0, 1)
         self.angle_start = themeArgs['angle_start'] - 12
 
         self.SetOffset()
+
+    def setData(self, value):
+        """
+        Abstract setData method most commonly used.
+        Override it in Metaclass below if needed differently
+            :param self: Widget Object
+            :param value: Update value for gauge needle
+        """
+
+        value    = float(value)
+        massager = Massager()
+        val      = 0
+
+        if self.update == self.update:
+            val = massager.Smooth({'Current': self.update, 'New': value})
+        else:
+            val = value
+
+        self.update = val * float(self.step) + self.offset
+        if value > self.max:
+            self.update = -self.degrees / 2

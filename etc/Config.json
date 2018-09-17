@@ -28,11 +28,11 @@
               }
           },
           {
-            "module": "Radial",
-            "path": "static/imgs/Classy/",
+            "module": "Linear",
+            "path": "static/imgs/Linear/",
             "args": {
-                  "themeConfig": "Classy",
-                  "MinMax": [-10, 22]
+                  "themeConfig": "Linear",
+                  "MinMax": [-12, 22]
               }
           },
         {

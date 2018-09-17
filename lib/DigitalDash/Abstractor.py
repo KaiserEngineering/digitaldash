@@ -32,19 +32,9 @@ class Animator(object):
         else:
             val = value
 
-        if type(self).__name__ == 'NeedleRadial':
-            # This is a check for 'NaN'
-            self.update = -val * self.step + self.degrees / 2 + self.offset
-            if value > self.max:
-                self.update = -self.degrees / 2
-        elif (type(self).__name__ == 'NeedleEllipse'):
-            self.update = val * float(self.step) + self.offset
-            if value > self.max:
-                self.update = -self.degrees / 2
-        else:
-            self.update = val + self.offset
-            if value > self.max:
-                self.update = self.max + self.offset
+        self.update = val + self.offset
+        if value > self.max:
+            self.update = self.max + self.offset
 
 
 class MetaLabel(Label, Animator):
@@ -81,18 +71,17 @@ class MetaImage(Image, Animator):
     def SetOffset(self):
         """Set offset for negative values"""
         if ( self.min < 0 ):
-            self.offset = self.min * self.step
+            self.offset = self.min
         else:
             self.offset = 0
+
+    def SetStep(self):
+        self.step = self.degrees / ( abs(self.min) + abs(self.max) )
 
     def SetAttrs(self, path, args, themeArgs):
         """Set basic attributes for widget."""
         (self.source, self.degrees, self.min, self.max) = ( path + 'needle.png', float(themeArgs['degrees']),
                 float(args['MinMax'][0]), float(args['MinMax'][1]) )
-        
-        self.step = self.degrees / ( abs(self.min) + abs(self.max) )
-
-        self.SetOffset()
 
 
 class MetaWidget(Widget, Animator):
@@ -103,18 +92,17 @@ class MetaWidget(Widget, Animator):
     """
     def SetOffset(self):
         if ( self.min < 0 ):
-            self.offset = self.min * self.step
+            self.offset = self.min
         else:
             self.offset = 0
+
+    def SetStep(self):
+        self.step = self.degrees / ( abs(self.min) + abs(self.max) )
 
     def SetAttrs(self, path, args, themeArgs):
         """Set basic attributes for widget."""
         (self.source, self.degrees, self.min, self.max) = ( path + 'needle.png', float(themeArgs['degrees']),
                 float(args['MinMax'][0]), float(args['MinMax'][1]) )
-        
-        self.step = self.degrees / ( abs(self.min) + abs(self.max) )
-
-        self.SetOffset()
 
 
 from DigitalDash.Components import *
@@ -150,6 +138,10 @@ class AbstractWidget(object):
         # Add widgets to our floatlayout
         Layout.add_widget(gauge)
         Layout.add_widget(needle)
+
+        # Set step after we are added to parent layout
+        needle.SetStep()
+        needle.SetOffset()
 
         labels = []
         # Create our labels
