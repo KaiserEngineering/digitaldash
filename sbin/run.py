@@ -72,11 +72,19 @@ class DigitalDash(App):
         def loop(dt):
             if (Data_Source):
                 ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
+
+                # Check dynamic gauges before any alerts in case we make a change
+                for dynamic in self.callbacks['dynamic']:
+                        my_callback = self.check_callback(dynamic, priority, data)
+
+                        if(my_callback):
+                            self.change(self, my_callback)
+
                 for callback in self.callbacks[self.current]:
                     my_callback = self.check_callback(callback, priority, data)
 
                     if(my_callback):
-                        self.check_change(self, my_callback)
+                        self.change(self, my_callback)
 
                 self.update_values(data)
         # END LOOP
@@ -108,7 +116,7 @@ class DigitalDash(App):
 
         return False
 
-    def check_change(self, app, my_callback):
+    def change(self, app, my_callback):
     # We use blank here, because we want to keep our app instance alive
         if ( my_callback.change(self, my_callback) ):
             self.current = my_callback.index

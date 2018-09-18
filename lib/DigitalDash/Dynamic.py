@@ -32,9 +32,9 @@ class Dynamic(object):
             :param self: Dynamic object
             :param value: value to check Dynamic condition against
         """
-        if( str(value) == 'nan' ):
-            return 0
-        return (eval(str(value) + self.op + str(self.value)))
+        if value == value:
+            return (eval(str(value) + self.op + str(self.value)))
+        return 0
 
     def change(self, App, callback):
         """
@@ -46,5 +46,4 @@ class Dynamic(object):
         App.app.clear_widgets()
         App.app.add_widget(App.containers[callback.index])
 
-        # Return true if a new view is to be loaded
         return True

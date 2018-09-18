@@ -3,21 +3,20 @@
       [
      "static/imgs/Background/bg.jpg",
      {
-       "dynamic":
-         {
-           "index": "0",
-           "dataIndex": "0",
-           "op": "==",
-           "value": "2000",
-           "priority": "0"
-         },
-         "bytecode" : "0xa76778hubjk",
-         "alerts": [
-            {"dataIndex": 0, "op": "<", "value": 4000, "index": 1, "priority": 1, 
-                "message" : "1"},
-            {"dataIndex": 0, "op": ">", "value": 6000, "index": 2, "priority": 1, 
-              "message" : "  2"}
-         ]
+        "dynamic":
+        {
+          "dataIndex": "0",
+          "op": "==",
+          "value": "200000",
+          "priority": "0"
+        },
+        "bytecode" : "0xa76778hubjk",
+        "alerts": [
+          {"dataIndex": 0, "op": ">", "value": 0, "priority": 1,
+              "message" : "THIS IS THE FIRST"},
+          {"dataIndex": 0, "op": ">", "value": 0, "priority": 1,
+            "message" : "THIS IS THE SECOND"}
+        ]
      },[
         {
             "module": "Radial",
@@ -50,18 +49,17 @@
       {
         "dynamic":
           {
-            "index": "1",
             "dataIndex": "0",
-            "op": "==",
-            "value": "60000",
-            "priority": "1"
+            "op": ">",
+            "value": "1000000",
+            "priority": "2"
           },
           "bytecode" : "0xa76778hubjk",
           "alerts": [
-             {"dataIndex": 0, "op": "<", "value": 4000, "index": 1, "priority": 1, 
-                 "message" : "       3"},
-             {"dataIndex": 0, "op": ">", "value": 6000, "index": 2, "priority": 1, 
-               "message" : "             4"}
+             {"dataIndex": 0, "op": "<", "value": 1, "index": 1, "priority": 1, 
+                 "message" : "MESSAGE 3"},
+             {"dataIndex": 0, "op": ">", "value": 1, "index": 2, "priority": 1, 
+               "message" : "MESSAGE 4"}
           ]
       },[
          {
@@ -69,17 +67,17 @@
            "path": "static/imgs/Linear/",
            "args": {
                  "themeConfig": "Linear",
-                 "MinMax": [0, 8000]
+                 "MinMax": [0, 100]
              }
          },
          {
-            "module": "Linear",
-            "path": "static/imgs/Linear/",
-            "args": {
-                  "themeConfig": "Linear",
-                  "MinMax": [0, 25]
-              }
-          }
+          "module": "Radial",
+          "path": "static/imgs/Stock/",
+          "args": {
+                "themeConfig": "Stock",
+                "MinMax": [0, 100]
+            }
+        }
        ]
      ]
   ]

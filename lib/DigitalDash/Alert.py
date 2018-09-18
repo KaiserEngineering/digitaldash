@@ -58,3 +58,4 @@ class Alert(Label):
         self.font_size = 30
         # self.pos       = 100, 100
 
+        return False

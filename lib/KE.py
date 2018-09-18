@@ -35,11 +35,14 @@ def setup():
 
         # Create our callbacks
         if 'dynamic' in view[1].keys():
-            callbacks[view_count] = callbacks[view_count].append(makeDynamic(view[1]['dynamic'])) if view_count in callbacks else []
+            dynamic = view[1]['dynamic']
+            dynamic['index'] = view_count
+            callbacks.setdefault('dynamic', []).append(makeDynamic(dynamic))
 
-            if 'alerts' in view[1].keys():
-                for alert in view[1]['alerts']:
-                    callbacks[view_count].append(makeAlert(alert)) if view_count in callbacks else []
+        if 'alerts' in view[1].keys():
+            for alert in view[1]['alerts']:
+                alert['index'] = len(callbacks[view_count]) + 1 if view_count in callbacks else 1
+                callbacks.setdefault(view_count, []).append(makeAlert(alert))
 
             bytecode = view[1]['bytecode']
 
