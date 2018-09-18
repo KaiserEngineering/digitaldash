@@ -81,7 +81,7 @@ class NeedleRadial(MetaImage):
         else:
             val = value
 
-        self.update = -val * self.step + self.degrees / 2 + self.offset
+        self.update = -val * self.step + self.degrees / 2 - self.offset
         if value > self.max:
             self.update = -self.degrees / 2
 
@@ -141,7 +141,7 @@ class NeedleLinear(MetaWidget):
             val = value
 
         if value > self.max:
-            self.update = self.max + self.offset
+            self.update = self.max - self.offset
 
         self.update = (val - self.offset) * self.step
 
@@ -188,6 +188,6 @@ class NeedleEllipse(MetaWidget):
         else:
             val = value
 
-        self.update = val * float(self.step) + self.offset
+        self.update = ( val - self.offset ) * float(self.step)
         if value > self.max:
             self.update = -self.degrees / 2
