@@ -166,7 +166,7 @@ class NeedleEllipse(MetaWidget):
         super(NeedleEllipse, self).__init__()
         self.SetAttrs(path, args, themeArgs)
 
-        (self.r, self.g, self.b, self.a) = (255, 0, 0, 1)
+        (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
         self.angle_start = themeArgs['angle_start'] - 12
 
         self.SetOffset()
