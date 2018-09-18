@@ -133,7 +133,7 @@ class AbstractWidget(object):
         Layout = RelativeLayout()
 
         # Import theme specifc Config
-        themeConfig = Config.getThemeConfig(args['args']['themeConfig'])
+        themeConfig = Config.getThemeConfig(args['module'] + '/' + args['args']['themeConfig'])
 
         gauge = Gauge(path)
         if gauge._coreimage:

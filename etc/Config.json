@@ -22,7 +22,7 @@
             "module": "Radial",
             "path": "static/imgs/Stock/",
             "args": {
-                  "themeConfig": "Stock",
+                  "themeConfig": "120",
                   "MinMax": [0, 100]
               }
           },
@@ -30,15 +30,15 @@
             "module": "Radial",
             "path": "static/imgs/Stock/",
             "args": {
-                  "themeConfig": "Stock",
+                  "themeConfig": "120",
                   "MinMax": [-12, 22]
               }
           },
         {
           "module": "Ellipse",
-          "path": "static/imgs/Dirt/",
+          "path": "static/imgs/Space/",
           "args": {
-                "themeConfig": "Dirt",
+                "themeConfig": "260",
                 "MinMax": [0, 45]
             }
         }
@@ -64,7 +64,7 @@
       },[
          {
            "module": "Linear",
-           "path": "static/imgs/Linear/",
+           "path": "static/imgs/Linear/Linear/",
            "args": {
                  "themeConfig": "Linear",
                  "MinMax": [0, 100]
