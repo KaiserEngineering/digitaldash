@@ -98,7 +98,7 @@ class NeedleLinear(MetaWidget):
     """
     update = NumericProperty()
     source = StringProperty()
-    steps  = NumericProperty()
+    step   = NumericProperty()
     r      = NumericProperty()
     g      = NumericProperty()
     b      = NumericProperty()
@@ -111,8 +111,7 @@ class NeedleLinear(MetaWidget):
         self.bind(size=self.SizeUpdate)
         self.size_accounted = 0
 
-        self.steps = abs(self.max - self.min)
-        (self.r, self.g, self.b, self.a) = (0, 0, 255, 1)
+        (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
 
     def SizeUpdate(self, *args):
         # Hacky but we only want the size for the first add

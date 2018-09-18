@@ -12,9 +12,9 @@
         },
         "bytecode" : "0xa76778hubjk",
         "alerts": [
-          {"dataIndex": 0, "op": ">", "value": 0, "priority": 1,
+          {"dataIndex": 0, "op": ">", "value": 100000, "priority": 1,
               "message" : "THIS IS THE FIRST"},
-          {"dataIndex": 0, "op": ">", "value": 0, "priority": 1,
+          {"dataIndex": 0, "op": ">", "value": 10000, "priority": 1,
             "message" : "THIS IS THE SECOND"}
         ]
      },[
@@ -28,7 +28,7 @@
           },
           {
             "module": "Linear",
-            "path": "static/imgs/Linear/",
+            "path": "static/imgs/StarWars/",
             "args": {
                   "themeConfig": "Linear",
                   "MinMax": [-12, 22]
@@ -51,14 +51,14 @@
           {
             "dataIndex": "0",
             "op": ">",
-            "value": "1000000",
+            "value": "10000000",
             "priority": "2"
           },
           "bytecode" : "0xa76778hubjk",
           "alerts": [
-             {"dataIndex": 0, "op": "<", "value": 1, "index": 1, "priority": 1, 
+             {"dataIndex": 0, "op": "<", "value": 100000, "index": 1, "priority": 1, 
                  "message" : "MESSAGE 3"},
-             {"dataIndex": 0, "op": ">", "value": 1, "index": 2, "priority": 1, 
+             {"dataIndex": 0, "op": ">", "value": 100000, "index": 2, "priority": 1, 
                "message" : "MESSAGE 4"}
           ]
       },[
@@ -69,15 +69,7 @@
                  "themeConfig": "Linear",
                  "MinMax": [0, 100]
              }
-         },
-         {
-          "module": "Radial",
-          "path": "static/imgs/Stock/",
-          "args": {
-                "themeConfig": "Stock",
-                "MinMax": [0, 100]
-            }
-        }
+         }
        ]
      ]
   ]

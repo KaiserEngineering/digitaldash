@@ -118,25 +118,28 @@ class AbstractWidget(object):
         """
         Create widgets for Dial.
             :param **ARGS: 
-        """   
+        """
+        args = ARGS['args']
+
         liveWidgets = []
-        path = ARGS['args']['path']
+        path = args['path']
         container = ARGS['container']
         WidgetsInstance = ARGS['WidgetsInstance']
         Layout = RelativeLayout()
 
         # Import theme specifc Config
-        themeConfig = Config.getThemeConfig(ARGS['args']['args']['themeConfig'])
+        themeConfig = Config.getThemeConfig(args['args']['themeConfig'])
 
         gauge = Gauge(path)
-        needleType = ARGS['args']['module']
-        needle = globals()['Needle'+ needleType](path, ARGS['args']['args'], themeConfig)
+        Layout.add_widget(gauge)
+
+        needleType = args['module']
+        needle = globals()['Needle'+ needleType](path, args['args'], themeConfig)
 
         # Adding widgets that get updated with data
         liveWidgets.append(needle)
 
         # Add widgets to our floatlayout
-        Layout.add_widget(gauge)
         Layout.add_widget(needle)
 
         # Set step after we are added to parent layout
