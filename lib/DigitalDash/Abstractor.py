@@ -131,7 +131,8 @@ class AbstractWidget(object):
         themeConfig = Config.getThemeConfig(args['args']['themeConfig'])
 
         gauge = Gauge(path)
-        Layout.add_widget(gauge)
+        if gauge._coreimage:
+            Layout.add_widget(gauge)
 
         needleType = args['module']
         needle = globals()['Needle'+ needleType](path, args['args'], themeConfig)
