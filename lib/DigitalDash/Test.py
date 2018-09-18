@@ -4,6 +4,7 @@ import csv
 import DigitalDash
 from numpy import genfromtxt
 
+
 class Test():
     """Test instance."""
 
@@ -35,10 +36,10 @@ class Test():
             :param self: <DigitalDash.Test>Test instance 
         """
         self.iteration += 1
-        if ( self.iteration >= self.rows ):
+        if (self.iteration >= self.rows):
             self.iteration = 0
         # Skip headers
-        if ( self.iteration == 0 ):
+        if (self.iteration == 0):
             self.iteration = 1
 
         return self.iteration

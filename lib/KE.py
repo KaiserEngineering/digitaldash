@@ -11,6 +11,7 @@ from etc import Config
 from DigitalDash.Dynamic import Dynamic
 from DigitalDash.Alert import Alert
 
+
 class Background(AnchorLayout):
     """Uses Kivy language to create background."""
 
@@ -25,8 +26,8 @@ def setup():
     values for views. Then it will build the views and return them.
     """
 
-    callbacks  = {}
-    ret        = []
+    callbacks = {}
+    ret = []
     containers = []
 
     view_count = 0
@@ -41,7 +42,8 @@ def setup():
 
         if 'alerts' in view[1].keys():
             for alert in view[1]['alerts']:
-                alert['index'] = len(callbacks[view_count]) + 1 if view_count in callbacks else 1
+                alert['index'] = len(callbacks[view_count]) + \
+                    1 if view_count in callbacks else 1
                 callbacks.setdefault(view_count, []).append(makeAlert(alert))
 
             bytecode = view[1]['bytecode']
@@ -54,11 +56,12 @@ def setup():
         for widget in view[2]:
             mod = AbstractWidget
             ObjectsToUpdate.append(mod.build(container=container,
-                                WidgetsInstance=WidgetsInstance,
-                                args=widget))
+                                             WidgetsInstance=WidgetsInstance,
+                                             args=widget))
 
         containers.append(container)
-        ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'], 'ObjectsToUpdate': ObjectsToUpdate, 'WidgetsInstance': WidgetsInstance, 'bytecode': bytecode})
+        ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
+                    'ObjectsToUpdate': ObjectsToUpdate, 'WidgetsInstance': WidgetsInstance, 'bytecode': bytecode})
         view_count += 1
 
     return (ret, containers, callbacks)
@@ -79,9 +82,11 @@ def layouts():
     }
     return args
 
+
 def makeDynamic(args):
     """Create our Dyanamic objects."""
     return Dynamic(args)
+
 
 def makeAlert(args):
     """Create our Alert object."""

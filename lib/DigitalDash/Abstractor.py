@@ -8,6 +8,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
 from DigitalDash.Massager import Massager
 
+
 class Animator(object):
     """
         Class for putting data update into widgets.
@@ -23,9 +24,9 @@ class Animator(object):
             :param value: Update value for gauge needle
         """
 
-        value    = float(value)
+        value = float(value)
         massager = Massager()
-        val      = 0
+        val = 0
 
         if self.update == self.update:
             val = massager.Smooth({'Current': self.update, 'New': value})
@@ -43,6 +44,7 @@ class MetaLabel(Label, Animator):
         :param Label: Name of label
         :param Animator: Animator object that handles data update
     """
+
     def setData(self, value=''):
         """
         Send data to Label widget.
@@ -68,20 +70,21 @@ class MetaImage(Image, Animator):
         :param Image: Kivy UI image class
         :param Animator: Animator class that handles data update
     """
+
     def SetOffset(self):
         """Set offset for negative values"""
-        if ( self.min < 0 ):
+        if (self.min < 0):
             self.offset = self.min
         else:
             self.offset = 0
 
     def SetStep(self):
-        self.step = self.degrees / ( abs(self.min) + abs(self.max) )
+        self.step = self.degrees / (abs(self.min) + abs(self.max))
 
     def SetAttrs(self, path, args, themeArgs):
         """Set basic attributes for widget."""
-        (self.source, self.degrees, self.min, self.max) = ( path + 'needle.png', float(themeArgs['degrees']),
-                float(args['MinMax'][0]), float(args['MinMax'][1]) )
+        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
+                                                           float(args['MinMax'][0]), float(args['MinMax'][1]))
 
 
 class MetaWidget(Widget, Animator):
@@ -90,22 +93,24 @@ class MetaWidget(Widget, Animator):
         :param Label: Name of label
         :param Animator: Animator class that handles data update
     """
+
     def SetOffset(self):
-        if ( self.min < 0 ):
+        if (self.min < 0):
             self.offset = self.min
         else:
             self.offset = 0
 
     def SetStep(self):
-        self.step = self.degrees / ( abs(self.min) + abs(self.max) )
+        self.step = self.degrees / (abs(self.min) + abs(self.max))
 
     def SetAttrs(self, path, args, themeArgs):
         """Set basic attributes for widget."""
-        (self.source, self.degrees, self.min, self.max) = ( path + 'needle.png', float(themeArgs['degrees']),
-                float(args['MinMax'][0]), float(args['MinMax'][1]) )
+        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
+                                                           float(args['MinMax'][0]), float(args['MinMax'][1]))
 
 
 from DigitalDash.Components import *
+
 
 class AbstractWidget(object):
     """
@@ -135,7 +140,8 @@ class AbstractWidget(object):
             Layout.add_widget(gauge)
 
         needleType = args['module']
-        needle = globals()['Needle'+ needleType](path, args['args'], themeConfig)
+        needle = globals()['Needle' + needleType](path,
+                                                  args['args'], themeConfig)
 
         # Adding widgets that get updated with data
         liveWidgets.append(needle)

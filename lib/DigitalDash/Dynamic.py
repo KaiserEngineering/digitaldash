@@ -1,11 +1,13 @@
 """Dynamic widget will monitour a specified value and make a view change."""
 
+
 class Dynamic(object):
     """
     Dynamic class for changing cached views. Use this class to switch between the
     views in **views[]**.
         :param object: 
     """
+
     def __init__(self, args):
         """
         Create Dynamic widget.
@@ -20,11 +22,11 @@ class Dynamic(object):
         """
         super(Dynamic, self).__init__()
 
-        self.value        = int(args['value'])
-        self.op           = args['op']
-        self.index        = int(args['index'])
-        self.priority     = int(args['priority'])
-        self.dataIndex    = int(args['dataIndex'])
+        self.value = int(args['value'])
+        self.op = args['op']
+        self.index = int(args['index'])
+        self.priority = int(args['priority'])
+        self.dataIndex = int(args['dataIndex'])
 
     def check(self, value):
         """

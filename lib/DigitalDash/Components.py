@@ -4,6 +4,7 @@ from kivy.properties import StringProperty
 import re
 from kivy.lang import Builder
 
+
 class Gauge(MetaImage):
     """
     Create Gauge widget.
@@ -71,9 +72,9 @@ class NeedleRadial(MetaImage):
             :param value: Update value for gauge needle
         """
 
-        value    = float(value)
+        value = float(value)
         massager = Massager()
-        val      = 0
+        val = 0
 
         if self.update == self.update:
             val = massager.Smooth({'Current': self.update, 'New': value})
@@ -98,11 +99,11 @@ class NeedleLinear(MetaWidget):
     """
     update = NumericProperty()
     source = StringProperty()
-    step   = NumericProperty()
-    r      = NumericProperty()
-    g      = NumericProperty()
-    b      = NumericProperty()
-    a      = NumericProperty()
+    step = NumericProperty()
+    r = NumericProperty()
+    g = NumericProperty()
+    b = NumericProperty()
+    a = NumericProperty()
 
     def __init__(self, path, args, themeArgs):
         """Create Linear Slider."""
@@ -115,12 +116,12 @@ class NeedleLinear(MetaWidget):
 
     def SizeUpdate(self, *args):
         # Hacky but we only want the size for the first add
-        if ( not self.size_accounted ):
-            self.step = self.size[0] / ( abs(self.min) + abs(self.max) )
+        if (not self.size_accounted):
+            self.step = self.size[0] / (abs(self.min) + abs(self.max))
             self.size_accounted = 1
 
     def SetStep(self):
-        self.step = self.parent.width / ( abs(self.min) + abs(self.max) )
+        self.step = self.parent.width / (abs(self.min) + abs(self.max))
 
     def setData(self, value):
         """
@@ -130,9 +131,9 @@ class NeedleLinear(MetaWidget):
             :param value: Update value for gauge needle
         """
 
-        value    = float(value)
+        value = float(value)
         massager = Massager()
-        val      = 0
+        val = 0
 
         if self.update == self.update:
             val = massager.Smooth({'Current': self.update, 'New': value})
@@ -142,7 +143,7 @@ class NeedleLinear(MetaWidget):
         if value > self.max:
             self.update = self.max + self.offset
 
-        self.update = ( val - self.offset ) * self.step
+        self.update = (val - self.offset) * self.step
 
 
 class NeedleEllipse(MetaWidget):
@@ -178,9 +179,9 @@ class NeedleEllipse(MetaWidget):
             :param value: Update value for gauge needle
         """
 
-        value    = float(value)
+        value = float(value)
         massager = Massager()
-        val      = 0
+        val = 0
 
         if self.update == self.update:
             val = massager.Smooth({'Current': self.update, 'New': value})

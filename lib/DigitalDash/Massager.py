@@ -2,10 +2,12 @@
 
 import DigitalDash
 
+
 class Massager():
     """
     Main massager class, use to massage values.
     """
+
     def __init__(self):
         pass
 
@@ -25,4 +27,3 @@ class Massager():
         if delta == 0:
             return args['New']
         return args['New'] / (delta / (0.5 * delta))
-

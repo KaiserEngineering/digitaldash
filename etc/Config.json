@@ -27,10 +27,10 @@
               }
           },
           {
-            "module": "Linear",
-            "path": "static/imgs/StarWars/",
+            "module": "Radial",
+            "path": "static/imgs/Stock/",
             "args": {
-                  "themeConfig": "Linear",
+                  "themeConfig": "Stock",
                   "MinMax": [-12, 22]
               }
           },

@@ -5,6 +5,7 @@ from kivy.uix.label import Label
 from kivy.properties import NumericProperty
 from kivy.graphics import Color, Rectangle
 
+
 class Alert(Label):
     """
     Create an Alert label if triggered.
@@ -29,12 +30,12 @@ class Alert(Label):
         """
         super(Alert, self).__init__()
 
-        self.value       = args['value']
-        self.op          = args['op']
-        self.index       = args['index']
-        self.priority    = args['priority']
-        self.dataIndex   = int(args['dataIndex'])
-        self.message     = args['message']
+        self.value = args['value']
+        self.op = args['op']
+        self.index = args['index']
+        self.priority = args['priority']
+        self.dataIndex = int(args['dataIndex'])
+        self.message = args['message']
 
     def check(self, value):
         """
@@ -54,7 +55,7 @@ class Alert(Label):
             :param App: main application object
             :param callback: current callback object
         """
-        self.text      = self.message
+        self.text = self.message
         self.font_size = 30
         # self.pos       = 100, 100
 
