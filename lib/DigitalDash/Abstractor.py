@@ -95,10 +95,7 @@ class MetaWidget(Widget, Animator):
     """
 
     def SetOffset(self):
-        if (self.min < 0):
-            self.offset = self.min
-        else:
-            self.offset = 0
+        self.offset = self.min
 
     def SetStep(self):
         self.step = self.degrees / (abs(self.min) + abs(self.max))
