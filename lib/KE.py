@@ -4,7 +4,6 @@ Create DigitalDash.
 Main module for creating the DigitalDash!
 """
 from DigitalDash.Abstractor import AbstractWidget
-from DigitalDash.Widgets import Widgets
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from etc import Config
@@ -51,17 +50,15 @@ def setup():
         container = BoxLayout(padding=(0, 0, 0, 0))
         ObjectsToUpdate = []
         layout = layouts()
-        WidgetsInstance = Widgets()
 
         for widget in view[2]:
             mod = AbstractWidget
             ObjectsToUpdate.append(mod.build(container=container,
-                                             WidgetsInstance=WidgetsInstance,
                                              args=widget))
 
         containers.append(container)
         ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
-                    'ObjectsToUpdate': ObjectsToUpdate, 'WidgetsInstance': WidgetsInstance, 'bytecode': bytecode})
+                    'ObjectsToUpdate': ObjectsToUpdate, 'bytecode': bytecode})
         view_count += 1
 
     return (ret, containers, callbacks)

@@ -126,7 +126,6 @@ class AbstractWidget(object):
         liveWidgets = []
         path = args['path']
         container = ARGS['container']
-        WidgetsInstance = ARGS['WidgetsInstance']
         Layout = RelativeLayout()
 
         # Import theme specifc Config
@@ -165,10 +164,4 @@ class AbstractWidget(object):
 
         container.add_widget(Layout)
 
-        # Add layouts to 'Database' so they can be loaded
-        WidgetsInstance.Create({
-            'layout': Layout,
-            'gauge': gauge,
-            'labels': labels
-        })
         return liveWidgets

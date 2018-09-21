@@ -92,7 +92,7 @@ class DigitalDash(App):
         self.current = 0
         (self.views, self.containers, self.callbacks) = KE.setup()
 
-        (self.app, self.background, self.alerts, self.ObjectsToUpdate, self.WidgetsInstance, self.bytecode) = self.views[0].values()
+        (self.app, self.background, self.alerts, self.ObjectsToUpdate, self.bytecode) = self.views[0].values()
 
         self.app.add_widget(self.containers[0])
         self.app.add_widget(self.alerts)
@@ -120,7 +120,7 @@ class DigitalDash(App):
     # We use blank here, because we want to keep our app instance alive
         if ( my_callback.change(self, my_callback) ):
             self.current = my_callback.index
-            (blank, self.background, self.alerts, self.ObjectsToUpdate, self.WidgetsInstance, self.bytecode) = self.views[self.current].values()
+            (blank, self.background, self.alerts, self.ObjectsToUpdate, self.bytecode) = self.views[self.current].values()
             self.app.add_widget(self.alerts)
 
         elif type(my_callback) is Alert and my_callback.parent is None:
