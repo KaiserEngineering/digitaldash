@@ -89,10 +89,11 @@ class MetaImage(Image, Animator):
 
 class MetaWidget(Widget, Animator):
     """
-    docstring here
-        :param Label: Name of label
+    Handles meta classes for kivy.uix.widget and our Animator classs.
+        :param Widget: Widget Obj
         :param Animator: Animator class that handles data update
     """
+    widget = Widget()
 
     def SetOffset(self):
         self.offset = self.min
