@@ -37,18 +37,17 @@ class Alert(Label):
         self.dataIndex = int(args['dataIndex'])
         self.message = args['message']
 
-    def check(self, value):
+    def check(self, value:float) -> bool:
         """
         Check logic here.
             :param self: Alert object
             :param value: value to check Alert condition against
         """
-
         if value == value:
             return (eval(str(value) + self.op + str(self.value)))
         return 0
 
-    def change(self, App, callback):
+    def change(self, App, callback) -> bool:
         """
         Perform view change
             :param self: Alert object

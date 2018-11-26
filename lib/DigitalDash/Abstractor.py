@@ -128,6 +128,7 @@ class AbstractWidget(object):
         path = args['path']
         container = ARGS['container']
         Layout = RelativeLayout()
+        print(args)
 
         # Import theme specifc Config
         themeConfig = Config.getThemeConfig(args['module'] + '/' + args['args']['themeConfig'])

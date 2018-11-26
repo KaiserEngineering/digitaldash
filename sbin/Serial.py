@@ -27,7 +27,3 @@ def Start(self):
             count = count + 1
 
     return ser_val
-
-def updateSerial(bytes):
-    """Send bytecode to firmwate for updating incoming data."""
-    serial.write(bytes)

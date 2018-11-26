@@ -45,8 +45,6 @@ def setup():
                     1 if view_count in callbacks else 1
                 callbacks.setdefault(view_count, []).append(makeAlert(alert))
 
-            bytecode = view[1]['bytecode']
-
         container = BoxLayout(padding=(0, 0, 0, 0))
         ObjectsToUpdate = []
         layout = layouts()
@@ -58,7 +56,7 @@ def setup():
 
         containers.append(container)
         ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
-                    'ObjectsToUpdate': ObjectsToUpdate, 'bytecode': bytecode})
+                    'ObjectsToUpdate': ObjectsToUpdate})
         view_count += 1
 
     return (ret, containers, callbacks)

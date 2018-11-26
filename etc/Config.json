@@ -10,9 +10,8 @@
           "value": "200000",
           "priority": "0"
         },
-        "bytecode" : "0xa76778hubjk",
         "alerts": [
-          {"dataIndex": 0, "op": ">", "value": 100000, "priority": 1,
+          {"dataIndex": 0, "op": ">", "value": 10000000, "priority": 1,
               "message" : "THIS IS THE FIRST"},
           {"dataIndex": 0, "op": ">", "value": 10000, "priority": 1,
             "message" : "THIS IS THE SECOND"}
@@ -20,11 +19,12 @@
      },[
         {
             "module": "Radial",
-            "path": "static/imgs/Stock/",
+            "path": "static/imgs/Glow/",
             "args": {
                   "themeConfig": "120",
                   "MinMax": [0, 100]
-              }
+              },
+            "dataIndex": [0]
           },
           {
             "module": "Radial",
@@ -32,15 +32,17 @@
             "args": {
                   "themeConfig": "120",
                   "MinMax": [-12, 22]
-              }
+              },
+            "dataIndex": [1]
           },
         {
           "module": "Ellipse",
-          "path": "static/imgs/Space/",
+          "path": "static/imgs/Fire/",
           "args": {
                 "themeConfig": "260",
                 "MinMax": [0, 45]
-            }
+            },
+            "dataIndex": [2]
         }
       ]
     ],
@@ -51,12 +53,11 @@
           {
             "dataIndex": "0",
             "op": ">",
-            "value": "10000000",
+            "value": "1",
             "priority": "2"
           },
-          "bytecode" : "0xa76778hubjk",
           "alerts": [
-             {"dataIndex": 0, "op": "<", "value": 100000, "index": 1, "priority": 1, 
+             {"dataIndex": 0, "op": ">", "value": 100000, "index": 1, "priority": 1, 
                  "message" : "MESSAGE 3"},
              {"dataIndex": 0, "op": ">", "value": 100000, "index": 2, "priority": 1, 
                "message" : "MESSAGE 4"}

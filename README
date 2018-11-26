@@ -34,7 +34,6 @@ This is the loop in *run.py* that creates the Kivy App and loop. The important p
     alerts
     ObjectsToUpdate
     WidgetsInstance
-    bytecode
 ```
 
 ## Widget methods
