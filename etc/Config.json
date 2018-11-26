@@ -69,7 +69,8 @@
            "args": {
                  "themeConfig": "Linear",
                  "MinMax": [0, 100]
-             }
+             },
+            "dataIndex": [0]
          }
        ]
      ]

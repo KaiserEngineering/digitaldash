@@ -127,14 +127,9 @@ class DigitalDash(App):
             self.alerts.add_widget(my_callback)
 
     def update_values(self, data):
-        iterator, i = iter(data), 0
-        for data in iterator:
-            widget = self.ObjectsToUpdate[i]
+        for widget in self.ObjectsToUpdate:
             for obj in widget:
-                obj.setData(data)
-            i += 1
-            if (i >= len(self.ObjectsToUpdate)):
-                break
+                obj.setData(data[obj.dataIndex])
 
 if ( run ):
     DigitalDash().run()

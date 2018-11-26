@@ -41,6 +41,8 @@ class KELabel(MetaLabel):
         self.font_size = args.get('font_size', 25)
         self.min = 9999
         self.max = -9999
+        if ( args['data'] ):
+            self.dataIndex = args['dataIndex']
 
 
 class NeedleRadial(MetaImage):

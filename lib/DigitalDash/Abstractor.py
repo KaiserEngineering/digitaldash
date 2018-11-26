@@ -128,7 +128,6 @@ class AbstractWidget(object):
         path = args['path']
         container = ARGS['container']
         Layout = RelativeLayout()
-        print(args)
 
         # Import theme specifc Config
         themeConfig = Config.getThemeConfig(args['module'] + '/' + args['args']['themeConfig'])
@@ -140,6 +139,8 @@ class AbstractWidget(object):
         needleType = args['module']
         needle = globals()['Needle' + needleType](path,
                                                   args['args'], themeConfig)
+
+        needle.dataIndex = args['dataIndex']
 
         # Adding widgets that get updated with data
         liveWidgets.append(needle)
