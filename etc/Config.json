@@ -53,7 +53,7 @@
           {
             "dataIndex": "0",
             "op": ">",
-            "value": "1",
+            "value": "1000000",
             "priority": "2"
           },
           "alerts": [

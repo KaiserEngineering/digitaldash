@@ -2,15 +2,15 @@
   "degrees": 240,
     "labels":
       [{
-       "pos": [100, -100], "font_size": 25, "default": "Max: ",
+       "pos": [100, -100], "font_size": 35, "default": "Max: ",
        "data": 1, "dataIndex" : 1
        },
       {
-       "pos": [-100, -100], "font_size": 25, "default": "Min: ",
+       "pos": [-100, -100], "font_size": 35, "default": "Min: ",
        "data": 1, "dataIndex" : 1
        },
       {
-       "pos": [0, 0], "font_size": 25, "default": "",
+       "pos": [0, 0], "font_size": 35, "default": "",
        "data": 1, "dataIndex" : 1
        }
     ]
