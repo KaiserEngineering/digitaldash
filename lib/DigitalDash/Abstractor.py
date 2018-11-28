@@ -140,6 +140,11 @@ class AbstractWidget(object):
         needle = globals()['Needle' + needleType](path,
                                                   args['args'], themeConfig)
 
+        # This keeps the radial widget from being off the top
+        # of the screen.
+        needle.center_y = needle.center_y - 10
+        gauge.center_y = gauge.center_y - 10
+
         needle.dataIndex = args['dataIndex']
 
         # Adding widgets that get updated with data

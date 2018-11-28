@@ -27,13 +27,13 @@
             "dataIndex": [0]
           },
           {
-            "module": "Radial",
-            "path": "static/imgs/Stock/",
+            "module": "Linear",
+            "path": "static/imgs/Linear/",
             "args": {
-                  "themeConfig": "120",
+                  "themeConfig": "Linear",
                   "MinMax": [-12, 22]
               },
-            "dataIndex": [1]
+             "dataIndex": [1]
           },
         {
           "module": "Ellipse",
@@ -65,7 +65,7 @@
       },[
          {
            "module": "Linear",
-           "path": "static/imgs/Linear/Linear/",
+           "path": "static/imgs/Linear/",
            "args": {
                  "themeConfig": "Linear",
                  "MinMax": [0, 100]
