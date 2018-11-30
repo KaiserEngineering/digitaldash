@@ -111,13 +111,16 @@ class NeedleLinear(MetaWidget):
         """Create Linear Slider."""
         super(NeedleLinear, self).__init__()
         self.SetAttrs(path, args, themeArgs)
-        self.bind(size=self.SizeUpdate)
-        self.size_accounted = 0
+        # self.bind(size=self.SizeUpdate)
 
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
 
-    def SizeUpdate(self, *args):
-        self.step = self.size[0] / (abs(self.min) + abs(self.max))
+    # def SizeUpdate(self, *args):
+    #     # Hacky but we only want the size for the first add
+    #     if (not self.size_accounted):
+    #         self.step = self.size[0] / (abs(self.min) + abs(self.max))
+    #         self.size_accounted = 1
+    #     # self.step = self.size[0] / (abs(self.min) + abs(self.max))
 
     def SetStep(self):
         self.step = self.parent.width / (abs(self.min) + abs(self.max))

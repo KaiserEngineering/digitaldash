@@ -19,7 +19,7 @@
      },[
         {
             "module": "Radial",
-            "path": "static/imgs/Glow/",
+            "path": "static/imgs/Stock/",
             "args": {
                   "themeConfig": "120",
                   "MinMax": [0, 100]
@@ -53,7 +53,7 @@
           {
             "dataIndex": "0",
             "op": ">",
-            "value": "1000000",
+            "value": "1122000",
             "priority": "2"
           },
           "alerts": [
