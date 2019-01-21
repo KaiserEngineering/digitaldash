@@ -7,6 +7,9 @@ Run python3.6 sbin/run.py to run GUI software.
 
 import sys
 import os
+import _thread
+from watchdog.observers import Observer
+from watchdog.events import PatternMatchingEventHandler
 sys.path.append(os.getcwd())
 sys.path.append(os.getcwd() + '/lib')
 sys.path.append(os.getcwd() + '/etc')
@@ -52,6 +55,47 @@ try:
 except Exception as e:
     serial = False
 
+def on_config_change(self):
+        """
+        Method for reloading config data.
+        """
+        (self.views, self.containers, self.callbacks) = KE.setup()
+        self.app.clear_widgets()
+
+        (blank, self.background, self.alerts, self.ObjectsToUpdate) = self.views[0].values()
+
+        self.app.add_widget(self.containers[0])
+        self.app.add_widget(self.alerts)
+
+
+class MyHandler(PatternMatchingEventHandler):
+    """
+    Class that handles file watchdog duties.
+    """
+    def __init__(self, DigitalDash):
+        super(MyHandler, self).__init__()
+        self.DigitalDash = DigitalDash
+
+
+    patterns = ["*.json", "*.py"]
+
+    def process(self, event):
+        """
+        event.event_type
+            'modified' | 'created' | 'moved' | 'deleted'
+        event.is_directory
+            True | False
+        event.src_path
+            path/to/observed/file
+        """
+        # the file will be processed there
+        on_config_change(self.DigitalDash)
+
+    def on_modified(self, event):
+        self.process(event)
+
+    def on_created(self, event):
+        self.process(event)
 
 class DigitalDash(App):
     """
@@ -97,7 +141,14 @@ class DigitalDash(App):
         self.app.add_widget(self.containers[0])
         self.app.add_widget(self.alerts)
 
+        # We concider program start a config change since it is just loading
+        # data from the config file
+        on_config_change(self)
         Clock.schedule_interval(loop, 0)
+
+        observer = Observer()
+        observer.schedule(MyHandler(self), 'etc/')
+        observer.start()
 
         return self.app
 
