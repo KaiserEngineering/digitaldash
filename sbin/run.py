@@ -61,6 +61,7 @@ def on_config_change(self):
         """
         (self.views, self.containers, self.callbacks) = KE.setup()
         self.app.clear_widgets()
+        self.background = ''
 
         (blank, self.background, self.alerts, self.ObjectsToUpdate) = self.views[0].values()
 
