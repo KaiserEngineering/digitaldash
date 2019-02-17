@@ -61,13 +61,11 @@ def on_config_change(self):
         """
         (self.views, self.containers, self.callbacks) = KE.setup()
         self.app.clear_widgets()
-        self.background = ''
 
         (blank, self.background, self.alerts, self.ObjectsToUpdate) = self.views[0].values()
 
         self.app.add_widget(self.containers[0])
         self.app.add_widget(self.alerts)
-
 
 class MyHandler(PatternMatchingEventHandler):
     """
@@ -148,7 +146,7 @@ class DigitalDash(App):
         Clock.schedule_interval(loop, 0)
 
         observer = Observer()
-        observer.schedule(MyHandler(self), 'etc/')
+        observer.schedule(MyHandler(self), 'etc/', recursive=True)
         observer.start()
 
         return self.app
