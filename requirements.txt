@@ -9,10 +9,7 @@ astor==0.7.1
 astroid==1.6.1
 attrs==17.4.0
 autopep8==1.4
-Babel==2.5.3
-beautifulsoup4==4.6.1
 biopython==1.70
-buildozer==0.32
 cairocffi==0.8.0
 certifi==2016.9.26
 cffi==1.11.2
@@ -134,10 +131,7 @@ sphinxcontrib-websupport==1.0.1
 SQLAlchemy==1.2.1
 stripe==2.6.0
 syntex==0.17.0
-telenium==0.4.2.dev0
 tempora==1.10
-tensorboard==1.9.0
-tensorflow==1.9.0
 termcolor==1.1.0
 tornado==4.5.3
 traitlets==4.3.0
