@@ -115,13 +115,6 @@ class NeedleLinear(MetaWidget):
 
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
 
-    # def SizeUpdate(self, *args):
-    #     # Hacky but we only want the size for the first add
-    #     if (not self.size_accounted):
-    #         self.step = self.size[0] / (abs(self.min) + abs(self.max))
-    #         self.size_accounted = 1
-    #     # self.step = self.size[0] / (abs(self.min) + abs(self.max))
-
     def SetStep(self):
         self.step = self.parent.width / (abs(self.min) + abs(self.max))
 
