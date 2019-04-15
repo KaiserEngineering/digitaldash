@@ -117,17 +117,19 @@ class DigitalDash(App):
                 ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
 
                 # Check dynamic gauges before any alerts in case we make a change
-                for dynamic in self.callbacks['dynamic']:
+                for dynamic in sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True):
                         my_callback = self.check_callback(dynamic, priority, data)
 
                         if(my_callback):
                             self.change(self, my_callback)
+                            break
 
-                for callback in self.callbacks[self.current]:
+                for callback in sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True):
                     my_callback = self.check_callback(callback, priority, data)
 
                     if(my_callback):
                         self.change(self, my_callback)
+                        break
 
                 self.update_values(data)
         # END LOOP
@@ -154,15 +156,14 @@ class DigitalDash(App):
     def check_callback(self, callback, priority, data):
     # Check if any dynamic changes need to be made
         if ( callback.check(data[callback.dataIndex]) ):
-            if (self.current != callback.index and priority <= callback.priority):
-                priority = callback.priority
+            if (self.current != callback.index):
+                if type(callback) is Alert:
+                    self.alerts.clear_widgets()
                 return callback
 
         # Clear alert widgets so we don't end up with multiple parent error
-        elif type(callback) is Alert:
-            self.alerts.remove_widget(callback)
-
-        priority = 0
+        if type(callback) is Alert:
+            self.alerts.clear_widgets()
 
         return False
 
