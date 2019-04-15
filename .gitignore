@@ -37,3 +37,6 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+kivy.log
+etc/*.json
