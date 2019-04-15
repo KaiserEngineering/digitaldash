@@ -39,6 +39,14 @@
             angle_start: self.angle_start
             angle_end: self.angle_start + self.update + 12
 
+<Alert>:
+    canvas.before:
+        Rectangle:
+            pos: (self.center_x - ( self.width / 4. ), self.center_y - (self.height / 4))
+            size: self.width / 2, self.height / 2.
+            source: 'static/imgs/Alerts/fordWarning.png'
+
+
 <TickMarks>:
     canvas:
         Color:

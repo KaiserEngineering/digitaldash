@@ -55,7 +55,6 @@ class Alert(Label):
             :param callback: current callback object
         """
         self.text = self.message
-        self.font_size = 30
-        # self.pos       = 100, 100
+        self.font_size = 60
 
         return False
