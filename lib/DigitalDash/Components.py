@@ -4,7 +4,6 @@ from kivy.properties import StringProperty
 import re
 from kivy.lang import Builder
 
-
 class Gauge(MetaImage):
     """
     Create Gauge widget.
@@ -20,7 +19,6 @@ class Gauge(MetaImage):
         """Initite Gauge Widget."""
         super(Gauge, self).__init__()
         self.source = path + 'gauge.png'
-
 
 class KELabel(MetaLabel):
     """

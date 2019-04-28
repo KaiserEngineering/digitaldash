@@ -8,14 +8,18 @@ from kivy.graphics import Color, Rectangle
 from kivy.lang import Builder
 Builder.load_string('''
 <Alert>:
+    ellipsis_options: {'color':(1,0.5,0.5,1),'underline':True}
+    shorten: True
+    markup: True
+    text_size: 660, None
+    shorten_from: 'right'
     canvas.before:
         Rectangle:
             id: 'Alert-'+str(self.message)
-            pos: (self.center_x - ( self.width / 4. ), self.center_y - (self.height / 4))
-            size: self.width / 2, self.height / 2.
+            pos: (self.center_x - 660 / 2, self.center_y - (self.height / 4))
+            size: 660, self.height / 2.
             source: 'static/imgs/Alerts/fordWarning.png'
 ''')
-
 class Alert(Label):
     """
     Create an Alert label if triggered.
@@ -39,7 +43,6 @@ class Alert(Label):
                 }
         """
         super(Alert, self).__init__()
-
         self.value     = args['value']
         self.op        = args['op']
         self.index     = args['index']
@@ -65,6 +68,5 @@ class Alert(Label):
             :param callback: current callback object
         """
         self.text = self.message
-        self.font_size = 60
 
         return False
