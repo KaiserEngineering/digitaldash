@@ -44,7 +44,20 @@ class KELabel(MetaLabel):
         if ( args['data'] ):
             self.dataIndex = args['dataIndex']
 
-
+Builder.load_string('''
+<NeedleRadial>:
+    canvas.before:
+        PushMatrix
+        Translate:
+            xy: (self.x + self.width / 2, self.y + self.height / 2)
+        Rotate:
+            angle: self.update
+            axis: (0, 0, 1.0)
+        Translate:
+            xy: (-self.x - self.width / 2, - self.y - self.height / 2)
+    canvas.after:
+        PopMatrix
+''')
 class NeedleRadial(MetaImage):
     """
     Create Needle widget.
@@ -87,7 +100,16 @@ class NeedleRadial(MetaImage):
         if value > self.max:
             self.update = -self.degrees / 2
 
-
+Builder.load_string('''
+<NeedleLinear>:
+    canvas:
+        Color:
+            rgba: self.r, self.g, self.b, self.a
+        Rectangle:
+            size: self.update, self.height + self.height / 2
+            pos: self.x, root.center_y - self.height / 1.5
+            source: self.source
+''')
 class NeedleLinear(MetaWidget):
     """
     Create Needle widget.
@@ -140,7 +162,18 @@ class NeedleLinear(MetaWidget):
 
         self.update = (val - self.offset) * self.step
 
-
+Builder.load_string('''
+<NeedleEllipse>:
+    canvas:
+        Color:
+            rgba: self.r, self.g, self.b, self.a
+        Ellipse:
+            size: self.height, self.height
+            pos: self.x + (self.width - self.height) / 2, self.y
+            source: self.source
+            angle_start: self.angle_start
+            angle_end: self.angle_start + self.update + 12
+''')
 class NeedleEllipse(MetaWidget):
     """
     Create Ellipse widget.

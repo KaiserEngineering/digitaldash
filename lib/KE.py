@@ -10,6 +10,15 @@ from etc import Config
 from DigitalDash.Dynamic import Dynamic
 from DigitalDash.Alert import Alert
 
+from kivy.lang import Builder
+Builder.load_string('''
+<Background>:
+    canvas:
+        Rectangle:
+            source: app.background
+            size: self.size
+            pos: self.pos
+''')
 
 class Background(AnchorLayout):
     """Uses Kivy language to create background."""

@@ -5,6 +5,16 @@ from kivy.uix.label import Label
 from kivy.properties import NumericProperty
 from kivy.graphics import Color, Rectangle
 
+from kivy.lang import Builder
+Builder.load_string('''
+<Alert>:
+    canvas.before:
+        Rectangle:
+            id: 'Alert-'+str(self.message)
+            pos: (self.center_x - ( self.width / 4. ), self.center_y - (self.height / 4))
+            size: self.width / 2, self.height / 2.
+            source: 'static/imgs/Alerts/fordWarning.png'
+''')
 
 class Alert(Label):
     """
@@ -30,12 +40,12 @@ class Alert(Label):
         """
         super(Alert, self).__init__()
 
-        self.value = args['value']
-        self.op = args['op']
-        self.index = args['index']
-        self.priority = args['priority']
+        self.value     = args['value']
+        self.op        = args['op']
+        self.index     = args['index']
+        self.priority  = args['priority']
         self.dataIndex = int(args['dataIndex'])
-        self.message = args['message']
+        self.message   = args['message']
 
     def check(self, value:float) -> bool:
         """
