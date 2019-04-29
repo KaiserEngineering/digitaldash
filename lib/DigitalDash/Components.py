@@ -1,8 +1,9 @@
 from DigitalDash.Abstractor import *
-from kivy.properties import NumericProperty
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, NumericProperty
 import re
 from kivy.lang import Builder
+from kivy.graphics import Color, Rectangle
+from kivy.uix.stencilview import StencilView
 
 class Gauge(MetaImage):
     """
@@ -101,14 +102,28 @@ class NeedleRadial(MetaImage):
 Builder.load_string('''
 <NeedleLinear>:
     canvas:
+        # Draw our stencil
+        StencilPush
+        Rectangle:
+            pos: self.x, root.center_y - self.height / 1.5
+            size: self.update, 1000
+        StencilUse
+        # Now we want to draw our gauge and crop it
         Color:
             rgba: self.r, self.g, self.b, self.a
         Rectangle:
-            size: self.update, self.height + self.height / 2
+            size: self.width, self.height + self.height / 2
             pos: self.x, root.center_y - self.height / 1.5
             source: self.source
+        StencilUnUse
+
+        # Redraw our stencil to remove it
+        Rectangle:
+            pos: self.x, root.center_y - self.height / 1.5
+            size: self.update, 10000
+        StencilPop
 ''')
-class NeedleLinear(MetaWidget):
+class NeedleLinear(StencilView, MetaWidget):
     """
     Create Needle widget.
 
@@ -131,7 +146,6 @@ class NeedleLinear(MetaWidget):
         """Create Linear Slider."""
         super(NeedleLinear, self).__init__()
         self.SetAttrs(path, args, themeArgs)
-        # self.bind(size=self.SizeUpdate)
 
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
 
