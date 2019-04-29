@@ -177,14 +177,32 @@ class NeedleLinear(StencilView, MetaWidget):
 Builder.load_string('''
 <NeedleEllipse>:
     canvas:
+        # Draw our stencil
+        StencilPush
+        Ellipse:
+            pos: self.x + (self.width - self.height) / 2, self.y
+            size: self.height, self.height
+            angle_start: self.angle_start
+            angle_end: self.angle_start + self.update + 12
+        StencilUse
+        # Now we want to draw our gauge and crop it
         Color:
             rgba: self.r, self.g, self.b, self.a
         Ellipse:
             size: self.height, self.height
             pos: self.x + (self.width - self.height) / 2, self.y
             source: self.source
+            angle_start: 360
+            angle_end: 0
+        StencilUnUse
+
+        # Redraw our stencil to remove it
+        Ellipse:
+            pos: self.x + (self.width - self.height) / 2, self.y
+            size: self.height, self.height
             angle_start: self.angle_start
             angle_end: self.angle_start + self.update + 12
+        StencilPop
 ''')
 class NeedleEllipse(MetaWidget):
     """
@@ -201,6 +219,7 @@ class NeedleEllipse(MetaWidget):
     b = NumericProperty()
     a = NumericProperty()
     angle_start = NumericProperty()
+    max         = NumericProperty()
 
     def __init__(self, path, args, themeArgs):
         super(NeedleEllipse, self).__init__()
@@ -223,10 +242,11 @@ class NeedleEllipse(MetaWidget):
         massager = Massager()
         val = 0
 
-        if self.update == self.update:
-            val = massager.Smooth({'Current': self.update, 'New': value})
-        else:
-            val = value
+        # ! TODO Massager
+        # if self.update == self.update:
+        #     val = massager.Smooth({'Current': self.update, 'New': value})
+        # else:
+        val = value
 
         self.update = ( val - self.offset ) * float(self.step)
         if value > self.max:
