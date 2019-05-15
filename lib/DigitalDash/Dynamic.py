@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 """Dynamic widget will monitour a specified value and make a view change."""
 
 
@@ -28,6 +30,7 @@ class Dynamic(object):
         self.priority = int(args['priority'])
         self.dataIndex = int(args['dataIndex'])
 
+    @lru_cache(maxsize=512)
     def check(self, value):
         """
         Check logic here.

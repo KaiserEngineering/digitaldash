@@ -4,6 +4,7 @@ import DigitalDash
 from kivy.uix.label import Label
 from kivy.properties import NumericProperty
 from kivy.graphics import Color, Rectangle
+from functools import lru_cache
 
 from kivy.lang import Builder
 Builder.load_string('''
@@ -50,6 +51,7 @@ class Alert(Label):
         self.dataIndex = int(args['dataIndex'])
         self.message   = args['message']
 
+    @lru_cache(maxsize=512)
     def check(self, value:float) -> bool:
         """
         Check logic here.
