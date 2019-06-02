@@ -160,6 +160,7 @@ class AbstractWidget(object):
         labels = []
         # Create our labels
         for labelConfig in themeConfig['labels']:
+            labelConfig['dataIndex'] = args['dataIndex']
             # Create Label widget
             label = KELabel(labelConfig)
             labels.append(label)
