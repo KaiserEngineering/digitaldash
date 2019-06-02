@@ -62,7 +62,7 @@ def on_config_change(self):
         (self.views, self.containers, self.callbacks) = KE.setup()
         self.app.clear_widgets()
 
-        (blank, self.background, self.alerts, self.ObjectsToUpdate) = self.views[0].values()
+        (blank, self.background, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
         self.app.add_widget(self.containers[0])
         self.app.add_widget(self.alerts)
@@ -137,7 +137,13 @@ class DigitalDash(App):
         self.current = 0
         (self.views, self.containers, self.callbacks) = KE.setup()
 
-        (self.app, self.background, self.alerts, self.ObjectsToUpdate) = self.views[0].values()
+        (self.app, self.background, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
+
+        # Send our PIDs to the micro
+        if ( Data_Source ):
+            Data_Source.UpdateRequirements(self.pids)
+
+            self.data_source = Data_Source
 
         self.app.add_widget(self.containers[0])
         self.app.add_widget(self.alerts)
@@ -171,7 +177,7 @@ class DigitalDash(App):
     # We use blank here, because we want to keep our app instance alive
         if ( my_callback.change(self, my_callback) ):
             self.current = my_callback.index
-            (blank, self.background, self.alerts, self.ObjectsToUpdate) = self.views[self.current].values()
+            (blank, self.background, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[self.current].values()
             self.app.add_widget(self.alerts)
 
         elif type(my_callback) is Alert and my_callback.parent is None:

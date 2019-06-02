@@ -43,3 +43,7 @@ class Test():
             self.iteration = 1
 
         return self.iteration
+
+    def UpdateRequirements(self, requirements):
+        print("Updating requirements: " + str(requirements))
+

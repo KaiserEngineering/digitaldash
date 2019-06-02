@@ -40,7 +40,8 @@ def setup():
 
     view_count = 0
     for view in Config.layouts():
-        background = view[0]
+        background = view[0]['background']
+        pids       = view[0]['pids']
 
         # Create our callbacks
         if 'dynamic' in view[1].keys():
@@ -65,7 +66,7 @@ def setup():
 
         containers.append(container)
         ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
-                    'ObjectsToUpdate': ObjectsToUpdate})
+                    'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
         view_count += 1
 
     return (ret, containers, callbacks)

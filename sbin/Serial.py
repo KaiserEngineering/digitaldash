@@ -27,3 +27,12 @@ def Start(self):
             count = count + 1
 
     return ser_val
+
+def UpdateRequirements(self, requirements):
+    # TODO Write byte data to micro
+    # STUB string with encoding 'utf-8'
+    # STUB arr = bytes(requirements, 'utf-8')
+    # STUB print(arr)
+
+    # STUB Write our data to the micro
+    # STUB ser.write(arr)

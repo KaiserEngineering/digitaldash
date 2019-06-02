@@ -1,7 +1,10 @@
 {
   "view" : [
       [
-     "static/imgs/Background/bg.jpg",
+     {
+       "background":"static/imgs/Background/bg.jpg",
+       "pids": ["RPM", "Boost"]
+     },
      {
         "dynamic":
         {
@@ -47,13 +50,16 @@
       ]
     ],
     [
-      "static/imgs/Background/banner1.jpg",
+      {
+        "background":"static/imgs/Background/banner1.jpg",
+        "pids": ["RPM", "Boost"]
+      },
       {
         "dynamic":
           {
             "dataIndex": "0",
             "op": ">",
-            "value": "1122000",
+            "value": "1",
             "priority": "2"
           },
           "alerts": [
