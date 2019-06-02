@@ -49,11 +49,13 @@ def setup():
             dynamic['index'] = view_count
             callbacks.setdefault('dynamic', []).append(makeDynamic(dynamic))
 
-        if 'alerts' in view[1].keys():
+        if 'alerts' in view[1].keys() and len(view[1]['alerts']):
             for alert in view[1]['alerts']:
                 alert['index'] = len(callbacks[view_count]) + \
                     1 if view_count in callbacks else 1
                 callbacks.setdefault(view_count, []).append(makeAlert(alert))
+        else:
+            callbacks.setdefault(view_count, [])
 
         container = BoxLayout(padding=(0, 0, 0, 0))
         ObjectsToUpdate = []

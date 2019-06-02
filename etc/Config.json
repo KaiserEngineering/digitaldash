@@ -11,7 +11,7 @@
           "dataIndex": "0",
           "op": "==",
           "value": "200000",
-          "priority": "0"
+          "priority": 0
         },
         "alerts": [
           {"dataIndex": 0, "op": ">", "value": 10000000, "priority": 1,
@@ -27,7 +27,7 @@
                   "themeConfig": "120",
                   "MinMax": [0, 100]
               },
-            "dataIndex": [0]
+            "dataIndex": 0
           },
           {
             "module": "Linear",
@@ -36,7 +36,7 @@
                   "themeConfig": "Linear",
                   "MinMax": [-12, 22]
               },
-             "dataIndex": [1]
+             "dataIndex": 1
           },
         {
           "module": "Ellipse",
@@ -45,7 +45,7 @@
                 "themeConfig": "260",
                 "MinMax": [0, 45]
             },
-            "dataIndex": [2]
+            "dataIndex": 2
         }
       ]
     ],
@@ -59,8 +59,8 @@
           {
             "dataIndex": "0",
             "op": ">",
-            "value": "1",
-            "priority": "2"
+            "value": "1000000",
+            "priority": 2
           },
           "alerts": [
              {"dataIndex": 0, "op": ">", "value": 100000, "index": 1, "priority": 1, 
@@ -76,7 +76,7 @@
                  "themeConfig": "Linear",
                  "MinMax": [0, 100]
              },
-            "dataIndex": [0]
+            "dataIndex": 0
          }
        ]
      ]
