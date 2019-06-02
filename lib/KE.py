@@ -48,6 +48,8 @@ def setup():
             dynamic = view[1]['dynamic']
             dynamic['index'] = view_count
             callbacks.setdefault('dynamic', []).append(makeDynamic(dynamic))
+        else:
+            callbacks.setdefault('dynamic', [])
 
         if 'alerts' in view[1].keys() and len(view[1]['alerts']):
             for alert in view[1]['alerts']:
