@@ -37,7 +37,7 @@
           },
         {
           "module": "Ellipse",
-          "path": "static/imgs/Fire/",
+          "path": "static/imgs/Dirt/",
           "args": {
                 "themeConfig": "260",
                 "MinMax": [0, 45]
