@@ -12,14 +12,13 @@ Builder.load_string('''
     ellipsis_options: {'color':(1,0.5,0.5,1),'underline':True}
     shorten: True
     markup: True
-    text_size: 660, None
     shorten_from: 'right'
     canvas.before:
         Rectangle:
             id: 'Alert-'+str(self.message)
-            pos: (self.center_x - 660 / 2, self.center_y - (self.height / 4))
-            size: 660, self.height / 2.
-            source: 'static/imgs/Alerts/fordWarning.png'
+            pos: (self.center_x - 400 / 2, self.center_y - (self.height / 4))
+            size: 400, self.height / 2.
+            source: 'static/imgs/Alerts/FordWarning.png'
 ''')
 class Alert(Label):
     """

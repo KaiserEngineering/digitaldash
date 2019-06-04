@@ -1,6 +1,6 @@
 """Abstract class for updating values."""
 from abc import ABC, abstractmethod
-from kivy.uix.image import Image
+from kivy.uix.image import AsyncImage
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from abc import ABCMeta
@@ -64,7 +64,7 @@ class MetaLabel(Label, Animator):
             self.text = self.default + str(value)
 
 
-class MetaImage(Image, Animator):
+class MetaImage(AsyncImage, Animator):
     """
     Handles meta classes for kivy.uix.image and our Animator classs.
         :param Image: Kivy UI image class
@@ -160,6 +160,7 @@ class AbstractWidget(object):
         labels = []
         # Create our labels
         for labelConfig in themeConfig['labels']:
+            labelConfig['dataIndex'] = args['dataIndex']
             # Create Label widget
             label = KELabel(labelConfig)
             labels.append(label)

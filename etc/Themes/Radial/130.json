@@ -3,15 +3,15 @@
     "labels":
       [{
        "pos": [100, -100], "font_size": 35, "default": "Max: ",
-       "data": 1, "dataIndex" : 1
+       "data": 1
        },
       {
        "pos": [-100, -100], "font_size": 25, "default": "Min: ",
-       "data": 1, "dataIndex" : 1
+       "data": 1
        },
       {
-       "pos": [0, 0], "font_size": 25, "default": "",
-       "data": 1, "dataIndex" : 1
+       "pos": [0, -50], "font_size": 25, "default": "",
+       "data": 1
        }
     ]
 }

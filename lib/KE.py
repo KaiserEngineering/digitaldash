@@ -15,7 +15,7 @@ Builder.load_string('''
 <Background>:
     canvas:
         Rectangle:
-            source: app.background
+            source: app.background_source
             size: self.size
             pos: self.pos
 ''')
@@ -40,19 +40,24 @@ def setup():
 
     view_count = 0
     for view in Config.layouts():
-        background = view[0]
+        background = view[0]['background']
+        pids       = view[0]['pids']
 
         # Create our callbacks
         if 'dynamic' in view[1].keys():
             dynamic = view[1]['dynamic']
             dynamic['index'] = view_count
             callbacks.setdefault('dynamic', []).append(makeDynamic(dynamic))
+        else:
+            callbacks.setdefault('dynamic', [])
 
-        if 'alerts' in view[1].keys():
+        if 'alerts' in view[1].keys() and len(view[1]['alerts']):
             for alert in view[1]['alerts']:
                 alert['index'] = len(callbacks[view_count]) + \
                     1 if view_count in callbacks else 1
                 callbacks.setdefault(view_count, []).append(makeAlert(alert))
+        else:
+            callbacks.setdefault(view_count, [])
 
         container = BoxLayout(padding=(0, 0, 0, 0))
         ObjectsToUpdate = []
@@ -65,7 +70,7 @@ def setup():
 
         containers.append(container)
         ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
-                    'ObjectsToUpdate': ObjectsToUpdate})
+                    'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
         view_count += 1
 
     return (ret, containers, callbacks)
