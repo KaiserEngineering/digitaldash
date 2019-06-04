@@ -15,7 +15,7 @@ Builder.load_string('''
 <Background>:
     canvas:
         Rectangle:
-            source: app.background
+            source: app.background_source
             size: self.size
             pos: self.pos
 ''')

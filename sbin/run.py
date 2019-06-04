@@ -47,6 +47,7 @@ import KE
 from kivy.app import App
 from kivy.properties import StringProperty
 from DigitalDash.Alert import Alert
+from kivy.uix.anchorlayout import AnchorLayout
 
 try:
     import Serial
@@ -62,10 +63,11 @@ def on_config_change(self):
         (self.views, self.containers, self.callbacks) = KE.setup()
         self.app.clear_widgets()
 
-        (blank, self.background, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
+        (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
-        self.app.add_widget(self.containers[0])
-        self.app.add_widget(self.alerts)
+        self.app.add_widget(self.background)
+        self.background.add_widget(self.containers[0])
+        self.background.add_widget(self.alerts)
 
 class MyHandler(PatternMatchingEventHandler):
     """
@@ -108,7 +110,7 @@ class DigitalDash(App):
     to be updated and have the necessary methods.
     """
 
-    background = StringProperty()
+    background_source = StringProperty()
 
     def build(self):
         """Perform main build loop for Kivy app."""
@@ -134,10 +136,14 @@ class DigitalDash(App):
                 self.update_values(data)
         # END LOOP
 
+
+        # Our main application object
+        self.app = AnchorLayout()
+
         self.current = 0
         (self.views, self.containers, self.callbacks) = KE.setup()
 
-        (self.app, self.background, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
+        (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
         # Send our PIDs to the micro
         if ( Data_Source ):
