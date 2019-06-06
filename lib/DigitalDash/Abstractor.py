@@ -52,16 +52,16 @@ class MetaLabel(Label, Animator):
             :param self: LabelWidget object
             :param value='': Numeric value for label
         """
-        if (re.match("(?i)(minimum|min)+", self.default)):
+        if (self.default == 'Min: '):
             if (self.min > float(value)):
-                self.text = self.default + str(value)
+                self.text = str(value)
                 self.min = float(value)
-        elif (re.match("(?i)(maximum|max)+", self.default)):
+        elif (self.default == 'Max: '):
             if (self.max < float(value)):
-                self.text = self.default + str(value)
+                self.text = str(value)
                 self.max = float(value)
         else:
-            self.text = self.default + str(value)
+            self.text = str(value)
 
 
 class MetaImage(AsyncImage, Animator):

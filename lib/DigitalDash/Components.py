@@ -35,7 +35,7 @@ class KELabel(MetaLabel):
         """Intiate Label widget."""
         super(KELabel, self).__init__()
         self.default = args.get('default', '')
-        self.text = self.default
+        self.text = self.default if self.default != 'Min' or self.default != 'Max' else ''
         self.pos = args.get('pos', self.pos)
         self.font_size = args.get('font_size', 25)
         self.min = 9999
