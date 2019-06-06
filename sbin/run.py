@@ -151,8 +151,9 @@ class DigitalDash(App):
 
             self.data_source = Data_Source
 
-        self.app.add_widget(self.containers[0])
-        self.app.add_widget(self.alerts)
+        self.app.add_widget(self.background)
+        self.background.add_widget(self.containers[0])
+        self.background.add_widget(self.alerts)
 
         # We concider program start a config change since it is just loading
         # data from the config file
@@ -183,8 +184,13 @@ class DigitalDash(App):
     # We use blank here, because we want to keep our app instance alive
         if ( my_callback.change(self, my_callback) ):
             self.current = my_callback.index
-            (blank, self.background, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[self.current].values()
-            self.app.add_widget(self.alerts)
+
+            self.app.clear_widgets()
+            (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[self.current].values()
+
+            self.app.add_widget(self.background)
+            self.background.add_widget(self.containers[self.current])
+            self.background.add_widget(self.alerts)
 
         elif type(my_callback) is Alert and my_callback.parent is None:
             self.alerts.add_widget(my_callback)
