@@ -5,6 +5,7 @@ from kivy.uix.label import Label
 from kivy.properties import NumericProperty
 from kivy.graphics import Color, Rectangle
 from functools import lru_cache
+from DigitalDash.Abstractor import MetaLabel
 
 from kivy.lang import Builder
 Builder.load_string('''
@@ -16,18 +17,15 @@ Builder.load_string('''
     canvas.before:
         Rectangle:
             id: 'Alert-'+str(self.message)
-            pos: (self.center_x - 400 / 2, self.center_y - (self.height / 4))
+            pos: (self.center_x - 400 / 2, self.center_y - (self.height / 4) )
             size: 400, self.height / 2.
             source: 'static/imgs/Alerts/FordWarning.png'
 ''')
-class Alert(Label):
+class Alert(MetaLabel):
     """
     Create an Alert label if triggered.
         :param Label: Kivy label class
     """
-
-    posx = NumericProperty()
-    posy = NumericProperty()
 
     def __init__(self, args):
         """

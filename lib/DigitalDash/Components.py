@@ -35,7 +35,7 @@ class KELabel(MetaLabel):
         """Intiate Label widget."""
         super(KELabel, self).__init__()
         self.default = args.get('default', '')
-        self.text = self.default if self.default != 'Min' or self.default != 'Max' else ''
+        self.text = self.default
         self.pos = args.get('pos', self.pos)
         self.font_size = args.get('font_size', 25)
         self.min = 9999
@@ -95,9 +95,12 @@ class NeedleRadial(MetaImage):
         else:
             val = value
 
-        self.update = -val * self.step + self.degrees / 2 + self.offset
         if value > self.max:
             self.update = -self.degrees / 2
+        elif value < self.min:
+            self.update = ( self.min - self.offset ) * float(self.step)
+        else:
+            self.update = -val * self.step + self.degrees / 2 + self.offset
 
 Builder.load_string('''
 <NeedleLinear>:
@@ -171,8 +174,10 @@ class NeedleLinear(StencilView, MetaWidget):
 
         if value > self.max:
             self.update = self.max - self.offset
-
-        self.update = (val - self.offset) * self.step
+        elif value < self.min:
+            self.update = ( self.min - self.offset ) * float(self.step)
+        else:
+            self.update = (val - self.offset) * self.step
 
 Builder.load_string('''
 <NeedleEllipse>:
@@ -237,17 +242,15 @@ class NeedleEllipse(MetaWidget):
             :param self: Widget Object
             :param value: Update value for gauge needle
         """
-
         value = float(value)
         massager = Massager()
         val = 0
 
-        # ! TODO Massager
-        # if self.update == self.update:
-        #     val = massager.Smooth({'Current': self.update, 'New': value})
-        # else:
         val = value
 
-        self.update = ( val - self.offset ) * float(self.step)
         if value > self.max:
             self.update = -self.degrees / 2
+        elif value < self.min:
+            self.update = ( self.min - self.offset ) * float(self.step)
+        else:
+            self.update = ( val - self.offset ) * float(self.step)

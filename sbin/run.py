@@ -158,7 +158,7 @@ class DigitalDash(App):
         # We concider program start a config change since it is just loading
         # data from the config file
         on_config_change(self)
-        Clock.schedule_interval(loop, 0)
+        Clock.schedule_interval(loop, 0.05)
 
         observer = Observer()
         observer.schedule(MyHandler(self), 'etc/', recursive=True)
@@ -181,18 +181,10 @@ class DigitalDash(App):
         return False
 
     def change(self, app, my_callback):
-    # We use blank here, because we want to keep our app instance alive
-        if ( my_callback.change(self, my_callback) ):
-            self.current = my_callback.index
+        my_callback.change(self, my_callback)
+        self.current = my_callback.index
 
-            self.app.clear_widgets()
-            (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[self.current].values()
-
-            self.app.add_widget(self.background)
-            self.background.add_widget(self.containers[self.current])
-            self.background.add_widget(self.alerts)
-
-        elif type(my_callback) is Alert and my_callback.parent is None:
+        if type(my_callback) is Alert and my_callback.parent is None:
             self.alerts.add_widget(my_callback)
 
     def update_values(self, data):

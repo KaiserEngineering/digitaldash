@@ -51,6 +51,13 @@ class Dynamic(object):
         App.data_source.UpdateRequirements(App.pids)
 
         App.app.clear_widgets()
-        App.app.add_widget(App.containers[callback.index])
+        App.background.clear_widgets()
+        App.alerts.clear_widgets()
+
+        (App.background, App.background_source, App.alerts, App.ObjectsToUpdate, App.pids) = App.views[callback.index].values()
+        App.background.add_widget(App.containers[callback.index])
+        App.background.add_widget(App.alerts)
+
+        App.app.add_widget(App.background)
 
         return True
