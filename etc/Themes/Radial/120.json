@@ -13,7 +13,11 @@
       {
        "pos": [0, 70], "font_size": 40, "default": "",
        "data": 1
-       }
+      },
+      {
+        "pos": [0, -70], "font_size": 40, "default": "__PID__",
+        "data": 0
+      }
     ]
 }
 

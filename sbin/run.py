@@ -118,6 +118,7 @@ class DigitalDash(App):
         """Perform main build loop for Kivy app."""
         def loop(dt):
             if (Data_Source):
+                # NOTE Does the start command need to be outside of this loop?
                 ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
 
                 # Check dynamic gauges before any alerts in case we make a change
@@ -198,4 +199,5 @@ if ( run ):
 
 # TODO Move code updating views to a method instead of duplicated in a few spots
 # TODO Migrate all functions to have type hints
-# TODO Move Linear gauge up on Y-Axis to compensate for enclosure screen cut-off
+# FIXME Move Linear gauge up on Y-Axis to compensate for enclosure screen cut-off
+# FIXME How to bind size of layout to values in KE objects that depend on size/pos?

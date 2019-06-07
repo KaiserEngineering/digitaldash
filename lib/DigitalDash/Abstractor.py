@@ -10,40 +10,11 @@ from DigitalDash.Massager import Massager
 
 from typing import NoReturn, List, TypeVar
 
-class Animator(object):
-    """
-        Class for putting data update into widgets.
-            :param object:
-    """
-
-    @abstractmethod
-    def setData(self, value: str) -> NoReturn:
-        """
-        Abstract setData method most commonly used.
-        Override it in Metaclass below if needed differently
-            :param self: Widget Object
-            :param value: Update value for gauge needle
-        """
-
-        value = float(value)
-        massager = Massager()
-        val = 0
-
-        if self.update == self.update:
-            val = massager.Smooth({'Current': self.update, 'New': value})
-        else:
-            val = value
-
-        self.update = val + self.offset
-        if value > self.max:
-            self.update = self.max + self.offset
-
 ML = TypeVar('ML', bound='MetaLabel')
-class MetaLabel(Label, Animator):
+class MetaLabel(Label):
     """
     Handles meta classes for kivy.uix.label and our Animator object.
         :param Label: Name of label
-        :param Animator: Animator object that handles data update
     """
 
     def setData(self: ML, value='') -> NoReturn:
@@ -53,16 +24,20 @@ class MetaLabel(Label, Animator):
             :param self: LabelWidget object
             :param value='': Numeric value for label
         """
+        value   = float(value)
+        output  = value
+        default = ''
         if (self.default == 'Min: '):
-            if (self.min > float(value)):
-                self.text = str(value)
-                self.min = float(value)
+            if (self.min > value):
+                self.min = value
+            value = self.min
         elif (self.default == 'Max: '):
-            if (self.max < float(value)):
-                self.text = str(value)
-                self.max = float(value)
+            if (self.max < value):
+                self.max = value
+            value = self.max
         else:
-            self.text = str(self.default) + str(value)
+            default = self.default
+        self.text = default + "{0:.2f}".format(value)
 
     @staticmethod
     def get_x(label, ref_x):
@@ -78,11 +53,10 @@ class MetaLabel(Label, Animator):
 
 
 MI = TypeVar('MI', bound='MetaImage')
-class MetaImage(AsyncImage, Animator):
+class MetaImage(AsyncImage):
     """
     Handles meta classes for kivy.uix.image and our Animator classs.
         :param Image: Kivy UI image class
-        :param Animator: Animator class that handles data update
     """
 
     def SetOffset(self: MI) -> NoReturn:
@@ -101,11 +75,10 @@ class MetaImage(AsyncImage, Animator):
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))
 
 MW = TypeVar('MW', bound='MetaWidget')
-class MetaWidget(Widget, Animator):
+class MetaWidget(Widget):
     """
     Handles meta classes for kivy.uix.widget and our Animator classs.
         :param Widget: Widget Obj
-        :param Animator: Animator class that handles data update
     """
     widget = Widget()
 
@@ -120,6 +93,19 @@ class MetaWidget(Widget, Animator):
         (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))
 
+    def setData(self: MW, value='') -> NoReturn:
+        """
+        Abstract setData method most commonly used.
+        Override it in Metaclass below if needed differently
+            :param self: Widget Object
+            :param value: Update value for gauge needle
+        """
+        value = float(value)
+        if value > self.max:
+            value = self.max
+        elif value < self.min:
+            value = self.min
+        self.update = value * self.step - self.step * self.offset
 
 from DigitalDash.Components import *
 
@@ -139,9 +125,9 @@ class AbstractWidget(object):
         args = ARGS['args']
 
         liveWidgets = []
-        path = args['path']
-        container = ARGS['container']
-        Layout = RelativeLayout()
+        path        = args['path']
+        container   = ARGS['container']
+        Layout      = RelativeLayout()
 
         # Import theme specifc Config
         themeConfig = Config.getThemeConfig(args['module'] + '/' + args['args']['themeConfig'])
@@ -157,7 +143,7 @@ class AbstractWidget(object):
         # This keeps the radial widget from being off the top
         # of the screen.
         needle.center_y = needle.center_y - 10
-        gauge.center_y = gauge.center_y - 10
+        gauge.center_y  = gauge.center_y - 10
 
         needle.dataIndex = args['dataIndex']
 
@@ -175,6 +161,8 @@ class AbstractWidget(object):
         # Create our labels
         for labelConfig in themeConfig['labels']:
             labelConfig['dataIndex'] = args['dataIndex']
+            labelConfig['PID'] = ARGS['pids'][args['dataIndex']]
+
             # Create Label widget
             label = KELabel(labelConfig)
             labels.append(label)

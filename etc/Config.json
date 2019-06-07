@@ -3,7 +3,7 @@
       [
      {
        "background":"static/imgs/Background/banner1.jpg",
-       "pids": ["RPM", "Boost"]
+       "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
      },
      {
         "dynamic":
@@ -19,10 +19,10 @@
         ]
      },[
         {
-            "module": "Radial",
-            "path": "static/imgs/Stock/",
+            "module": "Linear",
+            "path": "static/imgs/Linear/",
             "args": {
-                  "themeConfig": "120",
+                  "themeConfig": "Linear",
                   "MinMax": [0, 100]
               },
             "dataIndex": 0
@@ -52,7 +52,7 @@
     [
     {
       "background":"static/imgs/Background/CarbonFiber.png",
-      "pids": ["RPM", "Boost"]
+      "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
     },
     {
        "dynamic":
@@ -99,7 +99,7 @@
     [
       {
         "background":"static/imgs/Background/banner1.jpg",
-        "pids": ["RPM", "Boost"]
+        "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
       },
       {
          "dynamic":

@@ -29,12 +29,19 @@ class KELabel(MetaLabel):
     at all times 'default'.
 
         :param MetaWidget: <DigitalDash.Components.KELabel>
+
+    If default value of label is set to '__PID__' then that string will
+    be replaced with the PID name for the data index the label is for.
     """
 
     def __init__(self, args):
         """Intiate Label widget."""
         super(KELabel, self).__init__()
         self.default = args.get('default', '')
+
+        if ( self.default == '__PID__' ):
+            self.default = args.get('PID', '')
+
         self.text = self.default
         self.pos = args.get('pos', self.pos)
         self.font_size = args.get('font_size', 25)
@@ -85,9 +92,7 @@ class NeedleRadial(MetaImage):
             :param self: Widget Object
             :param value: Update value for gauge needle
         """
-
         value = float(value)
-        massager = Massager()
 
         if value > self.max:
             self.update = -self.degrees / 2
@@ -133,7 +138,6 @@ class NeedleLinear(StencilView, MetaWidget):
     """
     update = NumericProperty()
     source = StringProperty()
-    step = NumericProperty()
     r = NumericProperty()
     g = NumericProperty()
     b = NumericProperty()
@@ -143,32 +147,10 @@ class NeedleLinear(StencilView, MetaWidget):
         """Create Linear Slider."""
         super(NeedleLinear, self).__init__()
         self.SetAttrs(path, args, themeArgs)
-
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
 
     def SetStep(self):
         self.step = self.parent.width / (abs(self.min) + abs(self.max))
-
-    def setData(self, value):
-        """
-        Abstract setData method most commonly used.
-        Override it in Metaclass below if needed differently
-            :param self: Widget Object
-            :param value: Update value for gauge needle
-        """
-
-        value = float(value)
-        massager = Massager()
-
-        if self.update == self.update:
-            value = massager.Smooth({'Current': self.update, 'New': value})
-
-        if value > self.max:
-            self.update = ( self.max - self.offset ) * float(self.step)
-        elif value < self.min:
-            self.update = ( self.min - self.offset ) * float(self.step)
-        else:
-            self.update = (value - self.offset) * self.step
 
 Builder.load_string('''
 <NeedleEllipse>:
@@ -236,7 +218,6 @@ class NeedleEllipse(MetaWidget):
             :param value: Update value for gauge needle
         """
         value = float(value)
-        massager = Massager()
 
         if value > self.max:
             self.update = self.angle_end
