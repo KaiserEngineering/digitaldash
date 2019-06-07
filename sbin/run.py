@@ -16,6 +16,7 @@ sys.path.append(os.getcwd() + '/etc')
 sys.path.append(os.getcwd() + '/KE')
 
 from DigitalDash.Test import Test
+from typing import NoReturn, List, TypeVar
 
 import getopt
 run = False
@@ -98,6 +99,7 @@ class MyHandler(PatternMatchingEventHandler):
     def on_created(self, event):
         self.process(event)
 
+DD = TypeVar('DD', bound='DigitalDash')
 class DigitalDash(App):
     """
     Main class that initiates kivy app.
@@ -120,11 +122,11 @@ class DigitalDash(App):
 
                 # Check dynamic gauges before any alerts in case we make a change
                 for dynamic in sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True):
-                        my_callback = self.check_callback(dynamic, priority, data)
+                    my_callback = self.check_callback(dynamic, priority, data)
 
-                        if(my_callback):
-                            self.change(self, my_callback)
-                            break
+                    if(my_callback):
+                        self.change(self, my_callback)
+                        break
 
                 for callback in sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True):
                     my_callback = self.check_callback(callback, priority, data)
@@ -158,7 +160,7 @@ class DigitalDash(App):
         # We concider program start a config change since it is just loading
         # data from the config file
         on_config_change(self)
-        Clock.schedule_interval(loop, 0)
+        Clock.schedule_interval(loop, 0.05)
 
         observer = Observer()
         observer.schedule(MyHandler(self), 'etc/', recursive=True)
@@ -166,13 +168,13 @@ class DigitalDash(App):
 
         return self.app
 
-    def check_callback(self, callback, priority, data):
-    # Check if any dynamic changes need to be made
+    def check_callback(self: DD, callback, priority, data):
+        # Check if any dynamic changes need to be made
         if ( callback.check(data[callback.dataIndex]) ):
             if (self.current != callback.index):
                 if type(callback) is Alert:
                     self.alerts.clear_widgets()
-                return callback
+            return callback
 
         # Clear alert widgets so we don't end up with multiple parent error
         if type(callback) is Alert:
@@ -180,25 +182,20 @@ class DigitalDash(App):
 
         return False
 
-    def change(self, app, my_callback):
-    # We use blank here, because we want to keep our app instance alive
+    def change(self: DD, app, my_callback) -> NoReturn:
         if ( my_callback.change(self, my_callback) ):
             self.current = my_callback.index
-
-            self.app.clear_widgets()
-            (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[self.current].values()
-
-            self.app.add_widget(self.background)
-            self.background.add_widget(self.containers[self.current])
-            self.background.add_widget(self.alerts)
-
         elif type(my_callback) is Alert and my_callback.parent is None:
             self.alerts.add_widget(my_callback)
 
-    def update_values(self, data):
+    def update_values(self: DD, data: List[float]) -> NoReturn:
         for widget in self.ObjectsToUpdate:
             for obj in widget:
                 obj.setData(data[obj.dataIndex])
 
 if ( run ):
     DigitalDash().run()
+
+# TODO Move code updating views to a method instead of duplicated in a few spots
+# TODO Migrate all functions to have type hints
+# TODO Move Linear gauge up on Y-Axis to compensate for enclosure screen cut-off

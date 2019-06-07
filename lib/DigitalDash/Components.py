@@ -35,7 +35,7 @@ class KELabel(MetaLabel):
         """Intiate Label widget."""
         super(KELabel, self).__init__()
         self.default = args.get('default', '')
-        self.text = self.default if self.default != 'Min' or self.default != 'Max' else ''
+        self.text = self.default
         self.pos = args.get('pos', self.pos)
         self.font_size = args.get('font_size', 25)
         self.min = 9999
@@ -88,16 +88,13 @@ class NeedleRadial(MetaImage):
 
         value = float(value)
         massager = Massager()
-        val = 0
 
-        if self.update == self.update:
-            val = massager.Smooth({'Current': self.update, 'New': value})
-        else:
-            val = value
-
-        self.update = -val * self.step + self.degrees / 2 + self.offset
         if value > self.max:
             self.update = -self.degrees / 2
+        elif value < self.min:
+            self.update = abs(self.min) * float(self.step) + (self.offset * self.step) + self.degrees / 2
+        else:
+            self.update = -value * float(self.step) + (self.offset * self.step) + self.degrees / 2
 
 Builder.load_string('''
 <NeedleLinear>:
@@ -162,17 +159,16 @@ class NeedleLinear(StencilView, MetaWidget):
 
         value = float(value)
         massager = Massager()
-        val = 0
 
         if self.update == self.update:
-            val = massager.Smooth({'Current': self.update, 'New': value})
-        else:
-            val = value
+            value = massager.Smooth({'Current': self.update, 'New': value})
 
         if value > self.max:
-            self.update = self.max - self.offset
-
-        self.update = (val - self.offset) * self.step
+            self.update = ( self.max - self.offset ) * float(self.step)
+        elif value < self.min:
+            self.update = ( self.min - self.offset ) * float(self.step)
+        else:
+            self.update = (value - self.offset) * self.step
 
 Builder.load_string('''
 <NeedleEllipse>:
@@ -226,9 +222,11 @@ class NeedleEllipse(MetaWidget):
         self.SetAttrs(path, args, themeArgs)
 
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
-        self.angle_start = themeArgs['angle_start'] - 12
-
+        self.angle_start = themeArgs['angle_start']
         self.SetOffset()
+
+        self.angle_end = self.degrees + self.offset
+
 
     def setData(self, value):
         """
@@ -237,17 +235,12 @@ class NeedleEllipse(MetaWidget):
             :param self: Widget Object
             :param value: Update value for gauge needle
         """
-
         value = float(value)
         massager = Massager()
-        val = 0
 
-        # ! TODO Massager
-        # if self.update == self.update:
-        #     val = massager.Smooth({'Current': self.update, 'New': value})
-        # else:
-        val = value
-
-        self.update = ( val - self.offset ) * float(self.step)
         if value > self.max:
-            self.update = -self.degrees / 2
+            self.update = self.angle_end
+        elif value < self.min:
+            self.update = self.angle_start
+        else:
+            self.update = ( value - self.offset ) * float(self.step)

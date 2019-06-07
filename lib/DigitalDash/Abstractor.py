@@ -8,6 +8,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
 from DigitalDash.Massager import Massager
 
+from typing import NoReturn, List, TypeVar
 
 class Animator(object):
     """
@@ -16,7 +17,7 @@ class Animator(object):
     """
 
     @abstractmethod
-    def setData(self, value):
+    def setData(self, value: str) -> NoReturn:
         """
         Abstract setData method most commonly used.
         Override it in Metaclass below if needed differently
@@ -37,7 +38,7 @@ class Animator(object):
         if value > self.max:
             self.update = self.max + self.offset
 
-
+ML = TypeVar('ML', bound='MetaLabel')
 class MetaLabel(Label, Animator):
     """
     Handles meta classes for kivy.uix.label and our Animator object.
@@ -45,7 +46,7 @@ class MetaLabel(Label, Animator):
         :param Animator: Animator object that handles data update
     """
 
-    def setData(self, value=''):
+    def setData(self: ML, value='') -> NoReturn:
         """
         Send data to Label widget.
         Check for Min/Max key words to cache values with regex checks.
@@ -54,11 +55,11 @@ class MetaLabel(Label, Animator):
         """
         if (self.default == 'Min: '):
             if (self.min > float(value)):
-                self.text = str(self.default) + str(value)
+                self.text = str(value)
                 self.min = float(value)
         elif (self.default == 'Max: '):
             if (self.max < float(value)):
-                self.text = str(self.default) + str(value)
+                self.text = str(value)
                 self.max = float(value)
         else:
             self.text = str(self.default) + str(value)
@@ -76,7 +77,7 @@ class MetaLabel(Label, Animator):
         return label.center_y + label.texture_size[1] * 0.5 - ref_y
 
 
-
+MI = TypeVar('MI', bound='MetaImage')
 class MetaImage(AsyncImage, Animator):
     """
     Handles meta classes for kivy.uix.image and our Animator classs.
@@ -84,22 +85,22 @@ class MetaImage(AsyncImage, Animator):
         :param Animator: Animator class that handles data update
     """
 
-    def SetOffset(self):
+    def SetOffset(self: MI) -> NoReturn:
         """Set offset for negative values"""
         if (self.min < 0):
             self.offset = self.min
         else:
             self.offset = 0
 
-    def SetStep(self):
+    def SetStep(self: MI) -> NoReturn:
         self.step = self.degrees / (abs(self.min) + abs(self.max))
 
-    def SetAttrs(self, path, args, themeArgs):
+    def SetAttrs(self: MI, path: str, args, themeArgs) -> NoReturn:
         """Set basic attributes for widget."""
         (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))
 
-
+MW = TypeVar('MW', bound='MetaWidget')
 class MetaWidget(Widget, Animator):
     """
     Handles meta classes for kivy.uix.widget and our Animator classs.
@@ -108,13 +109,13 @@ class MetaWidget(Widget, Animator):
     """
     widget = Widget()
 
-    def SetOffset(self):
+    def SetOffset(self: MW) -> NoReturn:
         self.offset = self.min
 
-    def SetStep(self):
+    def SetStep(self: MW) -> NoReturn:
         self.step = self.degrees / (abs(self.min) + abs(self.max))
 
-    def SetAttrs(self, path, args, themeArgs):
+    def SetAttrs(self: MW, path: str, args, themeArgs) -> NoReturn:
         """Set basic attributes for widget."""
         (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))

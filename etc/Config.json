@@ -2,7 +2,7 @@
   "view" : [
       [
      {
-       "background":"static/imgs/Background/bg.jpg",
+       "background":"static/imgs/Background/banner1.jpg",
        "pids": ["RPM", "Boost"]
      },
      {
@@ -14,10 +14,8 @@
           "priority": 0
         },
         "alerts": [
-          {"dataIndex": 0, "op": ">", "value": 10000000, "priority": 1,
-              "message" : "THIS IS THE FIRST"},
-          {"dataIndex": 0, "op": ">", "value": 10000, "priority": 1,
-            "message" : "THIS IS THE SECOND"}
+          {"dataIndex": 0, "op": ">=", "value": 4, "priority": 1,
+              "default" : "WARNING!!! \n Danger To Manifold", "data": 0}
         ]
      },[
         {
@@ -30,53 +28,116 @@
             "dataIndex": 0
           },
           {
-            "module": "Linear",
-            "path": "static/imgs/Linear/",
+            "module": "Radial",
+            "path": "static/imgs/Stock/",
             "args": {
-                  "themeConfig": "Linear",
+                  "themeConfig": "120",
                   "MinMax": [-12, 22]
               },
              "dataIndex": 1
           },
         {
-          "module": "Ellipse",
-          "path": "static/imgs/Dirt/",
+          "module": "Radial",
+          "path": "static/imgs/Stock/",
           "args": {
-                "themeConfig": "260",
+                "themeConfig": "120",
                 "MinMax": [0, 45]
             },
             "dataIndex": 2
         }
       ]
     ],
+
+
+    [
+    {
+      "background":"static/imgs/Background/CarbonFiber.png",
+      "pids": ["RPM", "Boost"]
+    },
+    {
+       "dynamic":
+       {
+         "dataIndex": "0",
+         "op": ">=",
+         "value": "16",
+         "priority": 1
+       },
+       "alerts": [
+       ]
+    },[
+       {
+           "module": "Radial",
+           "path": "static/imgs/Modern/",
+           "args": {
+                 "themeConfig": "120",
+                 "MinMax": [0, 100]
+             },
+           "dataIndex": 0
+         },
+         {
+           "module": "Radial",
+           "path": "static/imgs/Modern/",
+           "args": {
+                 "themeConfig": "120",
+                 "MinMax": [-12, 22]
+             },
+            "dataIndex": 1
+         },
+       {
+         "module": "Radial",
+         "path": "static/imgs/Modern/",
+         "args": {
+               "themeConfig": "120",
+               "MinMax": [0, 45]
+           },
+           "dataIndex": 2
+       }
+     ]
+    ],
+
+
     [
       {
         "background":"static/imgs/Background/banner1.jpg",
         "pids": ["RPM", "Boost"]
       },
       {
-        "dynamic":
-          {
-            "dataIndex": "0",
-            "op": ">",
-            "value": "1000000",
-            "priority": 2
-          },
-          "alerts": [
-             {"dataIndex": 0, "op": ">", "value": 100000, "index": 1, "priority": 1, 
-                 "message" : "MESSAGE 3"},
-             {"dataIndex": 0, "op": ">", "value": 100000, "index": 2, "priority": 1, 
-               "message" : "MESSAGE 4"}
-          ]
+         "dynamic":
+         {
+           "dataIndex": "0",
+           "op": ">=",
+           "value": 18,
+           "priority": 3
+         },
+         "alerts": [
+         ]
       },[
          {
-           "module": "Linear",
-           "path": "static/imgs/Linear/",
+             "module": "Ellipse",
+             "path": "static/imgs/Dirt/",
+             "args": {
+                   "themeConfig": "120",
+                   "MinMax": [0, 100]
+               },
+             "dataIndex": 0
+           },
+           {
+             "module": "Ellipse",
+             "path": "static/imgs/Dirt/",
+             "args": {
+                   "themeConfig": "120",
+                   "MinMax": [-12, 22]
+               },
+              "dataIndex": 1
+           },
+         {
+           "module": "Ellipse",
+           "path": "static/imgs/Dirt/",
            "args": {
-                 "themeConfig": "Linear",
-                 "MinMax": [0, 100]
+                 "themeConfig": "120",
+                 "MinMax": [0, 45]
              },
-            "dataIndex": 0
+             "dataIndex": 2
          }
        ]
      ]

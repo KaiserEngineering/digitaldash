@@ -6,6 +6,7 @@ Main module for creating the DigitalDash!
 from DigitalDash.Abstractor import AbstractWidget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.floatlayout import FloatLayout
 from etc import Config
 from DigitalDash.Dynamic import Dynamic
 from DigitalDash.Alert import Alert
@@ -84,7 +85,7 @@ def layouts():
     are referenced for adding new widgets to the kivy app.
     """
     bg = Background()
-    alerts = BoxLayout()
+    alerts = FloatLayout()
     args = {
         'bg': bg,
         'alerts': alerts,
