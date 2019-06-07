@@ -54,14 +54,27 @@ class MetaLabel(Label, Animator):
         """
         if (self.default == 'Min: '):
             if (self.min > float(value)):
-                self.text = str(value)
+                self.text = str(self.default) + str(value)
                 self.min = float(value)
         elif (self.default == 'Max: '):
             if (self.max < float(value)):
-                self.text = str(value)
+                self.text = str(self.default) + str(value)
                 self.max = float(value)
         else:
-            self.text = str(value)
+            self.text = str(self.default) + str(value)
+
+    @staticmethod
+    def get_x(label, ref_x):
+        """ Return the x value of the ref/anchor relative to the canvas """
+        return label.center_x - label.texture_size[0] * 0.5 + ref_x
+
+    @staticmethod
+    def get_y(label, ref_y):
+        """ Return the y value of the ref/anchor relative to the canvas """
+        # Note the inversion of direction, as y values start at the top of
+        # the texture and increase downwards
+        return label.center_y + label.texture_size[1] * 0.5 - ref_y
+
 
 
 class MetaImage(AsyncImage, Animator):
