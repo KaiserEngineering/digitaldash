@@ -126,6 +126,8 @@ class DigitalDash(App):
                     my_callback = self.check_callback(dynamic, priority, data)
 
                     if(my_callback):
+                        if self.current == dynamic.index:
+                            break
                         self.change(self, my_callback)
                         break
 
@@ -201,3 +203,4 @@ if ( run ):
 # TODO Migrate all functions to have type hints
 # FIXME Move Linear gauge up on Y-Axis to compensate for enclosure screen cut-off
 # FIXME How to bind size of layout to values in KE objects that depend on size/pos?
+# FIXME 'Updating requirements:' should not be called unless we switch to a new view
