@@ -193,40 +193,21 @@ class NeedleEllipse(MetaWidget):
 
         :param MetaWidget: <DigitalDash.Components.NeedleEllipse>
     """
-    update = NumericProperty()
-    source = StringProperty()
-    degrees = NumericProperty()
+    update       = NumericProperty()
+    source       = StringProperty()
+    degrees      = NumericProperty()
+    angle_start  = NumericProperty()
 
     r = NumericProperty()
     g = NumericProperty()
     b = NumericProperty()
     a = NumericProperty()
-    angle_start = NumericProperty()
-    max         = NumericProperty()
 
     def __init__(self, path, args, themeArgs):
         super(NeedleEllipse, self).__init__()
         self.SetAttrs(path, args, themeArgs)
 
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
+
         self.angle_start = themeArgs['angle_start']
         self.SetOffset()
-
-        self.angle_end = self.degrees + self.offset
-
-
-    def setData(self, value):
-        """
-        Abstract setData method most commonly used.
-        Override it in Metaclass below if needed differently
-            :param self: Widget Object
-            :param value: Update value for gauge needle
-        """
-        value = float(value)
-
-        if value > self.max:
-            self.update = self.angle_end
-        elif value < self.min:
-            self.update = self.angle_start
-        else:
-            self.update = ( value - self.offset ) * float(self.step)
