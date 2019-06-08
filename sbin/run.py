@@ -200,7 +200,4 @@ if ( run ):
     DigitalDash().run()
 
 # TODO Move code updating views to a method instead of duplicated in a few spots
-# TODO Migrate all functions to have type hints
 # FIXME Move Linear gauge up on Y-Axis to compensate for enclosure screen cut-off
-# FIXME How to bind size of layout to values in KE objects that depend on size/pos?
-# FIXME 'Updating requirements:' should not be called unless we switch to a new view
