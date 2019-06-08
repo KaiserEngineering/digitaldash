@@ -138,6 +138,7 @@ class NeedleLinear(StencilView, MetaWidget):
     """
     update = NumericProperty()
     source = StringProperty()
+    step   = NumericProperty()
     r = NumericProperty()
     g = NumericProperty()
     b = NumericProperty()
@@ -148,6 +149,9 @@ class NeedleLinear(StencilView, MetaWidget):
         super(NeedleLinear, self).__init__()
         self.SetAttrs(path, args, themeArgs)
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
+
+    def SizeChange(self):
+        self.SetStep()
 
     def SetStep(self):
         self.step = self.parent.width / (abs(self.min) + abs(self.max))

@@ -39,17 +39,8 @@ class MetaLabel(Label):
             default = self.default
         self.text = default + "{0:.2f}".format(value)
 
-    @staticmethod
-    def get_x(label, ref_x):
-        """ Return the x value of the ref/anchor relative to the canvas """
-        return label.center_x - label.texture_size[0] * 0.5 + ref_x
-
-    @staticmethod
-    def get_y(label, ref_y):
-        """ Return the y value of the ref/anchor relative to the canvas """
-        # Note the inversion of direction, as y values start at the top of
-        # the texture and increase downwards
-        return label.center_y + label.texture_size[1] * 0.5 - ref_y
+    def SizeChange(self):
+        pass
 
 
 MI = TypeVar('MI', bound='MetaImage')
@@ -73,6 +64,9 @@ class MetaImage(AsyncImage):
         """Set basic attributes for widget."""
         (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))
+
+    def SizeChange(self):
+        pass
 
 MW = TypeVar('MW', bound='MetaWidget')
 class MetaWidget(Widget):
@@ -101,11 +95,15 @@ class MetaWidget(Widget):
             :param value: Update value for gauge needle
         """
         value = float(value)
+        value = 1000
         if value > self.max:
             value = self.max
         elif value < self.min:
             value = self.min
         self.update = value * self.step - self.step * self.offset
+
+    def SizeChange(self):
+        pass
 
 from DigitalDash.Components import *
 
@@ -128,6 +126,14 @@ class AbstractWidget(object):
         path        = args['path']
         container   = ARGS['container']
         Layout      = RelativeLayout()
+
+        def SizeChange(self, _instance):
+            for child in self.children:
+                child.SizeChange()
+
+        # TODO Add a 'PosChange' binding here as well
+        # NOTE Can we abstract this more? We have other layouts that may benefit from such a binding
+        Layout.bind(size=SizeChange)
 
         # Import theme specifc Config
         themeConfig = Config.getThemeConfig(args['module'] + '/' + args['args']['themeConfig'])
