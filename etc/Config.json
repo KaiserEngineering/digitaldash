@@ -3,7 +3,7 @@
       [
      {
        "background":"static/imgs/Background/banner1.jpg",
-       "pids": ["RPM", "Boost"]
+       "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
      },
      {
         "dynamic":
@@ -14,22 +14,22 @@
           "priority": 0
         },
         "alerts": [
-          {"dataIndex": 1, "op": ">", "value": -4, "priority": 1,
-              "message" : "THE FLUX CAPACITOR IS CHARGED"}
+          {"dataIndex": 0, "op": ">=", "value": 4, "priority": 1,
+              "default" : "WARNING!!! \n Danger To Manifold", "data": 0}
         ]
      },[
         {
-            "module": "Radial",
-            "path": "static/imgs/Stock/",
+            "module": "Linear",
+            "path": "static/imgs/Linear/",
             "args": {
-                  "themeConfig": "120",
+                  "themeConfig": "Linear",
                   "MinMax": [0, 100]
               },
             "dataIndex": 0
           },
           {
-            "module": "Ellipse",
-            "path": "static/imgs/Dirt/",
+            "module": "Radial",
+            "path": "static/imgs/Stock/",
             "args": {
                   "themeConfig": "120",
                   "MinMax": [-12, 22]
@@ -47,10 +47,59 @@
         }
       ]
     ],
+
+
+    [
+    {
+      "background":"static/imgs/Background/CarbonFiber.png",
+      "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
+    },
+    {
+       "dynamic":
+       {
+         "dataIndex": "0",
+         "op": ">=",
+         "value": "16",
+         "priority": 1
+       },
+       "alerts": [
+       ]
+    },[
+       {
+           "module": "Radial",
+           "path": "static/imgs/Modern/",
+           "args": {
+                 "themeConfig": "120",
+                 "MinMax": [0, 100]
+             },
+           "dataIndex": 0
+         },
+         {
+           "module": "Radial",
+           "path": "static/imgs/Modern/",
+           "args": {
+                 "themeConfig": "120",
+                 "MinMax": [-12, 22]
+             },
+            "dataIndex": 1
+         },
+       {
+         "module": "Radial",
+         "path": "static/imgs/Modern/",
+         "args": {
+               "themeConfig": "120",
+               "MinMax": [0, 45]
+           },
+           "dataIndex": 2
+       }
+     ]
+    ],
+
+
     [
     {
       "background":"static/imgs/Background/bg.jpg",
-      "pids": ["RPM", "Boost"]
+      "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
     },
     {
        "dynamic":
@@ -102,14 +151,14 @@
     [
       {
         "background":"static/imgs/Background/banner1.jpg",
-        "pids": ["RPM", "Boost"]
+        "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
       },
       {
          "dynamic":
          {
-           "dataIndex": "2",
-           "op": ">",
-           "value": 40,
+           "dataIndex": "0",
+           "op": ">=",
+           "value": 18,
            "priority": 3
          },
          "alerts": [

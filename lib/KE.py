@@ -6,6 +6,7 @@ Main module for creating the DigitalDash!
 from DigitalDash.Abstractor import AbstractWidget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.floatlayout import FloatLayout
 from etc import Config
 from DigitalDash.Dynamic import Dynamic
 from DigitalDash.Alert import Alert
@@ -22,7 +23,6 @@ Builder.load_string('''
 
 class Background(AnchorLayout):
     """Uses Kivy language to create background."""
-
     pass
 
 
@@ -47,7 +47,7 @@ def setup():
         if 'dynamic' in view[1].keys():
             dynamic = view[1]['dynamic']
             dynamic['index'] = view_count
-            callbacks.setdefault('dynamic', []).append(makeDynamic(dynamic))
+            callbacks.setdefault('dynamic', []).append(Dynamic(dynamic))
         else:
             callbacks.setdefault('dynamic', [])
 
@@ -55,7 +55,7 @@ def setup():
             for alert in view[1]['alerts']:
                 alert['index'] = len(callbacks[view_count]) + \
                     1 if view_count in callbacks else 1
-                callbacks.setdefault(view_count, []).append(makeAlert(alert))
+                callbacks.setdefault(view_count, []).append(Alert(alert))
         else:
             callbacks.setdefault(view_count, [])
 
@@ -66,7 +66,7 @@ def setup():
         for widget in view[2]:
             mod = AbstractWidget
             ObjectsToUpdate.append(mod.build(container=container,
-                                             args=widget))
+                                             args=widget, pids=pids))
 
         containers.append(container)
         ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
@@ -84,19 +84,9 @@ def layouts():
     are referenced for adding new widgets to the kivy app.
     """
     bg = Background()
-    alerts = BoxLayout()
+    alerts = FloatLayout()
     args = {
         'bg': bg,
         'alerts': alerts,
     }
     return args
-
-
-def makeDynamic(args):
-    """Create our Dyanamic objects."""
-    return Dynamic(args)
-
-
-def makeAlert(args):
-    """Create our Alert object."""
-    return Alert(args)

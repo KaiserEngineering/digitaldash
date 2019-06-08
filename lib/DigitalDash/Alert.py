@@ -1,11 +1,11 @@
 """Monitour a datapoint and create a alert if triggered."""
 
 import DigitalDash
-from kivy.uix.label import Label
 from kivy.properties import NumericProperty
 from kivy.graphics import Color, Rectangle
 from functools import lru_cache
 from DigitalDash.Abstractor import MetaLabel
+from DigitalDash.Abstractor import KELabel
 
 from kivy.lang import Builder
 Builder.load_string('''
@@ -14,14 +14,18 @@ Builder.load_string('''
     shorten: True
     markup: True
     shorten_from: 'right'
+    size_hint: 0.30, 0.4
+    pos_hint: {"x":.35, "y":0.5}
+    halign: 'center'
+    valign: 'middle'
     canvas.before:
         Rectangle:
             id: 'Alert-'+str(self.message)
-            pos: (self.center_x - 400 / 2, self.center_y - (self.height / 4) )
-            size: 400, self.height / 2.
+            size: self.size
+            pos: self.pos
             source: 'static/imgs/Alerts/FordWarning.png'
 ''')
-class Alert(MetaLabel):
+class Alert(KELabel):
     """
     Create an Alert label if triggered.
         :param Label: Kivy label class
@@ -40,13 +44,12 @@ class Alert(MetaLabel):
                     message   : <String>,
                 }
         """
-        super(Alert, self).__init__()
+        super(Alert, self).__init__(args)
         self.value     = args['value']
         self.op        = args['op']
         self.index     = args['index']
         self.priority  = args['priority']
         self.dataIndex = int(args['dataIndex'])
-        self.message   = args['message']
 
     @lru_cache(maxsize=512)
     def check(self, value:float) -> bool:
@@ -66,6 +69,5 @@ class Alert(MetaLabel):
             :param App: main application object
             :param callback: current callback object
         """
-        self.text = self.message
-
+        self.text = self.default
         return False
