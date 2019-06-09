@@ -127,18 +127,20 @@ class AbstractWidget(object):
         container   = ARGS['container']
         Layout      = RelativeLayout()
 
+        args['args']['PID'] = ARGS['pids'][args['dataIndex']]
+        Layout.id = "Widgets-Layout-" + ARGS['pids'][args['dataIndex']]
+
         def ChangeAttr(self, _instance):
             for child in self.children:
                 child.AttrChange()
 
-        # TODO Add a 'PosChange' binding here as well
         # NOTE Can we abstract this more? We have other layouts that may benefit from such a binding
         Layout.bind(size=ChangeAttr, pos=ChangeAttr)
 
         # Import theme specifc Config
         themeConfig = Config.getThemeConfig(args['module'] + '/' + args['args']['themeConfig'])
 
-        gauge = Gauge(path)
+        gauge = Gauge(path, args)
         if gauge._coreimage:
             Layout.add_widget(gauge)
 

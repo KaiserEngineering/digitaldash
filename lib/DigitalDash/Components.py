@@ -16,10 +16,11 @@ class Gauge(MetaImage):
         :param MetaWidget: <DigitalDash.Components.Gauge>
     """
 
-    def __init__(self, path):
+    def __init__(self, path, args):
         """Initite Gauge Widget."""
         super(Gauge, self).__init__()
         self.source = path + 'gauge.png'
+        self.id = "Gauge-" + args.get('PID', '')
 
 class KELabel(MetaLabel):
     """
@@ -38,6 +39,7 @@ class KELabel(MetaLabel):
         """Intiate Label widget."""
         super(KELabel, self).__init__()
         self.default = args.get('default', '')
+        self.id = "Label-" + args.get('PID', '')
 
         if ( self.default == '__PID__' ):
             self.default = args.get('PID', '')
@@ -83,7 +85,7 @@ class NeedleRadial(MetaImage):
         """Initiate Needle widget."""
         super(NeedleRadial, self).__init__()
         self.SetAttrs(path, args, themeArgs)
-
+        self.id = "Radial-Needle-" + args['PID']
         self.update = self.degrees / 2
 
     def setData(self, value):
@@ -150,6 +152,7 @@ class NeedleLinear(StencilView, MetaWidget):
         super(NeedleLinear, self).__init__()
         self.SetAttrs(path, args, themeArgs)
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
+        self.id = "Linear-Needle-" + args['PID']
 
     def AttrChange(self):
         self.SetStep()
@@ -163,26 +166,25 @@ Builder.load_string('''
         # Draw our stencil
         StencilPush
         Ellipse:
-            pos: self.x + (self.width - self.height) / 2, self.y
-            size: self.height, self.height
+            size: min(root.size), min(root.size)
+            pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
             angle_start: self.angle_start
             angle_end: self.angle_start + self.update + 12
         StencilUse
+
         # Now we want to draw our gauge and crop it
-        Color:
-            rgba: self.r, self.g, self.b, self.a
         Ellipse:
-            size: self.height, self.height
-            pos: self.x + (self.width - self.height) / 2, self.y
+            size: min(root.size), min(root.size)
+            pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
             source: self.source
-            angle_start: 360
-            angle_end: 0
+            angle_start: self.angle_start
+            angle_end: self.angle_start + self.update + 12
         StencilUnUse
 
         # Redraw our stencil to remove it
         Ellipse:
-            pos: self.x + (self.width - self.height) / 2, self.y
-            size: self.height, self.height
+            size: min(self.size), min(self.size)
+            pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
             angle_start: self.angle_start
             angle_end: self.angle_start + self.update + 12
         StencilPop
@@ -198,16 +200,10 @@ class NeedleEllipse(MetaWidget):
     degrees      = NumericProperty()
     angle_start  = NumericProperty()
 
-    r = NumericProperty()
-    g = NumericProperty()
-    b = NumericProperty()
-    a = NumericProperty()
-
     def __init__(self, path, args, themeArgs):
         super(NeedleEllipse, self).__init__()
         self.SetAttrs(path, args, themeArgs)
-
-        (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
+        self.id = "Ellipse-Needle-" + args['PID']
 
         self.angle_start = themeArgs['angle_start']
         self.SetOffset()
