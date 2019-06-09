@@ -1,16 +1,19 @@
 {
-  "degrees": 0,
     "labels":
       [{
-        "pos": [100, -100], "font_size": 25, "default": "Max: ",
-        "data": 1, "dataIndex" : 1
-       },
+        "pos": [0.5, 0], "font_size": 25, "default": "Max: ",
+        "data": 1
+      },
       {
-        "pos": [-100, -100], "font_size": 25, "default": "Min: ",
-        "data": 1, "dataIndex" : 1
-       },
+        "pos": [-0.5, 0], "font_size": 25, "default": "Min: ",
+        "data": 1
+      },
       {
-       "pos": [0, 0], "font_size": 25, "data": 1, "dataIndex" : 1, "default": ""
-       }
+       "pos": [0, 0.1], "font_size": 25, "data": 1, "dataIndex" : 1, "default": ""
+      },
+      {
+        "pos": [0, 0], "font_size": 35, "default": "__PID__",
+        "data": 0
+      }
     ]
 }

@@ -3,14 +3,14 @@
       [
      {
        "background":"static/imgs/Background/banner1.jpg",
-       "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
+       "pids": ["APP %", "Boost", "AFR"]
      },
      {
         "dynamic":
         {
-          "dataIndex": "0",
+          "dataIndex": 0,
           "op": "==",
-          "value": "200000",
+          "value": 200000,
           "priority": 0
         },
         "alerts": [
@@ -19,10 +19,10 @@
         ]
      },[
         {
-            "module": "Linear",
-            "path": "static/imgs/Linear/",
+            "module": "Radial",
+            "path": "static/imgs/Stock/",
             "args": {
-                  "themeConfig": "Linear",
+                  "themeConfig": "120",
                   "MinMax": [0, 100]
               },
             "dataIndex": 0
@@ -52,14 +52,14 @@
     [
     {
       "background":"static/imgs/Background/CarbonFiber.png",
-      "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
+      "pids": ["APP %", "Boost", "AFR"]
     },
     {
        "dynamic":
        {
-         "dataIndex": "0",
+         "dataIndex": 0,
          "op": ">=",
-         "value": "16",
+         "value": 16,
          "priority": 1
        },
        "alerts": [
@@ -99,14 +99,14 @@
     [
     {
       "background":"static/imgs/Background/bg.jpg",
-      "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
+      "pids": ["APP %", "Boost", "AFR"]
     },
     {
        "dynamic":
        {
-         "dataIndex": "0",
+         "dataIndex": 0,
          "op": ">=",
-         "value": "26",
+         "value": 26,
          "priority": 1
        },
        "alerts": [
@@ -145,13 +145,10 @@
     ],
 
 
-
-
-
     [
       {
         "background":"static/imgs/Background/banner1.jpg",
-        "pids": ["Accel Pedal Pos %", "Boost", "AFR"]
+        "pids": ["APP %", "Boost", "AFR"]
       },
       {
          "dynamic":
