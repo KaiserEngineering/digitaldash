@@ -5,8 +5,8 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from abc import ABCMeta
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
-from DigitalDash.Massager import Massager
 
 from typing import NoReturn, List, TypeVar
 
@@ -145,11 +145,6 @@ class AbstractWidget(object):
         needleType = args['module']
         needle = globals()['Needle' + needleType](path,
                                                   args['args'], themeConfig)
-
-        # This keeps the radial widget from being off the top
-        # of the screen.
-        needle.center_y = needle.center_y - 10
-        gauge.center_y  = gauge.center_y - 10
 
         needle.dataIndex = args['dataIndex']
 
