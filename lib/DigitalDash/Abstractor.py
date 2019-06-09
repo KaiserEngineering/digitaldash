@@ -7,7 +7,6 @@ from abc import ABCMeta
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
-
 from typing import NoReturn, List, TypeVar
 
 ML = TypeVar('ML', bound='MetaLabel')
@@ -62,7 +61,7 @@ class MetaImage(AsyncImage):
 
     def SetAttrs(self: MI, path: str, args, themeArgs) -> NoReturn:
         """Set basic attributes for widget."""
-        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
+        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs.get('degrees', 0)),
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))
 
     def AttrChange(self):
@@ -84,7 +83,7 @@ class MetaWidget(Widget):
 
     def SetAttrs(self: MW, path: str, args, themeArgs) -> NoReturn:
         """Set basic attributes for widget."""
-        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
+        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs.get('degrees', 0)),
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))
 
     def setData(self: MW, value='') -> NoReturn:
