@@ -39,7 +39,7 @@ class MetaLabel(Label):
             default = self.default
         self.text = default + "{0:.2f}".format(value)
 
-    def SizeChange(self):
+    def AttrChange(self):
         pass
 
 
@@ -65,7 +65,7 @@ class MetaImage(AsyncImage):
         (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))
 
-    def SizeChange(self):
+    def AttrChange(self):
         pass
 
 MW = TypeVar('MW', bound='MetaWidget')
@@ -102,7 +102,7 @@ class MetaWidget(Widget):
             value = self.min
         self.update = value * self.step - self.step * self.offset
 
-    def SizeChange(self):
+    def AttrChange(self):
         pass
 
 from DigitalDash.Components import *
@@ -127,13 +127,13 @@ class AbstractWidget(object):
         container   = ARGS['container']
         Layout      = RelativeLayout()
 
-        def SizeChange(self, _instance):
+        def ChangeAttr(self, _instance):
             for child in self.children:
-                child.SizeChange()
+                child.AttrChange()
 
         # TODO Add a 'PosChange' binding here as well
         # NOTE Can we abstract this more? We have other layouts that may benefit from such a binding
-        Layout.bind(size=SizeChange)
+        Layout.bind(size=ChangeAttr, pos=ChangeAttr)
 
         # Import theme specifc Config
         themeConfig = Config.getThemeConfig(args['module'] + '/' + args['args']['themeConfig'])

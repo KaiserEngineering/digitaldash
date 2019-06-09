@@ -151,7 +151,7 @@ class NeedleLinear(StencilView, MetaWidget):
         self.SetAttrs(path, args, themeArgs)
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
 
-    def SizeChange(self):
+    def AttrChange(self):
         self.SetStep()
 
     def SetStep(self):
