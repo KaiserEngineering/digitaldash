@@ -1,6 +1,5 @@
 from DigitalDash.Abstractor import *
 from kivy.properties import StringProperty, NumericProperty
-import re
 from kivy.lang import Builder
 from kivy.graphics import Color, Rectangle
 from kivy.uix.stencilview import StencilView
@@ -43,15 +42,20 @@ class KELabel(MetaLabel):
 
         if ( self.default == '__PID__' ):
             self.default = args.get('PID', '')
-
         self.text = self.default
-        self.pos = args.get('pos', self.pos)
+
+        # Set position dynamically
+        self.new_pos = list(map( lambda x: x / 100, args.get('pos', (0, 0)) ))
+
         self.font_size = args.get('font_size', 25)
         self.min = 9999
         self.max = -9999
 
         if ( args.get('data', False) ):
             self.dataIndex = args['dataIndex']
+
+    def AttrChange(self):
+        self.pos = (min(self.parent.size) * self.new_pos[0], min(self.parent.size) * self.new_pos[1])
 
 Builder.load_string('''
 <NeedleRadial>:

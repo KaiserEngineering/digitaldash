@@ -7,11 +7,20 @@ from abc import ABCMeta
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
-
 from typing import NoReturn, List, TypeVar
 
+class Base(object):
+    def AttributeChanged(widget):
+        for child in widget.children:
+            AttributeChanged(child)
+
+        widget.AttrChange()
+
+    def AttrChange(self):
+        pass
+
 ML = TypeVar('ML', bound='MetaLabel')
-class MetaLabel(Label):
+class MetaLabel(Label, Base):
     """
     Handles meta classes for kivy.uix.label and our Animator object.
         :param Label: Name of label
@@ -39,12 +48,9 @@ class MetaLabel(Label):
             default = self.default
         self.text = default + "{0:.2f}".format(value)
 
-    def AttrChange(self):
-        pass
-
 
 MI = TypeVar('MI', bound='MetaImage')
-class MetaImage(AsyncImage):
+class MetaImage(AsyncImage, Base):
     """
     Handles meta classes for kivy.uix.image and our Animator classs.
         :param Image: Kivy UI image class
@@ -62,14 +68,12 @@ class MetaImage(AsyncImage):
 
     def SetAttrs(self: MI, path: str, args, themeArgs) -> NoReturn:
         """Set basic attributes for widget."""
-        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
+        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs.get('degrees', 0)),
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))
 
-    def AttrChange(self):
-        pass
 
 MW = TypeVar('MW', bound='MetaWidget')
-class MetaWidget(Widget):
+class MetaWidget(Widget, Base):
     """
     Handles meta classes for kivy.uix.widget and our Animator classs.
         :param Widget: Widget Obj
@@ -84,7 +88,7 @@ class MetaWidget(Widget):
 
     def SetAttrs(self: MW, path: str, args, themeArgs) -> NoReturn:
         """Set basic attributes for widget."""
-        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs['degrees']),
+        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs.get('degrees', 0)),
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))
 
     def setData(self: MW, value='') -> NoReturn:
@@ -102,8 +106,6 @@ class MetaWidget(Widget):
             value = self.min
         self.update = value * self.step - self.step * self.offset
 
-    def AttrChange(self):
-        pass
 
 from DigitalDash.Components import *
 
@@ -132,7 +134,7 @@ class AbstractWidget(object):
 
         def ChangeAttr(self, _instance):
             for child in self.children:
-                child.AttrChange()
+                child.AttributeChanged()
 
         # NOTE Can we abstract this more? We have other layouts that may benefit from such a binding
         Layout.bind(size=ChangeAttr, pos=ChangeAttr)
