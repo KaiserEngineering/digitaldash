@@ -59,7 +59,7 @@ def setup():
         else:
             callbacks.setdefault(view_count, [])
 
-        container = BoxLayout(padding=(0, 0, 1, 200))
+        container = BoxLayout(padding=(15, 15, 30, 200))
         ObjectsToUpdate = []
         layout = layouts()
 

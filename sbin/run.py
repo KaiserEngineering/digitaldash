@@ -203,5 +203,4 @@ if ( run ):
 # FIXME Make labels postioning more dynamic and not pixel hard coded
 # TODO Move code updating views to a method instead of duplicated in a few spots
 # TODO Add new method of KV styling from el3phanten to other areas of code
-# TODO Add ID's to all objects
 # TODO Add logging

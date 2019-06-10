@@ -169,7 +169,7 @@ Builder.load_string('''
             size: min(root.size), min(root.size)
             pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
             angle_start: self.angle_start
-            angle_end: self.angle_start + self.update + 12
+            angle_end: self.angle_start + self.update
         StencilUse
 
         # Now we want to draw our gauge and crop it
@@ -178,7 +178,7 @@ Builder.load_string('''
             pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
             source: self.source
             angle_start: self.angle_start
-            angle_end: self.angle_start + self.update + 12
+            angle_end: self.angle_start + self.update
         StencilUnUse
 
         # Redraw our stencil to remove it
@@ -186,7 +186,7 @@ Builder.load_string('''
             size: min(self.size), min(self.size)
             pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
             angle_start: self.angle_start
-            angle_end: self.angle_start + self.update + 12
+            angle_end: self.angle_start + self.update
         StencilPop
 ''')
 class NeedleEllipse(MetaWidget):
