@@ -14,7 +14,7 @@ Builder.load_string('''
     shorten: True
     markup: True
     shorten_from: 'right'
-    size_hint: 0.30, 0.4
+    size_hint: 0.4, 0.5
     pos_hint: {"x":.35, "y":0.6}
     halign: 'center'
     valign: 'middle'
