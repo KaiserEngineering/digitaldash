@@ -3,16 +3,16 @@
     "labels":
       [
        {
-       "pos": [0.5, 0], "font_size": 25, "default": "Max: ", "data": 1
+       "pos": [30, 0], "font_size": 25, "default": "Max: ", "data": 1
        },
       {
-       "pos": [-0.5, 0], "font_size": 25, "default": "Min: ", "data": 1
+       "pos": [-30, 0], "font_size": 25, "default": "Min: ", "data": 1
        },
       {
-       "pos": [0, 0.4], "font_size": 40, "default": "", "data": 1
+       "pos": [0, 25], "font_size": 40, "default": "", "data": 1
       },
       {
-        "pos": [0, 0.2], "font_size": 40, "default": "__PID__",
+        "pos": [0, 15], "font_size": 40, "default": "__PID__",
         "data": 0
       }
     ]

@@ -155,17 +155,17 @@
          {
            "dataIndex": "0",
            "op": ">=",
-           "value": 18,
+           "value": -108,
            "priority": 3
          },
          "alerts": [
          ]
       },[
          {
-             "module": "Ellipse",
-             "path": "static/imgs/Dirt/",
+             "module": "Linear",
+             "path": "static/imgs/Linear/",
              "args": {
-                   "themeConfig": "120",
+                   "themeConfig": "Linear",
                    "MinMax": [0, 100]
                },
              "dataIndex": 0

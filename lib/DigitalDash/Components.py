@@ -45,8 +45,7 @@ class KELabel(MetaLabel):
         self.text = self.default
 
         # Set position dynamically
-        self.new_pos = args.get('pos', (0, 0))
-        self.pos = (self.pos[0] + self.width * self.new_pos[0], self.pos[1] + self.height * self.new_pos[1])
+        self.new_pos = list(map( lambda x: x / 100, args.get('pos', (0, 0)) ))
 
         self.font_size = args.get('font_size', 25)
         self.min = 9999
@@ -56,7 +55,7 @@ class KELabel(MetaLabel):
             self.dataIndex = args['dataIndex']
 
     def AttrChange(self):
-        self.pos = (self.pos[0] + self.width * self.new_pos[0], self.pos[1] + self.height * self.new_pos[1])
+        self.pos = (min(self.parent.size) * self.new_pos[0], min(self.parent.size) * self.new_pos[1])
 
 Builder.load_string('''
 <NeedleRadial>:
