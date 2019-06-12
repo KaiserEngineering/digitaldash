@@ -7,7 +7,7 @@ Run python3.6 sbin/run.py to run GUI software.
 
 import sys
 import os
-import _thread
+import
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 sys.path.append(os.getcwd())
@@ -200,7 +200,4 @@ if ( run ):
     DigitalDash().run()
 
 # FIXME Move Linear gauge up on Y-Axis to compensate for enclosure screen cut-off
-# FIXME Make labels postioning more dynamic and not pixel hard coded
-# TODO Move code updating views to a method instead of duplicated in a few spots
-# TODO Add new method of KV styling from el3phanten to other areas of code
 # TODO Add logging
