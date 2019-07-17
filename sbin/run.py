@@ -7,7 +7,6 @@ Run python3.6 sbin/run.py to run GUI software.
 
 import sys
 import os
-import
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 sys.path.append(os.getcwd())
@@ -53,8 +52,10 @@ from kivy.uix.anchorlayout import AnchorLayout
 try:
     import Serial
     serial = True
-    Data_Source = Serial()
+    Data_Source = Serial.Serial()
+    print("Using serial data source" + str(Data_Source))
 except Exception as e:
+    print("Running without serial data: " + str(e))
     serial = False
 
 def on_config_change(self):
@@ -120,7 +121,6 @@ class DigitalDash(App):
             if (Data_Source):
                 # NOTE Does the start command need to be outside of this loop?
                 ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
-
                 # Check dynamic gauges before any alerts in case we make a change
                 for dynamic in sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True):
                     my_callback = self.check_callback(dynamic, priority, data)
