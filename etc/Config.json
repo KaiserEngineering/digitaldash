@@ -59,7 +59,7 @@
        {
          "dataIndex": 2,
          "op": ">=",
-         "value": 42.78,
+         "value": 4278,
          "priority": 1
        },
        "alerts": [
@@ -106,7 +106,7 @@
          {
            "dataIndex": 1,
            "op": ">=",
-           "value": 20.1,
+           "value": 2010,
            "priority": 3
          },
          "alerts": [

@@ -21,7 +21,7 @@ class Serial():
         # Handle grabbing data
         data_line = ''
         try:
-            data_line = self.ser.readline()
+            data_line = self.ser.read(8)
         except Exception as e:
             print("Error occured when reading serial data: " + str(e))
         if ( len(data_line) < 8 ):
@@ -30,15 +30,17 @@ class Serial():
 
         count = 0
         data_line = data_line.decode('utf-8')
+        print(data_line)
         for val in data_line.split(';'):
             try:
                 val = float(val)
-                self.ser_val[count] = val
+                self.ser_val[count] = self.ser_val[count] 
                 count = count + 1
             except ValueError:
                 print("Value error caught for: " + str(val))
                 count = count + 1
 
+        print(self.ser_val)
         return self.ser_val
 
     def UpdateRequirements(self, requirements):
