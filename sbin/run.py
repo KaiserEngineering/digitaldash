@@ -11,13 +11,20 @@ from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 import re
 
-path_regex = re.compile('(.+)\/run\.py')
+path_regex = re.compile('(.+)\/sbin\/run\.py')
 path = path_regex.findall(os.path.abspath( __file__ ))[0]
+print("Using working directory: " + path)
 
-sys.path.append(os.path.join(path, '../'))
-sys.path.append(os.path.join(path, '../lib'))
-sys.path.append(os.path.join(path, '../etc'))
-sys.path.append(os.path.join(path, '../KE'))
+os.chdir(path)
+sys.path.append(os.getcwd())
+sys.path.append(os.getcwd() + '/lib')
+sys.path.append(os.getcwd() + '/etc')
+sys.path.append(os.getcwd() + '/KE')
+
+# sys.path.append(os.path.join(path, '../'))
+# sys.path.append(os.path.join(path, '../lib'))
+# sys.path.append(os.path.join(path, '../etc'))
+# sys.path.append(os.path.join(path, '../KE'))
 
 from DigitalDash.Test import Test
 from typing import NoReturn, List, TypeVar
