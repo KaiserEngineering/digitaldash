@@ -3,7 +3,7 @@
       [
      {
        "background":"static/imgs/Background/banner1.jpg",
-       "pids": ["APP %", "Boost", "AFR"]
+       "pids": ["RPM", "APP", "Boost"]
      },
      {
         "dynamic":
@@ -14,8 +14,8 @@
           "priority": 0
         },
         "alerts": [
-          {"dataIndex": 1, "op": ">=", "value": 12, "priority": 1,
-              "default" : "WARNING \n Boost Pressure Exceeded Limit", "data": 0}
+          {"dataIndex": 0, "op": ">=", "value": 4000, "priority": 1,
+              "default" : "WARNING \n Maximum RPM reached!", "data": 0}
         ]
      },[
         {
@@ -23,7 +23,7 @@
             "path": "static/imgs/Stock/",
             "args": {
                   "themeConfig": "120",
-                  "MinMax": [0, 100]
+                  "MinMax": [0, 8000]
               },
             "dataIndex": 0
           },
@@ -32,7 +32,7 @@
             "path": "static/imgs/Stock/",
             "args": {
                   "themeConfig": "120",
-                  "MinMax": [-12, 22]
+                  "MinMax": [0, 100]
               },
              "dataIndex": 1
           },
@@ -41,7 +41,7 @@
           "path": "static/imgs/Stock/",
           "args": {
                 "themeConfig": "120",
-                "MinMax": [0, 45]
+                "MinMax": [-16, 25]
             },
             "dataIndex": 2
         }
