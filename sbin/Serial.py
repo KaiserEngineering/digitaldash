@@ -41,9 +41,17 @@ class Serial():
 	    timeout=0.25
         )
         self.ser_val = [0, 0, 0, 0, 0, 0]
+        self.firmwareVerified = False
 
 
     def Start(self):
+
+        if self.firmwareVerified == False:
+            print("Requesting Firmware Version..")
+            firmware_request = [KE_CP_OP_CODES['KE_FIRMWARE_REQ'], 0x0A]
+            self.ser.write(firmware_request)
+            self.firmwareVerified = True
+
         """Loop for checking Serial connection for data."""
         # Handle grabbing data
         data_line = ''
@@ -67,7 +75,7 @@ class Serial():
         data_line = data_line[1:len(data_line)-1]
 
         if cmd == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
-            print(">> "  + rx_packet.decode() + "\n")
+            print(">> "  + data_line.decode() + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_POWER_DISABLE']:
             call("sudo nohup shutdown -h now", shell=True)
