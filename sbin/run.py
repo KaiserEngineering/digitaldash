@@ -9,10 +9,15 @@ import sys
 import os
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
-sys.path.append(os.getcwd())
-sys.path.append(os.getcwd() + '/lib')
-sys.path.append(os.getcwd() + '/etc')
-sys.path.append(os.getcwd() + '/KE')
+import re
+
+path_regex = re.compile('(.+)\/run\.py')
+path = path_regex.findall(os.path.abspath( __file__ ))[0]
+
+sys.path.append(os.path.join(path, '../'))
+sys.path.append(os.path.join(path, '../lib'))
+sys.path.append(os.path.join(path, '../etc'))
+sys.path.append(os.path.join(path, '../KE'))
 
 from DigitalDash.Test import Test
 from typing import NoReturn, List, TypeVar
@@ -22,7 +27,6 @@ run = False
 Data_Source = 0
 
 opts, args = getopt.getopt(sys.argv[1:],"tdf:",["test", "development", "file"])
-
 for opt, arg in opts:
     # test mode will not run GUI
     if ( opt == '--test' or opt == '-t'):
