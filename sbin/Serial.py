@@ -92,7 +92,7 @@ class Serial():
         return self.ser_val
 
     def UpdateRequirements(self, requirements):
-        pass
+        print("Updating requirements: " + str(requirements))
         # TODO Write byte data to micro
         # STUB string with encoding 'utf-8'
         # STUB arr = bytes(requirements, 'utf-8')
@@ -100,3 +100,6 @@ class Serial():
 
         # STUB Write our data to the micro
         # STUB ser.write(arr)
+
+    def PowerCycle(self):
+        pass

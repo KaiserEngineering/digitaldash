@@ -128,30 +128,41 @@ class DigitalDash(App):
 
     def build(self):
         """Perform main build loop for Kivy app."""
+        errors_seen = {}
         def loop(dt):
-            if (Data_Source):
-                # NOTE Does the start command need to be outside of this loop?
-                ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
-                # Check dynamic gauges before any alerts in case we make a change
-                for dynamic in sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True):
-                    my_callback = self.check_callback(dynamic, priority, data)
+            try:
+                if (Data_Source):
+                    # NOTE Does the start command need to be outside of this loop?
+                    ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
+                    # Check dynamic gauges before any alerts in case we make a change
+                    for dynamic in sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True):
+                        my_callback = self.check_callback(dynamic, priority, data)
 
-                    if(my_callback):
-                        if self.current == dynamic.index:
+                        if(my_callback):
+                            if self.current == dynamic.index:
+                                break
+                            self.change(self, my_callback)
                             break
-                        self.change(self, my_callback)
-                        break
 
-                for callback in sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True):
-                    my_callback = self.check_callback(callback, priority, data)
+                    for callback in sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True):
+                        my_callback = self.check_callback(callback, priority, data)
 
-                    if(my_callback):
-                        self.change(self, my_callback)
-                        break
+                        if(my_callback):
+                            self.change(self, my_callback)
+                            break
 
-                self.update_values(data)
+                    self.update_values(data)
+            except Exception as e:
+                e = str(e)
+                print("Error found in main application loop:" + e)
+                if e in errors_seen:
+                    errors_seen[e] = errors_seen[e] + 1
+                else:
+                    errors_seen[e] = 1
+
+                if errors_seen[e] >= 3:
+                    Data_Source.PowerCycle()
         # END LOOP
-
 
         # Our main application object
         self.app = AnchorLayout()
