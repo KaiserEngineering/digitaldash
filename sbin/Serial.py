@@ -38,8 +38,9 @@ class Serial():
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS,
-	    timeout=0.25
+	    timeout=0.1
         )
+        self.ser.flush()
         self.ser_val = [0, 0, 0, 0, 0, 0]
         self.firmwareVerified = False
 
@@ -84,7 +85,10 @@ class Serial():
             print(">> ACK" + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
+            positive_ack = [KE_CP_OP_CODES['KE_ACK'], 0x0A]
+            self.ser.write(positive_ack)
             print(data_line)
+            print("<< ACK" + "\n")
             count = 0
             data_line = data_line.decode('utf-8')
             for val in data_line.split(';'):
