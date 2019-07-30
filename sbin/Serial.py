@@ -1,6 +1,8 @@
 """Serial handler class."""
 import serial
 
+EOL = 0x0A
+
 KE_CP_OP_CODES = {
     'KE_RESERVED'                : 0x00,    # Reserved
     'KE_ACK'                     : 0x01,    # Positive acknowledgment
@@ -105,6 +107,8 @@ class Serial():
 
     def UpdateRequirements(self, requirements):
         print("Updating requirements: " + str(requirements))
+        pid_request = [ KE_CP_OP_CODES['KE_PID_STREAM_NEW'], 0x0C, 0x0B, 0x0A ]
+        self.ser.write( pid_request );
         # TODO Write byte data to micro
         # STUB string with encoding 'utf-8'
         # STUB arr = bytes(requirements, 'utf-8')
