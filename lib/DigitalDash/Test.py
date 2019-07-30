@@ -47,3 +47,5 @@ class Test():
     def UpdateRequirements(self, requirements):
         print("Updating requirements: " + str(requirements))
 
+    def PowerCycle(self):
+        print("Cycling power")
