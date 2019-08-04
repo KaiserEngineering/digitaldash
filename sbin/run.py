@@ -20,11 +20,7 @@ sys.path.append(os.getcwd())
 sys.path.append(os.getcwd() + '/lib')
 sys.path.append(os.getcwd() + '/etc')
 sys.path.append(os.getcwd() + '/KE')
-
-# sys.path.append(os.path.join(path, '../'))
-# sys.path.append(os.path.join(path, '../lib'))
-# sys.path.append(os.path.join(path, '../etc'))
-# sys.path.append(os.path.join(path, '../KE'))
+os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 
 from DigitalDash.Test import Test
 from typing import NoReturn, List, TypeVar
