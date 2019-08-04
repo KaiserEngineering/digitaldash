@@ -3,7 +3,7 @@
 import csv
 import DigitalDash
 from numpy import genfromtxt
-
+from kivy.logger import Logger
 
 class Test():
     """Test instance."""
@@ -48,4 +48,4 @@ class Test():
         print("Updating requirements: " + str(requirements))
 
     def PowerCycle(self):
-        print("Cycling power")
+        Logger.debug("Cycling power")

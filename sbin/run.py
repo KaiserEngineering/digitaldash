@@ -55,14 +55,15 @@ from kivy.app import App
 from kivy.properties import StringProperty
 from DigitalDash.Alert import Alert
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.logger import Logger
 
 try:
     import Serial
     serial = True
     Data_Source = Serial.Serial()
-    print("Using serial data source" + str(Data_Source))
+    Logger.info("Using serial data source" + str(Data_Source))
 except Exception as e:
-    print("Running without serial data: " + str(e))
+    Logger.info("Running without serial data: " + str(e))
     serial = False
 
 def on_config_change(self):
@@ -107,6 +108,7 @@ class MyHandler(PatternMatchingEventHandler):
     def on_created(self, event):
         self.process(event)
 
+
 DD = TypeVar('DD', bound='DigitalDash')
 class DigitalDash(App):
     """
@@ -150,7 +152,7 @@ class DigitalDash(App):
                     self.update_values(data)
             except Exception as e:
                 e = str(e)
-                print("Error found in main application loop:" + e)
+                Logger.error("["+str(dt)+"] Error found in main application loop: " +e)
                 if e in errors_seen:
                     errors_seen[e] = errors_seen[e] + 1
                 else:
@@ -216,6 +218,3 @@ class DigitalDash(App):
 
 if ( run ):
     DigitalDash().run()
-
-# FIXME Move Linear gauge up on Y-Axis to compensate for enclosure screen cut-off
-# TODO Add logging

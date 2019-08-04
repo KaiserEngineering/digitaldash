@@ -1,5 +1,6 @@
 """Serial handler class."""
 import serial
+from kivy.logger import Logger
 
 KE_CP_OP_CODES = {
     'KE_RESERVED'                : 0x00,    # Reserved
@@ -48,7 +49,7 @@ class Serial():
     def Start(self):
 
         if self.firmwareVerified == False:
-            print("Requesting Firmware Version..")
+            Logger.debug("Requesting Firmware Version..")
             firmware_request = [KE_CP_OP_CODES['KE_FIRMWARE_REQ'], 0x0A]
             self.ser.write(firmware_request)
             self.firmwareVerified = True
@@ -59,10 +60,9 @@ class Serial():
 
         try:
             data_line = self.ser.readline()
-            #print(data_line)
 
         except Exception as e:
-            print("Error occured when reading serial data: " + str(e))
+            Logger.error("Error occured when reading serial data: " + str(e))
 
         # There shall always be an opcode and EOL
         if ( len(data_line) < 2 ):
@@ -76,19 +76,19 @@ class Serial():
         data_line = data_line[1:len(data_line)-1]
 
         if cmd == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
-            print(">> "  + data_line.decode() + "\n")
+            Logger.info(">> "  + data_line.decode() + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_POWER_DISABLE']:
             call("sudo nohup shutdown -h now", shell=True)
 
         elif cmd == KE_CP_OP_CODES['KE_ACK']:
-            print(">> ACK" + "\n")
+            Logger.infor(">> ACK" + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
             positive_ack = [KE_CP_OP_CODES['KE_ACK'], 0x0A]
             self.ser.write(positive_ack)
-            print(data_line)
-            print("<< ACK" + "\n")
+            Logger.info(data_line)
+            Logger.info("<< ACK" + "\n")
             count = 0
             data_line = data_line.decode('utf-8')
             for val in data_line.split(';'):
@@ -104,7 +104,7 @@ class Serial():
         return self.ser_val
 
     def UpdateRequirements(self, requirements):
-        print("Updating requirements: " + str(requirements))
+        Logger.info("Updating requirements: " + str(requirements))
         # TODO Write byte data to micro
         # STUB string with encoding 'utf-8'
         # STUB arr = bytes(requirements, 'utf-8')
