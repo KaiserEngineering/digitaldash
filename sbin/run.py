@@ -22,13 +22,13 @@ sys.path.append(os.getcwd() + '/etc')
 sys.path.append(os.getcwd() + '/KE')
 os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 
-from DigitalDash.Test import Test
 from typing import NoReturn, List, TypeVar
 
 import getopt
 run = False
 Data_Source = 0
 
+from DigitalDash.Test import Test
 opts, args = getopt.getopt(sys.argv[1:],"tdf:",["test", "development", "file"])
 for opt, arg in opts:
     # test mode will not run GUI

@@ -49,7 +49,7 @@ class Serial():
     def Start(self):
 
         if self.firmwareVerified == False:
-            Logger.debug("Requesting Firmware Version..")
+            Logger.debug("GUI: Requesting Firmware Version..")
             firmware_request = [KE_CP_OP_CODES['KE_FIRMWARE_REQ'], 0x0A]
             self.ser.write(firmware_request)
             self.firmwareVerified = True
@@ -66,7 +66,7 @@ class Serial():
 
         # There shall always be an opcode and EOL
         if ( len(data_line) < 2 ):
-            print("Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
+            Logger.info("GUI: Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
             return self.ser_val
 
         # Get the command (Always the 1st byte)
@@ -76,19 +76,19 @@ class Serial():
         data_line = data_line[1:len(data_line)-1]
 
         if cmd == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
-            Logger.info(">> "  + data_line.decode() + "\n")
+            Logger.info("GUI: >> "  + data_line.decode() + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_POWER_DISABLE']:
             call("sudo nohup shutdown -h now", shell=True)
 
         elif cmd == KE_CP_OP_CODES['KE_ACK']:
-            Logger.infor(">> ACK" + "\n")
+            Logger.infor("GUI: >> ACK" + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
             positive_ack = [KE_CP_OP_CODES['KE_ACK'], 0x0A]
             self.ser.write(positive_ack)
             Logger.info(data_line)
-            Logger.info("<< ACK" + "\n")
+            Logger.info("GUI: << ACK" + "\n")
             count = 0
             data_line = data_line.decode('utf-8')
             for val in data_line.split(';'):
@@ -104,7 +104,8 @@ class Serial():
         return self.ser_val
 
     def UpdateRequirements(self, requirements):
-        Logger.info("Updating requirements: " + str(requirements))
+        pass
+        Logger.info("GUI: Updating requirements: " + str(requirements))
         # TODO Write byte data to micro
         # STUB string with encoding 'utf-8'
         # STUB arr = bytes(requirements, 'utf-8')
