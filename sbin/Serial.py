@@ -84,7 +84,7 @@ class Serial():
             call("sudo nohup shutdown -h now", shell=True)
 
         elif cmd == KE_CP_OP_CODES['KE_ACK']:
-            Logger.infor("GUI: >> ACK" + "\n")
+            Logger.info("GUI: >> ACK" + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
             positive_ack = [KE_CP_OP_CODES['KE_ACK'], 0x0A]
