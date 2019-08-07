@@ -15,7 +15,7 @@ Builder.load_string('''
     markup: True
     shorten_from: 'right'
     size_hint: 0.4, 0.5
-    pos_hint: {"x":.35, "y":0.6}
+    pos_hint: {"center_x": 0.50, "center_y": 0.8}
     halign: 'center'
     valign: 'middle'
     canvas.before:

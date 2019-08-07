@@ -2,6 +2,8 @@
 import serial
 from kivy.logger import Logger
 
+EOL = 0x0A
+
 KE_CP_OP_CODES = {
     'KE_RESERVED'                : 0x00,    # Reserved
     'KE_ACK'                     : 0x01,    # Positive acknowledgment
@@ -35,13 +37,13 @@ class Serial():
         super(Serial, self).__init__()
         self.ser = serial.Serial(
             port='/dev/ttyAMA0',
-            baudrate=57600,
+            baudrate=115200,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS,
-	    timeout=0.1
+	    timeout=1
         )
-        self.ser.flush()
+        self.ser.flushInput()
         self.ser_val = [0, 0, 0, 0, 0, 0]
         self.firmwareVerified = False
 
@@ -82,7 +84,7 @@ class Serial():
             call("sudo nohup shutdown -h now", shell=True)
 
         elif cmd == KE_CP_OP_CODES['KE_ACK']:
-            Logger.infor("GUI: >> ACK" + "\n")
+            Logger.info("GUI: >> ACK" + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
             positive_ack = [KE_CP_OP_CODES['KE_ACK'], 0x0A]
@@ -99,13 +101,16 @@ class Serial():
                 except ValueError:
                     print("Value error caught for: " + str(val))
                     count = count + 1
+            #self.ser_val[2] = self.ser.inWaiting()
+            self.ser.flushInput()
             return self.ser_val
 
         return self.ser_val
 
     def UpdateRequirements(self, requirements):
-        pass
         Logger.info("GUI: Updating requirements: " + str(requirements))
+        pid_request = [ KE_CP_OP_CODES['KE_PID_STREAM_NEW'], 0x03,  0x00, 0x0F, 0x00,  0x0B, 0x00,  0x33 ]
+        self.ser.write( pid_request );
         # TODO Write byte data to micro
         # STUB string with encoding 'utf-8'
         # STUB arr = bytes(requirements, 'utf-8')
