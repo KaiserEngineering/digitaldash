@@ -1,5 +1,6 @@
 """Serial handler class."""
 import serial
+from kivy.logger import Logger
 
 EOL = 0x0A
 
@@ -36,13 +37,13 @@ class Serial():
         super(Serial, self).__init__()
         self.ser = serial.Serial(
             port='/dev/ttyAMA0',
-            baudrate=57600,
+            baudrate=115200,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS,
-	    timeout=0.1
+	    timeout=1
         )
-        self.ser.flush()
+        self.ser.flushInput()
         self.ser_val = [0, 0, 0, 0, 0, 0]
         self.firmwareVerified = False
 
@@ -50,7 +51,7 @@ class Serial():
     def Start(self):
 
         if self.firmwareVerified == False:
-            print("Requesting Firmware Version..")
+            Logger.debug("GUI: Requesting Firmware Version..")
             firmware_request = [KE_CP_OP_CODES['KE_FIRMWARE_REQ'], 0x0A]
             self.ser.write(firmware_request)
             self.firmwareVerified = True
@@ -61,14 +62,13 @@ class Serial():
 
         try:
             data_line = self.ser.readline()
-            #print(data_line)
 
         except Exception as e:
-            print("Error occured when reading serial data: " + str(e))
+            Logger.error("Error occured when reading serial data: " + str(e))
 
         # There shall always be an opcode and EOL
         if ( len(data_line) < 2 ):
-            print("Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
+            Logger.info("GUI: Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
             return self.ser_val
 
         # Get the command (Always the 1st byte)
@@ -78,19 +78,19 @@ class Serial():
         data_line = data_line[1:len(data_line)-1]
 
         if cmd == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
-            print(">> "  + data_line.decode() + "\n")
+            Logger.info("GUI: >> "  + data_line.decode() + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_POWER_DISABLE']:
             call("sudo nohup shutdown -h now", shell=True)
 
         elif cmd == KE_CP_OP_CODES['KE_ACK']:
-            print(">> ACK" + "\n")
+            Logger.infor("GUI: >> ACK" + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
             positive_ack = [KE_CP_OP_CODES['KE_ACK'], 0x0A]
             self.ser.write(positive_ack)
-            print(data_line)
-            print("<< ACK" + "\n")
+            Logger.info(data_line)
+            Logger.info("GUI: << ACK" + "\n")
             count = 0
             data_line = data_line.decode('utf-8')
             for val in data_line.split(';'):
@@ -101,13 +101,15 @@ class Serial():
                 except ValueError:
                     print("Value error caught for: " + str(val))
                     count = count + 1
+            #self.ser_val[2] = self.ser.inWaiting()
+            self.ser.flushInput()
             return self.ser_val
 
         return self.ser_val
 
     def UpdateRequirements(self, requirements):
-        print("Updating requirements: " + str(requirements))
-        pid_request = [ KE_CP_OP_CODES['KE_PID_STREAM_NEW'], 0x0C, 0x0B, 0x0A ]
+        Logger.info("GUI: Updating requirements: " + str(requirements))
+        pid_request = [ KE_CP_OP_CODES['KE_PID_STREAM_NEW'], 0x03,  0x00, 0x0F, 0x00,  0x0B, 0x00,  0x33 ]
         self.ser.write( pid_request );
         # TODO Write byte data to micro
         # STUB string with encoding 'utf-8'

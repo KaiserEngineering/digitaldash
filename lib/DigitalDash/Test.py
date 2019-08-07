@@ -4,7 +4,7 @@ import csv
 import DigitalDash
 from numpy import genfromtxt
 
-
+# DO NOT USE Kivy.Logger for this file
 class Test():
     """Test instance."""
 

@@ -1,5 +1,6 @@
 """Mehtods for getting Config data."""
 import json
+from kivy.logger import Logger
 
 def layouts():
     """Get data from JSON."""
@@ -22,4 +23,3 @@ def getThemeConfig(theme):
         data_file.close()
 
     return jsonData
-
