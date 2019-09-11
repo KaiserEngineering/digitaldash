@@ -47,6 +47,7 @@ class Serial():
         self.ser_val = [0, 0, 0, 0, 0, 0]
         self.firmwareVerified = False
         self.currentByte = 0
+        self.rxBuffer = bytearray()
 
 
     def Start(self):
@@ -60,19 +61,29 @@ class Serial():
             time.sleep(1)
             # TODO: update if required
 
-        # Begin main serial loop
+        #====Begin main serial loop====
         
         # See if any bytes are in the buffer
         if self.ser.inWaiting() > 0:
-            self.rxByte = 0
+            rxByte = 0
             try:
-                self.rxByte = self.ser.read()
-                Logger.info("[MCU] Byte received " + str(self.rxByte))
+                # Read the byte in the buffer
+                rxByte = self.ser.read()
+
+                # Log the byte
+                Logger.info("[MCU] Byte received " + str(rxByte))
+
+                # Save the byte to the buffer
+                #self.rxBuffer.append( int(rxByte) )
+
+
+                # Check if it is the start of a new message
+                if rxByte == b'\xff':
+                    Logger.info( "[MCU] UART_SOL recieved")
+
+
             except Exception as e:
                 Logger.error( "Error occured when reading byte " + str(e))
-                
-            if self.rxByte == UART_SOL:
-                Logger.info("[MCU] UART_SOL Received")
 
         return self.ser_val
 
