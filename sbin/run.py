@@ -180,7 +180,7 @@ class DigitalDash(App):
         self.background.add_widget(self.containers[0])
         self.background.add_widget(self.alerts)
 
-        # We concider program start a config change since it is just loading
+        # We consider program start a config change since it is just loading
         # data from the config file
         on_config_change(self)
         Clock.schedule_interval(loop, 0)
