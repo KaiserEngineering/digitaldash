@@ -41,69 +41,37 @@ class Serial():
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS,
-	    timeout=1
+            timeout=1
         )
         self.ser.flushInput()
         self.ser_val = [0, 0, 0, 0, 0, 0]
         self.firmwareVerified = False
+        self.currentByte = 0
 
 
     def Start(self):
 
+        # Verify the firmware is up to date
         if self.firmwareVerified == False:
             Logger.debug("GUI: Requesting Firmware Version..")
             firmware_request = [KE_CP_OP_CODES['KE_FIRMWARE_REQ'], 0x0A]
             self.ser.write(firmware_request)
             self.firmwareVerified = True
+            time.sleep(1)
+            # TODO: update if required
 
-        """Loop for checking Serial connection for data."""
-        # Handle grabbing data
-        data_line = ''
-
-        try:
-            data_line = self.ser.readline()
-
-        except Exception as e:
-            Logger.error("Error occured when reading serial data: " + str(e))
-
-        # There shall always be an opcode and EOL
-        if ( len(data_line) < 2 ):
-            Logger.info("GUI: Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
-            return self.ser_val
-
-        # Get the command (Always the 1st byte)
-        cmd = data_line[0]
-
-        # Remove the command byte from the payload
-        data_line = data_line[1:len(data_line)-1]
-
-        if cmd == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
-            Logger.info("GUI: >> "  + data_line.decode() + "\n")
-
-        elif cmd == KE_CP_OP_CODES['KE_POWER_DISABLE']:
-            call("sudo nohup shutdown -h now", shell=True)
-
-        elif cmd == KE_CP_OP_CODES['KE_ACK']:
-            Logger.info("GUI: >> ACK" + "\n")
-
-        elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
-            positive_ack = [KE_CP_OP_CODES['KE_ACK'], 0x0A]
-            self.ser.write(positive_ack)
-            Logger.info(data_line)
-            Logger.info("GUI: << ACK" + "\n")
-            count = 0
-            data_line = data_line.decode('utf-8')
-            for val in data_line.split(';'):
-                try:
-                    val = float(val)
-                    self.ser_val[count] = val
-                    count = count + 1
-                except ValueError:
-                    print("Value error caught for: " + str(val))
-                    count = count + 1
-            #self.ser_val[2] = self.ser.inWaiting()
-            self.ser.flushInput()
-            return self.ser_val
+        # Begin main serial loop
+        
+        # See if any bytes are in the buffer
+        if ( self.ser.inWaiting() > 0 ):
+            rxByte = 0
+            try:
+                rxByte = self.ser.read()
+            except Exception as e:
+                Logger.error( "Error occured when reading byte " + str(e))
+                
+            if ( rxByte == UART_SOL ):
+                Logger.info("[MCU] UART_SOL Received")
 
         return self.ser_val
 
