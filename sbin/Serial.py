@@ -63,14 +63,15 @@ class Serial():
         # Begin main serial loop
         
         # See if any bytes are in the buffer
-        if ( self.ser.inWaiting() > 0 ):
-            rxByte = 0
+        if self.ser.inWaiting() > 0:
+            self.rxByte = 0
             try:
-                rxByte = self.ser.read()
+                self.rxByte = self.ser.read()
+                Logger.info("[MCU] Byte received " + str(self.rxByte))
             except Exception as e:
                 Logger.error( "Error occured when reading byte " + str(e))
                 
-            if ( rxByte == UART_SOL ):
+            if self.rxByte == UART_SOL:
                 Logger.info("[MCU] UART_SOL Received")
 
         return self.ser_val
