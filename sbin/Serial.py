@@ -109,8 +109,8 @@ class Serial():
 
     def UpdateRequirements(self, requirements):
         Logger.info("GUI: Updating requirements: " + str(requirements))
-        pid_request = [ KE_CP_OP_CODES['KE_PID_STREAM_NEW'], 0x03,  0x00, 0x0F, 0x00,  0x0B, 0x00,  0x33 ]
-        self.ser.write( pid_request );
+        pid_request = [ UART_SOL , 0x07, KE_CP_OP_CODES['KE_PID_STREAM_NEW'],  0x00, 0x0C, 0x00, 0x33 ]
+        #self.ser.write( pid_request );
         # TODO Write byte data to micro
         # STUB string with encoding 'utf-8'
         # STUB arr = bytes(requirements, 'utf-8')
