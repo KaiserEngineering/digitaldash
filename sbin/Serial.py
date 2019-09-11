@@ -47,7 +47,8 @@ class Serial():
         self.ser_val = [0, 0, 0, 0, 0, 0]
         self.firmwareVerified = False
         self.currentByte = 0
-        self.rxBuffer = bytearray()
+        self.rxBuffer = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.firmwareVersion = ""
 
 
     def Start(self):
@@ -68,19 +69,29 @@ class Serial():
             rxByte = 0
             try:
                 # Read the byte in the buffer
-                rxByte = self.ser.read()
+                rxByte = self.ser.read(1)
 
                 # Log the byte
                 Logger.info("[MCU] Byte received " + str(rxByte))
 
-                # Save the byte to the buffer
-                #self.rxBuffer.append( int(rxByte) )
-
-
                 # Check if it is the start of a new message
                 if rxByte == b'\xff':
+                    self.currentByte = 0
                     Logger.info( "[MCU] UART_SOL recieved")
 
+                # Save the byte to the buffer
+                self.rxBuffer[ self.currentByte ] = rxByte
+
+                # Increment the byte count
+                self.currentByte = self.currentByte + 1
+
+                # Show the current buffer
+                if self.currentByte == int.from_bytes( self.rxBuffer[UART_PCKT_LEN_POS], "big"  ):
+                #if hex(self.currentByte) == self.rxBuffer[UART_PCKT_LEN_POS]:
+                    Logger.info("[RX BUFFER] " + str( self.rxBuffer ) )
+                    if int.from_bytes( self.rxBuffer[UART_PCKT_CMD_POS], "big") == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
+                        firmware = self.rxBuffer[UART_PCKT_DATA_START_POS:self.currentByte]
+                        Logger.info("[MCU] Firmware Report " + str(firmware) )
 
             except Exception as e:
                 Logger.error( "Error occured when reading byte " + str(e))
