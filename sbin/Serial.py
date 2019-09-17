@@ -100,15 +100,34 @@ class Serial():
 
     def UpdateRequirements(self, requirements):
         Logger.info("GUI: Updating requirements: " + str(requirements))
-        pid_request = [ UART_SOL , 0x07, KE_CP_OP_CODES['KE_PID_STREAM_NEW'],  0x00, 0x0C, 0x00, 0x33 ]
-        #self.ser.write( pid_request );
-        # TODO Write byte data to micro
-        # STUB string with encoding 'utf-8'
-        # STUB arr = bytes(requirements, 'utf-8')
-        # STUB print(arr)
+        bytes_written = self.ser.write( [ UART_SOL , 0x07, KE_CP_OP_CODES['KE_PID_STREAM_NEW'],  0x00, 0x0C, 0x00, 0x33 ] );
 
-        # STUB Write our data to the micro
-        # STUB ser.write(arr)
+        msg = "PIDs updated " + str( bytes_written ) + " written"
+        Logger.info( msg )
 
-    def PowerCycle(self):
-        pass
+        return( 1, msg )
+
+    def InitializeHardware( self ):
+        """
+            Handle making sure that our hardware is initialized and
+            it is safe to start the main application loop.
+        """
+        Logger.info( "GUI: Initializing hardware" )
+
+        # STUB FOR @MATT
+            # Add firmware check here
+        # END STUB
+
+        return ( True, "Hardware: Successfully initiated hardware" )
+
+    def ResetHardware( self ):
+        """
+            Re-run the hardware initialize function.
+        """
+
+        # STUB FOR @MATT
+            # Reboot the hardware here
+        # END STUB
+
+        # After reboot attempt to initialize the hardware again
+        return ( self.InitializeHardware() )
