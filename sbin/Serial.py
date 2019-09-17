@@ -41,7 +41,7 @@ class Serial():
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS,
-            timeout=1
+            timeout=5
         )
         self.ser.flushInput()
         self.ser_val = [0, 0, 0, 0, 0, 0]
@@ -73,6 +73,8 @@ class Serial():
             Logger.info("GUI: Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
             return self.ser_val
 
+        #Logger.info("RAW DATA: " +  str(data_line) )
+
         # Get the command (Always the 1st byte)
         cmd = data_line[ UART_PCKT_CMD_POS ]
 
@@ -91,7 +93,7 @@ class Serial():
         elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
             positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
             self.ser.write(positive_ack)
-            Logger.info(data_line)
+            Logger.info("Clipped Data: " + str(data_line))
             Logger.info("GUI: << ACK" + "\n")
             count = 0
             data_line = data_line.decode('utf-8')
@@ -104,7 +106,7 @@ class Serial():
                     print("Value error caught for: " + str(val))
                     count = count + 1
             #self.ser_val[2] = self.ser.inWaiting()
-            self.ser.flushInput()
+            #self.ser.flushInput()
             return self.ser_val
 
         return self.ser_val
