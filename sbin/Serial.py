@@ -45,10 +45,7 @@ class Serial():
         )
         self.ser.flushInput()
         self.ser_val = [0, 0, 0, 0, 0, 0]
-        self.firmwareVerified = False
-        self.currentByte = 0
-        self.rxBuffer = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        self.firmwareVersion = ""
+        self.firmwareVerified = True #False to do a firmware request
 
 
     def Start(self):
@@ -60,41 +57,55 @@ class Serial():
             self.ser.write(firmware_request)
             self.firmwareVerified = True
             time.sleep(1)
-            # TODO: update if required
 
-        #====Begin main serial loop====
-        
-        # See if any bytes are in the buffer
-        if self.ser.inWaiting() > 0:
-            rxByte = 0
-            try:
-                # Read the byte in the buffer
-                rxByte = self.ser.read(1)
+        """Loop for checking Serial connection for data."""
+        # Handle grabbing data
+        data_line = ''
 
-                # Log the byte
-                Logger.info("[MCU] Byte received " + str(rxByte))
+        try:
+            data_line = self.ser.readline()
 
-                # Check if it is the start of a new message
-                if rxByte == b'\xff':
-                    self.currentByte = 0
-                    Logger.info( "[MCU] UART_SOL recieved")
+        except Exception as e:
+            Logger.error("Error occured when reading serial data: " + str(e))
 
-                # Save the byte to the buffer
-                self.rxBuffer[ self.currentByte ] = rxByte
+        # There shall always be an opcode and EOL
+        if ( len(data_line) < 2 ):
+            Logger.info("GUI: Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
+            return self.ser_val
 
-                # Increment the byte count
-                self.currentByte = self.currentByte + 1
+        # Get the command (Always the 1st byte)
+        cmd = data_line[ UART_PCKT_CMD_POS ]
 
-                # Show the current buffer
-                if self.currentByte == int.from_bytes( self.rxBuffer[UART_PCKT_LEN_POS], "big"  ):
-                #if hex(self.currentByte) == self.rxBuffer[UART_PCKT_LEN_POS]:
-                    Logger.info("[RX BUFFER] " + str( self.rxBuffer ) )
-                    if int.from_bytes( self.rxBuffer[UART_PCKT_CMD_POS], "big") == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
-                        firmware = self.rxBuffer[UART_PCKT_DATA_START_POS:self.currentByte]
-                        Logger.info("[MCU] Firmware Report " + str(firmware) )
+        # Remove the command byte from the payload
+        data_line = data_line[ UART_PCKT_DATA_START_POS :len(data_line) - 1 ]
 
-            except Exception as e:
-                Logger.error( "Error occured when reading byte " + str(e))
+        if cmd == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
+            Logger.info("GUI: >> [FIRMWARE VERSION] "  + data_line.decode() + "\n")
+
+        elif cmd == KE_CP_OP_CODES['KE_POWER_DISABLE']:
+            call("sudo nohup shutdown -h now", shell=True)
+
+        elif cmd == KE_CP_OP_CODES['KE_ACK']:
+            Logger.info("GUI: >> ACK RX'd" + "\n")
+
+        elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
+            positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
+            self.ser.write(positive_ack)
+            Logger.info(data_line)
+            Logger.info("GUI: << ACK" + "\n")
+            count = 0
+            data_line = data_line.decode('utf-8')
+            for val in data_line.split(';'):
+                try:
+                    val = float(val)
+                    self.ser_val[count] = val
+                    count = count + 1
+                except ValueError:
+                    print("Value error caught for: " + str(val))
+                    count = count + 1
+            #self.ser_val[2] = self.ser.inWaiting()
+            self.ser.flushInput()
+            return self.ser_val
 
         return self.ser_val
 
