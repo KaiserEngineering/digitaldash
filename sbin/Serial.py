@@ -1,8 +1,13 @@
 """Serial handler class."""
 import serial
+import time
 from kivy.logger import Logger
 
-EOL = 0x0A
+UART_SOL                 = 0xFF
+UART_PCKT_SOL_POS        = 0x00
+UART_PCKT_LEN_POS        = 0x01
+UART_PCKT_CMD_POS        = 0x02
+UART_PCKT_DATA_START_POS = 0x03
 
 KE_CP_OP_CODES = {
     'KE_RESERVED'                : 0x00,    # Reserved
@@ -37,7 +42,7 @@ class Serial():
         super(Serial, self).__init__()
         self.ser = serial.Serial(
             port='/dev/ttyAMA0',
-            baudrate=115200,
+            baudrate=57600,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS,
@@ -52,8 +57,8 @@ class Serial():
 
         # Verify the firmware is up to date
         if self.firmwareVerified == False:
-            Logger.debug("GUI: Requesting Firmware Version..")
-            firmware_request = [KE_CP_OP_CODES['KE_FIRMWARE_REQ'], 0x0A]
+            Logger.info("GUI: Requesting Firmware Version..")
+            firmware_request = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_FIRMWARE_REQ']]
             self.ser.write(firmware_request)
             self.firmwareVerified = True
             time.sleep(1)
