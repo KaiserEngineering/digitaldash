@@ -161,5 +161,9 @@ class Serial():
           Reboot the Raspberry Pi
        """
        ke_power_cycle = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_POWER_CYCLE']]
-       self.ser.write(ke_power_cycle)
+       ret = self.ser.write(ke_power_cycle)
 
+       msg = "Wrote : " + str(ret) + " bytes for power cycle"
+
+       Logger.info( msg )
+       return ( ret, msg )

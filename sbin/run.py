@@ -159,7 +159,9 @@ class DigitalDash(App):
                     errors_seen[e] = 1
 
                 if errors_seen[e] >= 3:
-                    Data_Source.PowerCycle()
+                    (ret, msg) = Data_Source.PowerCycle()
+                    if ( not ret ):
+                        Logger.error( msg )
         # END LOOP
 
         # Our main application object
