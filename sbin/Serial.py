@@ -30,7 +30,7 @@ KE_CP_OP_CODES = {
     'KE_USB_POWER_CYCLE'         : 0x11,    # Power cycle the USB power
     'KE_POWER_ENABLE'            : 0x12,    # Enable Power
     'KE_POWER_DISABLE'           : 0x13,    # Disable Power
-    'KE_POWER_POWER_CYCLE'       : 0x14,    # Power cycle
+    'KE_POWER_CYCLE'             : 0x14,    # Power cycle
     'KE_FIRMWARE_REQ'            : 0x15,    # Request firmware version
     'KE_FIRMWARE_REPORT'         : 0x16,    # Report firmware version
     'KE_FIRMWARE_UPDATE'         : 0x17     # Place device in firmware update mode
@@ -155,3 +155,11 @@ class Serial():
 
         # After reboot attempt to initialize the hardware again
         return ( self.InitializeHardware() )
+
+    def PowerCycle( self ):
+       """
+          Reboot the Raspberry Pi
+       """
+       ke_power_cycle = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_POWER_CYCLE']]
+       self.ser.write(ke_power_cycle)
+
