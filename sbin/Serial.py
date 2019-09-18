@@ -55,14 +55,6 @@ class Serial():
 
     def Start(self):
 
-        # Verify the firmware is up to date
-        #if self.firmwareVerified == False:
-        #    Logger.info("GUI: Requesting Firmware Version..")
-        #    firmware_request = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_FIRMWARE_REQ']]
-        #    self.ser.write(firmware_request)
-        #    self.firmwareVerified = True
-        #    time.sleep(1)
-
         """L1612773-4oop for checking Serial connection for data."""
         # Handle grabbing data
         data_line = ''
@@ -132,17 +124,23 @@ class Serial():
         """
         Logger.info( "GUI: Initializing hardware" )
 
-        # STUB FOR @MATT
         while self.firmwareVerified != True:
             Logger.info("GUI: Requesting Firmware Version..")
             firmware_request = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_FIRMWARE_REQ']]
             self.ser.write(firmware_request)
+
+            # Wait for the MCU to receive the request and respond
             time.sleep(1)
             data_line = self.ser.readline()
+
             # Remove the command byte from the payload
             data_line = data_line[ UART_PCKT_DATA_START_POS :len(data_line) - 1 ]
             Logger.info("GUI: Firmware Version Received: " +  data_line.decode() )
-        # END STUB
+            if data_line.decode() == "1.0.0":
+                Logger.info("Firmware Up To Date")
+                self.firmwareVerified = True
+            else :
+                Logger.info("Firmware Update Required")
 
         return ( True, "Hardware: Successfully initiated hardware" )
 
