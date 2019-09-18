@@ -188,13 +188,6 @@ class DigitalDash(App):
                         Logger.error( "Hardware: Hardware restart attempt: #"+str(count)+" failed: " + msg )
             else:
                 Logger.info( msg )
-
-
-            # After we intialize we can send our requirements list
-            (ret, msg) = Data_Source.UpdateRequirements(self.pids)
-            if ( not ret ):
-                Logger.error(msg)
-
             self.data_source = Data_Source
 
         self.app.add_widget(self.background)
@@ -209,6 +202,11 @@ class DigitalDash(App):
         observer = Observer()
         observer.schedule(MyHandler(self), 'etc/', recursive=True)
         observer.start()
+
+        # After we intialize we can send our requirements list
+        (ret, msg) = Data_Source.UpdateRequirements(self.pids)
+        if ( not ret ):
+            Logger.error(msg)
 
         return self.app
 
