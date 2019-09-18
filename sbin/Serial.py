@@ -50,20 +50,20 @@ class Serial():
         )
         self.ser.flushInput()
         self.ser_val = [0, 0, 0, 0, 0, 0]
-        self.firmwareVerified = True #False to do a firmware request
+        self.firmwareVerified = False  #False to do a firmware request
 
 
     def Start(self):
 
         # Verify the firmware is up to date
-        if self.firmwareVerified == False:
-            Logger.info("GUI: Requesting Firmware Version..")
-            firmware_request = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_FIRMWARE_REQ']]
-            self.ser.write(firmware_request)
-            self.firmwareVerified = True
-            time.sleep(1)
+        #if self.firmwareVerified == False:
+        #    Logger.info("GUI: Requesting Firmware Version..")
+        #    firmware_request = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_FIRMWARE_REQ']]
+        #    self.ser.write(firmware_request)
+        #    self.firmwareVerified = True
+        #    time.sleep(1)
 
-        """Loop for checking Serial connection for data."""
+        """L1612773-4oop for checking Serial connection for data."""
         # Handle grabbing data
         data_line = ''
 
@@ -133,7 +133,15 @@ class Serial():
         Logger.info( "GUI: Initializing hardware" )
 
         # STUB FOR @MATT
-            # Add firmware check here
+        while self.firmwareVerified != True:
+            Logger.info("GUI: Requesting Firmware Version..")
+            firmware_request = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_FIRMWARE_REQ']]
+            self.ser.write(firmware_request)
+            time.sleep(1)
+            data_line = self.ser.readline()
+            # Remove the command byte from the payload
+            data_line = data_line[ UART_PCKT_DATA_START_POS :len(data_line) - 1 ]
+            Logger.info("GUI: Firmware Version Received: " +  data_line.decode() )
         # END STUB
 
         return ( True, "Hardware: Successfully initiated hardware" )
