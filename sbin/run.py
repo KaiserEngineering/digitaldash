@@ -124,6 +124,12 @@ class DigitalDash(App):
 
     background_source = StringProperty()
 
+    def on_start(self):
+        if ( Data_Source and type(Data_Source) != Test ):
+            (ret, msg) = Data_Source.UpdateRequirements( self.pids )
+            if ( not ret ):
+                Logger.error( msg )
+
     def build(self):
         """Perform main build loop for Kivy app."""
         errors_seen = {}
@@ -204,11 +210,6 @@ class DigitalDash(App):
         observer = Observer()
         observer.schedule(MyHandler(self), 'etc/', recursive=True)
         observer.start()
-
-        # After we intialize we can send our requirements list
-        (ret, msg) = Data_Source.UpdateRequirements(self.pids)
-        if ( not ret ):
-            Logger.error(msg)
 
         return self.app
 
