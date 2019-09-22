@@ -124,6 +124,12 @@ class DigitalDash(App):
 
     background_source = StringProperty()
 
+    def on_start(self):
+        if ( Data_Source and type(Data_Source) != Test ):
+            (ret, msg) = Data_Source.UpdateRequirements( self.pids )
+            if ( not ret ):
+                Logger.error( msg )
+
     def build(self):
         """Perform main build loop for Kivy app."""
         errors_seen = {}
@@ -159,7 +165,9 @@ class DigitalDash(App):
                     errors_seen[e] = 1
 
                 if errors_seen[e] >= 3:
-                    Data_Source.PowerCycle()
+                    (ret, msg) = Data_Source.PowerCycle()
+                    if ( not ret ):
+                        Logger.error( msg )
         # END LOOP
 
         # Our main application object
@@ -171,9 +179,23 @@ class DigitalDash(App):
         (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
         # Send our PIDs to the micro
-        if ( Data_Source ):
-            Data_Source.UpdateRequirements(self.pids)
+        if ( Data_Source and type(Data_Source) != Test ):
+            #Initialize our hardware set-up and verify everything is peachy
+            (ret, msg) = Data_Source.InitializeHardware();
 
+            if ( not ret ):
+                Logger.error("Hardware: Could not initialize hardware: " + msg)
+                count = 0
+                # Loop in the restart process until we succeed
+                while ( not ret and count < 3 ):
+                    Logger.error("Hardware: Running hardware restart, attempt :#" + str(count))
+                    (ret, msg) = Data_Source.InitializeHardware()
+
+                    if ( not ret ):
+                        count = count + 1
+                        Logger.error( "Hardware: Hardware restart attempt: #"+str(count)+" failed: " + msg )
+            else:
+                Logger.info( msg )
             self.data_source = Data_Source
 
         self.app.add_widget(self.background)
