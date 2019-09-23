@@ -2,6 +2,7 @@
 import serial
 import time
 from kivy.logger import Logger
+from subprocess import call
 
 UART_SOL                 = 0xFF
 UART_PCKT_SOL_POS        = 0x00
@@ -82,6 +83,9 @@ class Serial():
             Logger.info("GUI: >> [FIRMWARE VERSION] "  + data_line.decode() + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_POWER_DISABLE']:
+            Logger.info("SYS: Shutdown received")
+            positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
+            self.ser.write(positive_ack)
             call("sudo nohup shutdown -h now", shell=True)
 
         elif cmd == KE_CP_OP_CODES['KE_ACK']:
