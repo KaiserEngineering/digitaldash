@@ -46,6 +46,13 @@ class Test():
 
     def UpdateRequirements(self, requirements):
         print("Updating requirements: " + str(requirements))
+        return (1, "PIDs updated")
 
-    def PowerCycle(self):
-        print("Cycling power")
+    def InitializeHardware( self ):
+        return ( 1, "Hardware initialized" )
+
+    def ResetHardware( self ):
+        return ( 1, "Reset hardware" )
+
+    def PowerCycle( self ):
+       return ( 1, 'Power cycle' )

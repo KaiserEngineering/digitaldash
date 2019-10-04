@@ -125,10 +125,9 @@ class DigitalDash(App):
     background_source = StringProperty()
 
     def on_start(self):
-        if ( Data_Source and type(Data_Source) != Test ):
-            (ret, msg) = Data_Source.UpdateRequirements( self.pids )
-            if ( not ret ):
-                Logger.error( msg )
+        (ret, msg) = Data_Source.UpdateRequirements( self.pids )
+        if ( not ret ):
+            Logger.error( msg )
 
     def build(self):
         """Perform main build loop for Kivy app."""
