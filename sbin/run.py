@@ -25,8 +25,8 @@ os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 from typing import NoReturn, List, TypeVar
 
 import getopt
-run = False
-Data_Source = 0
+run             = False
+Data_Source     = False
 
 from DigitalDash.Test import Test
 opts, args = getopt.getopt(sys.argv[1:],"tdf:",["test", "development", "file"])
@@ -124,17 +124,17 @@ class DigitalDash(App):
 
     background_source = StringProperty()
 
-    def on_start(self):
-        (ret, msg) = Data_Source.UpdateRequirements( self.pids )
-        if ( not ret ):
-            Logger.error( msg )
-
     def build(self):
         """Perform main build loop for Kivy app."""
         errors_seen = {}
         def loop(dt):
             try:
                 if (Data_Source):
+                    if ( self.first_iteration ):
+                        (ret, msg) = Data_Source.UpdateRequirements( self.pids )
+                        if ( not ret ):
+                            Logger.error( msg )
+                        self.first_iteration = False
                     # NOTE Does the start command need to be outside of this loop?
                     ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
                     # Check dynamic gauges before any alerts in case we make a change
@@ -177,7 +177,6 @@ class DigitalDash(App):
 
         (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
-        # Send our PIDs to the micro
         if ( Data_Source and type(Data_Source) != Test ):
             #Initialize our hardware set-up and verify everything is peachy
             (ret, msg) = Data_Source.InitializeHardware();
@@ -197,6 +196,7 @@ class DigitalDash(App):
                 Logger.info( msg )
             self.data_source = Data_Source
 
+        self.first_iteration = True
         self.app.add_widget(self.background)
         self.background.add_widget(self.containers[0])
         self.background.add_widget(self.alerts)
