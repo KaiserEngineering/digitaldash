@@ -29,7 +29,7 @@ class Alert(KELabel):
         :param Label: Kivy label class
     """
 
-    def __init__(self, args):
+    def __init__(self, **args):
         """
         Create Alert widget.
             :param self: KE Alert object
@@ -42,7 +42,8 @@ class Alert(KELabel):
                     message   : <String>,
                 }
         """
-        super(Alert, self).__init__(args)
+        super(Alert, self).__init__(**args)
+
         self.value     = args['value']
         self.op        = args['op']
         self.index     = args['index']

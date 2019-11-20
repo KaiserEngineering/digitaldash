@@ -35,6 +35,7 @@ class Base(object):
         pass
 
     def SetStep(self) -> NoReturn:
+        """Method for setting the step size for rotation/moving widgets."""
         self.step = self.degrees / (abs(self.min) + abs(self.max))
 
     def SetAttrs(self, *args) -> NoReturn:
@@ -49,15 +50,20 @@ class Needle(Base):
     def SetStep(self) -> NoReturn:
         self.step = self.degrees / (abs(self.min) + abs(self.max))
 
-    def SetAttrs(self, path: str, args, themeArgs) -> NoReturn:
+    def SetAttrs(self, **args) -> NoReturn:
         """Set basic attributes for widget."""
-        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs.get('degrees', 0)),
-                                                           float(args['MinMax'][0]), float(args['MinMax'][1]))
+        theme = args.get('themeConfig', {'degrees': 0, 'MinMax': [-9999, 9999]})
+        
+        (self.source, self.degrees, self.min, self.max) = (
+            args.get('path', '') + 'needle.png',
+            float(theme['degrees']),
+            theme['MinMax'][0],
+            theme['MinMax'][1]
+        )
 
     def setData(self, value='') -> NoReturn:
         """
         Abstract setData method most commonly used.
-        Override it in Metaclass below if needed differently
             :param self: Widget Object
             :param value: Update value for gauge needle
         """
@@ -81,13 +87,15 @@ class AbstractWidget(Base):
         Create widgets for Dial.
             :param **ARGS: 
         """
-        args             = ARGS['args']
-        path             = args['path']
+        args = {}
+
         self.container   = ARGS['container']
         self.Layout      = RelativeLayout()
 
-        args['args']['PID'] = ARGS['pids'][args['dataIndex']]
-        self.Layout.id = "Widgets-Layout-" + ARGS['pids'][args['dataIndex']]
+        args['PID']  = ARGS['pids'][ARGS['dataIndex']]
+        args['path'] = ARGS['path']
+
+        self.Layout.id = "Widgets-Layout-" + args['PID']
 
         def ChangeAttr(self, _instance):
             for child in self.children:
@@ -97,17 +105,16 @@ class AbstractWidget(Base):
         self.Layout.bind(size=ChangeAttr, pos=ChangeAttr)
 
         # Import theme specifc Config
-        themeConfig = Config.getThemeConfig(args['module'] + '/' + args['args']['themeConfig'])
+        themeConfig = Config.getThemeConfig(ARGS['module'] + '/' + ARGS['args']['themeConfig'])
+        args['themeConfig'] = {**ARGS['args'], **themeConfig}
 
-        gauge = Gauge(path, args)
+        gauge = Gauge(**args)
         if gauge._coreimage:
             self.Layout.add_widget(gauge)
 
-        needleType = args['module']
-        needle = globals()['Needle' + needleType](path,
-                                                  args['args'], themeConfig)
+        needle = globals()['Needle' + ARGS['module']](**args)
 
-        needle.dataIndex = args['dataIndex']
+        needle.dataIndex = ARGS['dataIndex']
 
         # Adding widgets that get updated with data
         self.liveWidgets.append(needle)
@@ -122,11 +129,11 @@ class AbstractWidget(Base):
         labels = []
         # Create our labels
         for labelConfig in themeConfig['labels']:
-            labelConfig['dataIndex'] = args['dataIndex']
-            labelConfig['PID'] = ARGS['pids'][args['dataIndex']]
+            labelConfig['dataIndex'] = ARGS['dataIndex']
+            labelConfig['PID'] = ARGS['pids'][ARGS['dataIndex']]
 
             # Create Label widget
-            label = KELabel(labelConfig)
+            label = KELabel(**labelConfig)
             labels.append(label)
 
             # Add to data recieving widgets
@@ -152,10 +159,10 @@ class Gauge(Base, AsyncImage):
         :param MetaWidget: <DigitalDash.Components.Gauge>
     """
 
-    def __init__(self, path, args):
+    def __init__(self, **args):
         """Initite Gauge Widget."""
         super(Gauge, self).__init__()
-        self.source = path + 'gauge.png'
+        self.source = args.get('path', '') + 'gauge.png'
         self.id     = "Gauge-" + args.get('PID', '')
 
     def SetOffset(self: G) -> NoReturn:
@@ -167,11 +174,6 @@ class Gauge(Base, AsyncImage):
 
     def SetStep(self: G) -> NoReturn:
         self.step = self.degrees / (abs(self.min) + abs(self.max))
-
-    def SetAttrs(self: G, path: str, args, themeArgs) -> NoReturn:
-        """Set basic attributes for widget."""
-        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs.get('degrees', 0)),
-                                                           float(args['MinMax'][0]), float(args['MinMax'][1]))
 
 
 KL = TypeVar('KL', bound='KELabel')
@@ -188,7 +190,7 @@ class KELabel(Base, Label):
     be replaced with the PID name for the data index the label is for.
     """
 
-    def __init__(self, args):
+    def __init__(self, **args):
         """Intiate Label widget."""
         super(KELabel, self).__init__()
         self.default = args.get('default', '')
@@ -247,6 +249,7 @@ Builder.load_string('''
     canvas.after:
         PopMatrix
 ''')
+
 class NeedleRadial(Needle, AsyncImage):
     """
     Create Needle widget.
@@ -261,13 +264,11 @@ class NeedleRadial(Needle, AsyncImage):
 
     update = NumericProperty()
 
-    def __init__(self, path, args, themeArgs):
+    def __init__(self, **kwargs):
         """Initiate Needle widget."""
         super(NeedleRadial, self).__init__()
-        self.degrees = 0
-        self.id      = "Radial-Needle-" + args['PID']
-
-        self.SetAttrs(path, args, themeArgs)
+        self.id      = "Radial-Needle-" + kwargs.get('PID', 'None')
+        self.SetAttrs(**kwargs)
         self.update  = self.degrees / 2
 
 
@@ -295,6 +296,7 @@ Builder.load_string('''
             size: self.update, 10000
         StencilPop
 ''')
+
 class NeedleLinear(Needle, StencilView):
     """
     Create Needle widget.
@@ -314,12 +316,11 @@ class NeedleLinear(Needle, StencilView):
     b = NumericProperty()
     a = NumericProperty()
 
-    def __init__(self, path, args, themeArgs):
-        """Create Linear Slider."""
+    def __init__(self, path='', args={}, **kwargs):
         super(NeedleLinear, self).__init__()
-        self.SetAttrs(path, args, themeArgs)
+        self.SetAttrs(**kwargs)
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
-        self.id = "Linear-Needle-" + args['PID']
+        self.id = "Linear-Needle-" + kwargs.get('PID', 'None')
 
     def AttrChange(self):
         self.SetStep()
@@ -357,21 +358,20 @@ Builder.load_string('''
             angle_end: self.angle_start + self.update
         StencilPop
 ''')
+
 class NeedleEllipse(Needle, Widget):
     """
     Create Ellipse widget.
-
-        :param MetaWidget: <DigitalDash.Components.NeedleEllipse>
     """
     update       = NumericProperty()
     source       = StringProperty()
     degrees      = NumericProperty()
     angle_start  = NumericProperty()
 
-    def __init__(self, path, args, themeArgs):
+    def __init__(self, path='', args={}, themeArgs={"angle_start": 0}, **kwargs):
         super(NeedleEllipse, self).__init__()
-        self.SetAttrs(path, args, themeArgs)
-        self.id = "Ellipse-Needle-" + args['PID']
+        self.SetAttrs(**kwargs)
+        self.id = "Ellipse-Needle-" + args.get('PID', 'None')
 
         self.angle_start = themeArgs['angle_start']
         self.SetOffset()

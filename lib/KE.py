@@ -57,7 +57,7 @@ def setup():
             for alert in view[1]['alerts']:
                 alert['index'] = len(callbacks[view_count]) + \
                     1 if view_count in callbacks else 1
-                callbacks.setdefault(view_count, []).append(Alert(alert))
+                callbacks.setdefault(view_count, []).append(Alert(**alert))
         else:
             callbacks.setdefault(view_count, [])
 
@@ -72,9 +72,7 @@ def setup():
                 mod = globals()[widget['module']]()
             except KeyError:
                 mod = AbstractWidget()
-
-            ObjectsToUpdate.append(mod.build(container=container,
-                                             args=widget, pids=pids))
+            ObjectsToUpdate.append(mod.build(container=container, **widget, pids=pids))
 
         containers.append(container)
         ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
