@@ -1,8 +1,5 @@
 """Massages values being passed to gauges to smooth them."""
 
-import DigitalDash
-
-
 class Massager():
     """
     Main massager class, use to massage values.

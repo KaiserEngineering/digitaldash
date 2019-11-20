@@ -3,13 +3,15 @@ Create DigitalDash.
 
 Main module for creating the DigitalDash!
 """
-from DigitalDash.Abstractor import AbstractWidget
+from lib.DigitalDash.Base import AbstractWidget
+from lib.DigitalDash.Base import Base
+from lib.DigitalDash.Components import Clock, Rally
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout
 from etc import Config
-from DigitalDash.Dynamic import Dynamic
-from DigitalDash.Alert import Alert
+from lib.DigitalDash.Dynamic import Dynamic
+from lib.DigitalDash.Alert import Alert
 
 from kivy.lang import Builder
 Builder.load_string('''
@@ -64,7 +66,13 @@ def setup():
         layout = layouts()
 
         for widget in view[2]:
-            mod = AbstractWidget
+            mod = None
+
+            try:
+                mod = globals()[widget['module']]()
+            except KeyError:
+                mod = AbstractWidget()
+
             ObjectsToUpdate.append(mod.build(container=container,
                                              args=widget, pids=pids))
 
