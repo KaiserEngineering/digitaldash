@@ -17,9 +17,12 @@ def layouts():
 def getThemeConfig(theme):
     """Get theme specific config values."""
     jsonData = {}
-    with open('etc/Themes/' + theme + '.json') as data_file:
-        jsonData = json.load(data_file)
+    try:
+        with open('etc/Themes/' + theme + '.json') as data_file:
+            jsonData = json.load(data_file)
 
-        data_file.close()
+            data_file.close()
+    except FileNotFoundError:
+        Logger.error( "Config: Could not find config file: " + 'etc/Themes/' + theme + '.json' )
 
     return jsonData

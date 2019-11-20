@@ -5,7 +5,6 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from abc import ABCMeta
 from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
 from typing import NoReturn, List, TypeVar
 
@@ -117,7 +116,7 @@ class AbstractWidget(object):
     """
 
     @abstractmethod
-    def build(**ARGS):
+    def build(self, **ARGS):
         """
         Create widgets for Dial.
             :param **ARGS: 

@@ -4,6 +4,8 @@ Create DigitalDash.
 Main module for creating the DigitalDash!
 """
 from DigitalDash.Abstractor import AbstractWidget
+from DigitalDash.Abstractor import Base
+from DigitalDash.Component.Clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -64,7 +66,13 @@ def setup():
         layout = layouts()
 
         for widget in view[2]:
-            mod = AbstractWidget
+            mod = None
+
+            try:
+                mod = globals()[widget['module']]()
+            except KeyError:
+                mod = AbstractWidget()
+
             ObjectsToUpdate.append(mod.build(container=container,
                                              args=widget, pids=pids))
 
