@@ -1,6 +1,4 @@
 """Abstract class for updating values."""
-from abc import ABC, abstractmethod
-from abc import ABCMeta
 from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
 from typing import NoReturn, List, TypeVar
