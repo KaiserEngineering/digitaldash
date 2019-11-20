@@ -1,10 +1,15 @@
-from DigitalDash.Abstractor import *
+from DigitalDash.Abstractor import Base, Needle
 from kivy.properties import StringProperty, NumericProperty
 from kivy.lang import Builder
 from kivy.graphics import Color, Rectangle
 from kivy.uix.stencilview import StencilView
+from typing import NoReturn, List, TypeVar
+from kivy.uix.image import AsyncImage
+from kivy.uix.label import Label
+from kivy.uix.widget import Widget
 
-class Gauge(MetaImage):
+G = TypeVar('G', bound='Gauge')
+class Gauge(Base, AsyncImage):
     """
     Create Gauge widget.
 
@@ -19,9 +24,26 @@ class Gauge(MetaImage):
         """Initite Gauge Widget."""
         super(Gauge, self).__init__()
         self.source = path + 'gauge.png'
-        self.id = "Gauge-" + args.get('PID', '')
+        self.id     = "Gauge-" + args.get('PID', '')
 
-class KELabel(MetaLabel):
+    def SetOffset(self: G) -> NoReturn:
+        """Set offset for negative values"""
+        if (self.min < 0):
+            self.offset = self.min
+        else:
+            self.offset = 0
+
+    def SetStep(self: G) -> NoReturn:
+        self.step = self.degrees / (abs(self.min) + abs(self.max))
+
+    def SetAttrs(self: G, path: str, args, themeArgs) -> NoReturn:
+        """Set basic attributes for widget."""
+        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs.get('degrees', 0)),
+                                                           float(args['MinMax'][0]), float(args['MinMax'][1]))
+
+
+KL = TypeVar('KL', bound='KELabel')
+class KELabel(Base, Label):
     """
     Create Label widget.
 
@@ -38,7 +60,7 @@ class KELabel(MetaLabel):
         """Intiate Label widget."""
         super(KELabel, self).__init__()
         self.default = args.get('default', '')
-        self.id = "Label-" + args.get('PID', '')
+        self.id      = "Label-" + args.get('PID', '')
 
         if ( self.default == '__PID__' ):
             self.default = args.get('PID', '')
@@ -57,6 +79,28 @@ class KELabel(MetaLabel):
     def AttrChange(self):
         self.pos = (min(self.parent.size) * self.new_pos[0], min(self.parent.size) * self.new_pos[1])
 
+    def setData(self: KL, value='') -> NoReturn:
+        """
+        Send data to Label widget.
+        Check for Min/Max key words to cache values with regex checks.
+            :param self: LabelWidget object
+            :param value='': Numeric value for label
+        """
+        value   = float(value)
+        default = ''
+        if (self.default == 'Min: '):
+            if (self.min > value):
+                self.min = value
+            value = self.min
+        elif (self.default == 'Max: '):
+            if (self.max < value):
+                self.max = value
+            value = self.max
+        else:
+            default = self.default
+        self.text = default + "{0:.2f}".format(value)
+
+
 Builder.load_string('''
 <NeedleRadial>:
     canvas.before:
@@ -71,7 +115,7 @@ Builder.load_string('''
     canvas.after:
         PopMatrix
 ''')
-class NeedleRadial(MetaImage):
+class NeedleRadial(Needle, AsyncImage):
     """
     Create Needle widget.
 
@@ -88,25 +132,12 @@ class NeedleRadial(MetaImage):
     def __init__(self, path, args, themeArgs):
         """Initiate Needle widget."""
         super(NeedleRadial, self).__init__()
+        self.degrees = 0
+        self.id      = "Radial-Needle-" + args['PID']
+
         self.SetAttrs(path, args, themeArgs)
-        self.id = "Radial-Needle-" + args['PID']
-        self.update = self.degrees / 2
+        self.update  = self.degrees / 2
 
-    def setData(self, value):
-        """
-        Abstract setData method most commonly used.
-        Override it in Metaclass below if needed differently
-            :param self: Widget Object
-            :param value: Update value for gauge needle
-        """
-        value = float(value)
-
-        if value > self.max:
-            self.update = -self.degrees / 2
-        elif value < self.min:
-            self.update = abs(self.min) * float(self.step) + (self.offset * self.step) + self.degrees / 2
-        else:
-            self.update = -value * float(self.step) + (self.offset * self.step) + self.degrees / 2
 
 Builder.load_string('''
 <NeedleLinear>:
@@ -132,7 +163,7 @@ Builder.load_string('''
             size: self.update, 10000
         StencilPop
 ''')
-class NeedleLinear(StencilView, MetaWidget):
+class NeedleLinear(Needle, StencilView):
     """
     Create Needle widget.
 
@@ -164,6 +195,7 @@ class NeedleLinear(StencilView, MetaWidget):
     def SetStep(self):
         self.step = self.parent.width / (abs(self.min) + abs(self.max))
 
+
 Builder.load_string('''
 <NeedleEllipse>:
     canvas:
@@ -193,7 +225,7 @@ Builder.load_string('''
             angle_end: self.angle_start + self.update
         StencilPop
 ''')
-class NeedleEllipse(MetaWidget):
+class NeedleEllipse(Needle, Widget):
     """
     Create Ellipse widget.
 

@@ -1,96 +1,54 @@
 """Abstract class for updating values."""
 from abc import ABC, abstractmethod
-from kivy.uix.image import AsyncImage
-from kivy.uix.label import Label
-from kivy.uix.widget import Widget
 from abc import ABCMeta
 from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
 from typing import NoReturn, List, TypeVar
 
-class Base(object):
-    def AttributeChanged(widget):
-        for child in widget.children:
-            AttributeChanged(child)
 
-        widget.AttrChange()
+class Base(object):
+    def __init__(self):
+        super(Base, self).__init__()
+        # Our required attributes
+        self.liveWidgets = []
+        self.dataIndex   = -1
+        self.Layout      = RelativeLayout()
+        self.container   = None
+
+        # Optional values
+        self.min         = -9999
+        self.max         = 9999
+
+    def AttributeChanged(self):
+        for child in self.children:
+            self.AttributeChanged(child)
+
+        self.AttrChange()
 
     def AttrChange(self):
         pass
 
-ML = TypeVar('ML', bound='MetaLabel')
-class MetaLabel(Label, Base):
-    """
-    Handles meta classes for kivy.uix.label and our Animator object.
-        :param Label: Name of label
-    """
-
-    def setData(self: ML, value='') -> NoReturn:
-        """
-        Send data to Label widget.
-        Check for Min/Max key words to cache values with regex checks.
-            :param self: LabelWidget object
-            :param value='': Numeric value for label
-        """
-        value   = float(value)
-        output  = value
-        default = ''
-        if (self.default == 'Min: '):
-            if (self.min > value):
-                self.min = value
-            value = self.min
-        elif (self.default == 'Max: '):
-            if (self.max < value):
-                self.max = value
-            value = self.max
-        else:
-            default = self.default
-        self.text = default + "{0:.2f}".format(value)
-
-
-MI = TypeVar('MI', bound='MetaImage')
-class MetaImage(AsyncImage, Base):
-    """
-    Handles meta classes for kivy.uix.image and our Animator classs.
-        :param Image: Kivy UI image class
-    """
-
-    def SetOffset(self: MI) -> NoReturn:
-        """Set offset for negative values"""
-        if (self.min < 0):
-            self.offset = self.min
-        else:
-            self.offset = 0
-
-    def SetStep(self: MI) -> NoReturn:
+    def SetStep(self) -> NoReturn:
         self.step = self.degrees / (abs(self.min) + abs(self.max))
 
-    def SetAttrs(self: MI, path: str, args, themeArgs) -> NoReturn:
-        """Set basic attributes for widget."""
-        (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs.get('degrees', 0)),
-                                                           float(args['MinMax'][0]), float(args['MinMax'][1]))
+    def SetAttrs(self, *args) -> NoReturn:
+        pass
 
 
-MW = TypeVar('MW', bound='MetaWidget')
-class MetaWidget(Widget, Base):
-    """
-    Handles meta classes for kivy.uix.widget and our Animator classs.
-        :param Widget: Widget Obj
-    """
-    widget = Widget()
+class Needle(Base):
 
-    def SetOffset(self: MW) -> NoReturn:
+    def SetOffset(self) -> NoReturn:
         self.offset = self.min
 
-    def SetStep(self: MW) -> NoReturn:
+    def SetStep(self) -> NoReturn:
         self.step = self.degrees / (abs(self.min) + abs(self.max))
 
-    def SetAttrs(self: MW, path: str, args, themeArgs) -> NoReturn:
+    def SetAttrs(self, path: str, args, themeArgs) -> NoReturn:
         """Set basic attributes for widget."""
         (self.source, self.degrees, self.min, self.max) = (path + 'needle.png', float(themeArgs.get('degrees', 0)),
                                                            float(args['MinMax'][0]), float(args['MinMax'][1]))
 
-    def setData(self: MW, value='') -> NoReturn:
+    def setData(self, value='') -> NoReturn:
         """
         Abstract setData method most commonly used.
         Override it in Metaclass below if needed differently
@@ -109,41 +67,38 @@ class MetaWidget(Widget, Base):
 from DigitalDash.Components import *
 
 
-class AbstractWidget(object):
+class AbstractWidget(Base):
     """
     Generic scaffolding for KE Widgets.
         :param object: 
     """
 
-    @abstractmethod
     def build(self, **ARGS):
         """
         Create widgets for Dial.
             :param **ARGS: 
         """
-        args = ARGS['args']
-
-        liveWidgets = []
-        path        = args['path']
-        container   = ARGS['container']
-        Layout      = RelativeLayout()
+        args             = ARGS['args']
+        path             = args['path']
+        self.container   = ARGS['container']
+        self.Layout      = RelativeLayout()
 
         args['args']['PID'] = ARGS['pids'][args['dataIndex']]
-        Layout.id = "Widgets-Layout-" + ARGS['pids'][args['dataIndex']]
+        self.Layout.id = "Widgets-Layout-" + ARGS['pids'][args['dataIndex']]
 
         def ChangeAttr(self, _instance):
             for child in self.children:
                 child.AttributeChanged()
 
         # NOTE Can we abstract this more? We have other layouts that may benefit from such a binding
-        Layout.bind(size=ChangeAttr, pos=ChangeAttr)
+        self.Layout.bind(size=ChangeAttr, pos=ChangeAttr)
 
         # Import theme specifc Config
         themeConfig = Config.getThemeConfig(args['module'] + '/' + args['args']['themeConfig'])
 
         gauge = Gauge(path, args)
         if gauge._coreimage:
-            Layout.add_widget(gauge)
+            self.Layout.add_widget(gauge)
 
         needleType = args['module']
         needle = globals()['Needle' + needleType](path,
@@ -152,10 +107,10 @@ class AbstractWidget(object):
         needle.dataIndex = args['dataIndex']
 
         # Adding widgets that get updated with data
-        liveWidgets.append(needle)
+        self.liveWidgets.append(needle)
 
         # Add widgets to our floatlayout
-        Layout.add_widget(needle)
+        self.Layout.add_widget(needle)
 
         # Set step after we are added to parent layout
         needle.SetStep()
@@ -173,10 +128,10 @@ class AbstractWidget(object):
 
             # Add to data recieving widgets
             if (labelConfig['data']):
-                liveWidgets.append(label)
+                self.liveWidgets.append(label)
 
-            Layout.add_widget(label)
+            self.Layout.add_widget(label)
 
-        container.add_widget(Layout)
+        self.container.add_widget(self.Layout)
 
-        return liveWidgets
+        return self.liveWidgets

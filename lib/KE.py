@@ -69,7 +69,7 @@ def setup():
             mod = None
 
             try:
-                mod = globals()[widget['module']]()
+                mod = globals()[widget['module']]({})
             except KeyError:
                 mod = AbstractWidget()
 

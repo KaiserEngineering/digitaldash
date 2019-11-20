@@ -4,8 +4,7 @@ import DigitalDash
 from kivy.properties import NumericProperty
 from kivy.graphics import Color, Rectangle
 from functools import lru_cache
-from DigitalDash.Abstractor import MetaLabel
-from DigitalDash.Abstractor import KELabel
+from DigitalDash.Components import KELabel
 
 from kivy.lang import Builder
 Builder.load_string('''
