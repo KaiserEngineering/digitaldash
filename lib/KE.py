@@ -3,9 +3,9 @@ Create DigitalDash.
 
 Main module for creating the DigitalDash!
 """
-from lib.DigitalDash.Abstractor import AbstractWidget
-from lib.DigitalDash.Abstractor import Base
-from lib.DigitalDash.Component import Clock, Rally
+from lib.DigitalDash.Base import AbstractWidget
+from lib.DigitalDash.Base import Base
+from lib.DigitalDash.Components import Clock, Rally
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout

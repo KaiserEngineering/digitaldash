@@ -1,7 +1,5 @@
 """Test harness for GUI that runs on file data."""
-
 import csv
-import lib.DigitalDash
 from numpy import genfromtxt
 
 # DO NOT USE Kivy.Logger for this file

@@ -1,10 +1,9 @@
 """Monitour a datapoint and create a alert if triggered."""
 
-import DigitalDash
 from kivy.properties import NumericProperty
 from kivy.graphics import Color, Rectangle
 from functools import lru_cache
-from DigitalDash.Components import KELabel
+from lib.DigitalDash.Base import KELabel
 
 from kivy.lang import Builder
 Builder.load_string('''
