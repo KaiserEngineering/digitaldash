@@ -1,6 +1,6 @@
 """Massages values being passed to gauges to smooth them."""
 
-import DigitalDash
+import lib.DigitalDash
 
 
 class Massager():

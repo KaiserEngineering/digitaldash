@@ -1,4 +1,4 @@
-from DigitalDash.Components import KELabel
+from lib.DigitalDash.Components import KELabel
 import datetime
 
 class Clock(KELabel):

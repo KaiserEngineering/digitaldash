@@ -1,4 +1,4 @@
-from DigitalDash.Abstractor import Base, Needle
+from lib.DigitalDash.Abstractor import Base, Needle
 from kivy.properties import StringProperty, NumericProperty
 from kivy.lang import Builder
 from kivy.graphics import Color, Rectangle
