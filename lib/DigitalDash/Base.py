@@ -10,6 +10,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
 from typing import NoReturn, List, TypeVar
+from kivy.uix.boxlayout import BoxLayout
 
 
 class Base(object):
@@ -50,15 +51,14 @@ class Needle(Base):
     def SetStep(self) -> NoReturn:
         self.step = self.degrees / (abs(self.min) + abs(self.max))
 
-    def SetAttrs(self, **args) -> NoReturn:
+    def SetAttrs(self, themeConfig={'degrees': 0, 'MinMax': [-9999, 9999]}, path='', **args) -> NoReturn:
         """Set basic attributes for widget."""
-        theme = args.get('themeConfig', {'degrees': 0, 'MinMax': [-9999, 9999]})
-        
+
         (self.source, self.degrees, self.min, self.max) = (
-            args.get('path', '') + 'needle.png',
-            float(theme['degrees']),
-            theme['MinMax'][0],
-            theme['MinMax'][1]
+            path + 'needle.png',
+            float(themeConfig['degrees']),
+            themeConfig['MinMax'][0],
+            themeConfig['MinMax'][1]
         )
 
     def setData(self, value='') -> NoReturn:
@@ -82,14 +82,17 @@ class AbstractWidget(Base):
         :param object: 
     """
 
-    def build(self, **ARGS):
+    def build(self,
+                container=BoxLayout(padding=(30, -70, 30, 0)),
+                **ARGS
+            ):
         """
         Create widgets for Dial.
-            :param **ARGS: 
+            :param **ARGS:
         """
         args = {}
 
-        self.container   = ARGS['container']
+        self.container   = container
         self.Layout      = RelativeLayout()
 
         args['PID']  = ARGS['pids'][ARGS['dataIndex']]
