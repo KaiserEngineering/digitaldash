@@ -2,8 +2,8 @@ from lib.DigitalDash.Base import KELabel
 import datetime
 
 class Clock(KELabel):
-    def __init__(self, args):
-        super(Clock, self).__init__(args)
+    def __init__(self):
+        super(Clock, self).__init__()
         self.text        = '12:00'
 
     def setData(self, val) -> None:
