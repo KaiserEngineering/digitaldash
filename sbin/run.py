@@ -157,7 +157,7 @@ class DigitalDash(App):
                     self.update_values(data)
             except Exception as e:
                 e = str(e)
-                Logger.error("["+str(dt)+"] Error found in main application loop: " +e)
+                Logger.error("Error found in main application loop: " +e)
                 if e in errors_seen:
                     errors_seen[e] = errors_seen[e] + 1
                 else:

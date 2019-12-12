@@ -11,6 +11,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from etc import Config
 from typing import NoReturn, List, TypeVar
 from kivy.uix.boxlayout import BoxLayout
+from kivy.animation import Animation
 
 
 class Base(object):
@@ -23,13 +24,12 @@ class Base(object):
         self.container   = None
 
         # Optional values
-        self.min         = -9999
-        self.max         = 9999
+        self.minObserved      = 9999
+        self.maxObserved      = -9999
 
     def AttributeChanged(self):
         for child in self.children:
             self.AttributeChanged(child)
-
         self.AttrChange()
 
     def AttrChange(self):
@@ -45,8 +45,16 @@ class Base(object):
 
 class Needle(Base):
 
+    def AttrChange(self):
+        self.SetStep()
+        self.SetOffset()
+
     def SetOffset(self) -> NoReturn:
-        self.offset = self.min
+        if (self.min < 0):
+            self.offset = self.degrees / 2 - ( self.min * self.step )
+        else:
+            self.offset = self.degrees / 2
+        self.setData(50)
 
     def SetStep(self) -> NoReturn:
         self.step = self.degrees / (abs(self.min) + abs(self.max))
@@ -56,12 +64,12 @@ class Needle(Base):
 
         (self.source, self.degrees, self.min, self.max) = (
             path + 'needle.png',
-            float(themeConfig['degrees']),
+            float(themeConfig.get('degrees', 0)),
             themeConfig['MinMax'][0],
             themeConfig['MinMax'][1]
         )
 
-    def setData(self, value='') -> NoReturn:
+    def setData(self, value=0) -> NoReturn:
         """
         Abstract setData method most commonly used.
             :param self: Widget Object
@@ -70,10 +78,10 @@ class Needle(Base):
         value = float(value)
 
         if value > self.max:
-            value = self.max
+            value = self.max / self.step
         elif value < self.min:
-            value = self.min
-        self.update = value * self.step - self.step * self.offset
+            value = self.min / self.step
+        self.update = value * self.step - self.offset
 
 
 class AbstractWidget(Base):
@@ -104,7 +112,7 @@ class AbstractWidget(Base):
             for child in self.children:
                 child.AttributeChanged()
 
-        # NOTE Can we abstract this more? We have other layouts that may benefit from such a binding
+        # This handles updating sizing when a widget is added to the layout after this one is initally added
         self.Layout.bind(size=ChangeAttr, pos=ChangeAttr)
 
         # Import theme specifc Config
@@ -124,10 +132,6 @@ class AbstractWidget(Base):
 
         # Add widgets to our floatlayout
         self.Layout.add_widget(needle)
-
-        # Set step after we are added to parent layout
-        needle.SetStep()
-        needle.SetOffset()
 
         labels = []
         # Create our labels
@@ -196,8 +200,12 @@ class KELabel(Base, Label):
     def __init__(self, **args):
         """Intiate Label widget."""
         super(KELabel, self).__init__()
-        self.default = args.get('default', '')
-        self.id      = "Label-" + args.get('PID', '')
+        self.default         = args.get('default', '')
+        self.id              = "Label-" + args.get('PID', '')
+        self.ConfigColor     = args.get('color', (1, 1, 1 ,1)) # White
+        self.color           = self.ConfigColor
+        self.ConfigFontSize  = args.get('font_size', 25)
+        self.font_size       = self.ConfigFontSize
 
         if ( self.default == '__PID__' ):
             self.default = args.get('PID', '')
@@ -205,10 +213,6 @@ class KELabel(Base, Label):
 
         # Set position dynamically
         self.new_pos = list(map( lambda x: x / 100, args.get('pos', (0, 0)) ))
-
-        self.font_size = args.get('font_size', 25)
-        self.min = 9999
-        self.max = -9999
 
         if ( args.get('data', False) ):
             self.dataIndex = args['dataIndex']
@@ -223,19 +227,41 @@ class KELabel(Base, Label):
             :param self: LabelWidget object
             :param value='': Numeric value for label
         """
-        value   = float(value)
-        default = ''
-        if (self.default == 'Min: '):
-            if (self.min > value):
-                self.min = value
-            value = self.min
-        elif (self.default == 'Max: '):
-            if (self.max < value):
-                self.max = value
-            value = self.max
+        value = float(value)
+
+        if ( self.default == 'Min: ' ):
+            if ( self.minObserved > value ):
+                self.minObserved = value
+
+                Animation.cancel_all(self)
+
+                anim = Animation(font_size=50, duration=1.)
+                anim &= Animation(color=(1, 0, 0, 1))
+
+                anim2 = Animation(font_size=(self.ConfigFontSize))
+                anim2 &= Animation(color=(self.ConfigColor))
+
+                anim += anim2
+                anim.start(self)
+
+                self.text = self.default + "{0:.2f}".format(value)
+        elif ( self.default == 'Max: ' ):
+            if ( self.maxObserved < value ):
+                Animation.cancel_all(self)
+                self.maxObserved = value
+
+                anim = Animation(font_size=50, duration=1.)
+                anim &= Animation(color=(1, 0, 0, 1))
+
+                anim2 = Animation(font_size=(self.ConfigFontSize))
+                anim2 &= Animation(color=(self.ConfigColor))
+
+                anim += anim2
+                anim.start(self)
+
+                self.text = self.default + "{0:.2f}".format(value)
         else:
-            default = self.default
-        self.text = default + "{0:.2f}".format(value)
+            self.text = self.default + "{0:.2f}".format(value)
 
 
 Builder.load_string('''
@@ -245,7 +271,7 @@ Builder.load_string('''
         Translate:
             xy: (self.x + self.width / 2, self.y + self.height / 2)
         Rotate:
-            angle: self.update
+            angle: -self.update
             axis: (0, 0, 1.0)
         Translate:
             xy: (-self.x - self.width / 2, - self.y - self.height / 2)
@@ -272,7 +298,11 @@ class NeedleRadial(Needle, AsyncImage):
         super(NeedleRadial, self).__init__()
         self.id      = "Radial-Needle-" + kwargs.get('PID', 'None')
         self.SetAttrs(**kwargs)
-        self.update  = self.degrees / 2
+        self.SetStep()
+        self.SetOffset()
+        self.setData(self.min)
+        self.offset = self.offset
+        self.setData(self.min)
 
 
 Builder.load_string('''
@@ -281,22 +311,22 @@ Builder.load_string('''
         # Draw our stencil
         StencilPush
         Rectangle:
-            pos: self.x, root.center_y - self.height / 1.5
-            size: self.update, 1000
+            pos: self.x, root.center_y - self.height / 8
+            size: self.update, self.height / 2
         StencilUse
         # Now we want to draw our gauge and crop it
         Color:
             rgba: self.r, self.g, self.b, self.a
         Rectangle:
-            size: self.width, self.height + self.height / 2
-            pos: self.x, root.center_y - self.height / 1.5
+            pos: self.x, root.center_y - self.height / 8
+            size: self.update, self.height / 2
             source: self.source
         StencilUnUse
 
         # Redraw our stencil to remove it
         Rectangle:
-            pos: self.x, root.center_y - self.height / 1.5
-            size: self.update, 10000
+            pos: self.x, root.center_y - self.height / 8
+            size: self.update, self.height / 2
         StencilPop
 ''')
 
@@ -319,14 +349,11 @@ class NeedleLinear(Needle, StencilView):
     b = NumericProperty()
     a = NumericProperty()
 
-    def __init__(self, path='', args={}, **kwargs):
+    def __init__(self, **kwargs):
         super(NeedleLinear, self).__init__()
         self.SetAttrs(**kwargs)
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
         self.id = "Linear-Needle-" + kwargs.get('PID', 'None')
-
-    def AttrChange(self):
-        self.SetStep()
 
     def SetStep(self):
         self.step = self.parent.width / (abs(self.min) + abs(self.max))
@@ -341,7 +368,7 @@ Builder.load_string('''
             size: min(root.size), min(root.size)
             pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
             angle_start: self.angle_start
-            angle_end: self.angle_start + self.update
+            angle_end: self.update
         StencilUse
 
         # Now we want to draw our gauge and crop it
@@ -350,7 +377,7 @@ Builder.load_string('''
             pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
             source: self.source
             angle_start: self.angle_start
-            angle_end: self.angle_start + self.update
+            angle_end: self.update
         StencilUnUse
 
         # Redraw our stencil to remove it
@@ -358,7 +385,7 @@ Builder.load_string('''
             size: min(self.size), min(self.size)
             pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
             angle_start: self.angle_start
-            angle_end: self.angle_start + self.update
+            angle_end: self.update
         StencilPop
 ''')
 
@@ -371,10 +398,17 @@ class NeedleEllipse(Needle, Widget):
     degrees      = NumericProperty()
     angle_start  = NumericProperty()
 
-    def __init__(self, path='', args={}, themeArgs={"angle_start": 0}, **kwargs):
+    def __init__(self, **kwargs):
         super(NeedleEllipse, self).__init__()
         self.SetAttrs(**kwargs)
-        self.id = "Ellipse-Needle-" + args.get('PID', 'None')
+        self.id = "Ellipse-Needle-" + kwargs.get('PID', 'None')
 
-        self.angle_start = themeArgs['angle_start']
+        self.SetStep()
+        self.SetOffset()
+        self.offset = self.offset
+        self.angle_start = -self.offset
+        self.setData(self.min)
+
+    def AttrChange(self):
+        self.SetStep()
         self.SetOffset()

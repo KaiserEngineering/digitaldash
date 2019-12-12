@@ -3,10 +3,10 @@
     "labels":
       [
        {
-       "pos": [30, 11], "font_size": 20, "default": "Max: ", "data": 1
+       "pos": [30, 11], "font_size": 35, "default": "Max: ", "data": 1
        },
       {
-       "pos": [-30, 10], "font_size": 20, "default": "Min: ", "data": 1
+       "pos": [-30, 10], "font_size": 35, "default": "Min: ", "data": 1
        },
       {
        "pos": [0, 22], "font_size": 30, "default": "", "data": 1
