@@ -28,7 +28,7 @@ import getopt
 run             = False
 Data_Source     = False
 
-from DigitalDash.Test import Test
+from lib.DigitalDash.Test import Test
 opts, args = getopt.getopt(sys.argv[1:],"tdf:",["test", "development", "file"])
 for opt, arg in opts:
     # test mode will not run GUI
@@ -50,12 +50,13 @@ from etc import Config
 
 import kivy
 from kivy.clock import Clock
-import KE
+from lib import KE
 from kivy.app import App
 from kivy.properties import StringProperty
-from DigitalDash.Alert import Alert
+from lib.DigitalDash.Alert import Alert
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.logger import Logger
+from lib.DigitalDash.Base import Face
 
 try:
     import Serial

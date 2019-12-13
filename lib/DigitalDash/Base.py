@@ -81,7 +81,6 @@ class AbstractWidget(Base):
             self.Layout.add_widget(label)
 
         self.container.add_widget(self.Layout)
-        face.size = (face.width + 0.1, face.height + 0.1)
         return self.liveWidgets
 
 
@@ -99,7 +98,6 @@ class Gauge(object):
         self.needle = Needle
         self.labels = []
 
-        (self.sizex, self.sizey) = Face.size
         self.needle.setStep(self)
 
         self.needle.setData(self.needle.min)
@@ -354,13 +352,17 @@ class NeedleLinear(Needle, StencilView):
 
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
-        self.step = gauge.face.width / (abs(self.min) + abs(self.max))
+        # FIXME  This is a hack to handle the lack of sizing on initial render
+        if ( gauge.face.norm_image_size[0] <= 32 ):
+            self.size = self.parent.size
+        else:
+            self.size = gauge.face.norm_image_size
         self.setStep(gauge)
         self.setData(self.true_value)
 
     def setStep(self, gauge) -> NoReturn:
         """Method for setting the step size for Linear needles."""
-        self.step = gauge.face.norm_image_size[0] / (abs(self.min) + abs(self.max))
+        self.step = self.width / (abs(self.min) + abs(self.max))
         if ( self.step == 0 ):
             self.step = 1.
 
@@ -423,4 +425,9 @@ class NeedleEllipse(Needle, Widget):
 
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
-        (self.sizex, self.sizey) = gauge.face.norm_image_size
+
+        # FIXME This is a hack to fix the error of the sizing not being set until the screen size is adjusted
+        if ( gauge.face.norm_image_size[0] <= 32 ):
+            (self.sizex, self.sizey) = (min(self.parent.size), min(self.parent.size))
+        else:
+            (self.sizex, self.sizey) = gauge.face.norm_image_size
