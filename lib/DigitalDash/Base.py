@@ -124,14 +124,18 @@ class AbstractWidget(Base):
             self.Layout.add_widget(gauge)
 
         needle = globals()['Needle' + ARGS['module']](**args)
+        # Add widgets to our RelativeLayout
+        self.Layout.add_widget(needle)
+
+        # This normalizes our canvas needle sizes
+        def _size(instance, size):
+            (needle.sizex, needle.sizey) = gauge.norm_image_size
+        gauge.bind(size=_size)
+        (needle.sizex, needle.sizey) = gauge.norm_image_size
 
         needle.dataIndex = ARGS['dataIndex']
-
         # Adding widgets that get updated with data
         self.liveWidgets.append(needle)
-
-        # Add widgets to our floatlayout
-        self.Layout.add_widget(needle)
 
         labels = []
         # Create our labels
@@ -169,8 +173,10 @@ class Gauge(Base, AsyncImage):
     def __init__(self, **args):
         """Initite Gauge Widget."""
         super(Gauge, self).__init__()
-        self.source = args.get('path', '') + 'gauge.png'
-        self.id     = "Gauge-" + args.get('PID', '')
+        self.source    = args.get('path', '') + 'gauge.png'
+        self.id        = "Gauge-" + args.get('PID', '')
+        self.size_hint = (1, 1)
+        self.pos       = (0, 0)
 
     def SetOffset(self: G) -> NoReturn:
         """Set offset for negative values"""
@@ -365,16 +371,16 @@ Builder.load_string('''
         # Draw our stencil
         StencilPush
         Ellipse:
-            size: min(root.size), min(root.size)
-            pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
+            size: self.sizex, self.sizey
+            pos: self.width / 2 - self.sizex / 2, self.height / 2 - self.sizey / 2
             angle_start: self.angle_start
             angle_end: self.update
         StencilUse
 
         # Now we want to draw our gauge and crop it
         Ellipse:
-            size: min(root.size), min(root.size)
-            pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
+            size: self.sizex, self.sizey
+            pos: self.width / 2 - self.sizex / 2, self.height / 2 - self.sizey / 2
             source: self.source
             angle_start: self.angle_start
             angle_end: self.update
@@ -382,8 +388,8 @@ Builder.load_string('''
 
         # Redraw our stencil to remove it
         Ellipse:
-            size: min(self.size), min(self.size)
-            pos: self.width / 2 - min(self.size) / 2, self.height / 2 - min(self.size) / 2
+            size: self.sizex, self.sizey
+            pos: self.width / 2 - self.sizex / 2, self.height / 2 - self.sizey / 2
             angle_start: self.angle_start
             angle_end: self.update
         StencilPop
@@ -397,6 +403,8 @@ class NeedleEllipse(Needle, Widget):
     source       = StringProperty()
     degrees      = NumericProperty()
     angle_start  = NumericProperty()
+    sizex        = NumericProperty()
+    sizey        = NumericProperty()
 
     def __init__(self, **kwargs):
         super(NeedleEllipse, self).__init__()
@@ -408,6 +416,7 @@ class NeedleEllipse(Needle, Widget):
         self.offset = self.offset
         self.angle_start = -self.offset
         self.setData(self.min)
+        self.setData(50)
 
     def AttrChange(self):
         self.SetStep()
