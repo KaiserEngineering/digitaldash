@@ -1,5 +1,5 @@
 from lib.DigitalDash.Base import KELabel
-from lib.DigitalDash.Base import Gauge
+from lib.DigitalDash.Base import Face
 import datetime
 from kivy.logger import Logger
 from kivy.animation import Animation
@@ -19,7 +19,7 @@ class Clock(KELabel):
         self.container = ARGS['container']
         self.Layout.id = "Widgets-Layout-Clock"
 
-        gauge = Gauge(path='static/imgs/Clock/')
+        gauge = Face(path='static/imgs/Clock/')
         if gauge._coreimage:
             self.Layout.add_widget(gauge)
         else:

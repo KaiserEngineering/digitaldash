@@ -26,13 +26,6 @@ class Base(object):
         self.minObserved      = 9999
         self.maxObserved      = -9999
 
-    def SetStep(self) -> NoReturn:
-        """Method for setting the step size for rotation/moving widgets."""
-        self.step = self.degrees / (abs(self.min) + abs(self.max))
-
-    def SetAttrs(self, *args) -> NoReturn:
-        pass
-
 
 class AbstractWidget(Base):
     """
@@ -88,6 +81,7 @@ class AbstractWidget(Base):
             self.Layout.add_widget(label)
 
         self.container.add_widget(self.Layout)
+        face.size = (face.width + 0.1, face.height + 0.1)
         return self.liveWidgets
 
 
@@ -104,11 +98,16 @@ class Gauge(object):
         self.face   = Face
         self.needle = Needle
         self.labels = []
-        (self.needle.sizex, self.needle.sizey) = self.face.norm_image_size
 
-        # This normalizes our canvas needle sizes
+        (self.sizex, self.sizey) = Face.size
+        self.needle.setStep(self)
+
+        self.needle.setData(self.needle.min)
+        self.needle.setData(50)
+
+        # This normalizes our canvas needle sizes and label positions
         def _size(instance, size):
-            (self.needle.sizex, self.needle.sizey) = self.face.norm_image_size
+            self.needle._size(self)
             self._label_position()
         self.face.bind(size=_size)
 
@@ -137,30 +136,31 @@ class Face(Base, AsyncImage):
         self.size_hint = (1, 1)
         self.pos       = (0, 0)
 
-    def SetOffset(self: F) -> NoReturn:
-        """Set offset for negative values"""
-        if (self.min < 0):
-            self.offset = self.min
-        else:
-            self.offset = 0
-
-    def SetStep(self: F) -> NoReturn:
-        self.step = self.degrees / (abs(self.min) + abs(self.max))
-
 
 class Needle(Base):
     """
     Base class for Needle classes to inherit from.
     """
+    def SetUp(self, **kwargs):
+        self.SetAttrs(**kwargs)
+        self.SetOffset()
+        self.true_value = 0
+
+    def _size(self, gauge):
+        '''Helper method that runs when gauge face changes size.'''
+        pass
+
     def SetOffset(self) -> NoReturn:
         if (self.min < 0):
             self.offset = self.degrees / 2 - ( self.min * self.step )
         else:
             self.offset = self.degrees / 2
-        self.setData(50)
 
-    def SetStep(self) -> NoReturn:
+    def setStep(self, gauge) -> NoReturn:
+        """Method for setting the step size for rotation/moving widgets."""
         self.step = self.degrees / (abs(self.min) + abs(self.max))
+        if ( self.step == 0 ):
+            self.step = 1
 
     def SetAttrs(self, themeConfig={'degrees': 0, 'MinMax': [-9999, 9999]}, path='', **args) -> NoReturn:
         """Set basic attributes for widget."""
@@ -179,6 +179,7 @@ class Needle(Base):
             :param value: Update value for gauge needle
         """
         value = float(value)
+        self.true_value = value
 
         if value > self.max:
             value = self.max / self.step
@@ -297,13 +298,8 @@ class NeedleRadial(Needle, AsyncImage):
     def __init__(self, **kwargs):
         """Initiate Needle widget."""
         super(NeedleRadial, self).__init__()
+        self.SetUp(**kwargs)
         self.id      = "Radial-Needle-" + kwargs.get('PID', 'None')
-        self.SetAttrs(**kwargs)
-        self.SetStep()
-        self.SetOffset()
-        self.setData(self.min)
-        self.offset = self.offset
-        self.setData(self.min)
 
 
 Builder.load_string('''
@@ -352,12 +348,28 @@ class NeedleLinear(Needle, StencilView):
 
     def __init__(self, **kwargs):
         super(NeedleLinear, self).__init__()
-        self.SetAttrs(**kwargs)
+        self.SetUp(**kwargs)
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
         self.id = "Linear-Needle-" + kwargs.get('PID', 'None')
 
-    def SetStep(self):
-        self.step = self.parent.width / (abs(self.min) + abs(self.max))
+    def _size(self, gauge):
+        '''Helper method that runs when gauge face changes size.'''
+        self.step = gauge.face.width / (abs(self.min) + abs(self.max))
+        self.setStep(gauge)
+        self.setData(self.true_value)
+
+    def setStep(self, gauge) -> NoReturn:
+        """Method for setting the step size for Linear needles."""
+        self.step = gauge.face.norm_image_size[0] / (abs(self.min) + abs(self.max))
+        if ( self.step == 0 ):
+            self.step = 1.
+
+    def SetOffset(self) -> NoReturn:
+        """Set offset for negative values"""
+        if (self.min < 0):
+            self.offset = self.min
+        else:
+            self.offset = 0
 
 
 Builder.load_string('''
@@ -403,11 +415,12 @@ class NeedleEllipse(Needle, Widget):
 
     def __init__(self, **kwargs):
         super(NeedleEllipse, self).__init__()
-        self.SetAttrs(**kwargs)
         self.id = "Ellipse-Needle-" + kwargs.get('PID', 'None')
-        self.SetStep()
+
+        self.SetUp(**kwargs)
         self.SetOffset()
-        self.offset = self.offset
         self.angle_start = -self.offset
-        self.setData(self.min)
-        self.setData(50)
+
+    def _size(self, gauge):
+        '''Helper method that runs when gauge face changes size.'''
+        (self.sizex, self.sizey) = gauge.face.norm_image_size
