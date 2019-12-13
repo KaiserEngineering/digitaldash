@@ -13,7 +13,6 @@ from typing import NoReturn, List, TypeVar
 from kivy.uix.boxlayout import BoxLayout
 from kivy.animation import Animation
 
-
 class Base(object):
     def __init__(self):
         super(Base, self).__init__()
@@ -27,14 +26,6 @@ class Base(object):
         self.minObserved      = 9999
         self.maxObserved      = -9999
 
-    def AttributeChanged(self):
-        for child in self.children:
-            self.AttributeChanged(child)
-        self.AttrChange()
-
-    def AttrChange(self):
-        pass
-
     def SetStep(self) -> NoReturn:
         """Method for setting the step size for rotation/moving widgets."""
         self.step = self.degrees / (abs(self.min) + abs(self.max))
@@ -43,12 +34,124 @@ class Base(object):
         pass
 
 
+class AbstractWidget(Base):
+    """
+    Generic scaffolding for KE Widgets.
+        :param object: 
+    """
+
+    def build(self,
+                container=BoxLayout(padding=(30, -70, 30, 0)),
+                **ARGS
+            ):
+        """
+        Create widgets for Dial.
+            :param **ARGS:
+        """
+        args = {}
+
+        self.container   = container
+        self.Layout      = RelativeLayout()
+
+        args['PID']  = ARGS['pids'][ARGS['dataIndex']]
+        args['path'] = ARGS['path']
+
+        self.Layout.id = "Widgets-Layout-" + args['PID']
+
+        # Import theme specifc Config
+        themeConfig = Config.getThemeConfig(ARGS['module'] + '/' + ARGS['args']['themeConfig'])
+        args['themeConfig'] = {**ARGS['args'], **themeConfig}
+
+        face = Face(**args)
+        needle = globals()['Needle' + ARGS['module']](**args)
+        gauge = Gauge(Face=face, Needle=needle)
+
+        self.Layout.add_widget(face)
+        self.Layout.add_widget(needle)
+
+        needle.dataIndex = ARGS['dataIndex']
+        # Adding widgets that get updated with data
+        self.liveWidgets.append(needle)
+
+        # Create our labels
+        for labelConfig in themeConfig['labels']:
+            labelConfig['dataIndex'] = ARGS['dataIndex']
+            labelConfig['PID'] = ARGS['pids'][ARGS['dataIndex']]
+
+            # Create Label widget
+            label = KELabel(**labelConfig)
+            gauge.labels.append(label)
+
+            # Add to data recieving widgets
+            if (labelConfig['data']):
+                self.liveWidgets.append(label)
+            self.Layout.add_widget(label)
+
+        self.container.add_widget(self.Layout)
+        return self.liveWidgets
+
+
+G = TypeVar('G', bound='Gauge')
+class Gauge(object):
+    """
+    Class for coupling Needle and Face instances.
+    """
+    def __init__(self, Face, Needle, **kwargs):
+        """
+        Initite Gauge Widget.
+        """
+        super(Gauge, self).__init__()
+        self.face   = Face
+        self.needle = Needle
+        self.labels = []
+        (self.needle.sizex, self.needle.sizey) = self.face.norm_image_size
+
+        # This normalizes our canvas needle sizes
+        def _size(instance, size):
+            (self.needle.sizex, self.needle.sizey) = self.face.norm_image_size
+            self._label_position()
+        self.face.bind(size=_size)
+
+    def _label_position(self):
+        for label in self.labels:
+            label.pos = (min(self.face.size) * label.new_pos[0], min(self.face.size) * label.new_pos[1])
+
+
+F = TypeVar('F', bound='Face')
+class Face(Base, AsyncImage):
+    """
+    Create Face widget.
+
+    Face class will return Kivy Image for the face of
+    the gauge. Requires one argument of a path to the
+    image dir, where **gauge.png** should be stored.
+
+        :param MetaWidget: <DigitalDash.Components.Face>
+    """
+
+    def __init__(self, **args):
+        """Initite Face Widget."""
+        super(Face, self).__init__()
+        self.source    = args.get('path', '') + 'gauge.png'
+        self.id        = "Face-" + args.get('PID', '')
+        self.size_hint = (1, 1)
+        self.pos       = (0, 0)
+
+    def SetOffset(self: F) -> NoReturn:
+        """Set offset for negative values"""
+        if (self.min < 0):
+            self.offset = self.min
+        else:
+            self.offset = 0
+
+    def SetStep(self: F) -> NoReturn:
+        self.step = self.degrees / (abs(self.min) + abs(self.max))
+
+
 class Needle(Base):
-
-    def AttrChange(self):
-        self.SetStep()
-        self.SetOffset()
-
+    """
+    Base class for Needle classes to inherit from.
+    """
     def SetOffset(self) -> NoReturn:
         if (self.min < 0):
             self.offset = self.degrees / 2 - ( self.min * self.step )
@@ -84,111 +187,6 @@ class Needle(Base):
         self.update = value * self.step - self.offset
 
 
-class AbstractWidget(Base):
-    """
-    Generic scaffolding for KE Widgets.
-        :param object: 
-    """
-
-    def build(self,
-                container=BoxLayout(padding=(30, -70, 30, 0)),
-                **ARGS
-            ):
-        """
-        Create widgets for Dial.
-            :param **ARGS:
-        """
-        args = {}
-
-        self.container   = container
-        self.Layout      = RelativeLayout()
-
-        args['PID']  = ARGS['pids'][ARGS['dataIndex']]
-        args['path'] = ARGS['path']
-
-        self.Layout.id = "Widgets-Layout-" + args['PID']
-
-        def ChangeAttr(self, _instance):
-            for child in self.children:
-                child.AttributeChanged()
-
-        # This handles updating sizing when a widget is added to the layout after this one is initally added
-        self.Layout.bind(size=ChangeAttr, pos=ChangeAttr)
-
-        # Import theme specifc Config
-        themeConfig = Config.getThemeConfig(ARGS['module'] + '/' + ARGS['args']['themeConfig'])
-        args['themeConfig'] = {**ARGS['args'], **themeConfig}
-
-        gauge = Gauge(**args)
-        if gauge._coreimage:
-            self.Layout.add_widget(gauge)
-
-        needle = globals()['Needle' + ARGS['module']](**args)
-        # Add widgets to our RelativeLayout
-        self.Layout.add_widget(needle)
-
-        # This normalizes our canvas needle sizes
-        def _size(instance, size):
-            (needle.sizex, needle.sizey) = gauge.norm_image_size
-        gauge.bind(size=_size)
-        (needle.sizex, needle.sizey) = gauge.norm_image_size
-
-        needle.dataIndex = ARGS['dataIndex']
-        # Adding widgets that get updated with data
-        self.liveWidgets.append(needle)
-
-        labels = []
-        # Create our labels
-        for labelConfig in themeConfig['labels']:
-            labelConfig['dataIndex'] = ARGS['dataIndex']
-            labelConfig['PID'] = ARGS['pids'][ARGS['dataIndex']]
-
-            # Create Label widget
-            label = KELabel(**labelConfig)
-            labels.append(label)
-
-            # Add to data recieving widgets
-            if (labelConfig['data']):
-                self.liveWidgets.append(label)
-
-            self.Layout.add_widget(label)
-
-        self.container.add_widget(self.Layout)
-
-        return self.liveWidgets
-
-
-G = TypeVar('G', bound='Gauge')
-class Gauge(Base, AsyncImage):
-    """
-    Create Gauge widget.
-
-    Gauge class will return Kivy Image for the face of
-    the gauge. Requires one argument of a path to the
-    image dir, where **gauge.png** should be stored.
-
-        :param MetaWidget: <DigitalDash.Components.Gauge>
-    """
-
-    def __init__(self, **args):
-        """Initite Gauge Widget."""
-        super(Gauge, self).__init__()
-        self.source    = args.get('path', '') + 'gauge.png'
-        self.id        = "Gauge-" + args.get('PID', '')
-        self.size_hint = (1, 1)
-        self.pos       = (0, 0)
-
-    def SetOffset(self: G) -> NoReturn:
-        """Set offset for negative values"""
-        if (self.min < 0):
-            self.offset = self.min
-        else:
-            self.offset = 0
-
-    def SetStep(self: G) -> NoReturn:
-        self.step = self.degrees / (abs(self.min) + abs(self.max))
-
-
 KL = TypeVar('KL', bound='KELabel')
 class KELabel(Base, Label):
     """
@@ -222,9 +220,6 @@ class KELabel(Base, Label):
 
         if ( args.get('data', False) ):
             self.dataIndex = args['dataIndex']
-
-    def AttrChange(self):
-        self.pos = (min(self.parent.size) * self.new_pos[0], min(self.parent.size) * self.new_pos[1])
 
     def setData(self: KL, value='') -> NoReturn:
         """
@@ -410,14 +405,9 @@ class NeedleEllipse(Needle, Widget):
         super(NeedleEllipse, self).__init__()
         self.SetAttrs(**kwargs)
         self.id = "Ellipse-Needle-" + kwargs.get('PID', 'None')
-
         self.SetStep()
         self.SetOffset()
         self.offset = self.offset
         self.angle_start = -self.offset
         self.setData(self.min)
         self.setData(50)
-
-    def AttrChange(self):
-        self.SetStep()
-        self.SetOffset()
