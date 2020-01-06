@@ -49,8 +49,6 @@ class AbstractWidget(Base):
         args['PID']  = ARGS['pids'][ARGS['dataIndex']]
         args['path'] = ARGS['path']
 
-        self.Layout.id = "Widgets-Layout-" + args['PID']
-
         # Import theme specifc Config
         themeConfig = Config.getThemeConfig(ARGS['module'] + '/' + ARGS['args']['themeConfig'])
         args['themeConfig'] = {**ARGS['args'], **themeConfig}
@@ -130,7 +128,6 @@ class Face(Base, AsyncImage):
         """Initite Face Widget."""
         super(Face, self).__init__()
         self.source    = args.get('path', '') + 'gauge.png'
-        self.id        = "Face-" + args.get('PID', '')
         self.size_hint = (1, 1)
         self.pos       = (0, 0)
 
@@ -204,7 +201,6 @@ class KELabel(Base, Label):
         """Intiate Label widget."""
         super(KELabel, self).__init__()
         self.default         = args.get('default', '')
-        self.id              = "Label-" + args.get('PID', '')
         self.ConfigColor     = args.get('color', (1, 1, 1 ,1)) # White
         self.color           = self.ConfigColor
         self.ConfigFontSize  = args.get('font_size', 25)
@@ -297,7 +293,6 @@ class NeedleRadial(Needle, AsyncImage):
         """Initiate Needle widget."""
         super(NeedleRadial, self).__init__()
         self.SetUp(**kwargs)
-        self.id      = "Radial-Needle-" + kwargs.get('PID', 'None')
 
 
 Builder.load_string('''
@@ -348,7 +343,6 @@ class NeedleLinear(Needle, StencilView):
         super(NeedleLinear, self).__init__()
         self.SetUp(**kwargs)
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
-        self.id = "Linear-Needle-" + kwargs.get('PID', 'None')
 
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
@@ -417,7 +411,6 @@ class NeedleEllipse(Needle, Widget):
 
     def __init__(self, **kwargs):
         super(NeedleEllipse, self).__init__()
-        self.id = "Ellipse-Needle-" + kwargs.get('PID', 'None')
 
         self.SetUp(**kwargs)
         self.SetOffset()
