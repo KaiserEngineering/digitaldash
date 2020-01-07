@@ -1,57 +1,8 @@
 {
   "view" : [
-      [
-     {
-       "background":"static/imgs/Background/banner1.jpg",
-       "pids": ["RPM", "APP", "Boost"]
-     },
-     {
-        "dynamic":
-        {
-          "dataIndex": 0,
-          "op": "==",
-          "value": 200000,
-          "priority": 0
-        },
-        "alerts": [
-          {"dataIndex": 0, "op": ">=", "value": 4000, "priority": 1,
-              "default" : "WARNING \n Maximum RPM reached!", "data": 0}
-        ]
-     },[
-        {
-            "module": "Radial",
-            "path": "static/imgs/Stock/",
-            "args": {
-                  "themeConfig": "120",
-                  "MinMax": [0, 8000]
-              },
-            "dataIndex": 0
-          },
-          {
-            "module": "Radial",
-            "path": "static/imgs/Stock/",
-            "args": {
-                  "themeConfig": "120",
-                  "MinMax": [0, 100]
-              },
-             "dataIndex": 1
-          },
-        {
-          "module": "Radial",
-          "path": "static/imgs/Stock/",
-          "args": {
-                "themeConfig": "120",
-                "MinMax": [-16, 25]
-            },
-            "dataIndex": 2
-        }
-      ]
-    ],
-
-
     [
     {
-      "background":"static/imgs/Background/CarbonFiber.png",
+      "background":"static/imgs/Background/bg.jpg",
       "pids": ["APP %", "Boost", "AFR"]
     },
     {
@@ -66,8 +17,8 @@
        ]
     },[
        {
-           "module": "Radial",
-           "path": "static/imgs/Modern/",
+           "module": "Ellipse",
+           "path": "static/imgs/Dirt/",
            "args": {
                  "themeConfig": "120",
                  "MinMax": [0, 100]
@@ -75,71 +26,15 @@
            "dataIndex": 0
          },
          {
-           "module": "Radial",
-           "path": "static/imgs/Modern/",
-           "args": {
-                 "themeConfig": "120",
-                 "MinMax": [-12, 22]
-             },
-            "dataIndex": 1
-         },
-       {
-         "module": "Radial",
-         "path": "static/imgs/Modern/",
-         "args": {
-               "themeConfig": "120",
-               "MinMax": [0, 45]
-           },
-           "dataIndex": 2
-       }
-     ]
-    ],
-
-
-    [
-      {
-        "background":"static/imgs/Background/banner1.jpg",
-        "pids": ["APP %", "Boost", "AFR"]
-      },
-      {
-         "dynamic":
-         {
-           "dataIndex": 1,
-           "op": ">=",
-           "value": 2010,
-           "priority": 3
-         },
-         "alerts": [
-         ]
-      },[
-         {
-             "module": "Linear",
-             "path": "static/imgs/Linear/",
-             "args": {
-                   "themeConfig": "Linear",
-                   "MinMax": [0, 100]
-               },
-             "dataIndex": 0
-           },
-           {
-             "module": "Ellipse",
-             "path": "static/imgs/Dirt/",
-             "args": {
-                   "themeConfig": "120",
-                   "MinMax": [-12, 22]
-               },
-              "dataIndex": 1
-           },
-         {
-           "module": "Ellipse",
-           "path": "static/imgs/Dirt/",
-           "args": {
-                 "themeConfig": "120",
-                 "MinMax": [0, 45]
-             },
-             "dataIndex": 2
-         }
-       ]
-     ]
+          "module": "Linear",
+          "path": "static/imgs/Linear/",
+          "args": {
+                "themeConfig": "Linear",
+                "MinMax": [0, 100]
+            },
+          "dataIndex": 0
+        }
+      ]
+    ]
   ]
 }
