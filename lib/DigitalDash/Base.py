@@ -53,7 +53,7 @@ class AbstractWidget(Base):
         themeConfig = Config.getThemeConfig(ARGS['module'] + '/' + ARGS['args']['themeConfig'])
         args['themeConfig'] = {**ARGS['args'], **themeConfig}
 
-        face = Face(**args)
+        face = Face(nocache=True, **args)
         needle = globals()['Needle' + ARGS['module']](**args)
         gauge = Gauge(Face=face, Needle=needle)
 
@@ -87,7 +87,7 @@ class Gauge(object):
     """
     Class for coupling Needle and Face instances.
     """
-    def __init__(self, Face, Needle, **kwargs):
+    def __init__(self, Face, Needle, nocache=True, **kwargs):
         """
         Initite Gauge Widget.
         """
@@ -124,12 +124,15 @@ class Face(Base, AsyncImage):
         :param MetaWidget: <DigitalDash.Components.Face>
     """
 
-    def __init__(self, **args):
+    def __init__(self, **kwargs):
         """Initite Face Widget."""
         super(Face, self).__init__()
-        self.source    = args.get('path', '') + 'gauge.png'
+        self.source    = kwargs.get('path', '') + 'gauge.png'
         self.size_hint = (1, 1)
         self.pos       = (0, 0)
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
+        print(self.nocache)
 
 
 class Needle(Base):
@@ -159,6 +162,8 @@ class Needle(Base):
 
     def SetAttrs(self, themeConfig={'degrees': 0, 'MinMax': [-9999, 9999]}, path='', **args) -> NoReturn:
         """Set basic attributes for widget."""
+        for key in args:
+            setattr(self, key, args[key])
 
         (self.source, self.degrees, self.min, self.max) = (
             path + 'needle.png',
