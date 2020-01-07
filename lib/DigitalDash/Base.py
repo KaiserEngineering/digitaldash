@@ -132,7 +132,6 @@ class Face(Base, AsyncImage):
         self.pos       = (0, 0)
         for key in kwargs:
             setattr(self, key, kwargs[key])
-        print(self.nocache)
 
 
 class Needle(Base):
