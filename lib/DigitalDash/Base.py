@@ -350,11 +350,8 @@ class NeedleLinear(Needle, StencilView):
 
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
-        # FIXME  This is a hack to handle the lack of sizing on initial render
-        if ( gauge.face.norm_image_size[0] <= 32 ):
-            self.size = self.parent.size
-        else:
-            self.size = gauge.face.norm_image_size
+        self.size = gauge.face.norm_image_size
+
         self.setStep(gauge)
         self.setData(self.true_value)
 
@@ -423,8 +420,7 @@ class NeedleEllipse(Needle, Widget):
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
 
-        # FIXME This is a hack to fix the error of the sizing not being set until the screen size is adjusted
-        if ( gauge.face.norm_image_size[0] <= 32 ):
-            (self.sizex, self.sizey) = (min(self.parent.size), min(self.parent.size))
+        if ( gauge.face.norm_image_size[0] <= 512 ):
+            (self.sizex, self.sizey) = (512.0, 512)
         else:
             (self.sizex, self.sizey) = gauge.face.norm_image_size
