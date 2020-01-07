@@ -55,6 +55,8 @@ class AbstractWidget(Base):
 
         self.face = Face(nocache=True, **args)
         self.needle = globals()['Needle' + ARGS['module']](**args)
+        (self.needle.sizex, self.needle.sizey) = (512, 512)
+
         self.gauge = Gauge(Face=self.face, Needle=self.needle)
 
         self.Layout.add_widget(self.face)
@@ -420,7 +422,5 @@ class NeedleEllipse(Needle, Widget):
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
 
-        if ( gauge.face.norm_image_size[0] <= 512 ):
-            (self.sizex, self.sizey) = (512.0, 512)
-        else:
-            (self.sizex, self.sizey) = gauge.face.norm_image_size
+        if self.sizex == 512: return
+        (self.sizex, self.sizey) = gauge.face.norm_image_size
