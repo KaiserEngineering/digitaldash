@@ -53,16 +53,16 @@ class AbstractWidget(Base):
         themeConfig = Config.getThemeConfig(ARGS['module'] + '/' + ARGS['args']['themeConfig'])
         args['themeConfig'] = {**ARGS['args'], **themeConfig}
 
-        face = Face(**args)
-        needle = globals()['Needle' + ARGS['module']](**args)
-        gauge = Gauge(Face=face, Needle=needle)
+        self.face = Face(nocache=True, **args)
+        self.needle = globals()['Needle' + ARGS['module']](**args)
+        self.gauge = Gauge(Face=self.face, Needle=self.needle)
 
-        self.Layout.add_widget(face)
-        self.Layout.add_widget(needle)
+        self.Layout.add_widget(self.face)
+        self.Layout.add_widget(self.needle)
 
-        needle.dataIndex = ARGS['dataIndex']
+        self.needle.dataIndex = ARGS['dataIndex']
         # Adding widgets that get updated with data
-        self.liveWidgets.append(needle)
+        self.liveWidgets.append(self.needle)
 
         # Create our labels
         for labelConfig in themeConfig['labels']:
@@ -71,7 +71,7 @@ class AbstractWidget(Base):
 
             # Create Label widget
             label = KELabel(**labelConfig)
-            gauge.labels.append(label)
+            self.gauge.labels.append(label)
 
             # Add to data recieving widgets
             if (labelConfig['data']):
@@ -87,7 +87,7 @@ class Gauge(object):
     """
     Class for coupling Needle and Face instances.
     """
-    def __init__(self, Face, Needle, **kwargs):
+    def __init__(self, Face, Needle, nocache=True, **kwargs):
         """
         Initite Gauge Widget.
         """
@@ -124,12 +124,14 @@ class Face(Base, AsyncImage):
         :param MetaWidget: <DigitalDash.Components.Face>
     """
 
-    def __init__(self, **args):
+    def __init__(self, **kwargs):
         """Initite Face Widget."""
         super(Face, self).__init__()
-        self.source    = args.get('path', '') + 'gauge.png'
+        self.source    = kwargs.get('path', '') + 'gauge.png'
         self.size_hint = (1, 1)
         self.pos       = (0, 0)
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
 
 
 class Needle(Base):
@@ -159,6 +161,8 @@ class Needle(Base):
 
     def SetAttrs(self, themeConfig={'degrees': 0, 'MinMax': [-9999, 9999]}, path='', **args) -> NoReturn:
         """Set basic attributes for widget."""
+        for key in args:
+            setattr(self, key, args[key])
 
         (self.source, self.degrees, self.min, self.max) = (
             path + 'needle.png',
@@ -346,11 +350,8 @@ class NeedleLinear(Needle, StencilView):
 
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
-        # FIXME  This is a hack to handle the lack of sizing on initial render
-        if ( gauge.face.norm_image_size[0] <= 32 ):
-            self.size = self.parent.size
-        else:
-            self.size = gauge.face.norm_image_size
+        self.size = gauge.face.norm_image_size
+
         self.setStep(gauge)
         self.setData(self.true_value)
 
@@ -419,8 +420,7 @@ class NeedleEllipse(Needle, Widget):
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
 
-        # FIXME This is a hack to fix the error of the sizing not being set until the screen size is adjusted
-        if ( gauge.face.norm_image_size[0] <= 32 ):
-            (self.sizex, self.sizey) = (min(self.parent.size), min(self.parent.size))
+        if ( gauge.face.norm_image_size[0] <= 512 ):
+            (self.sizex, self.sizey) = (512.0, 512)
         else:
             (self.sizex, self.sizey) = gauge.face.norm_image_size
