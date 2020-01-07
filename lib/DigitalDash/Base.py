@@ -53,16 +53,16 @@ class AbstractWidget(Base):
         themeConfig = Config.getThemeConfig(ARGS['module'] + '/' + ARGS['args']['themeConfig'])
         args['themeConfig'] = {**ARGS['args'], **themeConfig}
 
-        face = Face(nocache=True, **args)
-        needle = globals()['Needle' + ARGS['module']](**args)
-        gauge = Gauge(Face=face, Needle=needle)
+        self.face = Face(nocache=True, **args)
+        self.needle = globals()['Needle' + ARGS['module']](**args)
+        self.gauge = Gauge(Face=self.face, Needle=self.needle)
 
-        self.Layout.add_widget(face)
-        self.Layout.add_widget(needle)
+        self.Layout.add_widget(self.face)
+        self.Layout.add_widget(self.needle)
 
-        needle.dataIndex = ARGS['dataIndex']
+        self.needle.dataIndex = ARGS['dataIndex']
         # Adding widgets that get updated with data
-        self.liveWidgets.append(needle)
+        self.liveWidgets.append(self.needle)
 
         # Create our labels
         for labelConfig in themeConfig['labels']:
@@ -71,7 +71,7 @@ class AbstractWidget(Base):
 
             # Create Label widget
             label = KELabel(**labelConfig)
-            gauge.labels.append(label)
+            self.gauge.labels.append(label)
 
             # Add to data recieving widgets
             if (labelConfig['data']):
