@@ -79,9 +79,6 @@ def setup():
                     'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
         view_count += 1
 
-    from kivy.core.window import Window
-    Window.size = (Window.width/2, Window.height/2)
-
     return (ret, containers, callbacks)
 
 
