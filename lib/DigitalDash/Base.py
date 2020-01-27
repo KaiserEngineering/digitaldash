@@ -50,7 +50,7 @@ class AbstractWidget(Base):
         args['path'] = ARGS['path']
 
         # Import theme specifc Config
-        themeConfig = Config.getThemeConfig(ARGS['module'] + '/' + ARGS['args']['themeConfig'])
+        themeConfig = Config.getThemeConfig(ARGS['module'] + '/' + str(ARGS['args']['themeConfig']))
         args['themeConfig'] = {**ARGS['args'], **themeConfig}
 
         self.face = Face(nocache=True, **args)
