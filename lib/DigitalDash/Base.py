@@ -354,7 +354,7 @@ class NeedleLinear(Needle, StencilView):
         '''Helper method that runs when gauge face changes size.'''
 
         if ( self.width == self.parent.width ):
-            self.width = 512
+            self.width = min(self.parent.size)
         else:
             self.size = gauge.face.norm_image_size
 
@@ -426,5 +426,8 @@ class NeedleEllipse(Needle, Widget):
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
 
-        if self.sizex == 512: return
+        if ( self.width == self.parent.width ):
+            self.sizex = min(self.size)
+            self.sizey = min(self.size)
+            return
         (self.sizex, self.sizey) = gauge.face.norm_image_size
