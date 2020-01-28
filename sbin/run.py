@@ -180,7 +180,7 @@ class DigitalDash(App):
 
         if ( Data_Source and type(Data_Source) != Test ):
             #Initialize our hardware set-up and verify everything is peachy
-            (ret, msg) = Data_Source.InitializeHardware();
+            (ret, msg) = Data_Source.InitializeHardware()
 
             if ( not ret ):
                 Logger.error("Hardware: Could not initialize hardware: " + msg)
