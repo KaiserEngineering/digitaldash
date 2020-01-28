@@ -11,7 +11,7 @@ from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 import re
 
-path_regex = re.compile('(.+)\/sbin\/run\.py')
+path_regex = re.compile('(.+)/sbin/run.py')
 path = path_regex.findall(os.path.abspath( __file__ ))[0]
 print("Using working directory: " + path)
 
