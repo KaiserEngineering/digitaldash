@@ -3,37 +3,46 @@
     [
     {
       "background":"static/imgs/Background/bg.jpg",
-      "pids": ["APP %", "Boost", "AFR"]
+      "pids": ["RPM", "APP", "ECT"]
     },
     {
        "dynamic":
        {
          "dataIndex": 2,
          "op": ">=",
-         "value": 4278,
+         "value": 6000,
          "priority": 1
        },
        "alerts": [
        ]
     },[
        {
-           "module": "Ellipse",
-           "path": "static/imgs/Dirt/",
+           "module": "Radial",
+           "path": "static/imgs/Stock/",
            "args": {
                  "themeConfig": "120",
-                 "MinMax": [0, 100]
+                 "MinMax": [0, 8000]
              },
            "dataIndex": 0
          },
          {
-          "module": "Linear",
-          "path": "static/imgs/Linear/",
+          "module": "Radial",
+          "path": "static/imgs/Stock/",
           "args": {
-                "themeConfig": "Linear",
+                "themeConfig": "120",
                 "MinMax": [0, 100]
             },
-          "dataIndex": 0
-        }
+          "dataIndex": 1
+         },
+         {
+           "module": "Radial",
+           "path": "static/imgs/Stock/",
+           "args": {
+                 "themeConfig": "120",
+                 "MinMax": [0, 215]
+             },
+           "dataIndex": 2
+         }
       ]
     ]
   ]
