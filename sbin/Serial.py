@@ -140,7 +140,7 @@ class Serial():
             # Remove the command byte from the payload
             data_line = data_line[ UART_PCKT_DATA_START_POS :len(data_line) - 1 ]
             Logger.info("GUI: Firmware Version Received: " +  data_line.decode() )
-            if data_line.decode() == "1.0.0":
+            if data_line.decode() == "01.00.00":
                 Logger.info("Firmware Up To Date")
                 self.firmwareVerified = True
             else :
