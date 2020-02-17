@@ -9,9 +9,9 @@ from lib.DigitalDash.Components import Clock, Rally
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout
-from etc import Config
 from lib.DigitalDash.Dynamic import Dynamic
 from lib.DigitalDash.Alert import Alert
+from kivy.logger import Logger
 
 from kivy.lang import Builder
 Builder.load_string('''
@@ -28,7 +28,7 @@ class Background(AnchorLayout):
     pass
 
 
-def setup():
+def setup(Layouts):
     """
     Build all widgets for DigitalDash.
 
@@ -36,12 +36,12 @@ def setup():
     values for views. Then it will build the views and return them.
     """
 
-    callbacks = {}
-    ret = []
+    callbacks  = {}
+    views      = []
     containers = []
 
     view_count = 0
-    for view in Config.layouts():
+    for view in Layouts:
         background = view[0]['background']
         pids       = view[0]['pids']
 
@@ -49,7 +49,14 @@ def setup():
         if 'dynamic' in view[1].keys():
             dynamic = view[1]['dynamic']
             dynamic['index'] = view_count
-            callbacks.setdefault('dynamic', []).append(Dynamic(dynamic))
+
+            dynamic_obj = Dynamic()
+            (ret, msg) = dynamic_obj.new(**dynamic)
+            if ( ret ):
+              callbacks.setdefault('dynamic', []).append(dynamic_obj)
+            else:
+                Logger.error( msg )
+                callbacks.setdefault('dynamic', [])
         else:
             callbacks.setdefault('dynamic', [])
 
@@ -82,11 +89,11 @@ def setup():
 
         containers.append(container)
 
-        ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
+        views.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
                     'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
         view_count += 1
 
-    return (ret, containers, callbacks)
+    return (views, containers, callbacks)
 
 
 def layouts():

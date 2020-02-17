@@ -2,7 +2,6 @@ from functools import lru_cache
 
 """Dynamic widget will monitour a specified value and make a view change."""
 
-
 class Dynamic(object):
     """
     Dynamic class for changing cached views. Use this class to switch between the
@@ -10,7 +9,7 @@ class Dynamic(object):
         :param object: 
     """
 
-    def __init__(self, args):
+    def __init__(self):
         """
         Create Dynamic widget.
             :param self: Dynamic object
@@ -24,11 +23,17 @@ class Dynamic(object):
         """
         super(Dynamic, self).__init__()
 
-        self.value = int(args['value'])
-        self.op = args['op']
-        self.index = int(args['index'])
-        self.priority = int(args['priority'])
-        self.dataIndex = int(args['dataIndex'])
+    def new( self, **args ):
+        if ( not (lambda key: args.get(key, False) in ['value', 'op', 'index', 'priority', 'dataIndex']) ):
+            return ( 0, "Missing required args for new dynamic object" )
+
+        self.value     = int(args.get('value'))
+        self.op        = args.get('op')
+        self.index     = int(args.get('index'))
+        self.priority  = int(args.get('priority'))
+        self.dataIndex = int(args.get('dataIndex'))
+
+        return ( 1, "New dynamic object successfully created" )
 
     @lru_cache(maxsize=512)
     def check(self, value):
