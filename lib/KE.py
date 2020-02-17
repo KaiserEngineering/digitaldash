@@ -46,7 +46,7 @@ def setup(Layouts):
         pids       = view[0]['pids']
 
         # Create our callbacks
-        if 'dynamic' in view[1].keys():
+        if 'dynamic' in view[1].keys() and view[1]['dynamic'].keys():
             dynamic = view[1]['dynamic']
             dynamic['index'] = view_count
 

@@ -24,7 +24,7 @@ class Dynamic(object):
         super(Dynamic, self).__init__()
 
     def new( self, **args ):
-        if ( not (lambda key: args.get(key, False) in ['value', 'op', 'index', 'priority', 'dataIndex']) ):
+        if ( len(list(filter(lambda key: ( args.get(key, 'missing') == 'missing' ), ['value', 'op', 'index', 'priority', 'dataIndex']))) ):
             return ( 0, "Missing required args for new dynamic object" )
 
         self.value     = int(args.get('value'))
