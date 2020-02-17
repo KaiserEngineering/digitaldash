@@ -147,7 +147,8 @@ class Needle(Base):
     def SetUp(self, **kwargs):
         self.SetAttrs(**kwargs)
         self.SetOffset()
-        self.true_value = 0
+        self.true_value = self.min
+        self.setData(self.true_value)
 
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
@@ -176,6 +177,7 @@ class Needle(Base):
             themeConfig['MinMax'][0],
             themeConfig['MinMax'][1]
         )
+        self.setStep()
 
     def setData(self, value=0) -> NoReturn:
         """
@@ -227,6 +229,7 @@ class KELabel(Base, Label):
 
         if ( args.get('data', False) ):
             self.dataIndex = args['dataIndex']
+        self.setData(0)
 
     def setData(self: KL, value='') -> NoReturn:
         """
