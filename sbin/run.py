@@ -40,7 +40,7 @@ for opt, arg in opts:
         run = True
         sys.argv = ['sbin/run.py -m console']
     if ( opt == '--file' or opt == '-f' ):
-        Data_Source = Test({'file': arg})
+        Data_Source = Test(file=arg)
 
 if not len(opts):
     sys.argv = ['sbin/run.py']
@@ -71,7 +71,7 @@ def on_config_change(self):
         """
         Method for reloading config data.
         """
-        (self.views, self.containers, self.callbacks) = KE.setup()
+        (self.views, self.containers, self.callbacks) = KE.setup(Config.layouts())
         self.app.clear_widgets()
 
         (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
@@ -174,7 +174,7 @@ class DigitalDash(App):
         self.app = AnchorLayout()
 
         self.current = 0
-        (self.views, self.containers, self.callbacks) = KE.setup()
+        (self.views, self.containers, self.callbacks) = KE.setup(Config.layouts())
 
         (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
