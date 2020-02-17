@@ -6,9 +6,12 @@ from numpy import genfromtxt
 class Test():
     """Test instance."""
 
-    def __init__(self, args):
+    def __init__(self, **args):
         self.iteration = 0
-        self.data = self.Load(args['file'])
+        if ( args.get('file') ):
+            self.data = self.Load(args.get('file', ''))
+        else:
+            self.data = []
         self.rows = len(self.data)
 
     def Load(self, file):
@@ -54,3 +57,10 @@ class Test():
 
     def PowerCycle( self ):
        return ( 1, 'Power cycle' )
+
+    def Testing( self, Config=None ):
+        from sbin.run import DigitalDash
+
+        self.app = DigitalDash()
+        self.app.new(config=Config)
+        self.app.run()

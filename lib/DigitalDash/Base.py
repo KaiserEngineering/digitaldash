@@ -72,7 +72,7 @@ class AbstractWidget(Base):
             labelConfig['PID'] = ARGS['pids'][ARGS['dataIndex']]
 
             # Create Label widget
-            label = KELabel(**labelConfig)
+            label = KELabel(**labelConfig, min=self.needle.min)
             self.gauge.labels.append(label)
 
             # Add to data recieving widgets
@@ -99,10 +99,8 @@ class Gauge(object):
         self.needle = Needle
         self.labels = []
 
-        self.needle.setStep(self)
-
+        self.needle.setStep()
         self.needle.setData(self.needle.min)
-        self.needle.setData(50)
 
         self.needle.ObjectType = 'Needle'
         self.face.ObjectType   = 'Face'
@@ -156,7 +154,7 @@ class Needle(Base):
 
     def SetOffset(self) -> NoReturn:
         if (self.min < 0):
-            self.offset = self.degrees / 2 - ( self.min * self.step )
+            self.offset = self.degrees / 2 - ( abs(self.min) * self.step )
         else:
             self.offset = self.degrees / 2
 
@@ -189,9 +187,9 @@ class Needle(Base):
         self.true_value = value
 
         if value > self.max:
-            value = self.max / self.step
+            value = self.max
         elif value < self.min:
-            value = self.min / self.step
+            value = self.min
         self.update = value * self.step - self.offset
 
 
@@ -229,7 +227,7 @@ class KELabel(Base, Label):
 
         if ( args.get('data', False) ):
             self.dataIndex = args['dataIndex']
-        self.setData(0)
+        self.setData(args.get('min', 0))
 
     def setData(self: KL, value='') -> NoReturn:
         """

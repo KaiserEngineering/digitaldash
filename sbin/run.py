@@ -25,26 +25,25 @@ os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 from typing import NoReturn, List, TypeVar
 
 import getopt
-run             = False
-Data_Source     = False
+Data_Source = False
+run         = True
 
 from lib.DigitalDash.Test import Test
 opts, args = getopt.getopt(sys.argv[1:],"tdf:",["test", "development", "file"])
 for opt, arg in opts:
     # test mode will not run GUI
     if ( opt == '--test' or opt == '-t'):
-        run = False
         sys.argv = ['sbin/run.py']
+
     # Development mode runs with debug console - ctr + e to open it in GUI
     elif ( opt == '--development' or opt == '-d'  ):
-        run = True
         sys.argv = ['sbin/run.py -m console']
     if ( opt == '--file' or opt == '-f' ):
         Data_Source = Test(file=arg)
 
 if not len(opts):
+    run      = False
     sys.argv = ['sbin/run.py']
-    run = True
 
 from etc import Config
 
@@ -71,7 +70,9 @@ def on_config_change(self):
         """
         Method for reloading config data.
         """
-        (self.views, self.containers, self.callbacks) = KE.setup(Config.layouts())
+        global ConfigFile
+
+        (self.views, self.containers, self.callbacks) = KE.setup(Config.layouts(ConfigFile))
         self.app.clear_widgets()
 
         (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
@@ -79,6 +80,7 @@ def on_config_change(self):
         self.app.add_widget(self.background)
         self.background.add_widget(self.containers[0])
         self.background.add_widget(self.alerts)
+
 
 class MyHandler(PatternMatchingEventHandler):
     """
@@ -110,6 +112,7 @@ class MyHandler(PatternMatchingEventHandler):
         self.process(event)
 
 
+ConfigFile = None
 DD = TypeVar('DD', bound='DigitalDash')
 class DigitalDash(App):
     """
@@ -124,6 +127,14 @@ class DigitalDash(App):
     """
 
     background_source = StringProperty()
+
+    def new(self, config=None):
+        """
+        This method can be used to set any values before the app starts, this is useful for
+        testing.
+        """
+        global ConfigFile
+        ConfigFile = config
 
     def build(self):
         """Perform main build loop for Kivy app."""
@@ -174,7 +185,9 @@ class DigitalDash(App):
         self.app = AnchorLayout()
 
         self.current = 0
-        (self.views, self.containers, self.callbacks) = KE.setup(Config.layouts())
+        global ConfigFile
+
+        (self.views, self.containers, self.callbacks) = KE.setup(Config.layouts(file=ConfigFile))
 
         (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
@@ -238,5 +251,8 @@ class DigitalDash(App):
             for obj in widget:
                 obj.setData(data[obj.dataIndex])
 
+
 if ( run ):
+    dd = DigitalDash()
+    dd.new()
     DigitalDash().run()

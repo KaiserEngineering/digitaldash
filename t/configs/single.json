@@ -1,0 +1,26 @@
+{
+  "view" : [
+    [
+    {
+      "background":"static/imgs/Background/bg.jpg",
+      "pids": ["RPM", "APP", "ECT"]
+    },
+    {
+        "dynamic":
+        {},
+        "alerts": [
+        ]
+    },[
+        {
+            "module": "Radial",
+            "path": "static/imgs/Stock/",
+            "args": {
+                  "themeConfig": "120",
+                  "MinMax": [0, 8000]
+              },
+            "dataIndex": 0
+          }
+      ]
+    ]
+  ]
+}
