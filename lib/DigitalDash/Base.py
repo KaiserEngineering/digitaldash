@@ -156,7 +156,7 @@ class Needle(Base):
         else:
             self.offset = self.degrees / 2
 
-    def setStep(self, gauge) -> NoReturn:
+    def setStep(self) -> NoReturn:
         """Method for setting the step size for rotation/moving widgets."""
         self.step = self.degrees / (abs(self.min) + abs(self.max))
         if ( self.step == 0 ):
@@ -359,10 +359,10 @@ class NeedleLinear(Needle, StencilView):
         else:
             self.size = gauge.face.norm_image_size
 
-        self.setStep(gauge)
+        self.setStep()
         self.setData(self.true_value)
 
-    def setStep(self, gauge) -> NoReturn:
+    def setStep(self) -> NoReturn:
         """Method for setting the step size for Linear needles."""
         self.step = self.width / (abs(self.min) + abs(self.max))
         if ( self.step == 0 ):
