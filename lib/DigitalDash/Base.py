@@ -8,6 +8,7 @@ from kivy.uix.image import AsyncImage
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.boxlayout import BoxLayout
 from etc import Config
 from typing import NoReturn, List, TypeVar
 from kivy.uix.boxlayout import BoxLayout
@@ -23,8 +24,8 @@ class Base(object):
         self.container   = None
 
         # Optional values
-        self.minObserved      = 9999
-        self.maxObserved      = -9999
+        self.minObserved = 9999
+        self.maxObserved = -9999
 
 
 class AbstractWidget(Base):
@@ -43,8 +44,7 @@ class AbstractWidget(Base):
         """
         args = {}
 
-        self.container   = container
-        self.Layout      = RelativeLayout()
+        self.container = container
 
         args['PID']  = ARGS['pids'][ARGS['dataIndex']]
         args['path'] = ARGS['path']
@@ -81,6 +81,7 @@ class AbstractWidget(Base):
             self.Layout.add_widget(label)
 
         self.container.add_widget(self.Layout)
+
         return self.liveWidgets
 
 
@@ -426,8 +427,5 @@ class NeedleEllipse(Needle, Widget):
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
 
-        if ( self.width == self.parent.width ):
-            self.sizex = min(self.size)
-            self.sizey = min(self.size)
-            return
+        if self.sizex == 512: return
         (self.sizex, self.sizey) = gauge.face.norm_image_size
