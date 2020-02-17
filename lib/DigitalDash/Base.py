@@ -104,6 +104,9 @@ class Gauge(object):
         self.needle.setData(self.needle.min)
         self.needle.setData(50)
 
+        self.needle.ObjectType = 'Needle'
+        self.face.ObjectType   = 'Face'
+
         # This normalizes our canvas needle sizes and label positions
         def _size(instance, size):
             self.needle._size(self)
@@ -213,6 +216,8 @@ class KELabel(Base, Label):
         self.ConfigFontSize  = args.get('font_size', 25)
         self.font_size       = self.ConfigFontSize
 
+        self.ObjectType   = 'Label'
+
         if ( self.default == '__PID__' ):
             self.default = args.get('PID', '')
         self.text = self.default
@@ -300,6 +305,7 @@ class NeedleRadial(Needle, AsyncImage):
         """Initiate Needle widget."""
         super(NeedleRadial, self).__init__()
         self.SetUp(**kwargs)
+        self.Type = 'Radial'
 
 
 Builder.load_string('''
@@ -350,6 +356,7 @@ class NeedleLinear(Needle, StencilView):
         super(NeedleLinear, self).__init__()
         self.SetUp(**kwargs)
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
+        self.Type = 'Linear'
 
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
@@ -423,6 +430,7 @@ class NeedleEllipse(Needle, Widget):
         self.SetUp(**kwargs)
         self.SetOffset()
         self.angle_start = -self.offset
+        self.Type = 'Ellipse'
 
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
