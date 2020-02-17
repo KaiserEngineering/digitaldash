@@ -243,33 +243,9 @@ class KELabel(Base, Label):
         if ( self.default == 'Min: ' ):
             if ( self.minObserved > value ):
                 self.minObserved = value
-
-                Animation.cancel_all(self)
-
-                anim = Animation(font_size=50, duration=1.)
-                anim &= Animation(color=(1, 0, 0, 1))
-
-                anim2 = Animation(font_size=(self.ConfigFontSize))
-                anim2 &= Animation(color=(self.ConfigColor))
-
-                anim += anim2
-                anim.start(self)
-
                 self.text = self.default + "{0:.2f}".format(value)
         elif ( self.default == 'Max: ' ):
             if ( self.maxObserved < value ):
-                Animation.cancel_all(self)
-                self.maxObserved = value
-
-                anim = Animation(font_size=50, duration=1.)
-                anim &= Animation(color=(1, 0, 0, 1))
-
-                anim2 = Animation(font_size=(self.ConfigFontSize))
-                anim2 &= Animation(color=(self.ConfigColor))
-
-                anim += anim2
-                anim.start(self)
-
                 self.text = self.default + "{0:.2f}".format(value)
         else:
             self.text = self.default + "{0:.2f}".format(value)
