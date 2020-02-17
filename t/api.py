@@ -14,10 +14,11 @@ sys.path.append(os.getcwd() + '/lib')
 sys.path.append(os.getcwd() + '/etc')
 
 from lib.DigitalDash.Base import Needle, NeedleEllipse, NeedleLinear, NeedleRadial
+from lib.DigitalDash.Base import KELabel
 
 class BasicNeedle_TestCase(unittest.TestCase):
 
-    def test_NeedleSimple(self):
+    def test_needle_simple(self):
         needles = (
             NeedleRadial(themeConfig={'degrees': 100, 'MinMax': [-10, 90]}),
             NeedleEllipse(themeConfig={'degrees': 100, 'MinMax': [-10, 90]}),
@@ -39,6 +40,44 @@ class BasicNeedle_TestCase(unittest.TestCase):
             self.assertEqual(needle.true_value, float(50), needle.Type+" component defaults to minimum value")
             self.assertEqual(needle.update, value, needle.Type+" component sets the correct value (not true value)")
 
+class BasicLabels_TestCase(unittest.TestCase):
+    def test_label_simple(self):
+        label = KELabel(
+            default        = 'hello, world',
+            ConfigColor    = (1, 1, 1 ,1),
+            ConfigFontSize = 25,
+        )
+        self.assertEqual(label.text, "hello, world0.00", "Default text value is set correctly")
+
+        label.setData(100)
+        self.assertEqual(label.text, "hello, world100.00", "Default text value is set correctly form setData method")
+
+        label = KELabel(
+            default        = 'Min: ',
+        )
+        self.assertEqual(label.text, "Min: 0.00", "Default text value is set correctly")
+        label.setData(-100)
+        self.assertEqual(label.text, "Min: -100.00", "Min value sets correctly")
+
+        label.setData(100)
+        self.assertEqual(label.text, "Min: -100.00", "Min value stays minimum seen")
+
+        label = KELabel(
+            default        = 'Max: ',
+        )
+        self.assertEqual(label.text, "Max: 0.00", "Default text value is set correctly")
+        label.setData(100)
+        self.assertEqual(label.text, "Max: 100.00", "Max value sets correctly")
+
+        label.setData(10)
+        self.assertEqual(label.text, "Max: 10.00", "Max value stays max seen")
+
+        # Test PID labels
+        label = KELabel(
+            default        = '__PID__',
+            PID            = 'Some PID'
+        )
+        self.assertEqual(label.text, "Some PID0.00", "Sets PID label correctly")
 
 
 if __name__ == '__main__':
