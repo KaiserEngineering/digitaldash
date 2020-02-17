@@ -74,7 +74,14 @@ def setup():
                 mod = AbstractWidget()
             ObjectsToUpdate.append(mod.build(container=container, **widget, pids=pids))
 
+        # TODO This is a hack to fix the the Y max value issue
+        if ( len(container.children) < 3 ):
+            children = container.children
+            for gauge_layout in children:
+                gauge_layout.pos_hint={'top':0.8 + 0.05*len(container.children)}
+
         containers.append(container)
+
         ret.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
                     'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
         view_count += 1
