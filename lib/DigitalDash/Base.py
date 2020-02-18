@@ -227,7 +227,7 @@ class KELabel(Base, Label):
 
         if ( args.get('data', False) ):
             self.dataIndex = args['dataIndex']
-        self.setData(args.get('min', 0))
+            self.setData(args.get('min', 0))
 
     def setData(self: KL, value='') -> NoReturn:
         """

@@ -46,14 +46,17 @@ class BasicLabels_TestCase(unittest.TestCase):
             default        = 'hello, world',
             ConfigColor    = (1, 1, 1 ,1),
             ConfigFontSize = 25,
+            data           = 0
         )
-        self.assertEqual(label.text, "hello, world0.00", "Default text value is set correctly")
+        self.assertEqual(label.text, "hello, world", "Default text value is set correctly")
 
         label.setData(100)
         self.assertEqual(label.text, "hello, world100.00", "Default text value is set correctly form setData method")
 
         label = KELabel(
             default        = 'Min: ',
+            data           = 1,
+            dataIndex      = 0
         )
         self.assertEqual(label.text, "Min: 0.00", "Default text value is set correctly")
         label.setData(-100)
@@ -64,6 +67,8 @@ class BasicLabels_TestCase(unittest.TestCase):
 
         label = KELabel(
             default        = 'Max: ',
+            data           = 1,
+            dataIndex      = 0
         )
         self.assertEqual(label.text, "Max: 0.00", "Default text value is set correctly")
         label.setData(100)
@@ -77,7 +82,7 @@ class BasicLabels_TestCase(unittest.TestCase):
             default        = '__PID__',
             PID            = 'Some PID'
         )
-        self.assertEqual(label.text, "Some PID0.00", "Sets PID label correctly")
+        self.assertEqual(label.text, "Some PID", "Sets PID label correctly")
 
 
 if __name__ == '__main__':
