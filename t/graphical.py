@@ -48,10 +48,5 @@ class Alerts_TestCase(GraphicUnitTest):
             for child in layout.children:
                 gauge = child.children
 
-                for widget in gauge:
-                    if ( widget.ObjectType == 'Needle' ):
-                        self.assertEqual(widget.true_value, 50.0, "true value for needle is updated correctly")
-                        self.assertEqual(widget.update, -59.25, "Calculated update value is set correctly")
-
 if __name__ == '__main__':
     unittest.main()
