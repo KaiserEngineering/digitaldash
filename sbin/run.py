@@ -128,13 +128,17 @@ class DigitalDash(App):
 
     background_source = StringProperty()
 
-    def new(self, config=None):
+    def new(self, config=None, data=None):
         """
         This method can be used to set any values before the app starts, this is useful for
         testing.
         """
         global ConfigFile
         ConfigFile = config
+
+        if ( data ):
+            global Data_Source
+            Data_Source = Test(file=data)
 
     def build(self):
         """Perform main build loop for Kivy app."""

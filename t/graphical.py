@@ -32,6 +32,26 @@ class Config_TestCase(GraphicUnitTest):
                         self.assertEqual(widget.true_value, 50.0, "true value for needle is updated correctly")
                         self.assertEqual(widget.update, -59.25, "Calculated update value is set correctly")
 
+class Alerts_TestCase(GraphicUnitTest):
+
+    def test_Single(self):
+        t.Testing( 't/configs/alerts.json', 't/test.csv' )
+        t.app.update_values([50])
+
+        seen = False
+        for alert in t.app.alerts.children:
+            self.assertLessEqual(alert.text, "Hello, world", "Alert displays correctly")
+            seen = True
+        self.assertTrue(seen, "Alert did show up")
+
+        for layout in t.app.app.children[0].children:
+            for child in layout.children:
+                gauge = child.children
+
+                for widget in gauge:
+                    if ( widget.ObjectType == 'Needle' ):
+                        self.assertEqual(widget.true_value, 50.0, "true value for needle is updated correctly")
+                        self.assertEqual(widget.update, -59.25, "Calculated update value is set correctly")
 
 if __name__ == '__main__':
     unittest.main()

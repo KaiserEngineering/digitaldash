@@ -58,9 +58,9 @@ class Test():
     def PowerCycle( self ):
        return ( 1, 'Power cycle' )
 
-    def Testing( self, Config=None ):
+    def Testing( self, Config=None, Data=None ):
         from sbin.run import DigitalDash
 
         self.app = DigitalDash()
-        self.app.new(config=Config)
+        self.app.new(config=Config, data=Data)
         self.app.run()

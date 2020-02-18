@@ -15,6 +15,7 @@ sys.path.append(os.getcwd() + '/etc')
 
 from lib.DigitalDash.Base import Needle, NeedleEllipse, NeedleLinear, NeedleRadial
 from lib.DigitalDash.Base import KELabel
+from lib.DigitalDash.Alert import Alert
 
 class BasicNeedle_TestCase(unittest.TestCase):
 
@@ -83,6 +84,23 @@ class BasicLabels_TestCase(unittest.TestCase):
             PID            = 'Some PID'
         )
         self.assertEqual(label.text, "Some PID", "Sets PID label correctly")
+
+class BasicAlerts_TestCase(unittest.TestCase):
+    def test_alert_simple(self):
+        alert = Alert(
+            value     = 100,
+            op        = '>',
+            index     = 0,
+            priority  = 0,
+            dataIndex = 0,
+            message   = 'Hello, from tests',
+        )
+        self.assertFalse(alert.check(99), "Check fails when it should")
+        self.assertNotEqual(alert.text, 'Hello, from tests', "Do not set alert value")
+
+        self.assertTrue(alert.check(101), "Check passes when it should")
+        alert.change('', '')
+        self.assertEqual(alert.text, 'Hello, from tests', "Do not set alert value")
 
 
 if __name__ == '__main__':

@@ -49,6 +49,7 @@ class Alert(KELabel):
         self.index     = args['index']
         self.priority  = args['priority']
         self.dataIndex = int(args['dataIndex'])
+        self.message   = str(args['message'])
 
     @lru_cache(maxsize=512)
     def check(self, value:float) -> bool:
@@ -68,5 +69,5 @@ class Alert(KELabel):
             :param App: main application object
             :param callback: current callback object
         """
-        self.text = self.default
+        self.text = self.message
         return False
