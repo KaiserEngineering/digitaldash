@@ -13,6 +13,8 @@ from etc import Config
 from typing import NoReturn, List, TypeVar
 from kivy.uix.boxlayout import BoxLayout
 from kivy.animation import Animation
+from kivy.core.window import Window
+
 
 class Base(object):
     def __init__(self):
@@ -26,6 +28,13 @@ class Base(object):
         # Optional values
         self.minObserved = 9999
         self.maxObserved = -9999
+
+        def _layoutManager(instance, size):
+            if ( self.Layout.height > Window.height ):
+                self.Layout.pos_hint={'top':Window.height / size[1]}
+            if ( self.Layout.width > Window.width ):
+                self.Layout.pos_hint={'top':Window.width / size[0]}
+        self.Layout.bind(size=_layoutManager)
 
 
 class AbstractWidget(Base):
