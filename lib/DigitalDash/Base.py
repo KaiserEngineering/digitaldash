@@ -10,31 +10,27 @@ from kivy.uix.widget import Widget
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.boxlayout import BoxLayout
 from etc import Config
-from typing import NoReturn, List, TypeVar
-from kivy.uix.boxlayout import BoxLayout
-from kivy.animation import Animation
 from kivy.core.window import Window
 
 
-class Base(object):
-    def __init__(self):
-        super(Base, self).__init__()
-        # Our required attributes
-        self.liveWidgets = []
-        self.dataIndex   = -1
-        self.Layout      = RelativeLayout()
-        self.container   = None
+Builder.load_string('''
+<GaugeLayout>:
+    pos_hint: {'x': 0, 'y': 0.025*self.gauge_count }
+''')
+class GaugeLayout(RelativeLayout):
+    gauge_count = NumericProperty(300)
 
+    def __init__(self, gauge_count):
+       super(GaugeLayout, self).__init__()
+       self.gauge_count = gauge_count
+
+
+class Base(object):
+    def __init__(self, **kwargs):
+        super(Base, self).__init__()
         # Optional values
         self.minObserved = 9999
         self.maxObserved = -9999
-
-        def _layoutManager(instance, size):
-            if ( self.Layout.height > Window.height ):
-                self.Layout.pos_hint={'top':Window.height / size[1]}
-            if ( self.Layout.width > Window.width ):
-                self.Layout.pos_hint={'top':Window.width / size[0]}
-        self.Layout.bind(size=_layoutManager)
 
 
 class AbstractWidget(Base):
@@ -42,9 +38,16 @@ class AbstractWidget(Base):
     Generic scaffolding for KE Widgets.
         :param object: 
     """
+    def __init__(self, **kwargs):
+        super(AbstractWidget, self).__init__()
+        # Our required attributes
+        self.liveWidgets = []
+        self.dataIndex   = -1
+        self.Layout      = GaugeLayout(kwargs.get('gauge_count', 0))
+        self.container   = None
 
     def build(self,
-                container=BoxLayout(padding=(30, -70, 30, 0)),
+                container=BoxLayout(),
                 **ARGS
             ):
         """

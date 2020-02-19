@@ -12,8 +12,10 @@ from kivy.uix.floatlayout import FloatLayout
 from lib.DigitalDash.Dynamic import Dynamic
 from lib.DigitalDash.Alert import Alert
 from kivy.logger import Logger
-
+from kivy.core.window import Window
 from kivy.lang import Builder
+
+
 Builder.load_string('''
 <Background>:
     canvas:
@@ -68,7 +70,7 @@ def setup(Layouts):
         else:
             callbacks.setdefault(view_count, [])
 
-        container = BoxLayout(padding=(30, -70, 30, 0))
+        container = BoxLayout(padding=(30, 0, 30, 0))
         ObjectsToUpdate = []
         layout = layouts()
 
@@ -78,7 +80,7 @@ def setup(Layouts):
             try:
                 mod = globals()[widget['module']]()
             except KeyError:
-                mod = AbstractWidget()
+                mod = AbstractWidget(gauge_count=len(view[2]))
             ObjectsToUpdate.append(mod.build(container=container, **widget, pids=pids))
 
         containers.append(container)
