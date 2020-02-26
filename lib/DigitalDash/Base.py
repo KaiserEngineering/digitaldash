@@ -15,14 +15,20 @@ from kivy.core.window import Window
 
 Builder.load_string('''
 <GaugeLayout>:
-    pos_hint: {'x': 0, 'y': 0.025*self.gauge_count }
+    pos_hint: {'x': 0, 'y': self.gauge_count }
 ''')
 class GaugeLayout(RelativeLayout):
     gauge_count = NumericProperty(300)
 
     def __init__(self, gauge_count):
        super(GaugeLayout, self).__init__()
-       self.gauge_count = gauge_count
+
+       if ( gauge_count == 1 ):
+           self.gauge_count = 0.015
+       elif ( gauge_count == 2 ):
+           self.gauge_count = 0.030
+       else:
+           self.gauge_count = 0.1
 
 
 class Base(object):
