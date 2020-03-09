@@ -259,10 +259,11 @@ class KELabel(Base, Label):
         if ( self.default == 'Min: ' ):
             if ( self.minObserved > value ):
                 self.minObserved = value
-                self.text = self.default + "{0:.2f}".format(value)
+                self.text = "{0:.2f}".format(value)
         elif ( self.default == 'Max: ' ):
             if ( self.maxObserved < value ):
-                self.text = self.default + "{0:.2f}".format(value)
+                self.maxObserved = value
+                self.text = "{0:.2f}".format(value)
         else:
             self.text = self.default + "{0:.2f}".format(value)
 
