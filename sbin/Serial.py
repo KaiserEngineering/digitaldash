@@ -3,6 +3,7 @@ import serial
 import time
 from kivy.logger import Logger
 from subprocess import call
+from static import Constants
 
 UART_SOL                 = 0xFF
 UART_PCKT_SOL_POS        = 0x00
@@ -10,35 +11,8 @@ UART_PCKT_LEN_POS        = 0x01
 UART_PCKT_CMD_POS        = 0x02
 UART_PCKT_DATA_START_POS = 0x03
 
-KE_CP_OP_CODES = {
-    'KE_RESERVED'                : 0x00,    # Reserved
-    'KE_ACK'                     : 0x01,    # Positive acknowledgment
-    'KE_NACK'                    : 0x02,    # Negative acknowledgment
-    'KE_HEARTBEAT'               : 0x03,    # Heartbeat
-    'KE_SYS_READY'               : 0x04,    # System ready (GUI)
-    'KE_PID_STREAM_NEW'          : 0x05,    # Clear current PID request and add new PID(s)
-    'KE_PID_STREAM_ADD'          : 0x06,    # Add PID request to current stream
-    'KE_PID_STREAM_REMOVE'       : 0x07,    # Remove PID request from current stream
-    'KE_PID_STREAM_CLEAR'        : 0x08,    # Clear all PID request from current stream
-    'KE_PID_STREAM_REPORT'       : 0x09,    # Report PID Data
-    'KE_LCD_ENABLE'              : 0x0A,    # Enable the LCD display
-    'KE_LCD_DISABLE'             : 0x0B,    # Disable the LCD display
-    'KE_LCD_POWER_CYCLE'         : 0x0C,    # Power cycle the LCD display
-    'KE_LCD_FORCE_BRIGHTNESS'    : 0x0D,    # Force an LCD brightness (volatile)
-    'KE_LCD_AUTO_BRIGHTNESS'     : 0x0E,    # Re-enable standard LCD brightness control
-    'KE_USB_ENABLE'              : 0x0F,    # Enable the USB power
-    'KE_USB_DISABLE'             : 0x10,    # Disable the USB power
-    'KE_USB_POWER_CYCLE'         : 0x11,    # Power cycle the USB power
-    'KE_POWER_ENABLE'            : 0x12,    # Enable Power
-    'KE_POWER_DISABLE'           : 0x13,    # Disable Power
-    'KE_POWER_CYCLE'             : 0x14,    # Power cycle
-    'KE_FIRMWARE_REQ'            : 0x15,    # Request firmware version
-    'KE_FIRMWARE_REPORT'         : 0x16,    # Report firmware version
-    'KE_FIRMWARE_UPDATE'         : 0x17     # Place device in firmware update mode
-}
-
 class Serial():
-
+    KE_CODES = Constants.GetConstants()
     def __init__(self):
         super(Serial, self).__init__()
         self.ser = serial.Serial(
@@ -79,20 +53,20 @@ class Serial():
         # Remove the command byte from the payload
         data_line = data_line[ UART_PCKT_DATA_START_POS :len(data_line) - 1 ]
 
-        if cmd == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
+        if cmd == KE_CODES['KE_FIRMWARE_REPORT']:
             Logger.info("GUI: >> [FIRMWARE VERSION] "  + data_line.decode() + "\n")
 
-        elif cmd == KE_CP_OP_CODES['KE_POWER_DISABLE']:
+        elif cmd == KE_CODES['KE_POWER_DISABLE']:
             Logger.info("SYS: Shutdown received")
-            positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
+            positive_ack = [UART_SOL, 0x03, KE_CODES['KE_ACK']]
             self.ser.write(positive_ack)
             call("sudo nohup shutdown -h now", shell=True)
 
-        elif cmd == KE_CP_OP_CODES['KE_ACK']:
+        elif cmd == KE_CODES['KE_ACK']:
             Logger.info("GUI: >> ACK RX'd" + "\n")
 
-        elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
-            positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
+        elif cmd == KE_CODES['KE_PID_STREAM_REPORT']:
+            positive_ack = [UART_SOL, 0x03, KE_CODES['KE_ACK']]
             self.ser.write(positive_ack)
             Logger.info("Clipped Data: " + str(data_line))
             Logger.info("GUI: << ACK" + "\n")
@@ -114,7 +88,19 @@ class Serial():
 
     def UpdateRequirements(self, requirements):
         Logger.info("GUI: Updating requirements: " + str(requirements))
-        bytes_written = self.ser.write( [ UART_SOL , 0x07, KE_CP_OP_CODES['KE_PID_STREAM_NEW'],  0x00, 0x0C, 0x00, 0x33 ] );
+
+        pid_byte_code = []
+        byte_count    = 3
+        for requirement in requirements:
+            try:
+                pid_byte_code.append( (KE_CODES[requirement]['byteCode'] >> 0x8) & 0xFF )
+                pid_byte_code.append( (KE_CODES[requirement]['byteCode'] >> 0x0) & 0xFF )
+
+                byte_count += 2
+            except Exception as e:
+                Logger.error( "Could not load byte code for "+requirement+" : "+str(e) )
+
+        bytes_written = self.ser.write( [ UART_SOL , byte_count, KE_CODES['KE_PID_STREAM_NEW']]+ pid_byte_code );
 
         msg = "PIDs updated " + str( bytes_written ) + " written"
         Logger.info( msg )
@@ -130,7 +116,7 @@ class Serial():
 
         while self.firmwareVerified != True:
             Logger.info("GUI: Requesting Firmware Version..")
-            firmware_request = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_FIRMWARE_REQ']]
+            firmware_request = [UART_SOL, 0x03, KE_CODES['KE_FIRMWARE_REQ']]
             self.ser.write(firmware_request)
 
             # Wait for the MCU to receive the request and respond
@@ -164,7 +150,7 @@ class Serial():
        """
           Reboot the Raspberry Pi
        """
-       ke_power_cycle = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_POWER_CYCLE']]
+       ke_power_cycle = [UART_SOL, 0x03, KE_CODES['KE_POWER_CYCLE']]
        ret = self.ser.write(ke_power_cycle)
 
        msg = "Wrote : " + str(ret) + " bytes for power cycle"
