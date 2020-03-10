@@ -11,8 +11,9 @@ UART_PCKT_LEN_POS        = 0x01
 UART_PCKT_CMD_POS        = 0x02
 UART_PCKT_DATA_START_POS = 0x03
 
+KE_CODES = Constants.GetConstants()
+
 class Serial():
-    KE_CODES = Constants.GetConstants()
     def __init__(self):
         super(Serial, self).__init__()
         self.ser = serial.Serial(
@@ -29,6 +30,7 @@ class Serial():
 
 
     def Start(self):
+        global KE_CODES
 
         """L1612773-4oop for checking Serial connection for data."""
         # Handle grabbing data
@@ -87,6 +89,7 @@ class Serial():
         return self.ser_val
 
     def UpdateRequirements(self, requirements):
+        global KE_CODES
         Logger.info("GUI: Updating requirements: " + str(requirements))
 
         pid_byte_code = []
@@ -112,6 +115,7 @@ class Serial():
             Handle making sure that our hardware is initialized and
             it is safe to start the main application loop.
         """
+        global KE_CODES
         Logger.info( "GUI: Initializing hardware" )
 
         while self.firmwareVerified != True:
@@ -138,6 +142,7 @@ class Serial():
         """
             Re-run the hardware initialize function.
         """
+        global KE_CODES
 
         # STUB FOR @MATT
             # Reboot the hardware here
@@ -150,6 +155,7 @@ class Serial():
        """
           Reboot the Raspberry Pi
        """
+       global KE_CODES
        ke_power_cycle = [UART_SOL, 0x03, KE_CODES['KE_POWER_CYCLE']]
        ret = self.ser.write(ke_power_cycle)
 
