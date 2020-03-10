@@ -11,6 +11,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.boxlayout import BoxLayout
 from etc import Config
 from kivy.core.window import Window
+from static import Constants
 
 
 Builder.load_string('''
@@ -84,13 +85,14 @@ class AbstractWidget(Base):
         # Adding widgets that get updated with data
         self.liveWidgets.append(self.needle)
 
+        constants = Constants.GetConstants()
         # Create our labels
         for labelConfig in themeConfig['labels']:
             labelConfig['dataIndex'] = ARGS['dataIndex']
             labelConfig['PID'] = ARGS['pids'][ARGS['dataIndex']]
 
             # Create Label widget
-            label = KELabel(**labelConfig, min=self.needle.min)
+            label = KELabel(**labelConfig, **constants[labelConfig['PID']], min=self.needle.min)
             self.gauge.labels.append(label)
 
             # Add to data recieving widgets
@@ -233,6 +235,7 @@ class KELabel(Base, Label):
         self.color           = self.ConfigColor
         self.ConfigFontSize  = args.get('font_size', 25)
         self.font_size       = self.ConfigFontSize
+        self.decimals        = str(args.get('decimals', 2))
 
         self.ObjectType   = 'Label'
 
@@ -259,13 +262,13 @@ class KELabel(Base, Label):
         if ( self.default == 'Min: ' ):
             if ( self.minObserved > value ):
                 self.minObserved = value
-                self.text = "{0:.2f}".format(value)
+                self.text = ("{0:.%sf}"%(self.decimals)).format(value)
         elif ( self.default == 'Max: ' ):
             if ( self.maxObserved < value ):
                 self.maxObserved = value
-                self.text = "{0:.2f}".format(value)
+                self.text = ("{0:.%sf}"%(self.decimals)).format(value)
         else:
-            self.text = self.default + "{0:.2f}".format(value)
+            self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)
 
 
 Builder.load_string('''

@@ -3,7 +3,7 @@
     [
     {
       "background":"static/imgs/Background/bg.jpg",
-      "pids": ["RPM", "APP", "ECT"]
+      "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_AIR_TEMPERATURE"]
     },
     {
        "dynamic":
