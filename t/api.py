@@ -65,7 +65,8 @@ class BasicLabels_TestCase(unittest.TestCase):
         label = KELabel(
             default        = 'Min: ',
             data           = 1,
-            dataIndex      = 0
+            dataIndex      = 0,
+            PID            = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
         )
         self.assertEqual(label.text, "0.00", "Default text value is set correctly")
         label.setData(-100)
@@ -77,7 +78,8 @@ class BasicLabels_TestCase(unittest.TestCase):
         label = KELabel(
             default        = 'Max: ',
             data           = 1,
-            dataIndex      = 0
+            dataIndex      = 0,
+            PID            = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
         )
         self.assertEqual(label.text, "0.00", "Default text value is set correctly")
         label.setData(100)
@@ -102,6 +104,7 @@ class BasicAlerts_TestCase(unittest.TestCase):
             priority  = 0,
             dataIndex = 0,
             message   = 'Hello, from tests',
+            PID            = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
         )
         self.assertFalse(alert.check(99), "Check fails when it should")
         self.assertNotEqual(alert.text, 'Hello, from tests', "Do not set alert value")
