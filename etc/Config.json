@@ -3,7 +3,7 @@
     [
     {
       "background":"static/imgs/Background/bg.jpg",
-      "pids": ["RPM", "APP", "ECT"]
+      "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_AIR_TEMPERATURE"]
     },
     {
        "dynamic":
@@ -33,15 +33,6 @@
                 "MinMax": [0, 100]
             },
           "dataIndex": 1
-         },
-         {
-           "module": "Radial",
-           "path": "static/imgs/Stock/",
-           "args": {
-                 "themeConfig": "120",
-                 "MinMax": [0, 215]
-             },
-           "dataIndex": 2
          }
       ]
     ]

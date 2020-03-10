@@ -3,7 +3,7 @@
       [
       {
         "background":"static/imgs/Background/bg.jpg",
-        "pids": ["RPM", "APP", "ECT"]
+        "pids": ["ENGINE_RPM"]
       },
       {
           "dynamic":

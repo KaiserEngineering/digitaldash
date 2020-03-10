@@ -11,8 +11,10 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.boxlayout import BoxLayout
 from etc import Config
 from kivy.core.window import Window
+from static import Constants
+from kivy.logger import Logger
 
-
+constants = Constants.GetConstants()
 Builder.load_string('''
 <GaugeLayout>:
     pos_hint: {'x': 0, 'y': self.gauge_count }
@@ -210,7 +212,6 @@ class Needle(Base):
             value = self.min
         self.update = value * self.step - self.offset
 
-
 KL = TypeVar('KL', bound='KELabel')
 class KELabel(Base, Label):
     """
@@ -228,16 +229,22 @@ class KELabel(Base, Label):
     def __init__(self, **args):
         """Intiate Label widget."""
         super(KELabel, self).__init__()
+        global constants
         self.default         = args.get('default', '')
         self.ConfigColor     = args.get('color', (1, 1, 1 ,1)) # White
         self.color           = self.ConfigColor
         self.ConfigFontSize  = args.get('font_size', 25)
         self.font_size       = self.ConfigFontSize
+        self.decimals        = str(constants[args['PID']].get('decimals', 2))
 
         self.ObjectType   = 'Label'
 
         if ( self.default == '__PID__' ):
-            self.default = args.get('PID', '')
+            try:
+                self.default = str(constants[args['PID']]['shortName'])
+            except Exception as e:
+                self.default = args.get('PID', '')
+                Logger.error( "Could not load shortName from Static.Constants for PID: "+self.default+" : "+str(e) )
         self.text = self.default
 
         # Set position dynamically
@@ -259,13 +266,13 @@ class KELabel(Base, Label):
         if ( self.default == 'Min: ' ):
             if ( self.minObserved > value ):
                 self.minObserved = value
-                self.text = "{0:.2f}".format(value)
+                self.text = ("{0:.%sf}"%(self.decimals)).format(value)
         elif ( self.default == 'Max: ' ):
             if ( self.maxObserved < value ):
                 self.maxObserved = value
-                self.text = "{0:.2f}".format(value)
+                self.text = ("{0:.%sf}"%(self.decimals)).format(value)
         else:
-            self.text = self.default + "{0:.2f}".format(value)
+            self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)
 
 
 Builder.load_string('''

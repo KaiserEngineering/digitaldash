@@ -20,6 +20,7 @@ sys.path.append(os.getcwd())
 sys.path.append(os.getcwd() + '/lib')
 sys.path.append(os.getcwd() + '/etc')
 sys.path.append(os.getcwd() + '/KE')
+sys.path.append(os.getcwd() + '/static')
 os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 
 from typing import NoReturn, List, TypeVar

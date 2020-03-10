@@ -12,10 +12,12 @@ os.chdir(path)
 sys.path.append(os.getcwd())
 sys.path.append(os.getcwd() + '/lib')
 sys.path.append(os.getcwd() + '/etc')
+sys.path.append(os.getcwd() + '/static')
 
 from lib.DigitalDash.Base import Needle, NeedleEllipse, NeedleLinear, NeedleRadial
 from lib.DigitalDash.Base import KELabel
 from lib.DigitalDash.Alert import Alert
+from static import Constants
 
 class BasicNeedle_TestCase(unittest.TestCase):
 
@@ -42,48 +44,54 @@ class BasicNeedle_TestCase(unittest.TestCase):
             self.assertEqual(needle.update, value, needle.Type+" component sets the correct value (not true value)")
 
 class BasicLabels_TestCase(unittest.TestCase):
+
     def test_label_simple(self):
+        constants = Constants.GetConstants()
+
         label = KELabel(
             default        = 'hello, world',
             ConfigColor    = (1, 1, 1 ,1),
             ConfigFontSize = 25,
-            data           = 0
+            data           = 0,
+            PID            = 'ENGINE_RPM',
+            **constants['ENGINE_RPM']
         )
         self.assertEqual(label.text, "hello, world", "Default text value is set correctly")
+        self.assertEqual(label.decimals, str(constants['ENGINE_RPM']['decimals']), "Decimal place set correctly for label")
 
         label.setData(100)
-        self.assertEqual(label.text, "hello, world100.00", "Default text value is set correctly form setData method")
+        self.assertEqual(label.text, "hello, world100", "Default text value is set correctly form setData method")
 
         label = KELabel(
             default        = 'Min: ',
             data           = 1,
             dataIndex      = 0
         )
-        self.assertEqual(label.text, "Min: 0.00", "Default text value is set correctly")
+        self.assertEqual(label.text, "0.00", "Default text value is set correctly")
         label.setData(-100)
-        self.assertEqual(label.text, "Min: -100.00", "Min value sets correctly")
+        self.assertEqual(label.text, "-100.00", "Min value sets correctly")
 
         label.setData(100)
-        self.assertEqual(label.text, "Min: -100.00", "Min value stays minimum seen")
+        self.assertEqual(label.text, "-100.00", "Min value stays minimum seen")
 
         label = KELabel(
             default        = 'Max: ',
             data           = 1,
             dataIndex      = 0
         )
-        self.assertEqual(label.text, "Max: 0.00", "Default text value is set correctly")
+        self.assertEqual(label.text, "0.00", "Default text value is set correctly")
         label.setData(100)
-        self.assertEqual(label.text, "Max: 100.00", "Max value sets correctly")
+        self.assertEqual(label.text, "100.00", "Max value sets correctly")
 
         label.setData(10)
-        self.assertEqual(label.text, "Max: 10.00", "Max value stays max seen")
+        self.assertEqual(label.text, "100.00", "Max value stays max seen")
 
         # Test PID labels
         label = KELabel(
             default        = '__PID__',
-            PID            = 'Some PID'
+            PID            = 'ENGINE_RPM'
         )
-        self.assertEqual(label.text, "Some PID", "Sets PID label correctly")
+        self.assertEqual(label.text, "RPM", "Sets PID label correctly")
 
 class BasicAlerts_TestCase(unittest.TestCase):
     def test_alert_simple(self):
