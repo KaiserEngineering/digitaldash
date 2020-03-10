@@ -33,15 +33,6 @@
                 "MinMax": [0, 100]
             },
           "dataIndex": 1
-         },
-         {
-           "module": "Radial",
-           "path": "static/imgs/Stock/",
-           "args": {
-                 "themeConfig": "120",
-                 "MinMax": [0, 215]
-             },
-           "dataIndex": 2
          }
       ]
     ]

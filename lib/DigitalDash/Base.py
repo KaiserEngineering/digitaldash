@@ -12,6 +12,7 @@ from kivy.uix.boxlayout import BoxLayout
 from etc import Config
 from kivy.core.window import Window
 from static import Constants
+from kivy.logger import Logger
 
 
 Builder.load_string('''
@@ -85,14 +86,13 @@ class AbstractWidget(Base):
         # Adding widgets that get updated with data
         self.liveWidgets.append(self.needle)
 
-        constants = Constants.GetConstants()
         # Create our labels
         for labelConfig in themeConfig['labels']:
             labelConfig['dataIndex'] = ARGS['dataIndex']
             labelConfig['PID'] = ARGS['pids'][ARGS['dataIndex']]
 
             # Create Label widget
-            label = KELabel(**labelConfig, **constants[labelConfig['PID']], min=self.needle.min)
+            label = KELabel(**labelConfig, min=self.needle.min)
             self.gauge.labels.append(label)
 
             # Add to data recieving widgets
@@ -212,7 +212,7 @@ class Needle(Base):
             value = self.min
         self.update = value * self.step - self.offset
 
-
+constants = Constants.GetConstants()
 KL = TypeVar('KL', bound='KELabel')
 class KELabel(Base, Label):
     """
@@ -240,7 +240,11 @@ class KELabel(Base, Label):
         self.ObjectType   = 'Label'
 
         if ( self.default == '__PID__' ):
-            self.default = args.get('PID', '')
+            try:
+                self.default = constants[args['PID']]['shortName']
+            except Exception as e:
+                self.default = args.get('PID', '')
+                Logger.error( "Could not load shortName from Static.Constants for PID: "+self.default+" : "+str(e) )
         self.text = self.default
 
         # Set position dynamically

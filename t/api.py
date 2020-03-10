@@ -89,9 +89,9 @@ class BasicLabels_TestCase(unittest.TestCase):
         # Test PID labels
         label = KELabel(
             default        = '__PID__',
-            PID            = 'Some PID'
+            PID            = 'ENGINE_RPM'
         )
-        self.assertEqual(label.text, "Some PID", "Sets PID label correctly")
+        self.assertEqual(label.text, "RPM", "Sets PID label correctly")
 
 class BasicAlerts_TestCase(unittest.TestCase):
     def test_alert_simple(self):
