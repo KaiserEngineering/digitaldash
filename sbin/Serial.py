@@ -135,6 +135,7 @@ class Serial():
                 self.firmwareVerified = True
             else :
                 Logger.info("Firmware Update Required")
+                self.firmwareVerified = True #TODO, STLINK Utility
 
         return ( True, "Hardware: Successfully initiated hardware" )
 
