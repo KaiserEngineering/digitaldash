@@ -40,4 +40,5 @@ docs/_build/
 
 kivy.log
 etc/*.json
-etc/kivy/logs/*
+etc/kivy/*
+etc/kivy/config.ini

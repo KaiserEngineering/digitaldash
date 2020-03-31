@@ -235,7 +235,7 @@ class KELabel(Base, Label):
         self.color           = self.ConfigColor
         self.ConfigFontSize  = args.get('font_size', 25)
         self.font_size       = self.ConfigFontSize
-        self.decimals        = str(constants[args['PID']].get('decimals', 2))
+        self.decimals        = str(constants.get(args.get('PID', ''), {}).get('decimals', 2))
 
         self.ObjectType   = 'Label'
 
