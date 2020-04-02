@@ -35,7 +35,7 @@ class Config_TestCase(GraphicUnitTest):
 class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( 't/configs/alerts.json', 't/test.csv' )
+        t.Testing( 't/configs/alerts.json', 't/configs/test.csv' )
         t.app.update_values([50])
 
         seen = False

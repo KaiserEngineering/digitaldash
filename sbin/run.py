@@ -30,16 +30,16 @@ Data_Source = False
 run         = True
 
 from lib.DigitalDash.Test import Test
-opts, args = getopt.getopt(sys.argv[1:],"tdf:",["test", "development", "file"])
-for opt, arg in opts:
+opts, args = getopt.getopt(sys.argv[1:], "tdf:c", ["test", "development", "file", "cython"])
+for o, arg in opts:
     # test mode will not run GUI
-    if ( opt == '--test' or opt == '-t'):
+    if ( o in ("-t", "--test") ):
         sys.argv = ['sbin/run.py']
 
     # Development mode runs with debug console - ctr + e to open it in GUI
-    elif ( opt == '--development' or opt == '-d'  ):
+    elif ( o in ( "-d", "--development" )  ):
         sys.argv = ['sbin/run.py -m console']
-    if ( opt == '--file' or opt == '-f' ):
+    if ( o in ( "-f", "--file" ) ):
         Data_Source = Test(file=arg)
 
 if not len(opts):
