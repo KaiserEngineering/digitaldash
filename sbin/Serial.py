@@ -13,6 +13,7 @@ UART_PCKT_DATA_START_POS = 0x03
 
 KE_CODES = Constants.GetConstants()
 
+
 class Serial():
     def __init__(self):
         super(Serial, self).__init__()
@@ -22,11 +23,12 @@ class Serial():
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS,
-            timeout=5
+            timeout=1
         )
         self.ser.flushInput()
         self.ser_val = [0, 0, 0, 0, 0, 0]
         self.firmwareVerified = False  #False to do a firmware request
+        self.requirements = []
 
 
     def Start(self):
@@ -44,6 +46,7 @@ class Serial():
 
         # There shall always be an opcode and EOL
         if ( len(data_line) < 2 ):
+            self.UpdateRequirements( self.requirements )
             Logger.info("GUI: Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
             return self.ser_val
 
@@ -73,7 +76,7 @@ class Serial():
             Logger.info("Clipped Data: " + str(data_line))
             Logger.info("GUI: << ACK" + "\n")
             count = 0
-            data_line = data_line.decode('utf-8')
+            data_line = data_line.decode('utf-8', 'ignore')
             for val in data_line.split(';'):
                 try:
                     val = float(val)
@@ -91,6 +94,9 @@ class Serial():
     def UpdateRequirements(self, requirements):
         global KE_CODES
         Logger.info("GUI: Updating requirements: " + str(requirements))
+
+        #Save current PID request
+        self.requirements = requirements
 
         pid_byte_code = []
         byte_count    = 3

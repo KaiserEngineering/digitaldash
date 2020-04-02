@@ -3,7 +3,7 @@
     [
     {
       "background":"static/imgs/Background/bg.jpg",
-      "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_AIR_TEMPERATURE"]
+      "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"]
     },
     {
        "dynamic":
@@ -26,13 +26,22 @@
            "dataIndex": 0
          },
          {
+           "module": "Radial",
+           "path": "static/imgs/Stock/",
+           "args": {
+                 "themeConfig": "120",
+                 "MinMax": [0, 215]
+             },
+           "dataIndex": 1
+         },
+         {
           "module": "Radial",
           "path": "static/imgs/Stock/",
           "args": {
                 "themeConfig": "120",
-                "MinMax": [0, 100]
+                "MinMax": [0, 255]
             },
-          "dataIndex": 1
+          "dataIndex": 2
          }
       ]
     ]
