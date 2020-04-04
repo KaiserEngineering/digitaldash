@@ -13,6 +13,10 @@ from etc import Config
 from kivy.core.window import Window
 from static import Constants
 from kivy.logger import Logger
+from lib.DigitalDash.Massager import Massager
+
+
+massager = Massager()
 
 constants = Constants.GetConstants()
 Builder.load_string('''
@@ -166,6 +170,7 @@ class Needle(Base):
         self.SetAttrs(**kwargs)
         self.SetOffset()
         self.true_value = self.min
+
         self.setData(self.true_value)
 
     def _size(self, gauge):
@@ -203,14 +208,17 @@ class Needle(Base):
             :param self: Widget Object
             :param value: Update value for gauge needle
         """
+        global massager
         value = float(value)
         self.true_value = value
+
+        current = self.update
 
         if value > self.max:
             value = self.max
         elif value < self.min:
             value = self.min
-        self.update = value * self.step - self.offset
+        self.update = massager.Smooth( Old=current, New=value * self.step - self.offset )
 
 KL = TypeVar('KL', bound='KELabel')
 class KELabel(Base, Label):
