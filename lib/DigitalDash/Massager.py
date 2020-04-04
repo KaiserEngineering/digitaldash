@@ -18,20 +18,8 @@ class Massager():
             :param 'New' : Value,
         """
         if not Old and not New:
-            Logger.error( "Cannot smooth without a current and new value" )
-            return New
+            Logger.error( "Cannot smooth without an old and a new value" )
+            return 0
         delta = abs(New - Old)
-        # increment = Old + 0.75*log(-delta)
-        increment = (pow(delta,2) / pow(120, 2)) * 120
-        print(increment)
 
-        if ( New - Old  < 0 ):
-            return Old - increment
-        return Old + increment
-
-        # if delta <= 3:
-        #     return Old
-        # print("Delta: "+str(delta))
-        # print("New: "+str(New))
-        # print ("Calculated: "+str(New / ( delta * 0.75 )))
-        # return  ( New / ( delta *1.75 ) ) * New
+        return New - ( delta * 0.75 )
