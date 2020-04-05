@@ -189,6 +189,8 @@ class DigitalDash(App):
         # Our main application object
         self.app = AnchorLayout()
 
+        self.data_source = Data_Source
+
         self.current = 0
         global ConfigFile
 
