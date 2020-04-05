@@ -53,7 +53,8 @@ class Dynamic(object):
             :param App: <DigitalDash> main application object
             :param callback: current callback object
         """
-        App.data_source.UpdateRequirements(App.pids)
+
+        App.data_source.UpdateRequirements(App.views[callback.index]['pids'])
 
         App.app.clear_widgets()
         App.background.clear_widgets()
