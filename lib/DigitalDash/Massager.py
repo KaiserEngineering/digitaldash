@@ -6,9 +6,8 @@ class Massager():
     """
     Main massager class, use to massage values.
     """
-
     def __init__(self):
-        pass
+        self.smoothing_constant = 0.75
 
     def Smooth(self, Old, New, **args):
         """
@@ -17,9 +16,12 @@ class Massager():
             :param 'Old': Value,
             :param 'New' : Value,
         """
-        if not Old and not New:
-            Logger.error( "Cannot smooth without an old and a new value" )
+
+        if not Old:
+            return New
+        if not New:
+            Logger.error( "Cannot set smoothing value without New value" )
             return 0
         delta = abs(New - Old)
 
-        return New - ( delta * 0.75 )
+        return New - ( delta * self.smoothing_constant )
