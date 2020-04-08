@@ -17,7 +17,10 @@ sys.path.append(os.getcwd() + '/static')
 from lib.DigitalDash.Base import Needle, NeedleEllipse, NeedleLinear, NeedleRadial
 from lib.DigitalDash.Base import KELabel
 from lib.DigitalDash.Alert import Alert
+from lib.DigitalDash.Massager import Massager
 from static import Constants
+
+massager = Massager()
 
 class BasicNeedle_TestCase(unittest.TestCase):
 
@@ -27,6 +30,7 @@ class BasicNeedle_TestCase(unittest.TestCase):
             NeedleEllipse(themeConfig={'degrees': 100, 'MinMax': [-10, 90]}),
             NeedleLinear(themeConfig={'degrees': 100, 'MinMax': [-10, 90]}),
         )
+
         for needle in needles:
             offset = float(-10) if needle.Type == 'Linear' else float(40)
             value  = float(0) if needle.Type == 'Linear' else float(-50)
@@ -36,12 +40,15 @@ class BasicNeedle_TestCase(unittest.TestCase):
             self.assertEqual(needle.max, float(90), needle.Type+" component sets max property correctly")
             self.assertEqual(needle.true_value, needle.min, needle.Type+" component defaults to minimum value")
             self.assertEqual(needle.offset, offset, needle.Type+" component sets correct offset with negative min")
-            self.assertEqual(needle.update, value, needle.Type+" component sets the correct value (not true vlaue)")
+            self.assertEqual(needle.update, value, needle.Type+" component sets the correct rotational degrees (not true vlaue)")
+
+            old_value = needle.update
 
             needle.setData(50)
             value  = float(60) if needle.Type == 'Linear' else float(10)
+
             self.assertEqual(needle.true_value, float(50), needle.Type+" component defaults to minimum value")
-            self.assertEqual(needle.update, value, needle.Type+" component sets the correct value (not true value)")
+            self.assertEqual(needle.update, massager.Smooth(New=value, Old=old_value), needle.Type+" component sets the correct rotational value with smoothing (not true value)")
 
 class BasicLabels_TestCase(unittest.TestCase):
 
