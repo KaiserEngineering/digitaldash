@@ -147,48 +147,6 @@ class DigitalDash(App):
 
     def build(self):
         """Perform main build loop for Kivy app."""
-        errors_seen = {}
-        def loop(dt):
-            try:
-                if (Data_Source):
-                    if ( self.first_iteration ):
-                        (ret, msg) = Data_Source.UpdateRequirements( self.pids )
-                        if ( not ret ):
-                            Logger.error( msg )
-                        self.first_iteration = False
-                    # NOTE Does the start command need to be outside of this loop?
-                    ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
-                    # Check dynamic gauges before any alerts in case we make a change
-                    for dynamic in sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True):
-                        my_callback = self.check_callback(dynamic, priority, data)
-
-                        if(my_callback):
-                            if self.current == dynamic.index:
-                                break
-                            self.change(self, my_callback)
-                            break
-
-                    for callback in sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True):
-                        my_callback = self.check_callback(callback, priority, data)
-
-                        if(my_callback):
-                            self.change(self, my_callback)
-                            break
-
-                    self.update_values(data)
-            except Exception as e:
-                e = str(e)
-                Logger.error("Error found in main application loop: " +e)
-                if e in errors_seen:
-                    errors_seen[e] = errors_seen[e] + 1
-                else:
-                    errors_seen[e] = 1
-
-                if errors_seen[e] >= 3:
-                    (ret, msg) = Data_Source.PowerCycle()
-                    if ( not ret ):
-                        Logger.error( msg )
-        # END LOOP
 
         # Our main application object
         self.app = AnchorLayout()
@@ -233,7 +191,7 @@ class DigitalDash(App):
         # We consider program start a config change since it is just loading
         # data from the config file
         on_config_change(self)
-        Clock.schedule_interval(loop, 0)
+        Clock.schedule_interval(self.loop, 0)
 
         observer = Observer()
         observer.schedule(MyHandler(self), 'etc/', recursive=True)
@@ -266,6 +224,48 @@ class DigitalDash(App):
             for obj in widget:
                 obj.setData(data[obj.dataIndex])
 
+    errors_seen = {}
+    def loop(self, dt):
+        try:
+            if (Data_Source):
+                if ( self.first_iteration ):
+                    (ret, msg) = Data_Source.UpdateRequirements( self.pids )
+                    if ( not ret ):
+                        Logger.error( msg )
+                    self.first_iteration = False
+                # NOTE Does the start command need to be outside of this loop?
+                ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
+                # Check dynamic gauges before any alerts in case we make a change
+                for dynamic in self.dynamic_callbacks:
+                    my_callback = self.check_callback(dynamic, priority, data)
+
+                    if(my_callback):
+                        if self.current == dynamic.index:
+                            break
+                        self.change(self, my_callback)
+                        break
+
+                for callback in self.alert_callbacks:
+                    my_callback = self.check_callback(callback, priority, data)
+
+                    if(my_callback):
+                        self.change(self, my_callback)
+                        break
+
+                self.update_values(data)
+        except Exception as e:
+            error = 'Error found in main application loop on line {}: '.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e
+            Logger.error(error)
+
+            if e in errors_seen:
+                errors_seen[e] = errors_seen[e] + 1
+            else:
+                errors_seen[e] = 1
+
+            if errors_seen[e] >= 3:
+                (ret, msg) = Data_Source.PowerCycle()
+                if ( not ret ):
+                    Logger.error( msg )
 
 if ( run ):
     dd = DigitalDash()
