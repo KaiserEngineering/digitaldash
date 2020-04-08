@@ -82,6 +82,10 @@ def on_config_change(self):
         self.background.add_widget(self.containers[0])
         self.background.add_widget(self.alerts)
 
+        # Sort our dynamic and alerts callbacks by priority
+        self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
+        self.alert_callbacks   = sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True)
+
 
 class MyHandler(PatternMatchingEventHandler):
     """
@@ -195,6 +199,10 @@ class DigitalDash(App):
         global ConfigFile
 
         (self.views, self.containers, self.callbacks) = KE.setup(Config.layouts(file=ConfigFile))
+
+        # Sort our dynamic and alerts callbacks by priority
+        self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
+        self.alert_callbacks   = sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True)
 
         (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
