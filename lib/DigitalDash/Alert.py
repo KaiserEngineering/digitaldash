@@ -50,6 +50,7 @@ class Alert(KELabel):
         self.priority  = args['priority']
         self.dataIndex = int(args['dataIndex'])
         self.message   = str(args['message'])
+        self.buffer    = 0
 
     @lru_cache(maxsize=512)
     def check(self, value:float) -> bool:

@@ -202,14 +202,21 @@ class DigitalDash(App):
     def check_callback(self: DD, callback, priority, data):
         # Check if any dynamic changes need to be made
         if ( callback.check(data[callback.dataIndex]) ):
-            if (self.current != callback.index):
-                if type(callback) is Alert:
-                    self.alerts.clear_widgets()
-            return callback
+            callback.buffer += 1
 
-        # Clear alert widgets so we don't end up with multiple parent error
-        if type(callback) is Alert:
-            self.alerts.clear_widgets()
+            # Buffer is how many times we have seen our
+            if ( callback.buffer >= 20 ):
+                if (self.current != callback.index):
+                    if type(callback) is Alert:
+                        self.alerts.clear_widgets()
+                return callback
+        else:
+            callback.buffer = 0
+
+        # ANCHOR Depricated, to be removed soon if no bugs are found
+        # # Clear alert widgets so we don't end up with multiple parent error
+        # if type(callback) is Alert:
+        #     self.alerts.clear_widgets()
 
         return False
 

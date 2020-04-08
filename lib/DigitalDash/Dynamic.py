@@ -22,6 +22,7 @@ class Dynamic(object):
                 }
         """
         super(Dynamic, self).__init__()
+        self.buffer = 0
 
     def new( self, **args ):
         if ( len(list(filter(lambda key: ( args.get(key, 'missing') == 'missing' ), ['value', 'op', 'index', 'priority', 'dataIndex']))) ):
