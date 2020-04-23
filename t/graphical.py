@@ -23,7 +23,7 @@ massager = Massager()
 class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( 't/configs/single.json' )
+        t.Testing( 'etc/Configs/single.json' )
         t.app.update_values([50])
 
         for layout in t.app.app.children[0].children:
@@ -38,7 +38,7 @@ class Config_TestCase(GraphicUnitTest):
 class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( 't/configs/alerts.json', 't/configs/test.csv' )
+        t.Testing( 'etc/Configs/alerts.json', 't/configs/test.csv' )
         # Set this value 20 times to appease the buffer
         t.app.update_values([50])
         for _ in range(20):

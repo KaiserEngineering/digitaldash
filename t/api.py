@@ -125,9 +125,9 @@ class BasicAlerts_TestCase(unittest.TestCase):
 class Config_TestCase(unittest.TestCase):
     def test_config_file_from_cli(self):
         dd = DigitalDash()
-        dd.new(config='t/configs/single.json')
+        dd.new(config='etc/Configs/single.json')
 
-        self.assertEqual(dd.config, "t/configs/single.json", "Can set config file on DD instantiation")
+        self.assertEqual(dd.config, "etc/Configs/single.json", "Can set config file on DD instantiation")
 
 if __name__ == '__main__':
     unittest.main()
