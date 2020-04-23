@@ -14,6 +14,8 @@ sys.path.append(os.getcwd() + '/lib')
 sys.path.append(os.getcwd() + '/etc')
 sys.path.append(os.getcwd() + '/static')
 
+from sbin.run import DigitalDash
+
 from lib.DigitalDash.Base import Needle, NeedleEllipse, NeedleLinear, NeedleRadial
 from lib.DigitalDash.Base import KELabel
 from lib.DigitalDash.Alert import Alert
@@ -120,6 +122,12 @@ class BasicAlerts_TestCase(unittest.TestCase):
         alert.change('', '')
         self.assertEqual(alert.text, 'Hello, from tests', "Do not set alert value")
 
+class Config_TestCase(unittest.TestCase):
+    def test_config_file_from_cli(self):
+        dd = DigitalDash()
+        dd.new(config='t/configs/single.json')
+
+        self.assertEqual(dd.config, "t/configs/single.json", "Can set config file on DD instantiation")
 
 if __name__ == '__main__':
     unittest.main()
