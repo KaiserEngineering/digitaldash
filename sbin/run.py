@@ -30,7 +30,7 @@ Data_Source = False
 run         = True
 
 from lib.DigitalDash.Test import Test
-opts, args = getopt.getopt(sys.argv[1:], "tdf:c", ["test", "development", "file", "cython"])
+opts, args = getopt.getopt(sys.argv[1:], "tdf:c:", ["test", "development", "file", "config"])
 for o, arg in opts:
     # test mode will not run GUI
     if ( o in ("-t", "--test") ):
@@ -276,5 +276,11 @@ class DigitalDash(App):
 
 if ( run ):
     dd = DigitalDash()
-    dd.new()
+
+    config = None
+    for o, arg in opts:
+        if o in ( "-c", "--config" ):
+            config = arg
+    dd.new(config=config)
+
     DigitalDash().run()
