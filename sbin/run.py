@@ -139,7 +139,8 @@ class DigitalDash(App):
         testing.
         """
         global ConfigFile
-        ConfigFile = config
+        ConfigFile  = config
+        self.config = ConfigFile
 
         if ( data ):
             global Data_Source
