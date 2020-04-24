@@ -371,12 +371,6 @@ class NeedleLinear(Needle, StencilView):
 
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
-
-        if ( self.width == self.parent.width ):
-            self.width = min(self.parent.size)
-        else:
-            self.size = gauge.face.norm_image_size
-
         self.setStep()
         self.setData(self.true_value)
 
