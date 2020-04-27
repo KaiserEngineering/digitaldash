@@ -33,8 +33,14 @@ KE_PID = {
        'byteCode': 0x0F, 'shortName' : 'IAT', 'decimals' : '2', 'units' : 'Celcius'
     },
    'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE' : {
-       'byteCode': 0x0B, 'shortName' : 'MAP', 'decimals' : '2', 'units' : 'kPa'
-    }
+       'byteCode': 0x0B, 'shortName' : 'MAP', 'decimals' : '0', 'units' : 'kPa'
+    },
+   'ENGINE_COOLANT_TEMPERATURE' : {
+       'byteCode': 0x05, 'shortName' : 'ECT', 'decimals' : '1', 'units' : 'Celcius'
+    },
+   'CALCULATED_ENGINE_LOAD' : {
+       'byteCode': 0x04, 'shortName' : 'LOAD', 'decimals' : '1', 'units' : '%'
+    },
 }
 
 def GetConstants ():
