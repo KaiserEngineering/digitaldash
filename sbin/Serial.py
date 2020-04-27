@@ -155,7 +155,7 @@ class Serial():
                         self.systemFirmware[2] = int(fw[2])
                         Logger.info("File firmware version: "  + fw[0] + "." + fw[1] + "." + fw[2])
                     except:
-                        Logger.info("Hex file misaligned")
+                        Logger.warning("Hex file misaligned")
             try:
                 fw = data_line.decode()
                 fw = fw.split('.')
@@ -182,7 +182,7 @@ class Serial():
                     Logger.warning("Firmware Update Required")
                     self.firmwareVerified = True #TODO, STLINK Utility
             except:
-                Logger.info("Firmware decode misaligned")
+                Logger.warning("Firmware decode misaligned")
 
         return ( True, "Hardware: Successfully initiated hardware" )
 
