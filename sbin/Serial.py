@@ -4,6 +4,8 @@ import time
 from kivy.logger import Logger
 from subprocess import call
 from static import Constants
+import os
+import fnmatch
 
 UART_SOL                 = 0xFF
 UART_PCKT_SOL_POS        = 0x00
@@ -27,6 +29,8 @@ class Serial():
         )
         self.ser.flushInput()
         self.ser_val = [0, 0, 0, 0, 0, 0]
+        self.systemFirmware = [0, 0, 0]
+        self.hardwareFirmware = [0, 0, 0]
         self.firmwareVerified = False  #False to do a firmware request
         self.requirements = []
 
@@ -136,12 +140,49 @@ class Serial():
             # Remove the command byte from the payload
             data_line = data_line[ UART_PCKT_DATA_START_POS :len(data_line) - 1 ]
             Logger.info("GUI: Firmware Version Received: " +  data_line.decode() )
-            if data_line.decode() == "01.00.00":
-                Logger.info("Firmware Up To Date")
-                self.firmwareVerified = True
-            else :
-                Logger.info("Firmware Update Required")
-                self.firmwareVerified = True #TODO, STLINK Utility
+
+            for file_name in os.listdir("../ford-focus-binary"):
+                if fnmatch.fnmatch(file_name, '*.hex'):
+                    try:
+                        #Drop the hex extension
+                        fw = file_name.split('.')
+
+                        #Get the Major, Minor, and Patch
+                        fw = fw[0].split('_')
+
+                        self.systemFirmware[0] = int(fw[0])
+                        self.systemFirmware[1] = int(fw[1])
+                        self.systemFirmware[2] = int(fw[2])
+                        Logger.info("File firmware version: "  + fw[0] + "." + fw[1] + "." + fw[2])
+                    except:
+                        Logger.info("Hex file misaligned")
+            try:
+                fw = data_line.decode()
+                fw = fw.split('.')
+                self.hardwareFirmware[0] = int(fw[0])
+                self.hardwareFirmware[1] = int(fw[1])
+                self.hardwareFirmware[2] = int(fw[2])
+                Logger.info("Hardware firmware version: "  + fw[0] + "." + fw[1] + "." + fw[2])
+
+                fwUpdateReq = False
+
+                if self.systemFirmware[0] > self.hardwareFirmware[0]:
+                    fwUpdateReq = True
+                else:
+                    if self.systemFirmware[1] > self.hardwareFirmware[2]:
+                        fwUpdateReq = True
+                    else:
+                        if self.systemFirmware[2] > self.hardwareFirmware[2]:
+                            fwUpdateReq = True
+
+                if fwUpdateReq == False:
+                    Logger.info("Firmware Up To Date")
+                    self.firmwareVerified = True
+                else :
+                    Logger.warning("Firmware Update Required")
+                    self.firmwareVerified = True #TODO, STLINK Utility
+            except:
+                Logger.info("Firmware decode misaligned")
 
         return ( True, "Hardware: Successfully initiated hardware" )
 
