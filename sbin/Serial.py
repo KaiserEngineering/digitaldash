@@ -2,7 +2,7 @@
 import serial
 import time
 from kivy.logger import Logger
-from subprocess import call
+import subprocess
 from static import Constants
 import os
 import fnmatch
@@ -180,7 +180,9 @@ class Serial():
                     self.firmwareVerified = True
                 else :
                     Logger.warning("Firmware Update Required")
-                    self.firmwareVerified = True #TODO, STLINK Utility
+                    command = "sh ../ford-focus-binary/flash.sh"
+                    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+                    process.wait()
             except:
                 Logger.warning("Firmware decode misaligned")
 
