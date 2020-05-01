@@ -43,13 +43,13 @@ def setup(Layouts):
     containers = []
 
     view_count = 0
-    for view in Layouts:
-        background = view[0]['background']
-        pids       = view[0]['pids']
+    for view in Layouts['views']:
+        background = view['background']
+        pids       = view['pids']
 
         # Create our callbacks
-        if 'dynamic' in view[1].keys() and view[1]['dynamic'].keys():
-            dynamic = view[1]['dynamic']
+        if view['dynamic'].keys():
+            dynamic = view['dynamic']
             dynamic['index'] = view_count
 
             dynamic_obj = Dynamic()
@@ -62,8 +62,8 @@ def setup(Layouts):
         else:
             callbacks.setdefault('dynamic', [])
 
-        if 'alerts' in view[1].keys() and len(view[1]['alerts']):
-            for alert in view[1]['alerts']:
+        if len(view['alerts']):
+            for alert in view['alerts']:
                 alert['index'] = len(callbacks[view_count]) + \
                     1 if view_count in callbacks else 1
                 callbacks.setdefault(view_count, []).append(Alert(**alert))
@@ -74,13 +74,13 @@ def setup(Layouts):
         ObjectsToUpdate = []
         layout = layouts()
 
-        for widget in view[2]:
+        for widget in view['gauges']:
             mod = None
 
             try:
                 mod = globals()[widget['module']]()
             except KeyError:
-                mod = AbstractWidget(gauge_count=len(view[2]))
+                mod = AbstractWidget(gauge_count=len(view['gauges']))
             ObjectsToUpdate.append(mod.build(container=container, **widget, pids=pids))
 
         containers.append(container)

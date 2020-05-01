@@ -13,8 +13,7 @@ def layouts(file=None):
 
         data_file.close()
 
-
-    return jsonData['view']
+    return jsonData
 
 
 def getThemeConfig(theme):

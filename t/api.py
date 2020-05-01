@@ -77,12 +77,12 @@ class BasicLabels_TestCase(unittest.TestCase):
             dataIndex      = 0,
             PID            = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
         )
-        self.assertEqual(label.text, "0.00", "Default text value is set correctly")
+        self.assertEqual(label.text, "0", "Default text value is set correctly")
         label.setData(-100)
-        self.assertEqual(label.text, "-100.00", "Min value sets correctly")
+        self.assertEqual(label.text, "-100", "Min value sets correctly")
 
         label.setData(100)
-        self.assertEqual(label.text, "-100.00", "Min value stays minimum seen")
+        self.assertEqual(label.text, "-100", "Min value stays minimum seen")
 
         label = KELabel(
             default        = 'Max: ',
@@ -90,12 +90,12 @@ class BasicLabels_TestCase(unittest.TestCase):
             dataIndex      = 0,
             PID            = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
         )
-        self.assertEqual(label.text, "0.00", "Default text value is set correctly")
+        self.assertEqual(label.text, "0", "Default text value is set correctly")
         label.setData(100)
-        self.assertEqual(label.text, "100.00", "Max value sets correctly")
+        self.assertEqual(label.text, "100", "Max value sets correctly")
 
         label.setData(10)
-        self.assertEqual(label.text, "100.00", "Max value stays max seen")
+        self.assertEqual(label.text, "100", "Max value stays max seen")
 
         # Test PID labels
         label = KELabel(

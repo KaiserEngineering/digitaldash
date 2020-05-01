@@ -1,72 +1,61 @@
 {
-    "view" : [
-      [
+    "views" : [
       {
         "background":"static/imgs/Background/bg.jpg",
-        "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"]
-      },
-      {
-         "dynamic":
-         {
-         },
-         "alerts": [
-         ]
-      },[
-         {
-             "module": "Radial",
-             "path": "static/imgs/Stock/",
-             "args": {
-                   "themeConfig": "120",
-                   "MinMax": [0, 8000]
-               },
-             "dataIndex": 0
-           },
-           {
-             "module": "Radial",
-             "path": "static/imgs/Stock/",
-             "args": {
-                   "themeConfig": "120",
-                   "MinMax": [0, 127]
-               },
-             "dataIndex": 1
-           },
-           {
-            "module": "Radial",
-            "path": "static/imgs/Stock/",
-            "args": {
-                  "themeConfig": "120",
-                  "MinMax": [0, 381]
+        "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"],
+        "dynamic": { },
+        "alerts": [ ],
+        "gauges" : [
+            {
+              "module": "Radial",
+              "path": "static/imgs/Stock/",
+              "args": {
+                "themeConfig": "120",
+                "MinMax": [0, 8000]
               },
-            "dataIndex": 2
-           }
-        ]
-      ],
-      [
-      {
-        "background":"static/imgs/Background/banner1.jpg",
-        "pids": ["ENGINE_RPM"]
-      },
-      {
-         "dynamic":
-         {
-           "dataIndex": 0,
-           "op": ">=",
-           "value": 500,
-           "priority": 10
-         },
-         "alerts": [
-         ]
-      },[
-         {
-             "module": "Linear",
-             "path": "static/imgs/Linear/",
-             "args": {
-                   "themeConfig": "Linear",
-                   "MinMax": [0, 8000]
+              "dataIndex": 0
+            },
+            {
+              "module": "Radial",
+              "path": "static/imgs/Stock/",
+              "args": {
+                "themeConfig": "120",
+                "MinMax": [0, 127]
                },
-             "dataIndex": 0
-           }
-        ]
-      ]
+               "dataIndex": 1
+            },
+            {
+              "module": "Radial",
+              "path": "static/imgs/Stock/",
+              "args": {
+                "themeConfig": "120",
+                "MinMax": [0, 381]
+              },
+              "dataIndex": 2
+             }
+          ]
+        },
+        {
+          "background":"static/imgs/Background/banner1.jpg",
+          "pids": ["ENGINE_RPM"],
+          "dynamic": {
+            "dataIndex": 0,
+            "op": ">=",
+            "value": 500,
+            "priority": 10
+          },
+          "alerts": [],
+          "gauges": [
+            {
+              "module": "Linear",
+              "path": "static/imgs/Linear/",
+              "args": {
+                "themeConfig": "Linear",
+                "MinMax": [0, 8000]
+               },
+               "dataIndex": 0
+            }
+          ]
+        }
     ]
-  }
+}

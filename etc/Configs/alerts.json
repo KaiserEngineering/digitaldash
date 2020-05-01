@@ -1,13 +1,9 @@
 {
-    "view" : [
-      [
+    "views" : [
       {
         "background":"static/imgs/Background/bg.jpg",
-        "pids": ["ENGINE_RPM"]
-      },
-      {
-          "dynamic":
-          {},
+        "pids": ["ENGINE_RPM"],
+          "dynamic": {},
           "alerts": [
             {
                 "dataIndex": 0, "op": "<",
@@ -15,9 +11,9 @@
                 "priority": 1,
                 "message" : "Hello, wolrd"
             }
-          ]
-      },[
-          {
+          ],
+        "gauges": [
+            {
               "module": "Radial",
               "path": "static/imgs/Stock/",
               "args": {
@@ -27,6 +23,6 @@
               "dataIndex": 0
             }
         ]
-      ]
+      }
     ]
 }
