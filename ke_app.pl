@@ -2,6 +2,15 @@
 use Mojolicious::Lite -signatures;
 use JSON;
 
+
+### START HELPERS
+
+helper auth => sub {
+    return { Name => 'Craig', Email => 'craig@kaiserengineering.io' };
+};
+
+### END HELPERS
+
 get '/' => sub ($c) {
   $c->render(template => 'index');
 };
@@ -22,18 +31,18 @@ get '/api/config/' => sub ($c) {
   $c->render(json => JSON::from_json($json));
 };
 
-# post '/update' => sub {
-#     my $c    = shift;
-#     my $json = JSON::decode_json( $c->req->params->to_hash->{config} );
-#     my $json_pretty = JSON::to_json( $json, { canonical => 1, pretty => 1 });
-#     {
-#       local $/; #Enable 'slurp' mode
-#       open my $fh, ">", "/Users/craigkaiser/kaiserengineering/DigitalDash_GUI/etc/Config.json";
-#       print $fh $json_pretty;
-#       close $fh;
-#     }
-#     $c->redirect_to( '/');
-# };
+post '/api/update' => sub {
+    my $c    = shift;
+    my $json = JSON::decode_json( $c->req->params->to_hash->{config} );
+    my $json_pretty = JSON::to_json( $json, { canonical => 1, pretty => 1 });
+    {
+      local $/; #Enable 'slurp' mode
+      open my $fh, ">", "/Users/craigkaiser/kaiserengineering/DigitalDash_GUI/etc/Config.json";
+      print $fh $json_pretty;
+      close $fh;
+    }
+    $c->redirect_to( '/');
+};
 
 app->start;
 
@@ -41,28 +50,44 @@ __DATA__
 
 @@ index.html.ep
 % layout 'default';
-% title 'Mojolicious-Vue.js Example';
+% title 'KE App';
 
 <div id="app" class="container">
 
-  <section class="hero is-primary">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          {{ currentUser.Name }}'s KE Config
-        </h1>
-        <textarea class="textarea">{{ config }}</textarea><br/>
+  <form method="POST" action="/api/update">
+    <section class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            {{ currentUser.Name }}'s KE Config
+          </h1>
+          <textarea name="config" class="textarea">{{ config }}</textarea><br/>
 
-        <div class="card" v-for="view in config.views">
-          <div class="card-content">
-            <div class="content">
-               {{ view.pids }}
+          <div class="card" v-for="view in config.views">
+            <header class="card-header">
+              <p class="card-header-title">
+                {{view.name}}
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                <label class="label">Theme:</label>
+                <span class="value">
+                  <h4>{{view.theme}}</h4>
+                </span>
+
+                <label class="label">Parameters:</label>
+                <span class="value">
+                  <h4>{{view.pids.toString()}}</h4>
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+      <button type="submit" class="button">Update</button>
+    </section>
+  </form>
 
 </div>
 
@@ -109,5 +134,15 @@ var app = new Vue({
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <head><title><%= title %></title></head>
   %= stylesheet 'bulma.min.css'
+
+  <style>
+    .label {
+      font-size: 1.5em;
+    }
+    .value {
+        word-break: break-all;
+    }
+  </style>
+
   <body><%= content %></body>
 </html>
