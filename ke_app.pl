@@ -3,6 +3,14 @@ use Mojolicious::Lite -signatures;
 use JSON;
 
 
+app->hook(after_dispatch => sub { 
+    my $c = shift; 
+    $c->res->headers->header('Access-Control-Allow-Origin' => '*'); 
+    $c->res->headers->access_control_allow_origin('*');
+    $c->res->headers->header('Access-Control-Allow-Methods' => 'GET, OPTIONS, POST, DELETE, PUT');
+    $c->res->headers->header('Access-Control-Allow-Headers' => 'Content-Type' => 'application/x-www-form-urlencoded');
+});
+
 ### START HELPERS
 
 helper auth => sub {
@@ -12,7 +20,7 @@ helper auth => sub {
 ### END HELPERS
 
 get '/' => sub ($c) {
-  $c->render(template => 'index');
+  $c->reply->static('index.html');
 };
 
 get '/api/user' => sub ($c) {
@@ -45,104 +53,3 @@ post '/api/update' => sub {
 };
 
 app->start;
-
-__DATA__
-
-@@ index.html.ep
-% layout 'default';
-% title 'KE App';
-
-<div id="app" class="container">
-
-  <form method="POST" action="/api/update">
-    <section class="hero is-primary">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">
-            {{ currentUser.Name }}'s KE Config
-          </h1>
-          <textarea name="config" class="textarea">{{ config }}</textarea><br/>
-
-          <div class="card" v-for="view in config.views">
-            <header class="card-header">
-              <p class="card-header-title">
-                {{view.name}}
-              </p>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                <label class="label">Theme:</label>
-                <span class="value">
-                  <h4>{{view.theme}}</h4>
-                </span>
-
-                <label class="label">Parameters:</label>
-                <span class="value">
-                  <h4>{{view.pids.toString()}}</h4>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button type="submit" class="button">Update</button>
-    </section>
-  </form>
-
-</div>
-
-%= javascript 'https://unpkg.com/vue/dist/vue.min.js'
-%= javascript 'https://unpkg.com/axios/dist/axios.min.js'
-%= javascript begin
-
-var app = new Vue({
-  el: '#app',
-  created: function() {
-    this.getConfig();
-    this.getUser();
-  },
-  data: {
-      config: {},
-      currentUser : {}
-  },
-  methods: {
-    getConfig: function() {
-      var self = this;
-
-      axios.get('/api/config').then(
-        function(response) {
-          self.config = response.data;
-        }
-      );
-    },
-
-    getUser: function() {
-      var self = this;
-
-      axios.get('/api/user').then(
-        function(response) {
-          self.currentUser = response.data;
-        }
-      );
-    }
-  }
-});
-% end
-@@ layouts/default.html.ep
-<!DOCTYPE html>
-<html>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <head><title><%= title %></title></head>
-  %= stylesheet 'bulma.min.css'
-
-  <style>
-    .label {
-      font-size: 1.5em;
-    }
-    .value {
-        word-break: break-all;
-    }
-  </style>
-
-  <body><%= content %></body>
-</html>
