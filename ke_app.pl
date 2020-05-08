@@ -23,7 +23,11 @@ get '/' => sub ($c) {
   $c->reply->static('index.html');
 };
 
-get '/api/user' => sub ($c) {
+post '/api/login' => sub ($c) {
+  $c->render(json => { Name => 'Craig', Email => 'craig@kaiserengineering.io' });
+};
+
+get '/api/current_user' => sub ($c) {
   $c->render(json => { Name => 'Craig', Email => 'craig@kaiserengineering.io' });
 };
 
