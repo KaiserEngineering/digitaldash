@@ -1,4 +1,4 @@
-package Ceal::Controller::API;
+package KEApp::Controller::Api;
 use Mojo::Base 'Mojolicious::Controller';
 use JSON;
 
@@ -45,6 +45,13 @@ sub update {
     close $fh;
   }
   $c->redirect_to( '/');
+}
+
+sub image {
+  my $c   = shift;
+  my $src = $c->req;
+
+  $c->reply->static('gauge.png');
 }
 
 1;
