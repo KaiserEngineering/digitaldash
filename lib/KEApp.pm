@@ -4,17 +4,16 @@ use Mojo::Base 'Mojolicious';
 sub startup {
   my $self = shift;
 
-#   $self->plugin('SecureCORS');
-  
   $self->config(hypnotoad => {listen => ['http://*:3000'], proxy => 1, user => 'root'});
 
   my $config = $self->plugin('Config');
   $self->secrets($config->{secrets});
 
+  $self->plugin('SecureCORS');
+  $self->routes->to('cors.origin' => '*');
+
   # Router
   my $r = $self->routes;
-
-#   $r = $r->under('/api', {'Access-Control-Allow-Origin' => '*'});
 
   $r->get('/')->to('api#index');
 
