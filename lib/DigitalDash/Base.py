@@ -68,9 +68,11 @@ class AbstractWidget(Base):
         """
         args = {}
 
+        not_error = ARGS['args']['themeConfig'] != 'Error'
+
         self.container = container
 
-        args['PID']  = ARGS['pids'][ARGS['dataIndex']]
+        args['PID']  = ARGS['pids'][ARGS['dataIndex']] if not_error else ''
         args['path'] = ARGS['path']
 
         # Import theme specifc Config
@@ -78,29 +80,33 @@ class AbstractWidget(Base):
         args['themeConfig'] = {**ARGS['args'], **themeConfig}
 
         self.face = Face(nocache=True, **args)
-        self.needle = globals()['Needle' + ARGS['module']](**args)
-        (self.needle.sizex, self.needle.sizey) = (512, 512)
+        if ( not_error ):
+            self.needle = globals()['Needle' + ARGS['module']](**args)
+            (self.needle.sizex, self.needle.sizey) = (512, 512)
 
-        self.gauge = Gauge(Face=self.face, Needle=self.needle)
+            self.gauge = Gauge(Face=self.face, Needle=self.needle)
 
-        self.Layout.add_widget(self.face)
-        self.Layout.add_widget(self.needle)
+            self.Layout.add_widget(self.face)
+            self.Layout.add_widget(self.needle)
 
-        self.needle.dataIndex = ARGS['dataIndex']
-        # Adding widgets that get updated with data
-        self.liveWidgets.append(self.needle)
+            self.needle.dataIndex = ARGS['dataIndex']
+            # Adding widgets that get updated with data
+            self.liveWidgets.append(self.needle)
+        else:
+            self.needle = False
+            self.gauge = Gauge(Face=self.face)
 
         # Create our labels
         for labelConfig in themeConfig['labels']:
             labelConfig['dataIndex'] = ARGS['dataIndex']
-            labelConfig['PID'] = ARGS['pids'][ARGS['dataIndex']]
+            labelConfig['PID'] = ARGS['pids'][ARGS['dataIndex']] if not_error else ''
 
             # Create Label widget
-            label = KELabel(**labelConfig, min=self.needle.min)
+            label = KELabel(**labelConfig, min=self.needle.min if self.needle else 0)
             self.gauge.labels.append(label)
 
             # Add to data recieving widgets
-            if (labelConfig['data']):
+            if ('data' in labelConfig):
                 self.liveWidgets.append(label)
             self.Layout.add_widget(label)
 
@@ -114,7 +120,7 @@ class Gauge(object):
     """
     Class for coupling Needle and Face instances.
     """
-    def __init__(self, Face, Needle, nocache=True, **kwargs):
+    def __init__(self, Face, Needle=False, nocache=True, **kwargs):
         """
         Initite Gauge Widget.
         """
@@ -123,15 +129,16 @@ class Gauge(object):
         self.needle = Needle
         self.labels = []
 
-        self.needle.setStep()
-        self.needle.setData(self.needle.min)
+        if ( self.needle ):
+            self.needle.setStep()
+            self.needle.setData(self.needle.min)
 
-        self.needle.ObjectType = 'Needle'
+            self.needle.ObjectType = 'Needle'
         self.face.ObjectType   = 'Face'
 
         # This normalizes our canvas needle sizes and label positions
         def _size(instance, size):
-            self.needle._size(self)
+            if self.needle: self.needle._size(self)
             self._label_position()
         self.face.bind(size=_size)
 

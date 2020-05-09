@@ -12,8 +12,7 @@
        "pos": [0, 24], "font_size": 25, "default": "", "data": 1
       },
       {
-        "pos": [0, 13], "font_size": 18, "default": "__PID__",
-        "data": 0
+        "pos": [0, 13], "font_size": 18, "default": "__PID__"
       }
     ]
 }

@@ -1,6 +1,7 @@
 {
     "views" : [
       {
+        "name":"alerts config",
         "background":"static/imgs/Background/bg.jpg",
         "pids": ["ENGINE_RPM"],
           "dynamic": {},
