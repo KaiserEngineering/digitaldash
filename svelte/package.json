@@ -15,6 +15,7 @@
     "postcss": "^7.0.29",
     "postcss-load-config": "^2.1.0",
     "rollup": "^1.20.0",
+    "rollup-plugin-dev": "^1.1.2",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^5.1.2",
