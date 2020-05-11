@@ -1,0 +1,23 @@
+{
+    "views" : [
+      {
+        "name":"Rally config",
+        "background":"static/imgs/Background/bg.jpg",
+        "pids": [],
+        "dynamic": {},
+        "alerts": [],
+        "gauges": [
+          {
+            "module": "Rally",
+            "path": "static/imgs/Dirt/",
+            "args": {
+               "themeConfig": "Rally",
+               "MinMax": [0, 8000]
+              },
+              "dataIndex": 0
+            }
+          ]
+      }
+    ]
+  }
+  

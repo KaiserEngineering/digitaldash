@@ -1,0 +1,23 @@
+{
+    "views" : [
+      {
+        "name":"Clock config",
+        "background":"static/imgs/Background/bg.jpg",
+        "pids": [],
+        "dynamic": {},
+        "alerts": [],
+        "gauges": [
+          {
+            "module": "Clock",
+            "path": "static/imgs/Clock/",
+            "args": {
+               "themeConfig": "Clock",
+               "MinMax": [0, 1]
+              },
+              "dataIndex": 0
+            }
+          ]
+      }
+    ]
+  }
+  

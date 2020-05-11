@@ -43,6 +43,8 @@ class Base(object):
         # Optional values
         self.minObserved = 9999
         self.maxObserved = -9999
+        self.Layout      = GaugeLayout(kwargs.get('gauge_count', 0))
+        self.liveWidgets = []
 
 
 class AbstractWidget(Base):
@@ -53,9 +55,7 @@ class AbstractWidget(Base):
     def __init__(self, **kwargs):
         super(AbstractWidget, self).__init__()
         # Our required attributes
-        self.liveWidgets = []
         self.dataIndex   = -1
-        self.Layout      = GaugeLayout(kwargs.get('gauge_count', 0))
         self.container   = None
 
     def build(self,

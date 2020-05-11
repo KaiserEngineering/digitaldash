@@ -1,5 +1,6 @@
 {
    "views" : [{
+        "name": "main conf",
         "background" : "static/imgs/Background/bg.jpg",
         "pids" : [
             "ENGINE_RPM",
