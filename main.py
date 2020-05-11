@@ -13,6 +13,7 @@ os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 (run, Data_Source) = (True, False)
 
 opts, args = getopt.getopt(sys.argv[1:], "tdf:c:", ["test", "development", "file", "config"])
+print(args)
 for o, arg in opts:
     # test mode will not run GUI
     if ( o in ("-t", "--test") ):
@@ -44,6 +45,8 @@ from etc.config import views
 from digitaldash.base import Base
 from digitaldash.dynamic import Dynamic
 from digitaldash.alert import Alert
+from digitaldash.clock import Clock as KEClock
+
 
 try:
     import Serial
@@ -202,12 +205,6 @@ class GUI(App):
                 return callback
         else:
             callback.buffer = 0
-
-        # ANCHOR Depricated, to be removed soon if no bugs are found
-        # # Clear alert widgets so we don't end up with multiple parent error
-        # if type(callback) is alert:
-        #     self.alerts.clear_widgets()
-
         return False
 
     def change(self: DD, app, my_callback) -> NoReturn:
@@ -305,7 +302,6 @@ def setup(Layouts):
 
         container = BoxLayout(padding=(30, 0, 30, 0))
         ObjectsToUpdate = []
-        layout = layouts()
 
         for widget in view['gauges']:
             mod = None
@@ -319,27 +315,12 @@ def setup(Layouts):
 
         containers.append(container)
 
-        views.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
+        views.append({'app': Background(), 'background': background, 'alerts': FloatLayout(),
                     'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
         view_count += 1
 
     return (views, containers, callbacks)
 
-
-def layouts():
-    """
-    Create Kivy layouts.
-
-    Defines our Kivy layouts and returns a dict of these layouts. These layouts
-    are referenced for adding new widgets to the kivy app.
-    """
-    bg = Background()
-    alerts = FloatLayout()
-    args = {
-        'bg': bg,
-        'alerts': alerts,
-    }
-    return args
 
 class Background(AnchorLayout):
     """Uses Kivy language to create background."""

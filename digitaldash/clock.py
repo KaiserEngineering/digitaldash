@@ -1,10 +1,12 @@
-from digitaldash.ke_label import KELabel
+from digitaldash.ke_lable import KELabel
 from digitaldash.components import face
 import datetime
 from kivy.logger import Logger
 from kivy.animation import Animation
+from digitaldash.base import Base
+from digitaldash.components.face import Face
 
-class Clock(KELabel):
+class Clock(Base, KELabel):
     def __init__(self):
         super(Clock, self).__init__()
         self.text        = '12:00'
@@ -15,7 +17,7 @@ class Clock(KELabel):
         self.color = (0, 0, 0, 1)
         self.font_size = 45
 
-    def build(self, **ARGS) -> []:
+    def buildComponent(self, **ARGS) -> []:
         self.container = ARGS['container']
         self.Layout.id = "Widgets-Layout-Clock"
 
