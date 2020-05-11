@@ -43,5 +43,5 @@ KE_PID = {
     },
 }
 
-def GetConstants ():
+def GetConstants():
     return { **KE_PID, **KE_CP_OP_CODES }

@@ -2,6 +2,12 @@
 import csv
 from numpy import genfromtxt
 
+import os, sys, re
+path_regex = re.compile('(.+)../')
+path = path_regex.findall(os.path.abspath( __file__ ))[0]
+os.chdir(path)
+sys.path.append(os.getcwd())
+
 # DO NOT USE Kivy.Logger for this file
 class Test():
     """Test instance."""
@@ -9,7 +15,7 @@ class Test():
     def __init__(self, **args):
         self.iteration = 0
         if ( args.get('file') ):
-            self.data = self.Load(args.get('file', ''))
+            self.Load(args.get('file', ''))
         else:
             self.data = []
         self.rows = len(self.data)
@@ -20,7 +26,7 @@ class Test():
             :param self: <DigitalDash.Test>Test instance
             :param file: <String>File path
         """
-        return genfromtxt(file, delimiter=',')
+        self.data = genfromtxt(file, delimiter=',')
 
     def Start(self):
         """
@@ -59,8 +65,11 @@ class Test():
        return ( 1, 'Power cycle' )
 
     def Testing( self, Config=None, Data=None ):
-        from sbin.run import DigitalDash
+        from main import GUI
 
-        self.app = DigitalDash()
-        self.app.new(config=Config, data=Data)
+        if ( Data ):
+            self.Load( Data )
+
+        self.app = GUI()
+        self.app.new(config=Config, data=self)
         self.app.run()

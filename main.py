@@ -1,62 +1,49 @@
 #!/usr/bin/env python
 """
-Main file to start KE DigitalDash.
-
-Run python3.6 sbin/run.py to run GUI software.
 """
 
+# Dependent modules and packages
+import getopt
 import sys
+from t.test import Test
 import os
-from watchdog.observers import Observer
-from watchdog.events import PatternMatchingEventHandler
-import re
 
-path_regex = re.compile('(.+)/sbin/run.py')
-path = path_regex.findall(os.path.abspath( __file__ ))[0]
-print("Using working directory: " + path)
-
-os.chdir(path)
-sys.path.append(os.getcwd())
-sys.path.append(os.getcwd() + '/lib')
-sys.path.append(os.getcwd() + '/etc')
-sys.path.append(os.getcwd() + '/KE')
-sys.path.append(os.getcwd() + '/static')
 os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 
-from typing import NoReturn, List, TypeVar
+(run, Data_Source) = (True, False)
 
-import getopt
-Data_Source = False
-run         = True
-
-from lib.DigitalDash.Test import Test
 opts, args = getopt.getopt(sys.argv[1:], "tdf:c:", ["test", "development", "file", "config"])
 for o, arg in opts:
     # test mode will not run GUI
     if ( o in ("-t", "--test") ):
-        sys.argv = ['sbin/run.py']
-
+        sys.argv = ['main.py']
     # Development mode runs with debug console - ctr + e to open it in GUI
     elif ( o in ( "-d", "--development" )  ):
-        sys.argv = ['sbin/run.py -m console']
+        sys.argv = ['main.py -m console']
     if ( o in ( "-f", "--file" ) ):
         Data_Source = Test(file=arg)
 
 if not len(opts):
     run      = False
-    sys.argv = ['sbin/run.py']
+    sys.argv = ['main.py']
 
-from etc import Config
-
+# Our Kivy deps
 import kivy
-from kivy.clock import Clock
-from lib import KE
-from kivy.app import App
-from kivy.properties import StringProperty
-from lib.DigitalDash.Alert import Alert
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.logger import Logger
-from lib.DigitalDash.Base import Face
+from kivy.clock import Clock
+from kivy.app import App
+from kivy.lang import Builder
+from kivy.properties import StringProperty
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.boxlayout import BoxLayout
+from watchdog.observers import Observer
+from watchdog.events import PatternMatchingEventHandler
+from typing import NoReturn, List, TypeVar
+from etc.config import views
+from digitaldash.base import Base
+from digitaldash.dynamic import Dynamic
+from digitaldash.alert import Alert
 
 try:
     import Serial
@@ -73,7 +60,7 @@ def on_config_change(self):
         """
         global ConfigFile
 
-        (self.views, self.containers, self.callbacks) = KE.setup(Config.layouts(ConfigFile))
+        (self.views, self.containers, self.callbacks) = setup(views(ConfigFile))
         self.app.clear_widgets()
 
         (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
@@ -96,7 +83,7 @@ class MyHandler(PatternMatchingEventHandler):
         self.DigitalDash = DigitalDash
 
 
-    patterns = ["*.json", "*.py"]
+    patterns = ["*.json", "*.py", ".*kv"]
 
     def process(self, event):
         """
@@ -117,9 +104,11 @@ class MyHandler(PatternMatchingEventHandler):
         self.process(event)
 
 
-ConfigFile = None
+Builder.load_file('digitaldash/kv/main.kv')
+
+(ConfigFile, errors_seen) = (None, {})
 DD = TypeVar('DD', bound='DigitalDash')
-class DigitalDash(App):
+class GUI(App):
     """
     Main class that initiates kivy app.
 
@@ -144,7 +133,7 @@ class DigitalDash(App):
 
         if ( data ):
             global Data_Source
-            Data_Source = Test(file=data)
+            Data_Source = data
 
     def build(self):
         """Perform main build loop for Kivy app."""
@@ -157,7 +146,7 @@ class DigitalDash(App):
         self.current = 0
         global ConfigFile
 
-        (self.views, self.containers, self.callbacks) = KE.setup(Config.layouts(file=ConfigFile))
+        (self.views, self.containers, self.callbacks) = setup(views(file=ConfigFile))
 
         # Sort our dynamic and alerts callbacks by priority
         self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
@@ -195,7 +184,7 @@ class DigitalDash(App):
         Clock.schedule_interval(self.loop, 0)
 
         observer = Observer()
-        observer.schedule(MyHandler(self), 'etc/', recursive=True)
+        observer.schedule(MyHandler(self), './', recursive=True)
         observer.start()
 
         return self.app
@@ -216,7 +205,7 @@ class DigitalDash(App):
 
         # ANCHOR Depricated, to be removed soon if no bugs are found
         # # Clear alert widgets so we don't end up with multiple parent error
-        # if type(callback) is Alert:
+        # if type(callback) is alert:
         #     self.alerts.clear_widgets()
 
         return False
@@ -232,35 +221,33 @@ class DigitalDash(App):
             for obj in widget:
                 obj.setData(data[obj.dataIndex])
 
-    errors_seen = {}
     def loop(self, dt):
+        global errors_seen
         try:
-            if (Data_Source):
-                if ( self.first_iteration ):
-                    (ret, msg) = Data_Source.UpdateRequirements( self.pids )
-                    if ( not ret ):
-                        Logger.error( msg )
-                    self.first_iteration = False
-                # NOTE Does the start command need to be outside of this loop?
-                ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
-                # Check dynamic gauges before any alerts in case we make a change
-                for dynamic in self.dynamic_callbacks:
-                    my_callback = self.check_callback(dynamic, priority, data)
+            if ( self.first_iteration ):
+                (ret, msg) = Data_Source.UpdateRequirements( self.pids )
+                if ( not ret ):
+                    Logger.error( msg )
+                self.first_iteration = False
+            ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
+            # Check dynamic gauges before any alerts in case we make a change
+            for dynamic in self.dynamic_callbacks:
+                my_callback = self.check_callback(dynamic, priority, data)
 
-                    if(my_callback):
-                        if self.current == dynamic.index:
-                            break
-                        self.change(self, my_callback)
+                if(my_callback):
+                    if self.current == dynamic.index:
                         break
+                    self.change(self, my_callback)
+                    break
 
-                for callback in self.alert_callbacks:
-                    my_callback = self.check_callback(callback, priority, data)
+            for callback in self.alert_callbacks:
+                my_callback = self.check_callback(callback, priority, data)
 
-                    if(my_callback):
-                        self.change(self, my_callback)
-                        break
+                if(my_callback):
+                    self.change(self, my_callback)
+                    break
 
-                self.update_values(data)
+            self.update_values(data)
         except Exception as e:
             error = 'Error found in main application loop on line {}: '.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e
             Logger.error(error)
@@ -275,13 +262,96 @@ class DigitalDash(App):
                 if ( not ret ):
                     Logger.error( msg )
 
+
+def setup(Layouts):
+    """
+    Build all widgets for DigitalDash.
+
+    This method will collect config arguments for number/type and other
+    values for views. Then it will build the views and return them.
+    """
+
+    callbacks  = {}
+    views      = []
+    containers = []
+
+    view_count = 0
+    for view in Layouts['views']:
+        background = view['background']
+        pids       = view['pids']
+
+        # Create our callbacks
+        if view['dynamic'].keys():
+            dynamic = view['dynamic']
+            dynamic['index'] = view_count
+
+            dynamic_obj = Dynamic()
+            (ret, msg) = dynamic_obj.new(**dynamic)
+            if ( ret ):
+              callbacks.setdefault('dynamic', []).append(dynamic_obj)
+            else:
+                Logger.error( msg )
+                callbacks.setdefault('dynamic', [])
+        else:
+            callbacks.setdefault('dynamic', [])
+
+        if len(view['alerts']):
+            for alert in view['alerts']:
+                alert['index'] = len(callbacks[view_count]) + \
+                    1 if view_count in callbacks else 1
+                callbacks.setdefault(view_count, []).append(Alert(**alert))
+        else:
+            callbacks.setdefault(view_count, [])
+
+        container = BoxLayout(padding=(30, 0, 30, 0))
+        ObjectsToUpdate = []
+        layout = layouts()
+
+        for widget in view['gauges']:
+            mod = None
+
+            try:
+                # This loads any standalone modules
+                mod = globals()[widget['module']]()
+            except KeyError:
+                mod = Base(gauge_count=len(view['gauges']))
+            ObjectsToUpdate.append(mod.buildComponent(container=container, **widget, pids=pids))
+
+        containers.append(container)
+
+        views.append({'app': layout['bg'], 'background': background, 'alerts': layout['alerts'],
+                    'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
+        view_count += 1
+
+    return (views, containers, callbacks)
+
+
+def layouts():
+    """
+    Create Kivy layouts.
+
+    Defines our Kivy layouts and returns a dict of these layouts. These layouts
+    are referenced for adding new widgets to the kivy app.
+    """
+    bg = Background()
+    alerts = FloatLayout()
+    args = {
+        'bg': bg,
+        'alerts': alerts,
+    }
+    return args
+
+class Background(AnchorLayout):
+    """Uses Kivy language to create background."""
+    pass
+
 if ( run ):
-    dd = DigitalDash()
+    dd = GUI()
 
     config = None
     for o, arg in opts:
         if o in ( "-c", "--config" ):
             config = arg
-    dd.new(config=config)
+    dd.new(config=config, data=Data_Source)
 
-    DigitalDash().run()
+    dd.run()

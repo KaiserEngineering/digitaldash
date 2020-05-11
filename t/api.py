@@ -1,28 +1,15 @@
 """Testing basics of DigitalDash."""
 import unittest
-
-import sys
-import os
-import re
-
-path_regex = re.compile('(.+)/t/api.py')
-path = path_regex.findall(os.path.abspath( __file__ ))[0]
-
-os.chdir(path)
-sys.path.append(os.getcwd())
-sys.path.append(os.getcwd() + '/lib')
-sys.path.append(os.getcwd() + '/etc')
-sys.path.append(os.getcwd() + '/static')
-
-from sbin.run import DigitalDash
-
-from lib.DigitalDash.Base import Needle, NeedleEllipse, NeedleLinear, NeedleRadial
-from lib.DigitalDash.Base import KELabel
-from lib.DigitalDash.Alert import Alert
-from lib.DigitalDash.Massager import Massager
-from static import Constants
-
-massager = Massager()
+from test import Test
+from main import GUI
+from digitaldash.components.needle.needle import Needle
+from digitaldash.components.needle.radial import NeedleRadial
+from digitaldash.components.needle.linear import NeedleLinear
+from digitaldash.components.needle.ellipse import NeedleEllipse
+from digitaldash.ke_lable import KELabel
+from digitaldash.alert import Alert
+from digitaldash.massager import smooth
+from static.constants import KE_PID
 
 class BasicNeedle_TestCase(unittest.TestCase):
 
@@ -50,23 +37,21 @@ class BasicNeedle_TestCase(unittest.TestCase):
             value  = float(60) if needle.Type == 'Linear' else float(10)
 
             self.assertEqual(needle.true_value, float(50), needle.Type+" component defaults to minimum value")
-            self.assertEqual(needle.update, massager.Smooth(New=value, Old=old_value), needle.Type+" component sets the correct rotational value with smoothing (not true value)")
+            self.assertEqual(needle.update, smooth(New=value, Old=old_value), needle.Type+" component sets the correct rotational value with smoothing (not true value)")
 
 class BasicLabels_TestCase(unittest.TestCase):
 
     def test_label_simple(self):
-        constants = Constants.GetConstants()
-
         label = KELabel(
             default        = 'hello, world',
             ConfigColor    = (1, 1, 1 ,1),
             ConfigFontSize = 25,
             data           = 0,
             PID            = 'ENGINE_RPM',
-            **constants['ENGINE_RPM']
+            **KE_PID['ENGINE_RPM']
         )
         self.assertEqual(label.text, "hello, world", "Default text value is set correctly")
-        self.assertEqual(label.decimals, str(constants['ENGINE_RPM']['decimals']), "Decimal place set correctly for label")
+        self.assertEqual(label.decimals, str(KE_PID['ENGINE_RPM']['decimals']), "Decimal place set correctly for label")
 
         label.setData(100)
         self.assertEqual(label.text, "hello, world100", "Default text value is set correctly form setData method")
@@ -124,7 +109,7 @@ class BasicAlerts_TestCase(unittest.TestCase):
 
 class Config_TestCase(unittest.TestCase):
     def test_config_file_from_cli(self):
-        dd = DigitalDash()
+        dd = GUI()
         dd.new(config='etc/Configs/single.json')
 
         self.assertEqual(dd.config, "etc/Configs/single.json", "Can set config file on DD instantiation")

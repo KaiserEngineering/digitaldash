@@ -7,7 +7,14 @@
             "INTAKE_AIR_TEMPERATURE",
             "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"
         ],
-        "alerts" : [],
+        "alerts" : [
+            {
+                "dataIndex": 0, "op": "<",
+                "value": 200, "index": 1,
+                "priority": 1,
+                "message" : "Hello, wolrd"
+            }
+        ],
         "dynamic" : {
             "dataIndex" : 2,
             "op" : ">=",

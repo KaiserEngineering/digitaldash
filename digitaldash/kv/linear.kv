@@ -1,0 +1,22 @@
+<NeedleLinear>:
+    canvas:
+        # Draw our stencil
+        StencilPush
+        Rectangle:
+            pos: self.x, root.center_y - self.height / 8
+            size: self.update, self.height / 2
+        StencilUse
+        # Now we want to draw our gauge and crop it
+        Color:
+            rgba: self.r, self.g, self.b, self.a
+        Rectangle:
+            pos: self.x, root.center_y - self.height / 8
+            size: self.update, self.height / 2
+            source: self.source
+        StencilUnUse
+
+        # Redraw our stencil to remove it
+        Rectangle:
+            pos: self.x, root.center_y - self.height / 8
+            size: self.update, self.height / 2
+        StencilPop

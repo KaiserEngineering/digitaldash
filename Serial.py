@@ -3,7 +3,7 @@ import serial
 import time
 from kivy.logger import Logger
 import subprocess
-from static import Constants
+from static.constants import KE_CP_OP_CODES
 import os
 import fnmatch
 
@@ -12,9 +12,6 @@ UART_PCKT_SOL_POS        = 0x00
 UART_PCKT_LEN_POS        = 0x01
 UART_PCKT_CMD_POS        = 0x02
 UART_PCKT_DATA_START_POS = 0x03
-
-KE_CODES = Constants.GetConstants()
-
 
 class Serial():
     def __init__(self):
@@ -36,8 +33,6 @@ class Serial():
 
 
     def Start(self):
-        global KE_CODES
-
         """L1612773-4oop for checking Serial connection for data."""
         # Handle grabbing data
         data_line = ''
@@ -62,20 +57,20 @@ class Serial():
         # Remove the command byte from the payload
         data_line = data_line[ UART_PCKT_DATA_START_POS :len(data_line) - 1 ]
 
-        if cmd == KE_CODES['KE_FIRMWARE_REPORT']:
+        if cmd == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
             Logger.info("GUI: >> [FIRMWARE VERSION] "  + data_line.decode() + "\n")
 
-        elif cmd == KE_CODES['KE_POWER_DISABLE']:
+        elif cmd == KE_CP_OP_CODES['KE_POWER_DISABLE']:
             Logger.info("SYS: Shutdown received")
-            positive_ack = [UART_SOL, 0x03, KE_CODES['KE_ACK']]
+            positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
             self.ser.write(positive_ack)
             call("sudo nohup shutdown -h now", shell=True)
 
-        elif cmd == KE_CODES['KE_ACK']:
+        elif cmd == KE_CP_OP_CODES['KE_ACK']:
             Logger.info("GUI: >> ACK RX'd" + "\n")
 
-        elif cmd == KE_CODES['KE_PID_STREAM_REPORT']:
-            positive_ack = [UART_SOL, 0x03, KE_CODES['KE_ACK']]
+        elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
+            positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
             self.ser.write(positive_ack)
             Logger.info("Clipped Data: " + str(data_line))
             Logger.info("GUI: << ACK" + "\n")
@@ -96,7 +91,7 @@ class Serial():
         return self.ser_val
 
     def UpdateRequirements(self, requirements):
-        global KE_CODES
+        global KE_CP_OP_CODES
         Logger.info("GUI: Updating requirements: " + str(requirements))
 
         #Save current PID request
@@ -106,14 +101,14 @@ class Serial():
         byte_count    = 3
         for requirement in requirements:
             try:
-                pid_byte_code.append( (KE_CODES[requirement]['byteCode'] >> 0x8) & 0xFF )
-                pid_byte_code.append( (KE_CODES[requirement]['byteCode'] >> 0x0) & 0xFF )
+                pid_byte_code.append( (KE_CP_OP_CODES[requirement]['byteCode'] >> 0x8) & 0xFF )
+                pid_byte_code.append( (KE_CP_OP_CODES[requirement]['byteCode'] >> 0x0) & 0xFF )
 
                 byte_count += 2
             except Exception as e:
                 Logger.error( "Could not load byte code for "+requirement+" : "+str(e) )
 
-        bytes_written = self.ser.write( [ UART_SOL , byte_count, KE_CODES['KE_PID_STREAM_NEW']]+ pid_byte_code );
+        bytes_written = self.ser.write( [ UART_SOL , byte_count, KE_CP_OP_CODES['KE_PID_STREAM_NEW']]+ pid_byte_code );
 
         msg = "PIDs updated " + str( bytes_written ) + " written"
         Logger.info( msg )
@@ -125,12 +120,12 @@ class Serial():
             Handle making sure that our hardware is initialized and
             it is safe to start the main application loop.
         """
-        global KE_CODES
+        global KE_CP_OP_CODES
         Logger.info( "GUI: Initializing hardware" )
 
         while self.firmwareVerified != True:
             Logger.info("GUI: Requesting Firmware Version..")
-            firmware_request = [UART_SOL, 0x03, KE_CODES['KE_FIRMWARE_REQ']]
+            firmware_request = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_FIRMWARE_REQ']]
             self.ser.write(firmware_request)
 
             # Wait for the MCU to receive the request and respond
@@ -192,7 +187,7 @@ class Serial():
         """
             Re-run the hardware initialize function.
         """
-        global KE_CODES
+        global KE_CP_OP_CODES
 
         # STUB FOR @MATT
             # Reboot the hardware here
@@ -205,8 +200,8 @@ class Serial():
        """
           Reboot the Raspberry Pi
        """
-       global KE_CODES
-       ke_power_cycle = [UART_SOL, 0x03, KE_CODES['KE_POWER_CYCLE']]
+       global KE_CP_OP_CODES
+       ke_power_cycle = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_POWER_CYCLE']]
        ret = self.ser.write(ke_power_cycle)
 
        msg = "Wrote : " + str(ret) + " bytes for power cycle"

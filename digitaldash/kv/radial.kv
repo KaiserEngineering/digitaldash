@@ -1,0 +1,12 @@
+<NeedleRadial>:
+    canvas.before:
+        PushMatrix
+        Translate:
+            xy: (self.x + self.width / 2, self.y + self.height / 2)
+        Rotate:
+            angle: -self.update
+            axis: (0, 0, 1.0)
+        Translate:
+            xy: (-self.x - self.width / 2, - self.y - self.height / 2)
+    canvas.after:
+        PopMatrix

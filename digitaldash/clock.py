@@ -1,5 +1,5 @@
-from lib.DigitalDash.Base import KELabel
-from lib.DigitalDash.Base import Face
+from digitaldash.ke_label import KELabel
+from digitaldash.components import face
 import datetime
 from kivy.logger import Logger
 from kivy.animation import Animation

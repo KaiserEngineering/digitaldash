@@ -1,28 +1,9 @@
 """Monitour a datapoint and create a alert if triggered."""
-
 from kivy.properties import NumericProperty
 from kivy.graphics import Color, Rectangle
 from functools import lru_cache
-from lib.DigitalDash.Base import KELabel
+from digitaldash.ke_lable import KELabel
 
-from kivy.lang import Builder
-Builder.load_string('''
-<Alert>:
-    ellipsis_options: {'color':(1,0.5,0.5,1),'underline':True}
-    shorten: True
-    markup: True
-    shorten_from: 'right'
-    size_hint: 0.4, 0.5
-    pos_hint: {"center_x": 0.50, "center_y": 0.8}
-    halign: 'center'
-    valign: 'middle'
-    canvas.before:
-        Rectangle:
-            id: 'Alert-'+str(self.message)
-            size: self.size
-            pos: self.pos
-            source: 'static/imgs/Alerts/FordWarning.png'
-''')
 class Alert(KELabel):
     """
     Create an Alert label if triggered.

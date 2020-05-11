@@ -1,29 +1,22 @@
 """Testing basics of DigitalDash."""
 import unittest
 from kivy.tests.common import GraphicUnitTest
-
-import sys
-import os
-import re
-
-path_regex = re.compile('(.+)/t/graphical.py')
-path = path_regex.findall(os.path.abspath( __file__ ))[0]
-
-os.chdir(path)
-sys.path.append(os.getcwd())
-sys.path.append(os.getcwd() + '/lib')
-sys.path.append(os.getcwd() + '/etc')
-
-from lib.DigitalDash.Test import Test
-from lib.DigitalDash.Massager import Massager
+from test import Test
+from main import GUI
+from digitaldash.components.needle.needle import Needle
+from digitaldash.components.needle.radial import NeedleRadial
+from digitaldash.components.needle.linear import NeedleLinear
+from digitaldash.components.needle.ellipse import NeedleEllipse
+from digitaldash.ke_lable import KELabel
+from digitaldash.alert import Alert
+from digitaldash.massager import smooth
+from static.constants import KE_PID
 
 t = Test()
-massager = Massager()
-
 class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( 'etc/Configs/single.json' )
+        t.Testing( Config='etc/Configs/single.json' )
         t.app.update_values([50])
 
         for layout in t.app.app.children[0].children:
@@ -31,14 +24,14 @@ class Config_TestCase(GraphicUnitTest):
                 gauge = child.children
 
                 for widget in gauge:
-                    if ( widget.ObjectType == 'Needle' ):
+                    if ( issubclass(Needle, type(widget)) ):
                         self.assertEqual(widget.true_value, 50.0, "true value for needle is updated correctly")
-                        self.assertEqual(widget.update, massager.Smooth(Old=-60, New=50 * widget.step - widget.offset), "Calculated update value is set correctly")
+                        self.assertEqual(widget.update, smooth(Old=-60, New=50 * widget.step - widget.offset), "Calculated update value is set correctly")
 
 class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( 'etc/Configs/alerts.json', 't/data/test.csv' )
+        t.Testing( Config='etc/Configs/alerts.json', Data='t/data/test.csv' )
         # Set this value 20 times to appease the buffer
         t.app.update_values([50])
         for _ in range(20):

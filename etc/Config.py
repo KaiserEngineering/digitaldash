@@ -3,10 +3,10 @@ import json
 from kivy.logger import Logger
 from kivy.core.window import Window
 
-def layouts(file=None):
+def views(file=None):
     """Get data from JSON."""
     # Allow for a file to be submitted in place of default config, this is useful for tests
-    if file == None:
+    if file == None or file == '':
         file = 'etc/Config.json'
     jsonData = {}
     with open(file) as data_file:

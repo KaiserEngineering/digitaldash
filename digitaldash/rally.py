@@ -1,9 +1,8 @@
-from lib.DigitalDash.Base import Base
-from lib.DigitalDash.Base import Gauge
-from lib.DigitalDash.Base import KELabel
-from lib.DigitalDash.Base import NeedleEllipse
-from lib.DigitalDash.Base import Face
-
+from digitaldash.base import Base
+from digitaldash.gauge import Gauge
+from digitaldash.ke_lable import KELabel
+from digitaldash.components.needle.ellipse import NeedleEllipse
+from digitaldash.components.face import Face
 
 class Rally(Base):
 
