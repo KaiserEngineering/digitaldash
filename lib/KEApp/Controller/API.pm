@@ -1,4 +1,4 @@
-package KEApp::Controller::Api;
+package KEApp::Controller::API;
 use Mojo::Base 'Mojolicious::Controller';
 use JSON;
 
