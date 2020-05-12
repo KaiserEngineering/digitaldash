@@ -4,7 +4,7 @@
     let viewsPromise = getConfig();
 
     async function getConfig() {
-        const res = await fetch(`http://localhost:3000/api/config`);
+        const res = await fetch('http://localhost:3000/api/config');
         const config = await res.json();
 
         if (res.ok) {
