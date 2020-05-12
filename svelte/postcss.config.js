@@ -4,7 +4,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
       './src/**/*.svelte'
     ],
 
-    whitelistPatterns: [/svelte-/],
+    whitelistPatterns: [/svelte-/, /html/, /body/],
 
     defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || []
   });
@@ -13,6 +13,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
 
   module.exports = {
     plugins: [
+      require('autoprefixer'),
       require('tailwindcss'),
       ...(production ? [purgecss] : [])
     ]
