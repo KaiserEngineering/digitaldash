@@ -1,0 +1,63 @@
+{
+   "views" : [{
+        "name": "main conf",
+        "background" : "static/imgs/Background/bg.jpg",
+        "pids" : [
+            "ENGINE_RPM",
+            "INTAKE_AIR_TEMPERATURE",
+            "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"
+        ],
+        "alerts" : [
+            {
+                "dataIndex": 0, "op": "<",
+                "value": 6000, "index": 1,
+                "priority": 1,
+                "message" : "Hello, wolrd"
+            }
+        ],
+        "dynamic" : {
+            "dataIndex" : 2,
+            "op" : ">=",
+            "priority" : 1,
+            "value" : 6000
+        },
+        "gauges" : [
+        {
+            "args" : {
+                "MinMax" : [
+                    0,
+                    8000
+                ],
+                "themeConfig" : "120"
+            },
+            "dataIndex" : 0,
+            "module" : "Radial",
+            "path" : "static/imgs/Stock/"
+        },
+        {
+            "args" : {
+                "MinMax" : [
+                    0,
+                    215
+                ],
+                "themeConfig" : "120"
+            },
+            "dataIndex" : 1,
+            "module" : "Radial",
+            "path" : "static/imgs/Stock/"
+        },
+        {
+            "args" : {
+                "MinMax" : [
+                    0,
+                    255
+                ],
+                "themeConfig" : "120"
+            },
+            "dataIndex" : 2,
+            "module" : "Radial",
+            "path" : "static/imgs/Stock/"
+        }
+      ]
+    }]
+}

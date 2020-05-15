@@ -7,7 +7,7 @@ def views(file=None):
     """Get data from JSON."""
     # Allow for a file to be submitted in place of default config, this is useful for tests
     if file == None or file == '':
-        file = 'etc/Config.json'
+        file = 'etc/config.json'
     jsonData = {}
     with open(file) as data_file:
         jsonData = json.load(data_file)
