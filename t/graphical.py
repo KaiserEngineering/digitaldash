@@ -16,7 +16,7 @@ t = Test()
 class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( Config='etc/Configs/single.json' )
+        t.Testing( Config='etc/configs/single.json' )
         t.app.update_values([50])
 
         for layout in t.app.app.children[0].children:
@@ -31,7 +31,7 @@ class Config_TestCase(GraphicUnitTest):
 class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( Config='etc/Configs/alerts.json', Data='t/data/test.csv' )
+        t.Testing( Config='etc/configs/alerts.json', Data='t/data/test.csv' )
         # Set this value 20 times to appease the buffer
         t.app.update_values([50])
         for _ in range(20):

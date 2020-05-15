@@ -110,9 +110,9 @@ class BasicAlerts_TestCase(unittest.TestCase):
 class Config_TestCase(unittest.TestCase):
     def test_config_file_from_cli(self):
         dd = GUI()
-        dd.new(config='etc/Configs/single.json')
+        dd.new(config='etc/configs/single.json')
 
-        self.assertEqual(dd.config, "etc/Configs/single.json", "Can set config file on DD instantiation")
+        self.assertEqual(dd.config, "etc/configs/single.json", "Can set config file on DD instantiation")
 
 if __name__ == '__main__':
     unittest.main()
