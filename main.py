@@ -57,6 +57,67 @@ except Exception as e:
     Logger.info("Running without serial data: " + str(e))
     serial = False
 
+def setup(Layouts):
+    """
+    Build all widgets for DigitalDash.
+
+    This method will collect config arguments for number/type and other
+    values for views. Then it will build the views and return them.
+    """
+
+    callbacks  = {}
+    views      = []
+    containers = []
+
+    view_count = 0
+    for view in Layouts['views']:
+        background = view['background']
+        pids       = view['pids']
+
+        # Create our callbacks
+        if view['dynamic'].keys():
+            dynamic = view['dynamic']
+            dynamic['index'] = view_count
+
+            dynamic_obj = Dynamic()
+            (ret, msg) = dynamic_obj.new(**dynamic)
+            if ( ret ):
+              callbacks.setdefault('dynamic', []).append(dynamic_obj)
+            else:
+                Logger.error( msg )
+                callbacks.setdefault('dynamic', [])
+        else:
+            callbacks.setdefault('dynamic', [])
+
+        if len(view['alerts']):
+            for alert in view['alerts']:
+                alert['index'] = len(callbacks[view_count]) + \
+                    1 if view_count in callbacks else 1
+                callbacks.setdefault(view_count, []).append(Alert(**alert))
+        else:
+            callbacks.setdefault(view_count, [])
+
+        container = BoxLayout(padding=(30, 0, 30, 0))
+        ObjectsToUpdate = []
+
+        for widget in view['gauges']:
+            mod = None
+
+            try:
+                # This loads any standalone modules
+                mod = globals()[widget['module']]()
+            except KeyError:
+                mod = Base(gauge_count=len(view['gauges']))
+            ObjectsToUpdate.append(mod.buildComponent(container=container, **widget, pids=pids))
+
+        containers.append(container)
+
+        views.append({'app': Background(), 'background': background, 'alerts': FloatLayout(),
+                    'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
+        view_count += 1
+
+    return (views, containers, callbacks)
+
 def on_config_change(self):
         """
         Method for reloading config data.
@@ -184,7 +245,7 @@ class GUI(App):
         # We consider program start a config change since it is just loading
         # data from the config file
         on_config_change(self)
-        Clock.schedule_interval(self.loop, 0)
+        if self.data_source: Clock.schedule_interval(self.loop, 0)
 
         observer = Observer()
         observer.schedule(MyHandler(self), './', recursive=True)
@@ -258,68 +319,6 @@ class GUI(App):
                 (ret, msg) = Data_Source.PowerCycle()
                 if ( not ret ):
                     Logger.error( msg )
-
-
-def setup(Layouts):
-    """
-    Build all widgets for DigitalDash.
-
-    This method will collect config arguments for number/type and other
-    values for views. Then it will build the views and return them.
-    """
-
-    callbacks  = {}
-    views      = []
-    containers = []
-
-    view_count = 0
-    for view in Layouts['views']:
-        background = view['background']
-        pids       = view['pids']
-
-        # Create our callbacks
-        if view['dynamic'].keys():
-            dynamic = view['dynamic']
-            dynamic['index'] = view_count
-
-            dynamic_obj = Dynamic()
-            (ret, msg) = dynamic_obj.new(**dynamic)
-            if ( ret ):
-              callbacks.setdefault('dynamic', []).append(dynamic_obj)
-            else:
-                Logger.error( msg )
-                callbacks.setdefault('dynamic', [])
-        else:
-            callbacks.setdefault('dynamic', [])
-
-        if len(view['alerts']):
-            for alert in view['alerts']:
-                alert['index'] = len(callbacks[view_count]) + \
-                    1 if view_count in callbacks else 1
-                callbacks.setdefault(view_count, []).append(Alert(**alert))
-        else:
-            callbacks.setdefault(view_count, [])
-
-        container = BoxLayout(padding=(30, 0, 30, 0))
-        ObjectsToUpdate = []
-
-        for widget in view['gauges']:
-            mod = None
-
-            try:
-                # This loads any standalone modules
-                mod = globals()[widget['module']]()
-            except KeyError:
-                mod = Base(gauge_count=len(view['gauges']))
-            ObjectsToUpdate.append(mod.buildComponent(container=container, **widget, pids=pids))
-
-        containers.append(container)
-
-        views.append({'app': Background(), 'background': background, 'alerts': FloatLayout(),
-                    'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
-        view_count += 1
-
-    return (views, containers, callbacks)
 
 
 class Background(AnchorLayout):
