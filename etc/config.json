@@ -2,6 +2,7 @@
    "views" : [{
         "name": "main conf",
         "background" : "static/imgs/Background/bg.jpg",
+        "theme" : "Stock",
         "pids" : [
             "ENGINE_RPM",
             "INTAKE_AIR_TEMPERATURE",
