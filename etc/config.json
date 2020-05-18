@@ -1,6 +1,6 @@
 {
    "views" : [{
-        "name": "main conf",
+        "name": "First view",
         "background" : "static/imgs/Background/bg.jpg",
         "theme" : "Stock",
         "pids" : [
@@ -58,6 +58,64 @@
             "dataIndex" : 2,
             "module" : "Radial",
             "path" : "static/imgs/Stock/"
+        }
+      ]
+    },
+    {
+        "name": "Second view",
+        "background" : "static/imgs/Background/banner1.jpg",
+        "theme" : "Glow",
+        "pids" : [
+            "ENGINE_RPM",
+            "INTAKE_AIR_TEMPERATURE",
+            "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"
+        ],
+        "alerts" : [
+            {
+            }
+        ],
+        "dynamic" : {
+            "dataIndex" : 0,
+            "op" : ">=",
+            "priority" : 1,
+            "value" : 6000
+        },
+        "gauges" : [
+        {
+            "args" : {
+                "MinMax" : [
+                    0,
+                    8000
+                ],
+                "themeConfig" : "120"
+            },
+            "dataIndex" : 0,
+            "module" : "Radial",
+            "path" : "static/imgs/Glow/"
+        },
+        {
+            "args" : {
+                "MinMax" : [
+                    0,
+                    215
+                ],
+                "themeConfig" : "120"
+            },
+            "dataIndex" : 1,
+            "module" : "Radial",
+            "path" : "static/imgs/Glow/"
+        },
+        {
+            "args" : {
+                "MinMax" : [
+                    0,
+                    255
+                ],
+                "themeConfig" : "120"
+            },
+            "dataIndex" : 2,
+            "module" : "Radial",
+            "path" : "static/imgs/Glow/"
         }
       ]
     }]
