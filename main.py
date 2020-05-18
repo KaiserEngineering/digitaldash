@@ -50,12 +50,10 @@ from digitaldash.clock import Clock as KEClock
 
 try:
     import serial
-    serial = True
     Data_Source = serial.Serial()
     Logger.info("Using serial data source" + str(Data_Source))
 except Exception as e:
     Logger.info("Running without serial data: " + str(e))
-    serial = False
 
 def setup(Layouts):
     """

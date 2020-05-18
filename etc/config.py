@@ -25,12 +25,12 @@ def getThemeConfig(theme):
     """Get theme specific config values."""
     jsonData = {}
     try:
-        with open('etc/Themes/' + theme + '.json') as data_file:
+        with open('etc/themes/' + theme + '.json') as data_file:
             jsonData = json.load(data_file)
 
             data_file.close()
     except FileNotFoundError:
-        Logger.error( "Config: Could not find config file: " + 'etc/Themes/' + theme + '.json' )
+        Logger.error( "Config: Could not find config file: " + 'etc/themes/' + theme + '.json' )
 
     return jsonData
 
