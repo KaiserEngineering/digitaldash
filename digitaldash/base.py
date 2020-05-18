@@ -60,7 +60,6 @@ class Base(object):
         if ( not_error ):
             self.needle = globals()[ARGS['module']](**args)
             (self.needle.sizex, self.needle.sizey) = (512, 512)
-            self.Layout.add_widget(self.needle)
             self.needle.dataIndex = ARGS['dataIndex']
             # Adding widgets that get updated with data
             self.liveWidgets.append(self.needle)
@@ -68,6 +67,8 @@ class Base(object):
 
         self.gauge = Gauge(Face=self.face, Needle=self.needle)
         self.Layout.add_widget(self.face)
+        # Needle needs to be added after so its on top
+        if self.needle: self.Layout.add_widget(self.needle)
 
         # Create our labels
         for labelConfig in themeConfig['labels']:
