@@ -3,10 +3,10 @@ import unittest
 from kivy.tests.common import GraphicUnitTest
 from test import Test
 from main import GUI
-from digitaldash.components.needle.needle import Needle
-from digitaldash.components.needle.radial import NeedleRadial
-from digitaldash.components.needle.linear import NeedleLinear
-from digitaldash.components.needle.ellipse import NeedleEllipse
+from digitaldash.needle.needle import Needle
+from digitaldash.needle.radial import NeedleRadial
+from digitaldash.needle.linear import NeedleLinear
+from digitaldash.needle.ellipse import NeedleEllipse
 from digitaldash.ke_lable import KELabel
 from digitaldash.alert import Alert
 from digitaldash.massager import smooth

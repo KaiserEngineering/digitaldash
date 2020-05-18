@@ -1,5 +1,5 @@
 from kivy.uix.widget import Widget
-from digitaldash.components.needle.needle import Needle
+from digitaldash.needle.needle import Needle
 from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
 from kivy.uix.stencilview import StencilView

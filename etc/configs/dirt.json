@@ -1,0 +1,22 @@
+{
+    "views" : [
+      {
+        "name":"single config",
+        "background":"static/imgs/Background/bg.jpg",
+        "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE"],
+        "dynamic": {},
+        "alerts": [],
+        "gauges": [
+          {
+            "module": "Ellipse",
+            "path": "static/imgs/Dirt/",
+            "args": {
+               "themeConfig": "120",
+               "MinMax": [0, 8000]
+              },
+              "dataIndex": 0
+            }
+          ]
+      }
+    ]
+}

@@ -1,10 +1,10 @@
 from digitaldash.ke_lable import KELabel
-from digitaldash.components import face
+from digitaldash import face
 import datetime
 from kivy.logger import Logger
 from kivy.animation import Animation
 from digitaldash.base import Base
-from digitaldash.components.face import Face
+from digitaldash.face import Face
 
 class Clock(Base, KELabel):
     def __init__(self):

@@ -1,8 +1,8 @@
 from digitaldash.base import Base
 from digitaldash.gauge import Gauge
 from digitaldash.ke_lable import KELabel
-from digitaldash.components.needle.ellipse import NeedleEllipse
-from digitaldash.components.face import Face
+from digitaldash.needle.ellipse import NeedleEllipse
+from digitaldash.face import Face
 
 class Rally(Base):
 
