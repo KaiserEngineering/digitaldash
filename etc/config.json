@@ -71,8 +71,6 @@
             "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"
         ],
         "alerts" : [
-            {
-            }
         ],
         "dynamic" : {
             "dataIndex" : 0,
