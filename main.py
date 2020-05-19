@@ -12,7 +12,7 @@ os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 
 (run, Data_Source) = (True, False)
 
-opts, args = getopt.getopt(sys.argv[1:], "tdf:c:", ["test", "development", "file", "config"])
+opts, args = getopt.getopt(sys.argv[1:], "tdf:c:", ["test", "development", "file=", "config="])
 
 for o, arg in opts:
     # test mode will not run GUI
