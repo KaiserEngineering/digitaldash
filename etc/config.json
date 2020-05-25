@@ -1,5 +1,6 @@
 {
-   "views" : [{
+   "views" : {
+   "0": {
         "name": "First view",
         "background" : "static/imgs/Background/bg.jpg",
         "theme" : "Stock",
@@ -61,7 +62,7 @@
         }
       ]
     },
-    {
+    "1" : {
         "name": "Second view",
         "background" : "static/imgs/Background/banner1.jpg",
         "theme" : "Glow",
@@ -71,8 +72,6 @@
             "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"
         ],
         "alerts" : [
-            {
-            }
         ],
         "dynamic" : {
             "dataIndex" : 0,
@@ -118,5 +117,5 @@
             "path" : "static/imgs/Glow/"
         }
       ]
-    }]
+    }}
 }

@@ -16,7 +16,7 @@ def views(file=None):
 
     Window._rotation = 0
 
-    jsonData = jsonData if validateConfig(jsonData) else json.loads('{"views": [{"alerts": [],"background": "static/imgs/Background/bg.jpg","dynamic": {},"gauges": [{"args": {"MinMax": [0,1],"themeConfig": "Error"},"dataIndex": 0,"module": "Misc","path": "static/imgs/Alerts/"}],"name": "Error","pids": []}]}')
+    jsonData = jsonData if validateConfig(jsonData) else json.loads('{"views": { "0": {"alerts": [],"background": "static/imgs/Background/bg.jpg","dynamic": {},"gauges": [{"args": {"MinMax": [0,1],"themeConfig": "Error"},"dataIndex": 0,"module": "Misc","path": "static/imgs/Alerts/"}],"name": "Error","pids": []}}}')
 
     return jsonData
 
@@ -38,7 +38,7 @@ def validateConfig(config):
     """Validate config."""
 
     for view in config['views']:
-        if ( not 'name' in view or not view['name'] ):
+        if ( not 'name' in config['views'][view] or not config['views'][view]['name'] ):
             Logger.error( "Name required for view" )
             return False
     return True

@@ -69,6 +69,8 @@ def setup(Layouts):
 
     view_count = 0
     for view in Layouts['views']:
+        view = Layouts['views'][view]
+
         background = view['background']
         pids       = view['pids']
 
