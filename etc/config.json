@@ -2,7 +2,7 @@
    "views" : {
    "0": {
         "name": "First view",
-        "background" : "static/imgs/Background/bg.jpg",
+        "background" : "bg.jpg",
         "theme" : "Stock",
         "pids" : [
             "ENGINE_RPM",
@@ -64,7 +64,7 @@
     },
     "1" : {
         "name": "Second view",
-        "background" : "static/imgs/Background/banner1.jpg",
+        "background" : "banner1.jpg",
         "theme" : "Glow",
         "pids" : [
             "ENGINE_RPM",

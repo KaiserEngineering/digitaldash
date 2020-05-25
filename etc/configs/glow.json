@@ -2,7 +2,7 @@
     "views" : {
       "0" : {
         "name":"single config",
-        "background":"static/imgs/Background/bg.jpg",
+        "background":"bg.jpg",
         "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE"],
         "dynamic": {},
         "alerts": [],

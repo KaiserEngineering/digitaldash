@@ -3,7 +3,7 @@
       "0":
       {
         "name":"Clock config",
-        "background":"static/imgs/Background/bg.jpg",
+        "background":"bg.jpg",
         "pids": [],
         "dynamic": {},
         "alerts": [],
