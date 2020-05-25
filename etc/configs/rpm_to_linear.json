@@ -1,6 +1,6 @@
 {
-    "views" : [
-      {
+    "views" : {
+      "0": {
         "name":"rpm to linear config",
         "background":"static/imgs/Background/bg.jpg",
         "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"],
@@ -36,7 +36,7 @@
              }
           ]
         },
-        {
+        "1" : {
           "background":"static/imgs/Background/banner1.jpg",
           "pids": ["ENGINE_RPM"],
           "dynamic": {
@@ -58,5 +58,5 @@
             }
           ]
         }
-    ]
+    }
 }
