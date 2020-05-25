@@ -12,16 +12,16 @@
         "alerts" : [
             {
                 "dataIndex": 0, "op": ">",
-                "value": 6000, "index": 1,
+                "value": 1000, "index": 1,
                 "priority": 1,
                 "message" : "Hello, wolrd"
             }
         ],
         "dynamic" : {
-            "dataIndex" : 2,
-            "op" : ">=",
+            "dataIndex" : 0,
+            "op" : "<",
             "priority" : 1,
-            "value" : 6000
+            "value" : 4000
         },
         "gauges" : [
         {
@@ -76,8 +76,8 @@
         "dynamic" : {
             "dataIndex" : 0,
             "op" : ">=",
-            "priority" : 1,
-            "value" : 6000
+            "priority" : 2,
+            "value" : 5000
         },
         "gauges" : [
         {

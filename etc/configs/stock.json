@@ -1,0 +1,22 @@
+{
+    "views" : [
+      {
+        "name":"single config",
+        "background":"static/imgs/Background/bg.jpg",
+        "pids": ["ENGINE_RPM"],
+        "dynamic": {},
+        "alerts": [],
+        "gauges": [
+          {
+            "module": "Radial",
+            "path": "static/imgs/Stock/",
+            "args": {
+               "themeConfig": "120",
+               "MinMax": [0, 8000]
+              },
+              "dataIndex": 0
+            }
+          ]
+      }
+    ]
+}
