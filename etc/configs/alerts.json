@@ -9,7 +9,7 @@
           "alerts": [
             {
                 "dataIndex": 0, "op": "<",
-                "value": 4000, "index": 1,
+                "value": 4000,
                 "priority": 1,
                 "message" : "Hello, wolrd"
             }
