@@ -3,6 +3,6 @@
 <Background>:
     canvas:
         Rectangle:
-            source: app.background_source
+            source: "{}{}".format("static/imgs/Background/", app.background_source ) if app.background_source else None
             size: self.size
             pos: self.pos
