@@ -11,8 +11,9 @@
         ],
         "alerts" : [
             {
-                "dataIndex": 0, "op": ">",
-                "value": 1000,
+                "dataIndex": 0,
+                "op": ">",
+                "value": 0,
                 "priority": 1,
                 "message" : "Hello, wolrd"
             }

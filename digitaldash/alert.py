@@ -27,7 +27,7 @@ class Alert(KELabel):
 
         self.value     = args['value']
         self.op        = args['op']
-        self.index     = args['index']
+        self.index     = int(args.get('index'))
         self.priority  = args['priority']
         self.dataIndex = int(args['dataIndex'])
         self.message   = str(args['message'])

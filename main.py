@@ -68,8 +68,8 @@ def setup(Layouts):
     containers = []
 
     view_count = 0
-    for view in Layouts['views']:
-        view = Layouts['views'][view]
+    for id in Layouts['views']:
+        view = Layouts['views'][id]
 
         background = view['background']
         pids       = view['pids']
@@ -77,7 +77,7 @@ def setup(Layouts):
         # Create our callbacks
         if view['dynamic'].keys():
             dynamic = view['dynamic']
-            dynamic['index'] = view_count
+            dynamic['index'] = id
 
             dynamic_obj = Dynamic()
             (ret, msg) = dynamic_obj.new(**dynamic)
@@ -91,8 +91,8 @@ def setup(Layouts):
 
         if len(view['alerts']):
             for alert in view['alerts']:
-                alert['index'] = len(callbacks[view_count]) + \
-                    1 if view_count in callbacks else 1
+                alert['index'] = id
+
                 callbacks.setdefault(view_count, []).append(Alert(**alert))
         else:
             callbacks.setdefault(view_count, [])
@@ -258,12 +258,11 @@ class GUI(App):
         if ( callback.check(data[callback.dataIndex]) ):
             callback.buffer += 1
 
-            # Buffer is how many times we have seen our
+            # # Buffer is how many times we have seen our
             if ( callback.buffer >= 20 ):
-                if (self.current != callback.index):
-                    if type(callback) is Alert:
-                        self.alerts.clear_widgets()
-                return callback
+                if (self.current != callback.index and type(callback) is Alert):
+                    self.alerts.clear_widgets()
+            return callback
         else:
             callback.buffer = 0
         return False
@@ -271,7 +270,7 @@ class GUI(App):
     def change(self: DD, app, my_callback) -> NoReturn:
         if ( my_callback.change(self, my_callback) ):
             self.current = my_callback.index
-        elif type(my_callback) is Alert and my_callback.parent is None:
+        elif type(my_callback) is Alert and my_callback.parent is None and self.current == my_callback.index:
             self.alerts.add_widget(my_callback)
 
     def update_values(self: DD, data: List[float]) -> NoReturn:
