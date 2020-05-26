@@ -4,7 +4,12 @@
         "name":"rpm to linear config",
         "background":"bg.jpg",
         "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"],
-        "dynamic": { },
+        "dynamic": {
+            "dataIndex": 0,
+            "op": "<",
+            "value": 500,
+            "priority": 1
+          },
         "alerts": [ ],
         "gauges" : [
             {
@@ -12,7 +17,7 @@
               "path": "static/imgs/Stock/",
               "args": {
                 "themeConfig": "120",
-                "MinMax": [0, 8000]
+                "MinMax": [0, 8001]
               },
               "dataIndex": 0
             },
@@ -37,8 +42,8 @@
           ]
         },
         "1" : {
-	  "name": "linear",
-          "background":"static/imgs/Background/banner1.jpg",
+          "name": "linear",
+          "background":"banner1.jpg",
           "pids": ["ENGINE_RPM"],
           "dynamic": {
             "dataIndex": 0,
@@ -53,7 +58,7 @@
               "path": "static/imgs/Linear/",
               "args": {
                 "themeConfig": "Linear",
-                "MinMax": [0, 8000]
+                "MinMax": [0, 8001]
                },
                "dataIndex": 0
             }
