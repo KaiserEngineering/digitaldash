@@ -37,6 +37,7 @@
           ]
         },
         "1" : {
+	  "name": "linear",
           "background":"static/imgs/Background/banner1.jpg",
           "pids": ["ENGINE_RPM"],
           "dynamic": {
