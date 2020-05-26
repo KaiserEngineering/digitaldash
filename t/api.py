@@ -17,15 +17,15 @@ class BasicNeedle_TestCase(unittest.TestCase):
         needles = (
             NeedleRadial(
                 themeConfig=120, degrees=120, path='static/imgs/Stock/',
-                pids=['ENGINE_RPM'], view_id=0
+                pids=['ENGINE_RPM'], dataIndex=0
             ),
             NeedleEllipse(
                 themeConfig=120, degrees=120, path='static/imgs/Dirt/',
-                pids=['ENGINE_RPM'], view_id=0
+                pids=['ENGINE_RPM'], dataIndex=0
             ),
             NeedleLinear(
                 themeConfig=120, degrees=120, path='static/imgs/Linear/',
-                pids=['ENGINE_RPM'], view_id=0
+                pids=['ENGINE_RPM'], dataIndex=0
             ),
         )
 

@@ -37,8 +37,8 @@ class Needle():
         (self.source, self.degrees, self.min, self.max) = (
             args['path'] + 'needle.png',
             float(args.get('degrees', 0)),
-            KE_PID[args['pids'][args['view_id']]]['Min'],
-            KE_PID[args['pids'][args['view_id']]]['Max']
+            KE_PID[args['pids'][args['dataIndex']]]['Min'],
+            KE_PID[args['pids'][args['dataIndex']]]['Max']
         )
         self.setStep()
 
