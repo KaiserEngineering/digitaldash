@@ -2,6 +2,7 @@
     "views" : {
       "0": {
         "name":"Rally config",
+        "theme" : "Dirt",
         "background":"bg.jpg",
         "pids": [],
         "dynamic": {},

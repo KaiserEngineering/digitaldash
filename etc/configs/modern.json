@@ -3,6 +3,7 @@
       "0" : {
         "name":"single config",
         "background":"bg.jpg",
+        "theme" : "Modern",
         "pids": ["ENGINE_RPM"],
         "dynamic": {},
         "alerts": [],

@@ -4,6 +4,7 @@
       {
         "name":"Clock config",
         "background":"bg.jpg",
+        "theme" : "Clock",
         "pids": [],
         "dynamic": {},
         "alerts": [],

@@ -3,6 +3,7 @@
       "0" : {
         "name":"single config",
         "background":"bg.jpg",
+        "theme" : "Glow",
         "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE"],
         "dynamic": {},
         "alerts": [],

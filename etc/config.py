@@ -41,4 +41,7 @@ def validateConfig(config):
         if ( not 'name' in config['views'][view] or not config['views'][view]['name'] ):
             Logger.error( "Name required for view" )
             return False
+        if ( not 'theme' in config['views'][view] or not config['views'][view]['theme'] ):
+            Logger.error( "theme required for view" )
+            return False
     return True

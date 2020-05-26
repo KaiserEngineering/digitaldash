@@ -2,6 +2,7 @@
     "views" : {
       "0": {
         "name":"single config",
+        "theme" : "Stock",
         "background":"bg.jpg",
         "pids": ["ENGINE_RPM"],
         "dynamic": {},
