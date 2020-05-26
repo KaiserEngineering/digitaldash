@@ -1,5 +1,6 @@
 from digitaldash.massager import smooth
 from typing import NoReturn, List, TypeVar
+from static.constants import KE_PID
 
 class Needle():
     """
@@ -8,9 +9,9 @@ class Needle():
     def SetUp(self, **kwargs):
         self.SetAttrs(**kwargs)
         self.SetOffset()
-        self.true_value = self.min
 
-        self.setData(self.true_value)
+        self.update = self.min * self.step - self.offset
+        self.true_value = self.min
 
     def _size(self, gauge):
         '''Helper method that runs when gauge face changes size.'''
@@ -28,16 +29,16 @@ class Needle():
         if ( self.step == 0 ):
             self.step = 1
 
-    def SetAttrs(self, themeConfig={'degrees': 0, 'MinMax': [-9999, 9999]}, path='', **args) -> NoReturn:
+    def SetAttrs(self, **args) -> NoReturn:
         """Set basic attributes for widget."""
         for key in args:
             setattr(self, key, args[key])
 
         (self.source, self.degrees, self.min, self.max) = (
-            path + 'needle.png',
-            float(themeConfig.get('degrees', 0)),
-            themeConfig['MinMax'][0],
-            themeConfig['MinMax'][1]
+            args['path'] + 'needle.png',
+            float(args.get('degrees', 0)),
+            KE_PID[args['pids'][args['view_id']]]['Min'],
+            KE_PID[args['pids'][args['view_id']]]['Max']
         )
         self.setStep()
 

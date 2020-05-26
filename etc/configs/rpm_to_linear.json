@@ -14,31 +14,22 @@
         "alerts": [ ],
         "gauges" : [
             {
-              "module": "Radial",
-              "path": "static/imgs/Stock/",
-              "args": {
+                "module": "Radial",
+                "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "MinMax": [0, 8001]
-              },
-              "dataIndex": 0
+                "dataIndex": 0
             },
             {
-              "module": "Radial",
-              "path": "static/imgs/Stock/",
-              "args": {
+                "module": "Radial",
+                "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "MinMax": [0, 127]
-               },
-               "dataIndex": 1
+                "dataIndex": 1
             },
             {
-              "module": "Radial",
-              "path": "static/imgs/Stock/",
-              "args": {
+                "module": "Radial",
+                "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "MinMax": [0, 381]
-              },
-              "dataIndex": 2
+                "dataIndex": 2
              }
           ]
         },
@@ -56,13 +47,10 @@
           "alerts": [],
           "gauges": [
             {
-              "module": "Linear",
-              "path": "static/imgs/Linear/",
-              "args": {
+                "module": "Linear",
+                "path": "static/imgs/Linear/",
                 "themeConfig": "Linear",
-                "MinMax": [0, 8001]
-               },
-               "dataIndex": 0
+                "dataIndex": 0
             }
           ]
         }

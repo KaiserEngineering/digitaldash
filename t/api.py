@@ -15,28 +15,37 @@ class BasicNeedle_TestCase(unittest.TestCase):
 
     def test_needle_simple(self):
         needles = (
-            NeedleRadial(themeConfig={'degrees': 100, 'MinMax': [-10, 90]}),
-            NeedleEllipse(themeConfig={'degrees': 100, 'MinMax': [-10, 90]}),
-            NeedleLinear(themeConfig={'degrees': 100, 'MinMax': [-10, 90]}),
+            NeedleRadial(
+                themeConfig=120, degrees=120, path='static/imgs/Stock/',
+                pids=['ENGINE_RPM'], view_id=0
+            ),
+            NeedleEllipse(
+                themeConfig=120, degrees=120, path='static/imgs/Dirt/',
+                pids=['ENGINE_RPM'], view_id=0
+            ),
+            NeedleLinear(
+                themeConfig=120, degrees=120, path='static/imgs/Linear/',
+                pids=['ENGINE_RPM'], view_id=0
+            ),
         )
 
         for needle in needles:
-            offset = float(-10) if needle.Type == 'Linear' else float(40)
-            value  = float(0) if needle.Type == 'Linear' else float(-50)
+            offset = float(0) if needle.Type == 'Linear' else float(60)
+            value  = float(0) if needle.Type == 'Linear' else float(-60.0)
 
-            self.assertEqual(needle.degrees, float(100), needle.Type+" component sets degrees property correctly")
-            self.assertEqual(needle.min, float(-10), needle.Type+" component sets min property correctly")
-            self.assertEqual(needle.max, float(90), needle.Type+" component sets max property correctly")
+            self.assertEqual(needle.degrees, float(120), needle.Type+" component sets degrees property correctly")
+            self.assertEqual(needle.min, float(0), needle.Type+" component sets min property correctly")
+            self.assertEqual(needle.max, float(8000), needle.Type+" component sets max property correctly")
             self.assertEqual(needle.true_value, needle.min, needle.Type+" component defaults to minimum value")
             self.assertEqual(needle.offset, offset, needle.Type+" component sets correct offset with negative min")
             self.assertEqual(needle.update, value, needle.Type+" component sets the correct rotational degrees (not true vlaue)")
 
             old_value = needle.update
 
-            needle.setData(50)
-            value  = float(60) if needle.Type == 'Linear' else float(10)
+            needle.setData(4000)
+            value = float(50) if needle.Type == 'Linear' else float(0)
 
-            self.assertEqual(needle.true_value, float(50), needle.Type+" component defaults to minimum value")
+            self.assertEqual(needle.true_value, float(4000), needle.Type+" component defaults to minimum value")
             self.assertEqual(needle.update, smooth(New=value, Old=old_value), needle.Type+" component sets the correct rotational value with smoothing (not true value)")
 
 class BasicLabels_TestCase(unittest.TestCase):

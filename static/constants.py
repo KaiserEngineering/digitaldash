@@ -27,13 +27,16 @@ KE_CP_OP_CODES = {
 
 KE_PID = {
    'ENGINE_RPM': {
-       'byteCode': 0x0C, 'shortName' : 'RPM', 'decimals' : '0', 'units' : 'RPM'
+       'byteCode': 0x0C, 'shortName' : 'RPM', 'decimals' : '0', 'units' : 'RPM',
+       'Min' : 0, 'Max' : 8000
     },
    'INTAKE_AIR_TEMPERATURE' : {
-       'byteCode': 0x0F, 'shortName' : 'IAT', 'decimals' : '2', 'units' : 'Celcius'
+       'byteCode': 0x0F, 'shortName' : 'IAT', 'decimals' : '2', 'units' : 'Celcius',
+       'Min' : 0, 'Max' : 215
     },
    'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE' : {
-       'byteCode': 0x0B, 'shortName' : 'MAP', 'decimals' : '0', 'units' : 'kPa'
+       'byteCode': 0x0B, 'shortName' : 'MAP', 'decimals' : '0', 'units' : 'kPa',
+       'Min' : 0, 'Max' : 255
     },
    'ENGINE_COOLANT_TEMPERATURE' : {
        'byteCode': 0x05, 'shortName' : 'ECT', 'decimals' : '1', 'units' : 'Celcius'

@@ -108,7 +108,7 @@ def setup(Layouts):
                 mod = globals()[widget['module']]()
             except KeyError:
                 mod = Base(gauge_count=len(view['gauges']))
-            ObjectsToUpdate.append(mod.buildComponent(container=container, **widget, pids=pids))
+            ObjectsToUpdate.append(mod.buildComponent(container=container, view_id=int(id), **widget, **view))
 
         containers.append(container)
 

@@ -16,7 +16,7 @@ def views(file=None):
 
     Window._rotation = 0
 
-    jsonData = jsonData if validateConfig(jsonData) else json.loads('{"views": { "0": {"alerts": [],"background": "bg.jpg","dynamic": {},"gauges": [{"args": {"MinMax": [0,1],"themeConfig": "Error"},"dataIndex": 0,"module": "Misc","path": "static/imgs/Alerts/"}],"name": "Error","pids": []}}}')
+    jsonData = jsonData if validateConfig(jsonData) else json.loads('{"views": { "0": {"alerts": [],"background": "bg.jpg","dynamic": {},"gauges": [{"themeConfig": "Error","dataIndex": 0,"module": "Misc","path": "static/imgs/Alerts/"}],"name": "Error","pids": []}}}')
 
     return jsonData
 
@@ -24,6 +24,7 @@ def views(file=None):
 def getThemeConfig(theme):
     """Get theme specific config values."""
     jsonData = {}
+
     try:
         with open('etc/themes/' + theme + '.json') as data_file:
             jsonData = json.load(data_file)

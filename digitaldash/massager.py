@@ -10,9 +10,9 @@ def smooth(Old, New, **args):
         :param 'New' : Value,
     """
 
-    if not Old:
+    if Old is None:
         return New
-    if not New:
+    if New is None:
         Logger.error( "Cannot set smoothing value without New value" )
         return 0
     delta = abs(New - Old)

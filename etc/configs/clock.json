@@ -1,25 +1,20 @@
 {
     "views" : {
       "0":
-      {
-        "name":"Clock config",
-        "background":"bg.jpg",
-        "theme" : "Clock",
-        "pids": [],
-        "dynamic": {},
-        "alerts": [],
-        "gauges": [
-          {
-            "module": "KEClock",
-            "path": "static/imgs/Clock/",
-            "args": {
-               "themeConfig": "Clock",
-               "MinMax": [0, 1]
-              },
-              "dataIndex": 0
-            }
-          ]
-      }
+        {
+            "name":"Clock config",
+            "background":"bg.jpg",
+            "theme" : "Clock",
+            "pids": [],
+            "dynamic": {},
+            "alerts": [],
+            "gauges": [
+            {
+                "module": "KEClock",
+                "path": "static/imgs/Clock/",
+                "themeConfig": "Clock",
+                "dataIndex": 0
+            }]
+        }
     }
-  }
-  
+}

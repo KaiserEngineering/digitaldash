@@ -26,37 +26,19 @@
         },
         "gauges" : [
         {
-            "args" : {
-                "MinMax" : [
-                    0,
-                    8000
-                ],
-                "themeConfig" : "120"
-            },
+            "themeConfig" : "120",
             "dataIndex" : 0,
             "module" : "Radial",
             "path" : "static/imgs/Stock/"
         },
         {
-            "args" : {
-                "MinMax" : [
-                    0,
-                    215
-                ],
-                "themeConfig" : "120"
-            },
+            "themeConfig" : "120",
             "dataIndex" : 1,
             "module" : "Radial",
             "path" : "static/imgs/Stock/"
         },
         {
-            "args" : {
-                "MinMax" : [
-                    0,
-                    255
-                ],
-                "themeConfig" : "120"
-            },
+            "themeConfig" : "120",
             "dataIndex" : 2,
             "module" : "Radial",
             "path" : "static/imgs/Stock/"
@@ -82,37 +64,19 @@
         },
         "gauges" : [
         {
-            "args" : {
-                "MinMax" : [
-                    0,
-                    8000
-                ],
-                "themeConfig" : "120"
-            },
+            "themeConfig" : "120",
             "dataIndex" : 0,
             "module" : "Radial",
             "path" : "static/imgs/Glow/"
         },
         {
-            "args" : {
-                "MinMax" : [
-                    0,
-                    215
-                ],
-                "themeConfig" : "120"
-            },
+            "themeConfig" : "120",
             "dataIndex" : 1,
             "module" : "Radial",
             "path" : "static/imgs/Glow/"
         },
         {
-            "args" : {
-                "MinMax" : [
-                    0,
-                    255
-                ],
-                "themeConfig" : "120"
-            },
+            "themeConfig" : "120",
             "dataIndex" : 2,
             "module" : "Radial",
             "path" : "static/imgs/Glow/"
