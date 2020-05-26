@@ -8,16 +8,13 @@
         "dynamic": {},
         "alerts": [],
         "gauges": [
-          {
-            "module": "Radial",
-            "path": "static/imgs/Glow/",
-            "args": {
-               "themeConfig": "120",
-               "MinMax": [0, 8000]
-              },
-              "dataIndex": 0
+            {
+                "module": "Radial",
+                "path": "static/imgs/Glow/",
+                "themeConfig": "120",
+                "dataIndex": 0
             }
-          ]
+        ]
       }
     }
 }

@@ -7,16 +7,13 @@
         "dynamic": {},
         "alerts": [],
         "gauges": [
-          {
-            "module": "Ellipse",
-            "path": "static/imgs/Dirt/",
-            "args": {
-               "themeConfig": "120",
-               "MinMax": [0, 8000]
-              },
-              "dataIndex": 0
+            {
+                "module": "Ellipse",
+                "path": "static/imgs/Dirt/",
+                "themeConfig": "120",
+                "dataIndex": 0
             }
-          ]
+        ]
       }
     }
 }

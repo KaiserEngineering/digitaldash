@@ -8,14 +8,11 @@
         "dynamic": {},
         "alerts": [],
         "gauges": [
-          {
-            "module": "Rally",
-            "path": "static/imgs/Dirt/",
-            "args": {
-               "themeConfig": "Rally",
-               "MinMax": [0, 8000]
-              },
-              "dataIndex": 0
+            {
+                "module": "Rally",
+                "path": "static/imgs/Dirt/",
+                "themeConfig": "Rally",
+                "dataIndex": 0
             }
           ]
       }

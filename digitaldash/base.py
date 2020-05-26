@@ -44,8 +44,7 @@ class Base(object):
             :param **ARGS:
         """
         args = {}
-
-        not_error = ARGS['args']['themeConfig'] != 'Error'
+        not_error = ARGS['theme'] != 'Error'
 
         self.container = container
 
@@ -53,12 +52,12 @@ class Base(object):
         args['path'] = ARGS['path']
 
         # Import theme specifc Config
-        themeConfig = getThemeConfig(ARGS['module'] + '/' + str(ARGS['args']['themeConfig']))
-        args['themeConfig'] = {**ARGS['args'], **themeConfig}
+        themeConfig = getThemeConfig(ARGS['module'] + '/' + str(ARGS['themeConfig']))
+        args['themeConfig'] = {**ARGS, **themeConfig}
 
         self.needle = None
         if ( not_error ):
-            self.needle = globals()[ARGS['module']](**args)
+            self.needle = globals()[ARGS['module']](**ARGS, **themeConfig)
             (self.needle.sizex, self.needle.sizey) = (512, 512)
             self.needle.dataIndex = ARGS['dataIndex']
             # Adding widgets that get updated with data

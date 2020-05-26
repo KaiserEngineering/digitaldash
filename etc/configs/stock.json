@@ -9,13 +9,10 @@
         "alerts": [],
         "gauges": [
           {
-            "module": "Radial",
-            "path": "static/imgs/Stock/",
-            "args": {
-               "themeConfig": "120",
-               "MinMax": [0, 8000]
-              },
-              "dataIndex": 0
+                "module": "Radial",
+                "path": "static/imgs/Stock/",
+                "themeConfig": "120",
+                "dataIndex": 0
             }
           ]
       }
