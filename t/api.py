@@ -17,15 +17,15 @@ class BasicNeedle_TestCase(unittest.TestCase):
         needles = (
             NeedleRadial(
                 themeConfig=120, degrees=120, path='static/imgs/Stock/',
-                pids=['ENGINE_RPM'], dataIndex=0
+                pids=['ENGINE_RPM'], pid="ENGINE_RPM"
             ),
             NeedleEllipse(
                 themeConfig=120, degrees=120, path='static/imgs/Dirt/',
-                pids=['ENGINE_RPM'], dataIndex=0
+                pids=['ENGINE_RPM'], pid="ENGINE_RPM"
             ),
             NeedleLinear(
                 themeConfig=120, degrees=120, path='static/imgs/Linear/',
-                pids=['ENGINE_RPM'], dataIndex=0
+                pids=['ENGINE_RPM'], pid="ENGINE_RPM"
             ),
         )
 
@@ -56,7 +56,7 @@ class BasicLabels_TestCase(unittest.TestCase):
             ConfigColor    = (1, 1, 1 ,1),
             ConfigFontSize = 25,
             data           = 0,
-            PID            = 'ENGINE_RPM',
+            pid            = 'ENGINE_RPM',
             **KE_PID['ENGINE_RPM']
         )
         self.assertEqual(label.text, "hello, world", "Default text value is set correctly")
@@ -68,9 +68,9 @@ class BasicLabels_TestCase(unittest.TestCase):
         label = KELabel(
             default        = 'Min: ',
             data           = 1,
-            dataIndex      = 0,
-            PID            = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
+            pid            = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
         )
+        label.setData(0)
         self.assertEqual(label.text, "0", "Default text value is set correctly")
         label.setData(-100)
         self.assertEqual(label.text, "-100", "Min value sets correctly")
@@ -81,9 +81,9 @@ class BasicLabels_TestCase(unittest.TestCase):
         label = KELabel(
             default        = 'Max: ',
             data           = 1,
-            dataIndex      = 0,
-            PID            = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
+            pid            = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
         )
+        label.setData(0)
         self.assertEqual(label.text, "0", "Default text value is set correctly")
         label.setData(100)
         self.assertEqual(label.text, "100", "Max value sets correctly")
@@ -94,7 +94,7 @@ class BasicLabels_TestCase(unittest.TestCase):
         # Test PID labels
         label = KELabel(
             default        = '__PID__',
-            PID            = 'ENGINE_RPM'
+            pid            = 'ENGINE_RPM'
         )
         self.assertEqual(label.text, "RPM", "Sets PID label correctly")
 
@@ -105,9 +105,8 @@ class BasicAlerts_TestCase(unittest.TestCase):
             op        = '>',
             index     = 0,
             priority  = 0,
-            dataIndex = 0,
             message   = 'Hello, from tests',
-            PID            = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
+            pid       = 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE'
         )
         self.assertFalse(alert.check(99), "Check fails when it should")
         self.assertNotEqual(alert.text, 'Hello, from tests', "Do not set alert value")
