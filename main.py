@@ -70,6 +70,8 @@ def setup(Layouts):
     view_count = 0
     for id in Layouts['views']:
         view = Layouts['views'][id]
+        # Skip disabled views
+        if (not view['enabled']): continue
 
         background = view['background']
         pids       = view['pids']
