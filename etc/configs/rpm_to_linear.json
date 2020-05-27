@@ -3,6 +3,7 @@
       "0": {
         "theme" : "Stock",
         "enabled" : 1,
+        "default" : 1,
         "name":"rpm to linear config",
         "background":"bg.jpg",
         "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"],

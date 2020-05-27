@@ -16,7 +16,7 @@ def views(file=None):
 
     Window._rotation = 0
 
-    jsonData = jsonData if validateConfig(jsonData) else json.loads('{"views": { "0": {"alerts": [], "theme": "Error", "background": "bg.jpg","dynamic": {},"gauges": [{"themeConfig": "Error","dataIndex": 0,"module": "Misc","path": "static/imgs/Alerts/"}],"name": "Error", "enabled": 1, "pids": []}}}')
+    jsonData = jsonData if validateConfig(jsonData) else json.loads('{"views": { "0": {"alerts": [], "default": 1, theme": "Error", "background": "bg.jpg","dynamic": {},"gauges": [{"themeConfig": "Error","dataIndex": 0,"module": "Misc","path": "static/imgs/Alerts/"}], "name": "Error", "enabled": 1, "pids": []}}}')
 
     return jsonData
 
@@ -69,8 +69,12 @@ def validateConfig(config):
         },
     }
 
+    saw_default = False
     for id in config['views']:
         view = config['views'][id]
+
+        if ( 'default' in view and view['default']):
+            saw_default = True
 
         # Top level keys
         for key in required_values.keys():
@@ -98,4 +102,7 @@ def validateConfig(config):
                                     Logger.error( item + " for " + key + "must be of type " + str(required_values[key][item]) )
                                     return False
                                 continue
+    if ( not saw_default ):
+        Logger.error( "Default view required" )
+        return False
     return True

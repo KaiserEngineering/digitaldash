@@ -3,6 +3,7 @@
       "0": {
         "name":"single config",
         "enabled" : 1,
+        "default" : 1,
         "theme" : "Stock",
         "background":"bg.jpg",
         "pids": ["ENGINE_RPM"],

@@ -68,7 +68,9 @@ def setup(Layouts):
     containers = []
 
     view_count = 0
-    for id in Layouts['views']:
+
+    # Sort based on default value
+    for id in sorted(Layouts['views'], key=lambda id: Layouts['views'][id].get('default', 0), reverse=True):
         view = Layouts['views'][id]
         # Skip disabled views
         if (not view['enabled']): continue
