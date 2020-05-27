@@ -20,7 +20,6 @@ def views(file=None):
 
     return jsonData
 
-
 def getThemeConfig(theme):
     """Get theme specific config values."""
     jsonData = {}

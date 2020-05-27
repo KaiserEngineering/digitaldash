@@ -3,6 +3,7 @@
       "0":
         {
             "name":"Clock config",
+            "enabled" : 1,
             "background":"bg.jpg",
             "theme" : "Clock",
             "pids": [],

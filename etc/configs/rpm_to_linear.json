@@ -2,6 +2,7 @@
     "views" : {
       "0": {
         "theme" : "Stock",
+        "enabled" : 1,
         "name":"rpm to linear config",
         "background":"bg.jpg",
         "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"],
@@ -35,6 +36,7 @@
         },
         "1" : {
           "theme" : "Linear",
+          "enabled" : 1,
           "name": "linear",
           "background":"banner1.jpg",
           "pids": ["ENGINE_RPM"],

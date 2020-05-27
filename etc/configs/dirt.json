@@ -2,6 +2,8 @@
     "views" : {
       "0" : {
         "name":"single config",
+        "theme": "Dirt",
+        "enabled" : 1,
         "background":"bg.jpg",
         "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE"],
         "dynamic": {},

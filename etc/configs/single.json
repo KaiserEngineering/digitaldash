@@ -2,6 +2,7 @@
   "views" : {
     "0": {
       "name":"single config",
+      "enabled" : 1,
       "theme" : "Stock",
       "background":"bg.jpg",
       "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE"],
@@ -15,6 +16,28 @@
             "dataIndex": 0
           }
         ]
-    }
+    },
+    "1": {
+        "name":"Don't see me",
+        "enabled" : 0,
+        "theme" : "Glow",
+        "background":"bg.jpg",
+        "pids": ["ENGINE_RPM"],
+        "dynamic": {
+            "dataIndex": 0,
+            "op": ">=",
+            "value": 1000,
+            "priority": 10
+        },
+        "alerts": [],
+        "gauges": [
+          {
+              "module": "Radial",
+              "path": "static/imgs/Glow/",
+              "themeConfig": "120",
+              "dataIndex": 0
+            }
+          ]
+      }
   }
 }

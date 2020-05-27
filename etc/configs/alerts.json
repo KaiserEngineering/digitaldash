@@ -2,6 +2,7 @@
     "views" : {
       "0" : {
         "name":"alerts config",
+        "enabled" : 1,
         "theme" : "Stock",
         "background":"bg.jpg",
         "pids": ["ENGINE_RPM"],
