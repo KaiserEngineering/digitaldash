@@ -97,14 +97,10 @@ class Serial():
         pid_byte_code = []
         byte_count    = 3
         for requirement in requirements:
-            try:
-                pid_byte_code.append( (int(requirement,16) >> 0x8) & 0xFF )
-                pid_byte_code.append( (int(requirement,16) >> 0x0) & 0xFF )
+            pid_byte_code.append( (int(requirement,16) >> 0x8) & 0xFF )
+            pid_byte_code.append( (int(requirement,16) >> 0x0) & 0xFF )
 
-                byte_count += 2
-            except Exception as e:
-                Logger.error( "Could not load byte code for "+requirement+" : "+str(e) )
-
+            byte_count += 2
         bytes_written = self.ser.write( [ UART_SOL , byte_count, KE_CP_OP_CODES['KE_PID_STREAM_NEW']]+ pid_byte_code );
 
         msg = "PIDs updated " + str( bytes_written ) + " written"
