@@ -1,0 +1,22 @@
+{
+    "views" : {
+      "0": {
+        "name":"Rally config",
+        "enabled" : 1,
+        "default" : 1,
+        "theme" : "Dirt",
+        "background":"bg.jpg",
+        "pids": ["0x0C"],
+        "dynamic": {},
+        "alerts": [],
+        "gauges": [
+            {
+                "module": "Rally",
+                "path": "/Dirt/",
+                "themeConfig": "Rally",
+                "pid": "0x0C"
+            }
+          ]
+      }
+    }
+  }

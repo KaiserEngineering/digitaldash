@@ -1,0 +1,22 @@
+{
+    "views" : {
+      "0" : {
+        "name":"single config",
+        "theme": "Dirt",
+        "enabled" : 1,
+        "default" : 1,
+        "background":"bg.jpg",
+        "pids": ["0x0C", "0x0F"],
+        "dynamic": {},
+        "alerts": [],
+        "gauges": [
+            {
+                "module": "Ellipse",
+                "path": "/Dirt/",
+                "themeConfig": "120",
+                "pid": "0x0C"
+            }
+        ]
+      }
+    }
+}

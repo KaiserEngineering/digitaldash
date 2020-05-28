@@ -1,0 +1,22 @@
+{
+    "views" : {
+      "0" : {
+        "name":"single config",
+        "enabled" : 1,
+        "default" : 1,
+        "background":"bg.jpg",
+        "theme" : "Modern",
+        "pids": ["0x0C"],
+        "dynamic": {},
+        "alerts": [],
+        "gauges": [
+          {
+                "module": "Radial",
+                "path": "/Modern/",
+                "themeConfig": "120",
+                "pid": "0x0C"
+            }
+          ]
+      }
+    }
+}

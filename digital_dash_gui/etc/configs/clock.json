@@ -1,0 +1,22 @@
+{
+    "views" : {
+      "0":
+        {
+            "name":"Clock config",
+            "enabled" : 1,
+            "default" : 1,
+            "background":"bg.jpg",
+            "theme" : "Clock",
+            "pids": [],
+            "dynamic": {},
+            "alerts": [],
+            "gauges": [
+            {
+                "module": "KEClock",
+                "path": "/Clock/",
+                "themeConfig": "Clock",
+                "pid": "Clock"
+            }]
+        }
+    }
+}
