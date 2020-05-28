@@ -49,8 +49,8 @@ from digitaldash.clock import Clock as KEClock
 
 
 try:
-    import serial
-    Data_Source = serial.Serial()
+    import ke_protocol
+    Data_Source = ke_protocol.Serial()
     Logger.info("Using serial data source" + str(Data_Source))
 except Exception as e:
     Logger.info("Running without serial data: " + str(e))
