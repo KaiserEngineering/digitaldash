@@ -78,7 +78,7 @@ class Serial():
 
             key_val = {}
             for val in data_line.split(';'):
-                (k, v) = val.split(':')
+                (k, v) = val.split('=')
                 key_val[k] = v
             self.ser_val = key_val
             #self.ser_val[2] = self.ser.inWaiting()
