@@ -17,15 +17,15 @@ class BasicNeedle_TestCase(unittest.TestCase):
         needles = (
             NeedleRadial(
                 themeConfig=120, degrees=120, path='static/imgs/Stock/',
-                pids=['ENGINE_RPM'], pid="ENGINE_RPM"
+                pids=[0x0C], pid="ENGINE_RPM"
             ),
             NeedleEllipse(
                 themeConfig=120, degrees=120, path='static/imgs/Dirt/',
-                pids=['ENGINE_RPM'], pid="ENGINE_RPM"
+                pids=[0x0C], pid="ENGINE_RPM"
             ),
             NeedleLinear(
                 themeConfig=120, degrees=120, path='static/imgs/Linear/',
-                pids=['ENGINE_RPM'], pid="ENGINE_RPM"
+                pids=[0x0C], pid="ENGINE_RPM"
             ),
         )
 
@@ -56,11 +56,11 @@ class BasicLabels_TestCase(unittest.TestCase):
             ConfigColor    = (1, 1, 1 ,1),
             ConfigFontSize = 25,
             data           = 0,
-            pid            = 'ENGINE_RPM',
-            **KE_PID['ENGINE_RPM']
+            pid            = 0x0C,
+            **KE_PID[0x0C]
         )
         self.assertEqual(label.text, "hello, world", "Default text value is set correctly")
-        self.assertEqual(label.decimals, str(KE_PID['ENGINE_RPM']['decimals']), "Decimal place set correctly for label")
+        self.assertEqual(label.decimals, str(KE_PID[0x0C]['decimals']), "Decimal place set correctly for label")
 
         label.setData(100)
         self.assertEqual(label.text, "hello, world100", "Default text value is set correctly form setData method")
@@ -94,7 +94,7 @@ class BasicLabels_TestCase(unittest.TestCase):
         # Test PID labels
         label = KELabel(
             default        = '__PID__',
-            pid            = 'ENGINE_RPM'
+            pid            = 0x0C
         )
         self.assertEqual(label.text, "RPM", "Sets PID label correctly")
 

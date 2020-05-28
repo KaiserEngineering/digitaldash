@@ -35,7 +35,7 @@ class KELabel(Label):
             if ( args['pid'] in KE_PID ):
                 self.default = str(KE_PID[self.pid]['shortName'])
             else:
-                self.default = self.pid
+                self.default = KE_PID[self.pid]['name']
                 Logger.error( "Could not load shortName from Static.Constants for PID: "+self.pid+" : "+str(e) )
         if ( 'data' in args and args['data'] ):
             self.text = self.default +' 0'
