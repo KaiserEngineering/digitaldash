@@ -6,9 +6,9 @@
         "default" : 1,
         "name":"rpm to linear config",
         "background":"bg.jpg",
-        "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"],
+        "pids": ["0x0C", "0x0F", "0x0B"],
         "dynamic": {
-            "pid": "ENGINE_RPM",
+            "pid": "0x0C",
             "op": "<",
             "value": 500,
             "priority": 1
@@ -19,19 +19,19 @@
                 "module": "Radial",
                 "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "pid": "ENGINE_RPM"
+                "pid": "0x0C"
             },
             {
                 "module": "Radial",
                 "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "pid": "INTAKE_AIR_TEMPERATURE"
+                "pid": "0x0F"
             },
             {
                 "module": "Radial",
                 "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "pid": "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"
+                "pid": "0x0B"
              }
           ]
         },
@@ -40,9 +40,9 @@
           "enabled" : 1,
           "name": "linear",
           "background":"banner1.jpg",
-          "pids": ["ENGINE_RPM"],
+          "pids": ["0x0C"],
           "dynamic": {
-            "pid": "ENGINE_RPM",
+            "pid": "0x0C",
             "op": ">=",
             "value": 500,
             "priority": 10
@@ -53,7 +53,7 @@
                 "module": "Linear",
                 "path": "static/imgs/Linear/",
                 "themeConfig": "Linear",
-                "pid": "ENGINE_RPM"
+                "pid": "0x0C"
             }
           ]
         }

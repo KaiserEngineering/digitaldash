@@ -6,7 +6,7 @@
         "default" : 1,
         "background":"bg.jpg",
         "theme" : "Modern",
-        "pids": ["ENGINE_RPM"],
+        "pids": ["0x0C"],
         "dynamic": {},
         "alerts": [],
         "gauges": [
@@ -14,7 +14,7 @@
                 "module": "Radial",
                 "path": "static/imgs/Modern/",
                 "themeConfig": "120",
-                "pid": "ENGINE_RPM"
+                "pid": "0x0C"
             }
           ]
       }
