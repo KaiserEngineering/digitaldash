@@ -32,7 +32,7 @@ class Serial():
         self.requirements = []
 
 
-    def Start(self):
+    def Start(self, **args):
         """L1612773-4oop for checking Serial connection for data."""
         # Handle grabbing data
         data_line = ''
