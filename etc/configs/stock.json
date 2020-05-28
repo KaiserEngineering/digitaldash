@@ -14,7 +14,7 @@
                 "module": "Radial",
                 "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "dataIndex": 0
+                "pid": "ENGINE_RPM"
             }
           ]
       }

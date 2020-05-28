@@ -18,21 +18,21 @@ class Dynamic(object):
                     op        : <String>,
                     index     : <Int>,
                     priority  : <Int>,
-                    dataIndex : <Int>,
+                    pid       : <Int>,
                 }
         """
         super(Dynamic, self).__init__()
         self.buffer = 0
 
     def new( self, **args ):
-        if ( len(list(filter(lambda key: ( args.get(key, 'missing') == 'missing' ), ['value', 'op', 'index', 'priority', 'dataIndex']))) ):
+        if ( len(list(filter(lambda key: ( args.get(key, 'missing') == 'missing' ), ['value', 'op', 'index', 'priority', 'pid']))) ):
             return ( 0, "Missing required args for new dynamic object" )
 
         self.value     = int(args.get('value'))
         self.op        = args.get('op')
         self.index     = int(args.get('index'))
         self.priority  = int(args.get('priority'))
-        self.dataIndex = int(args.get('dataIndex'))
+        self.pid       = args.get('pid', '')
 
         return ( 1, "New dynamic object successfully created" )
 

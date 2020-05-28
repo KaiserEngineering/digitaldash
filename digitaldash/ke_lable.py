@@ -27,24 +27,23 @@ class KELabel(Label):
         self.color           = self.ConfigColor
         self.ConfigFontSize  = args.get('font_size', 25)
         self.font_size       = self.ConfigFontSize
-        self.decimals        = str(KE_PID.get(args.get('PID', ''), {}).get('decimals', 2))
-
-        self.ObjectType   = 'Label'
+        self.decimals        = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
+        self.ObjectType      = 'Label'
+        self.pid             = args['pid']
 
         if ( self.default == '__PID__' ):
-            try:
-                self.default = str(KE_PID[args['PID']]['shortName'])
-            except Exception as e:
-                self.default = args.get('PID', '')
-                Logger.error( "Could not load shortName from Static.Constants for PID: "+self.default+" : "+str(e) )
-        self.text = self.default
+            if ( args['pid'] in KE_PID ):
+                self.default = str(KE_PID[self.pid]['shortName'])
+            else:
+                self.default = self.pid
+                Logger.error( "Could not load shortName from Static.Constants for PID: "+self.pid+" : "+str(e) )
+        if ( 'data' in args and args['data'] ):
+            self.text = self.default +' 0'
+        else:
+            self.text = self.default
 
         # Set position dynamically
         self.new_pos = list(map( lambda x: x / 100, args.get('pos', (0, 0)) ))
-
-        if ( args.get('data', False) ):
-            self.dataIndex = args['dataIndex']
-            self.setData(args.get('min', 0))
 
     def setData(self: KL, value='') -> NoReturn:
         """

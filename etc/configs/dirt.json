@@ -14,7 +14,7 @@
                 "module": "Ellipse",
                 "path": "static/imgs/Dirt/",
                 "themeConfig": "120",
-                "dataIndex": 0
+                "pid": "ENGINE_RPM"
             }
         ]
       }

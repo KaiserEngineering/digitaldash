@@ -13,7 +13,7 @@
             ],
             "alerts" : [
                 {
-                    "dataIndex": 0,
+                    "pid": "ENGINE_RPM",
                     "op": ">",
                     "value": 0,
                     "priority": 1,
@@ -21,7 +21,7 @@
                 }
             ],
             "dynamic" : {
-                "dataIndex" : 0,
+                "pid" : "ENGINE_RPM",
                 "op" : "<",
                 "priority" : 1,
                 "value" : 4000
@@ -29,19 +29,19 @@
             "gauges" : [
             {
                 "themeConfig" : "120",
-                "dataIndex" : 0,
+                "pid" : "ENGINE_RPM",
                 "module" : "Radial",
                 "path" : "static/imgs/Stock/"
             },
             {
                 "themeConfig" : "120",
-                "dataIndex" : 1,
+                "pid" : "INTAKE_AIR_TEMPERATURE",
                 "module" : "Radial",
                 "path" : "static/imgs/Stock/"
             },
             {
                 "themeConfig" : "120",
-                "dataIndex" : 2,
+                "pid" : "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE",
                 "module" : "Radial",
                 "path" : "static/imgs/Stock/"
             }
@@ -60,7 +60,7 @@
             "alerts" : [
             ],
             "dynamic" : {
-                "dataIndex" : 0,
+                "pid" : "ENGINE_RPM",
                 "op" : ">=",
                 "priority" : 2,
                 "value" : 5000
@@ -68,19 +68,19 @@
             "gauges" : [
             {
                 "themeConfig" : "120",
-                "dataIndex" : 0,
+                "pid" : "ENGINE_RPM",
                 "module" : "Radial",
                 "path" : "static/imgs/Glow/"
             },
             {
                 "themeConfig" : "120",
-                "dataIndex" : 1,
+                "pid" : "INTAKE_AIR_TEMPERATURE",
                 "module" : "Radial",
                 "path" : "static/imgs/Glow/"
             },
             {
                 "themeConfig" : "120",
-                "dataIndex" : 2,
+                "pid" : "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE",
                 "module" : "Radial",
                 "path" : "static/imgs/Glow/"
             }

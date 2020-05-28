@@ -16,7 +16,7 @@ def views(file=None):
 
     Window._rotation = 0
 
-    jsonData = jsonData if validateConfig(jsonData) else json.loads('{"views": { "0": {"alerts": [], "default": 1, "theme": "Error", "background": "bg.jpg","dynamic": {},"gauges": [{"themeConfig": "Error","dataIndex": 0,"module": "Misc","path": "static/imgs/Alerts/"}], "name": "Error", "enabled": 1, "pids": []}}}')
+    jsonData = jsonData if validateConfig(jsonData) else json.loads('{"views": { "0": {"alerts": [], "default": 1, "theme": "Error", "background": "bg.jpg","dynamic": {},"gauges": [{"themeConfig": "Error","pid": '',"module": "Misc","path": "static/imgs/Alerts/"}], "name": "Error", "enabled": 1, "pids": []}}}')
 
     return jsonData
 
@@ -46,10 +46,10 @@ def validateConfig(config):
                 "pids": list,
                 "dynamic": dict,
                 "alerts": list,
-                "gauges": list 
+                "gauges": list
         },
         "alerts" : {
-            "dataIndex": int,
+            "pid": str,
             "op": str,
             "value": int,
             "priority": int,
@@ -57,12 +57,12 @@ def validateConfig(config):
         },
         "gauges" : {
             "themeConfig" : str,
-            "dataIndex" : int,
+            "pid" : str,
             "module" : str,
             "path" : str
         },
         "dynamic" : {
-            "dataIndex" : int,
+            "pid" : str,
             "op" : str,
             "priority" : int,
             "value" : int
@@ -93,13 +93,13 @@ def validateConfig(config):
 
                         if ( type( view[key] ) == dict ):
                             if ( not type( view[key][item] ) == required_values[key][item] ):
-                                Logger.error( item + " for " + key + "must be of type " + str(required_values[key][item]) )
+                                Logger.error( item + " for " + key + " must be of type " + str(required_values[key][item]) )
                                 return False
                             continue
                         else:
                             for hash in view[key]:
                                 if ( not type( hash[item] ) == required_values[key][item] ):
-                                    Logger.error( item + " for " + key + "must be of type " + str(required_values[key][item]) )
+                                    Logger.error( item + " for " + key + " must be of type " + str(required_values[key][item]) )
                                     return False
                                 continue
     if ( not saw_default ):

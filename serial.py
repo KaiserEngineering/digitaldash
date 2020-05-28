@@ -74,16 +74,13 @@ class Serial():
             self.ser.write(positive_ack)
             Logger.info("Clipped Data: " + str(data_line))
             Logger.info("GUI: << ACK" + "\n")
-            count = 0
             data_line = data_line.decode('utf-8', 'ignore')
+
+            key_val = {}
             for val in data_line.split(';'):
-                try:
-                    val = float(val)
-                    self.ser_val[count] = val
-                    count = count + 1
-                except ValueError:
-                    print("Value error caught for: " + str(val))
-                    count = count + 1
+                (k, v) = val.split(':')
+                key_val[k] = v
+            self.ser_val = key_val
             #self.ser_val[2] = self.ser.inWaiting()
             #self.ser.flushInput()
             return self.ser_val

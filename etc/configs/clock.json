@@ -15,7 +15,7 @@
                 "module": "KEClock",
                 "path": "static/imgs/Clock/",
                 "themeConfig": "Clock",
-                "dataIndex": 0
+                "pid": "Clock"
             }]
         }
     }

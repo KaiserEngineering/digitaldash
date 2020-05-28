@@ -10,7 +10,8 @@
           "dynamic": {},
           "alerts": [
             {
-                "dataIndex": 0, "op": "<",
+                "pid": "ENGINE_RPM",
+                "op": "<",
                 "value": 4000,
                 "priority": 1,
                 "message" : "Hello, wolrd"
@@ -21,7 +22,7 @@
                 "module": "Radial",
                 "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "dataIndex": 0
+                "pid": "ENGINE_RPM"
             }
         ]
       }

@@ -8,7 +8,7 @@
         "background":"bg.jpg",
         "pids": ["ENGINE_RPM", "INTAKE_AIR_TEMPERATURE", "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"],
         "dynamic": {
-            "dataIndex": 0,
+            "pid": "ENGINE_RPM",
             "op": "<",
             "value": 500,
             "priority": 1
@@ -19,19 +19,19 @@
                 "module": "Radial",
                 "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "dataIndex": 0
+                "pid": "ENGINE_RPM"
             },
             {
                 "module": "Radial",
                 "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "dataIndex": 1
+                "pid": "INTAKE_AIR_TEMPERATURE"
             },
             {
                 "module": "Radial",
                 "path": "static/imgs/Stock/",
                 "themeConfig": "120",
-                "dataIndex": 2
+                "pid": "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"
              }
           ]
         },
@@ -42,7 +42,7 @@
           "background":"banner1.jpg",
           "pids": ["ENGINE_RPM"],
           "dynamic": {
-            "dataIndex": 0,
+            "pid": "ENGINE_RPM",
             "op": ">=",
             "value": 500,
             "priority": 10
@@ -53,7 +53,7 @@
                 "module": "Linear",
                 "path": "static/imgs/Linear/",
                 "themeConfig": "Linear",
-                "dataIndex": 0
+                "pid": "ENGINE_RPM"
             }
           ]
         }
