@@ -31,7 +31,6 @@ class Base(object):
         # Optional values
         self.Layout      = GaugeLayout(kwargs.get('gauge_count', 0))
         self.liveWidgets = []
-        self.dataIndex   = -1
         self.container   = None
 
 
@@ -48,7 +47,6 @@ class Base(object):
 
         self.container = container
 
-        args['PID']  = ARGS['pids'][ARGS['dataIndex']] if len(ARGS['pids']) and not_error else ''
         args['path'] = ARGS['path']
 
         # Import theme specifc Config
@@ -59,7 +57,7 @@ class Base(object):
         if ( not_error ):
             self.needle = globals()[ARGS['module']](**ARGS, **themeConfig)
             (self.needle.sizex, self.needle.sizey) = (512, 512)
-            self.needle.dataIndex = ARGS['dataIndex']
+            self.needle.pid = ARGS['pid']
             # Adding widgets that get updated with data
             self.liveWidgets.append(self.needle)
         self.face = Face(**args)
@@ -71,8 +69,7 @@ class Base(object):
 
         # Create our labels
         for labelConfig in themeConfig['labels']:
-            labelConfig['dataIndex'] = ARGS['dataIndex']
-            labelConfig['PID'] = ARGS['pids'][ARGS['dataIndex']] if not_error else ''
+            labelConfig['pid'] = ARGS['pids'][ARGS['pids'].index(ARGS['pid'])]
 
             # Create Label widget
             label = KELabel(**labelConfig, min=self.needle.min if self.needle else 0)

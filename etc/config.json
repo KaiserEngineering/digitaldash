@@ -7,13 +7,13 @@
             "background" : "bg.jpg",
             "theme" : "Stock",
             "pids" : [
-                "ENGINE_RPM",
-                "INTAKE_AIR_TEMPERATURE",
-                "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"
+                "0x0C",
+                "0x0F",
+                "0x0B"
             ],
             "alerts" : [
                 {
-                    "dataIndex": 0,
+                    "pid": "0x0C",
                     "op": ">",
                     "value": 0,
                     "priority": 1,
@@ -21,7 +21,7 @@
                 }
             ],
             "dynamic" : {
-                "dataIndex" : 0,
+                "pid" : "0x0C",
                 "op" : "<",
                 "priority" : 1,
                 "value" : 4000
@@ -29,19 +29,19 @@
             "gauges" : [
             {
                 "themeConfig" : "120",
-                "dataIndex" : 0,
+                "pid" : "0x0C",
                 "module" : "Radial",
                 "path" : "static/imgs/Stock/"
             },
             {
                 "themeConfig" : "120",
-                "dataIndex" : 1,
+                "pid" : "0x0F",
                 "module" : "Radial",
                 "path" : "static/imgs/Stock/"
             },
             {
                 "themeConfig" : "120",
-                "dataIndex" : 2,
+                "pid" : "0x0B",
                 "module" : "Radial",
                 "path" : "static/imgs/Stock/"
             }
@@ -53,14 +53,14 @@
             "background" : "banner1.jpg",
             "theme" : "Glow",
             "pids" : [
-                "ENGINE_RPM",
-                "INTAKE_AIR_TEMPERATURE",
-                "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE"
+                "0x0C",
+                "0x0F",
+                "0x0B"
             ],
             "alerts" : [
             ],
             "dynamic" : {
-                "dataIndex" : 0,
+                "pid" : "0x0C",
                 "op" : ">=",
                 "priority" : 2,
                 "value" : 5000
@@ -68,19 +68,19 @@
             "gauges" : [
             {
                 "themeConfig" : "120",
-                "dataIndex" : 0,
+                "pid" : "0x0C",
                 "module" : "Radial",
                 "path" : "static/imgs/Glow/"
             },
             {
                 "themeConfig" : "120",
-                "dataIndex" : 1,
+                "pid" : "0x0F",
                 "module" : "Radial",
                 "path" : "static/imgs/Glow/"
             },
             {
                 "themeConfig" : "120",
-                "dataIndex" : 2,
+                "pid" : "0x0B",
                 "module" : "Radial",
                 "path" : "static/imgs/Glow/"
             }

@@ -6,7 +6,7 @@
         "default" : 1,
         "theme" : "Dirt",
         "background":"bg.jpg",
-        "pids": [],
+        "pids": ["ENGINE_RPM"],
         "dynamic": {},
         "alerts": [],
         "gauges": [
@@ -14,7 +14,7 @@
                 "module": "Rally",
                 "path": "static/imgs/Dirt/",
                 "themeConfig": "Rally",
-                "dataIndex": 0
+                "pid": "ENGINE_RPM"
             }
           ]
       }

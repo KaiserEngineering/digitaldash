@@ -17,7 +17,7 @@ class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
         t.Testing( Config='etc/configs/single.json' )
-        t.app.update_values([50])
+        t.app.update_values({"ENGINE_RPM": 50})
 
         for layout in t.app.app.children[0].children:
             for child in layout.children:
@@ -33,7 +33,7 @@ class Alerts_TestCase(GraphicUnitTest):
     def test_Single(self):
         t.Testing( Config='etc/configs/alerts.json', Data='t/data/test.csv' )
         # Set this value 20 times to appease the buffer
-        t.app.update_values([50])
+        t.app.update_values({"ENGINE_RPM": 50})
         for _ in range(20):
             t.app.loop(1)
 

@@ -19,7 +19,7 @@ class Alert(KELabel):
                     op        : <String>,
                     index     : <Int>,
                     priority  : <Int>,
-                    dataIndex : <Int>,
+                    pid       : <String>,
                     message   : <String>,
                 }
         """
@@ -29,7 +29,7 @@ class Alert(KELabel):
         self.op        = args['op']
         self.index     = int(args.get('index'))
         self.priority  = args['priority']
-        self.dataIndex = int(args['dataIndex'])
+        self.pid       = args['pid']
         self.message   = str(args['message'])
         self.buffer    = 0
 

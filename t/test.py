@@ -1,6 +1,5 @@
 """Test harness for GUI that runs on file data."""
 import csv
-from numpy import genfromtxt
 
 import os, sys, re
 path_regex = re.compile('(.+)../')
@@ -14,28 +13,36 @@ class Test():
 
     def __init__(self, **args):
         self.iteration = 0
+        self.data = []
         if ( args.get('file') ):
-            self.Load(args.get('file', ''))
-        else:
-            self.data = []
+            self.Load(**args)
         self.rows = len(self.data)
 
-    def Load(self, file):
+    def Load(self, file, **args):
         """
         Load data from file.
             :param self: <DigitalDash.Test>Test instance
             :param file: <String>File path
         """
-        self.data = genfromtxt(file, delimiter=',')
+        with open(file, 'r') as csvfile:
+            datareader = csv.reader(csvfile, delimiter=',', quotechar='|')
+            for row in datareader:
+                self.data.append(row)
 
-    def Start(self):
+    def Start(self, pids=[]):
         """
         Main start method for test data.
             :param self: <DigitalDash.Test>Test instance
         """
         data = self.data[self.iteration]
+
+        key_val = {}
+        i = 0
+        for pid in pids:
+            key_val[pid] = data[i]
+            i = i + 1
         self.Enumerate()
-        return data
+        return key_val
 
     def Enumerate(self):
         """

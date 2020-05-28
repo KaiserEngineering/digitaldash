@@ -49,8 +49,8 @@ from digitaldash.clock import Clock as KEClock
 
 
 try:
-    import serial
-    Data_Source = serial.Serial()
+    import ke_protocol
+    Data_Source = ke_protocol.Serial()
     Logger.info("Using serial data source" + str(Data_Source))
 except Exception as e:
     Logger.info("Running without serial data: " + str(e))
@@ -259,7 +259,7 @@ class GUI(App):
 
     def check_callback(self: DD, callback, priority, data):
         # Check if any dynamic changes need to be made
-        if ( callback.check(data[callback.dataIndex]) ):
+        if ( callback.check(data[callback.pid]) ):
             callback.buffer += 1
 
             # # Buffer is how many times we have seen our
@@ -280,7 +280,7 @@ class GUI(App):
     def update_values(self: DD, data: List[float]) -> NoReturn:
         for widget in self.ObjectsToUpdate:
             for obj in widget:
-                obj.setData(data[obj.dataIndex])
+                obj.setData(data[obj.pid])
 
     def loop(self, dt):
         global errors_seen
@@ -290,14 +290,14 @@ class GUI(App):
                 if ( not ret ):
                     Logger.error( msg )
                 self.first_iteration = False
-            ( my_callback, priority, data ) = ( None, 0, Data_Source.Start() )
+            ( my_callback, priority, data ) = ( None, 0, Data_Source.Start(pids=self.pids) )
             # Check dynamic gauges before any alerts in case we make a change
             for dynamic in self.dynamic_callbacks:
+                if self.current == dynamic.index:
+                    continue
                 my_callback = self.check_callback(dynamic, priority, data)
 
                 if(my_callback):
-                    if self.current == dynamic.index:
-                        break
                     self.change(self, my_callback)
                     break
 
@@ -307,7 +307,6 @@ class GUI(App):
                 if(my_callback):
                     self.change(self, my_callback)
                     break
-
             self.update_values(data)
         except Exception as e:
             error = 'Error found in main application loop on line {}: '.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e

@@ -32,7 +32,7 @@ class Serial():
         self.requirements = []
 
 
-    def Start(self):
+    def Start(self, **args):
         """L1612773-4oop for checking Serial connection for data."""
         # Handle grabbing data
         data_line = ''
@@ -74,16 +74,13 @@ class Serial():
             self.ser.write(positive_ack)
             Logger.info("Clipped Data: " + str(data_line))
             Logger.info("GUI: << ACK" + "\n")
-            count = 0
             data_line = data_line.decode('utf-8', 'ignore')
+
+            key_val = {}
             for val in data_line.split(';'):
-                try:
-                    val = float(val)
-                    self.ser_val[count] = val
-                    count = count + 1
-                except ValueError:
-                    print("Value error caught for: " + str(val))
-                    count = count + 1
+                (k, v) = val.split('=')
+                key_val[str(k)] = v
+            self.ser_val = key_val
             #self.ser_val[2] = self.ser.inWaiting()
             #self.ser.flushInput()
             return self.ser_val
@@ -100,14 +97,10 @@ class Serial():
         pid_byte_code = []
         byte_count    = 3
         for requirement in requirements:
-            try:
-                pid_byte_code.append( (KE_CP_OP_CODES[requirement]['byteCode'] >> 0x8) & 0xFF )
-                pid_byte_code.append( (KE_CP_OP_CODES[requirement]['byteCode'] >> 0x0) & 0xFF )
+            pid_byte_code.append( (int(requirement,16) >> 0x8) & 0xFF )
+            pid_byte_code.append( (int(requirement,16) >> 0x0) & 0xFF )
 
-                byte_count += 2
-            except Exception as e:
-                Logger.error( "Could not load byte code for "+requirement+" : "+str(e) )
-
+            byte_count += 2
         bytes_written = self.ser.write( [ UART_SOL , byte_count, KE_CP_OP_CODES['KE_PID_STREAM_NEW']]+ pid_byte_code );
 
         msg = "PIDs updated " + str( bytes_written ) + " written"
