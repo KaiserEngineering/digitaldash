@@ -2,25 +2,25 @@
     export let view;
     export let id;
     import { Link } from "svelte-routing";
+    import { constants } from '../store.js';
 
     let gauge = './gauge.png';
 </script>
 
-<Link to="/view/{id}">
-    <div class="h-48 lg:h-auto lg:w-10 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('images/{view.theme}.png')" title="Some gauge"></div>
-        <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-            <div class="mb-8">
-            <p class="text-sm text-gray-200 flex items-center">
-                dynamic
-            </p>
-            <div class="text-gray-300 font-bold text-xl mb-2">{view.name}</div>
+<div class="bg-gray-200 border-r border-t m-4 border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+    <Link to="/view/{id}">
+        <div class="h-32 flex-none bg-cover overflow-hidden" style="background-image: url('images/{view.background}')" title="Some gauge">
+            <div class="h-24 flex-none bg-cover overflow-hidden" style="background-image: url('images/{view.theme}.png')" title="Some gauge"></div>
         </div>
-        <div class="flex items-center">
-            <div class="text-sm">
-                {#each view.pids as pid}
-            <p class="text-gray-400 leading-none">{pid}</p>
-                {/each}
+        <div class="text-gray-700 m-2 text-center font-bold text-xl">
+            {view.name}
+        </div>
+        <div class="flex space-x-1">
+            {#each view.pids as pid}
+            <div class="bg-blue-400 rounded-lg text-center w-1/3 text-gray-800">
+                {$constants[pid].shortName}
             </div>
+            {/each}
         </div>
-    </div>
-</Link>
+    </Link>
+</div>

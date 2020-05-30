@@ -1,14 +1,36 @@
 import { writable } from 'svelte/store';
-import { is_client } from 'svelte/internal';
 
-export let config = writable( {} );
-export let constants = writable( {} );
+export let config        = writable( {} );
+export let constants     = writable( {} );
+export let notifications = writable( [] );
 
-async function getConstants() {
+export async function getConstants() {
     const res  = await fetch('http://localhost:3000/api/constants');
     const cons = await res.json();
 
     constants.set(cons);
 }
 
-getConstants();
+export async function getConfig() {
+    const res = await fetch('http://localhost:3000/api/config');
+    const conf = await res.json();
+
+    config.set(conf.views);
+}
+
+export async function UpdateConfig(current_view) {
+    const res  = await fetch('http://foundation:3000/api/update',
+        {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(current_view)
+        }
+    );
+    const conf = await res.json();
+
+    config.set(conf.config.views);
+    current_view = $config[id];
+}

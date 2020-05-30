@@ -5,6 +5,8 @@ use Mojo::Base 'Mojolicious::Controller';
 sub config {
   my $c = shift;
 
+  $c->app->LoadConfig();
+
   $c->render(json => $c->app->{'Config'});
 }
 
@@ -63,63 +65,27 @@ sub edit {
 sub update {
   my $c = shift;
   my %args = (
-    id     => undef,
-    name   => undef,
-    pid0   => undef,
-    pid1   => undef,
-    pid2   => undef,
-    gaugeTheme  => undef,
-    backgroundTheme => undef,
-    %{$c->req->params->to_hash}
+    %{$c->req->json}
   );
-  $c->OnlyIfLoggedIn;
   my $config = $c->app->{'Config'};
 
-  $c->Notification;
-
   my $temp_view = $config->{'views'}->{$args{'id'}};
-  $temp_view->{'name'} = $args{'name'};
-  $temp_view->{'pids'} = [
-    $args{'pid0'},
-    $args{'pid1'},
-    $args{'pid2'},
-  ];
-  $temp_view->{'background'} = $args{'backgroundTheme'};
-  $temp_view->{'theme'} = $args{'gaugeTheme'};
+  %{$temp_view} = %args;
 
   my @gauges = ();
   foreach my $gauge ( @{ $temp_view->{'gauges'} } ) {
       push @gauges, {
             %{$gauge},
-            "path" => "static/imgs/".$args{'gaugeTheme'}."/"
+            "path" => "\/$args{'theme'}\/"
       };
   }
   $temp_view->{'gauges'} = \@gauges;
 
-  $temp_view->{'dynamic'} = {
-    "pid"       => $args{'dynamicParameter'},
-    "op"        => $args{'dynamicOperator'},
-    "value"     => $args{'dynamicValue'},
-    "priority"  => $args{'dynamicPriority'},
-  };
-
-  $temp_view->{'alerts'} = [{
-    "pid"       => $args{'alertIndex'},
-    "op"        => $args{'alertOperator'},
-    "value"     => $args{'alertValue'},
-    "priority"  => $args{'alertPriority'},
-    "message"   => $args{'alertMessage'},
-  }];
-
   $config->{'views'}->{$args{'id'}} = $temp_view;
 
   my ($ret, $msg) = $c->UpdateConfig( $config );
-  push @{ $c->session->{'notifications'} }, {
-    message => $msg,
-    type    => "info"
-  };
 
-  $c->redirect_to( "/edit?id=$args{'id'}" );
+  $c->render(json => { config => $c->app->{'Config'}, message => "Updated config!" });
 }
 
 sub advanced {

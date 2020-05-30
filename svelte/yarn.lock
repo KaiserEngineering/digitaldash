@@ -2561,6 +2561,11 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
+svelte-loadable@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/svelte-loadable/-/svelte-loadable-1.5.0.tgz#98176b2e62a46eb456a882a310951250e37fb2bf"
+  integrity sha512-ZuDIpPA8SZaJ2UgSe97ZN0Ft67WmUGl2ZcbdibVQJQgA7HlEje2pYEMRT3z4AuBRUPW5rTJA0zCFnB6nuNGkZw==
+
 svelte-preprocess@^3.7.4:
   version "3.7.4"
   resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-3.7.4.tgz#d10cf9b7c96c2b123da90438a3e9814737347e8d"
@@ -2570,6 +2575,16 @@ svelte-preprocess@^3.7.4:
     "@types/sass" "^1.16.0"
     detect-indent "^6.0.0"
     strip-indent "^3.0.0"
+
+svelte-routing@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/svelte-routing/-/svelte-routing-1.4.2.tgz#291160b537c9c73e711731eb099c48bb24cc3419"
+  integrity sha512-CSCKRLeOp9vjsDGGOEgL9DPm9HZLgZuTNehyTCl3K+6fCVH1Aw/K/WicavAVNcbsHmdR4wgF//0YVR9hrcdvGA==
+
+svelte-select@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/svelte-select/-/svelte-select-3.8.0.tgz#4474a25d0568ad62c08ba22b2dadffc8a8b300a5"
+  integrity sha512-Zj9qnmj0AI4BQj68yXaY/7h0kwslpHDGfx/WzwNB9uzLCarDzC+Cu93JsuqAzNuLgItkxMVgTghgPAGovDSTwg==
 
 svelte@^3.0.0:
   version "3.22.2"

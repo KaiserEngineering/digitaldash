@@ -89,11 +89,20 @@ sub startup {
   });
   $self->LoadConstants();
 
-  $self->plugin('SecureCORS');
-  $self->routes->to('cors.origin' => '*');
+  $self->hook(after_dispatch => sub {
+      my $c = shift;
+      $c->res->headers->header('Access-Control-Allow-Origin' => 'foundation:5000');
+      $c->res->headers->access_control_allow_origin('*');
+      $c->res->headers->header('Access-Control-Allow-Methods' => 'GET, OPTIONS, POST, DELETE, PUT');
+      $c->res->headers->header('Access-Control-Allow-Headers' => 'Content-Type' => '*');
+  });
 
   # Router
   my $r = $self->routes;
+
+  $self->plugin('SecureCORS');
+
+  $r->cors('/api/update');
 
   $r->get('/')->to('API#index');
 
@@ -105,7 +114,7 @@ sub startup {
 
   $r->get('/api/constants/')->to('API#constants');
 
-  $r->post('/api/update/')->to('API#update');
+  $r->put('/api/update/', {'cors.origin' => '*'})->to('API#update');
 
   $r->get('/')->over(authenticated => 1)->to('API#index');
 

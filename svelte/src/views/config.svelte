@@ -1,37 +1,19 @@
 <script>
     import Preview from '../components/Preview.svelte';
-    import { config } from '../store.js';
-
-    let viewsPromise = getConfig();
-    async function getConfig() {
-        const res = await fetch('http://localhost:3000/api/config');
-        const conf = await res.json();
-
-        config.set(conf.views);
-        return conf.views;
-    }
+    import { config, getConfig } from '../store.js';
 </script>
 
-<div>
-    <div class="text-red-400 text-lg">
-        <h2>Digital Dash Configuration</h2>
-    </div>
-    <p>
-        Configure the Digital Dash background, gauge styles,
-        parameters, alerts and dynamic triggers.
-    </p>
+<div class="text-grey max-w-xs mx-auto mb-6">
+    Configure the Digital Dash background, gauge styles,
+    parameters, alerts and dynamic triggers.
+</div>
 
-    <div class="py-4">
-        {#await viewsPromise}
-            <p>...Loading</p>
-        {:then views}
-            {#each Object.keys( views ) as id}
-            <Preview view={views[id]} id={id} />
-            {:else}
-            <p>No configs found</p>
-            {/each}
-        {:catch error}
-            <p style="color: red">{error.message}</p>
-        {/await}
-    </div>
+<div class="m-4">
+    <button class="m-4 bg-blue-500 rounded-lg p-2" on:click="{getConfig}">Reload Config</button>
+</div>
+
+<div class="m-4">
+    {#each Object.keys( $config ) as id}
+        <Preview view={$config[id]} id={id} />
+    {/each}
 </div>
