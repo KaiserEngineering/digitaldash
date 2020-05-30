@@ -1,57 +1,136 @@
 package KEApp::Controller::API;
 use Mojo::Base 'Mojolicious::Controller';
-use JSON;
+
+
+sub config {
+  my $c = shift;
+
+  $c->render(json => $c->app->{'Config'});
+}
+
+sub constants {
+    my $c = shift;
+
+    $c->render(json => $c->app->{'Constants'});
+}
 
 sub index {
   my $c  = shift;
+
   $c->reply->static('index.html');
 }
 
 sub login {
   my $c = shift;
 
-  $c->render(json => { Name => 'Craig', Email => 'craig@kaiserengineering.io' });
-}
+  $c->Notification;
 
-sub current_user {
-  my $c = shift;
+  my $args = $c->req->params->to_hash;
 
-  $c->render(json => { Name => 'Craig', Email => 'craig@kaiserengineering.io' });
-}
+  if ( $args->{'username'} && $args->{'password'} ) {
+    my $ret = $c->authenticate(
+        $args->{'username'}, $args->{'password'},
+    );
 
-
-sub config {
-  my $c = shift;
-
-  my $json;
-  {
-    local $/; #Enable 'slurp' mode
-    open my $fh, "<", "/Users/craigkaiser/kaiserengineering/DigitalDash_GUI/etc/Config.json";
-    $json = <$fh>;
-    close $fh;
+    if ( $ret ) {
+      push @{ $c->session->{'notifications'} }, {
+        message => "You are logged in!",
+        type    => "info"
+      };
+      $c->redirect_to('/', handler => 'mason');
+    }
+    else {
+      push @{ $c->session->{'notifications'} }, {
+        message => "Failed login",
+        type    => "error"
+      };
+      $c->render('login.html', handler => 'mason');
+    }
+    return;
   }
-  $c->render(json => JSON::from_json($json));
+
+  $c->render('login.html', handler => 'mason');
+}
+
+sub edit {
+  my $c = shift;
+
+  my $id = @{$c->every_param('id')}[0];
+
+  $c->render( "edit.html", handler => 'mason', id => $id);
 }
 
 sub update {
   my $c = shift;
+  my %args = (
+    id     => undef,
+    name   => undef,
+    pid0   => undef,
+    pid1   => undef,
+    pid2   => undef,
+    gaugeTheme  => undef,
+    backgroundTheme => undef,
+    %{$c->req->params->to_hash}
+  );
+  $c->OnlyIfLoggedIn;
+  my $config = $c->app->{'Config'};
 
-  my $json = JSON::decode_json( $c->req->params->to_hash->{config} );
-  my $json_pretty = JSON::to_json( $json, { canonical => 1, pretty => 1 });
-  {
-    local $/; #Enable 'slurp' mode
-    open my $fh, ">", "/Users/craigkaiser/kaiserengineering/DigitalDash_GUI/etc/Config.json";
-    print $fh $json_pretty;
-    close $fh;
+  $c->Notification;
+
+  my $temp_view = $config->{'views'}->{$args{'id'}};
+  $temp_view->{'name'} = $args{'name'};
+  $temp_view->{'pids'} = [
+    $args{'pid0'},
+    $args{'pid1'},
+    $args{'pid2'},
+  ];
+  $temp_view->{'background'} = $args{'backgroundTheme'};
+  $temp_view->{'theme'} = $args{'gaugeTheme'};
+
+  my @gauges = ();
+  foreach my $gauge ( @{ $temp_view->{'gauges'} } ) {
+      push @gauges, {
+            %{$gauge},
+            "path" => "static/imgs/".$args{'gaugeTheme'}."/"
+      };
   }
-  $c->redirect_to( '/');
+  $temp_view->{'gauges'} = \@gauges;
+
+  $temp_view->{'dynamic'} = {
+    "pid"       => $args{'dynamicParameter'},
+    "op"        => $args{'dynamicOperator'},
+    "value"     => $args{'dynamicValue'},
+    "priority"  => $args{'dynamicPriority'},
+  };
+
+  $temp_view->{'alerts'} = [{
+    "pid"       => $args{'alertIndex'},
+    "op"        => $args{'alertOperator'},
+    "value"     => $args{'alertValue'},
+    "priority"  => $args{'alertPriority'},
+    "message"   => $args{'alertMessage'},
+  }];
+
+  $config->{'views'}->{$args{'id'}} = $temp_view;
+
+  my ($ret, $msg) = $c->UpdateConfig( $config );
+  push @{ $c->session->{'notifications'} }, {
+    message => $msg,
+    type    => "info"
+  };
+
+  $c->redirect_to( "/edit?id=$args{'id'}" );
 }
 
-sub image {
-  my $c   = shift;
-  my $src = $c->req;
+sub advanced {
+  my $c = shift;
+  my $config = $c->req->params->to_hash;
 
-  $c->reply->static('gauge.png');
+  if ( $config->{'config'} ) {
+      # update
+  }
+
+  $c->render( "advanced.html", handler => 'mason' );
 }
 
 1;

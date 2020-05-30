@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build-dev": "rollup -c rollup.config.dev.js",
+    "watch:tailwind": "postcss public/tailwind.css -o static/index.css -w",
     "build-prod": "rollup -c rollup.config.prod.js",
     "dev": "rollup -c rollup.config.dev.js -w",
     "prod": "rollup -c rollup.config.prod.js -w",
@@ -27,6 +28,8 @@
     "tailwindcss": "^1.4.6"
   },
   "dependencies": {
-    "sirv-cli": "^0.4.4"
+    "sirv-cli": "^0.4.4",
+    "svelte-loadable": "^1.5.0",
+    "svelte-routing": "^1.4.2"
   }
 }

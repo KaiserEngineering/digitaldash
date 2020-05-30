@@ -1,17 +1,14 @@
 <script>
     import Preview from '../components/Preview.svelte';
+    import { config } from '../store.js';
 
     let viewsPromise = getConfig();
-
     async function getConfig() {
         const res = await fetch('http://localhost:3000/api/config');
-        const config = await res.json();
+        const conf = await res.json();
 
-        if (res.ok) {
-            return config.views;
-        } else {
-            throw new Error(config);
-        }
+        config.set(conf.views);
+        return conf.views;
     }
 </script>
 
@@ -28,8 +25,10 @@
         {#await viewsPromise}
             <p>...Loading</p>
         {:then views}
-            {#each views as view}
-            <Preview {view} on:redirect/>
+            {#each Object.keys( views ) as id}
+            <Preview view={views[id]} id={id} />
+            {:else}
+            <p>No configs found</p>
             {/each}
         {:catch error}
             <p style="color: red">{error.message}</p>
