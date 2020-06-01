@@ -15,9 +15,9 @@
                 {
                     "pid": "0x0C",
                     "op": ">",
-                    "value": 0,
+                    "value": 4000,
                     "priority": 1,
-                    "message" : "Hello, wolrd"
+                    "message" : "Danger to Manifold"
                 }
             ],
             "dynamic" : {
