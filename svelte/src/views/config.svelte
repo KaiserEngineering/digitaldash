@@ -14,20 +14,28 @@
             };
         });
     });
-    const sortList = ev => { list = ev.detail };
+    const sortList = ev => {
+        list = ev.detail
+    };
 </script>
 
-<div class="justify-center items-center">
-    <div class="text-grey max-w-xs mx-auto mb-6">
-        Configure the Digital Dash background, gauge styles,
-        parameters, alerts and dynamic triggers.
+<div class="w-full">
+    <div class="container mx-auto px-6 -mt-20">
+        <div class="lg:max-w-md flex-1 bg-white rounded-lg shadow p-6">
+            <h1 class="font-semibold text-md">
+                Configure the Digital Dash background, gauge styles,
+                parameters, alerts and dynamic triggers.
+            </h1>
+            <h4 class="inline-block py-2">
+                The first enabled view is the default view.
+            </h4>
+        </div>
     </div>
+</div>
 
-    <div class="m-4">
-        <button class="m-4 bg-blue-500 rounded-lg p-2" on:click="{getConfig}">Reload Config</button>
-    </div>
-
+<div class="sm:w-full md:w-1/2 mx-auto flex-1 justify-center items-center">
     {#await promise}
+        <span>...Loading</span>
     {:then}
         <SortableList
             {list}

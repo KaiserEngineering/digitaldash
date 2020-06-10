@@ -5,7 +5,8 @@
     import Config from './views/config.svelte';
     import Login from './views/login.svelte';
     import Loadable from "svelte-loadable";
-    import { notifications, getConstants, getConfig } from './store.js';
+    import { getConstants, getConfig } from './store.js';
+    import Notifications from 'svelte-notifications';
 
     let promise   = getConfig();
     let constants = getConstants();
@@ -15,29 +16,22 @@
 
 <Tailwindcss />
 
-<div class="bg-grey-lighter">
+<Notifications>
+
+    <div class="font-ubuntu text-grey-darkest leading-tight h-full bg-grey-lighter pb-4">
         <Router url="{url}">
-            <div class="bg-blue-800 mb-8">
-                <nav class="container mx-auto px-4">
-                    <div class="flex items-center md:justify-between py-4">
-                        <div class="w-1/4 text-white">
-                            <Link to="/">Home</Link>
-                        </div>
-                        <div class="w-1/2 md:w-auto text-center text-white text-2xl font-medium">
-                            KE Digital Dash
-                        </div>
+            <div class="bg-grey-darker mb-8 py-4 px-12 pb-20">
+                <nav class="container mx-auto flex items-center md:justify-between">
+                    <div class="px-4 antialiased text-grey-dark hover:bg-grey-light text-base">
+                        <Link to="/">Home</Link>
+                    </div>
+                    <div class="px-4 antialiased text-grey-dark text-1xl">
+                        KE Digital Dash
                     </div>
                 </nav>
             </div>
 
-
-            {#each $notifications as notification}
-            <div class="m-8 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">{notification}</strong>
-            </div>
-            {/each}
-
-            <div id="page-content" class="mx-auto flex justify-center items-center lg:w-1/2 md:w-1/2 sm:w-full">
+            <div id="page-content">
                 <Route path="/" component="{Config}"></Route>
                 <Route path="/view/:id" let:params component="{Edit}">
                     <Loadable loader={() => import("./views/edit.svelte")} id="{params.id}" />
@@ -47,10 +41,10 @@
                 </Route>
             </div>
         </Router>
+    </div>
 
-    <footer class="w-full text-center border-t border-grey p-4 pin-b text-white bg-blue-800 body-font">
+    <footer class="antialiased text-grey-dark w-full justify-center text-center pin-b p-6 bg-grey-darker">
         <a href="/" class=" ml-1" target="_blank" rel="noopener noreferrer">KE Digital Dash</a>
     </footer>
 
-</div>
-
+</Notifications>

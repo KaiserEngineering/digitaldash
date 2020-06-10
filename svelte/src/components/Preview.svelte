@@ -9,7 +9,7 @@
     let gauge = './gauge.png';
 </script>
 
-<div class="bg-gray-200 border-r border-t m-4 border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 rounded-b lg:rounded-b-none lg:rounded-r p-4 leading-normal">
+<div class="bg-grey-light border m-4 border-gray-400 rounded-b p-4 leading-normal">
     <div on:click={()=> { enabled=!enabled }}>
         {#if enabled}
             <label for="checked" class="mt-3 inline-flex items-center cursor-pointer">
