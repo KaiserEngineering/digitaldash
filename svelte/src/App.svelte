@@ -7,21 +7,20 @@
     import Loadable from "svelte-loadable";
     import { notifications, getConstants, getConfig } from './store.js';
 
-    let constants_promise = getConstants();
-    let config_promise    = getConfig();
+    let promise   = getConfig();
+    let constants = getConstants();
 
     export let url = "";
 </script>
 
 <Tailwindcss />
 
-<div class="font-sans bg-grey-lighter flex flex-col min-h-screen w-full">
-    <div>
+<div class="bg-grey-lighter">
         <Router url="{url}">
             <div class="bg-blue-800 mb-8">
                 <nav class="container mx-auto px-4">
                     <div class="flex items-center md:justify-between py-4">
-                        <div class="w-1/4 md:hidden text-white">
+                        <div class="w-1/4 text-white">
                             <Link to="/">Home</Link>
                         </div>
                         <div class="w-1/2 md:w-auto text-center text-white text-2xl font-medium">
@@ -38,28 +37,20 @@
             </div>
             {/each}
 
-            {#await config_promise}
-                <p>Loading config...</p>
-            {:then}
-            <div id="page-content">
-                <Route path="/">
-                    <Loadable loader={() => import("./views/config.svelte")} />
-                </Route>
-                <Route path="/view/:id" let:params>
+            <div id="page-content" class="mx-auto flex justify-center items-center lg:w-1/2 md:w-1/2 sm:w-full">
+                <Route path="/" component="{Config}"></Route>
+                <Route path="/view/:id" let:params component="{Edit}">
                     <Loadable loader={() => import("./views/edit.svelte")} id="{params.id}" />
                 </Route>
                 <Route path="/login">
                     <Loadable loader={() => import("./views/login.svelte")} />
                 </Route>
             </div>
-            {/await}
-
         </Router>
-    </div>
-
 
     <footer class="w-full text-center border-t border-grey p-4 pin-b text-white bg-blue-800 body-font">
         <a href="/" class=" ml-1" target="_blank" rel="noopener noreferrer">KE Digital Dash</a>
     </footer>
 
 </div>
+
