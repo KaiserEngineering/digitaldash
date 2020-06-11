@@ -1,0 +1,6 @@
+
+<footer class="w-full text-center border-t border-grey p-4 pin-b text-gray-500 bg-gray-700 body-font">
+    <p class="text-sm text-gray-600 sm:ml-4 sm:pl-4 sm:py-2 sm:mt-0 mt-4">
+        <a href="#" class="text-gray-500 ml-1" target="_blank" rel="noopener noreferrer">KE Digital Dash</a>
+    </p>
+</footer>

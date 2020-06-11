@@ -22,38 +22,6 @@ sub index {
   $c->reply->static('index.html');
 }
 
-sub login {
-  my $c = shift;
-
-  $c->Notification;
-
-  my $args = $c->req->params->to_hash;
-
-  if ( $args->{'username'} && $args->{'password'} ) {
-    my $ret = $c->authenticate(
-        $args->{'username'}, $args->{'password'},
-    );
-
-    if ( $ret ) {
-      push @{ $c->session->{'notifications'} }, {
-        message => "You are logged in!",
-        type    => "info"
-      };
-      $c->redirect_to('/', handler => 'mason');
-    }
-    else {
-      push @{ $c->session->{'notifications'} }, {
-        message => "Failed login",
-        type    => "error"
-      };
-      $c->render('login.html', handler => 'mason');
-    }
-    return;
-  }
-
-  $c->render('login.html', handler => 'mason');
-}
-
 sub edit {
   my $c = shift;
 
@@ -86,17 +54,6 @@ sub update {
   my ($ret, $msg) = $c->UpdateConfig( $config );
 
   $c->render(json => { config => $c->app->{'Config'}, message => "Updated config!" });
-}
-
-sub advanced {
-  my $c = shift;
-  my $config = $c->req->params->to_hash;
-
-  if ( $config->{'config'} ) {
-      # update
-  }
-
-  $c->render( "advanced.html", handler => 'mason' );
 }
 
 1;

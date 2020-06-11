@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html class="h-full">
+  <header>
+    <title><% $Title %></title>
+  </header>
+  <body class="flex flex-col h-full">
+    <& header, %ARGS &>
+    <div class="flex-1 mx-auto">
+      <div class="pb-4">
+        <& notifications, %ARGS &>
+      </div>
+      <% $content | n %>
+    </div>
+    <& footer, %ARGS &>
+  </body>
+</html>
+
+<%init>
+my $content = $m->content;
+</%init>
+
+<%args>
+$Title => 'KE App'
+</%args>

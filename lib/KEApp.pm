@@ -11,43 +11,43 @@ sub startup {
   my $config = $self->plugin('Config');
   $self->secrets(['Kaiser-ke']);
 
+  my $file_auth;
+  my $json;
+  {
+    local $/; #Enable 'slurp' mode
+    open my $fh, "<", "auth.txt";
+    $json = <$fh>;
+    close $fh;
+  }
+  $file_auth = JSON::from_json($json);
+
   $self->plugin('authentication' => {
     autoload_user   => 0,
     session_key     => 'current_user',
     fail_render     => sub {
                         my ($routes, $controller, $captures, $required) = @_;
-                        push @{ $controller->session->{0} }, 'A problem with your Auth occured';
-                        $controller->redirect_to('/login');
+                        $controller->redirect_to('/');
                     },
     load_user       => sub {
         my $self = shift;
-        my $uid = shift;
-        return 1;
-        # return $uid;
+        my $uid  = shift;
+
+        if ( $uid eq 999 ) {
+            return %{$file_auth};
+        }
+        return undef;
      },
     validate_user   => sub {
         my $self     = shift;
         my $name     = shift;
-        my $password = shift;
+        my $pass     = shift;
 
-        return 1;
-    },
-  });
-
-  $self->helper(Notification => sub {
-    my $msg = $self->param('msg');
-    my $msg_type = $self->param('msg_type');
-    if ( $msg ) { push @{ $self->session->{$msg_type} },  $msg; }
-  });
-
-  # Redirect If Not Logged In Helper
-  $self->helper(OnlyIfLoggedIn => sub {
-    my $self = shift;
-    if ( !$self->is_user_authenticated ) {
-            push @{ $self->session->{0} }, 'You are not logged in!';
-            return;
+        if ( $file_auth->{'user'} eq $name && $file_auth->{'pass'} eq $pass ) {
+            return 999;
         }
-    return 1;
+
+        return 0;
+    },
   });
 
   $self->helper(LoadConfig => sub {
@@ -104,31 +104,18 @@ sub startup {
 
   $r->cors('/api/update');
 
-  $r->get('/')->to('API#index');
-
-  $r->post('/api/login')->to('API#login');
-
-  $r->post('/api/current_user')->to('API#current_user');
-
-  $r->get('/api/config/')->to('API#config');
-
-  $r->get('/api/constants/')->to('API#constants');
-
-  $r->put('/api/update/', {'cors.origin' => '*'})->to('API#update');
-
   $r->get('/')->over(authenticated => 1)->to('API#index');
 
-  $r->get('/')->to('API#login');
+  $r->get('/')->over(authenticated => 0)->to('Auth#login');
 
-  $r->get('/login')->to('API#login');
+  $r->post('/login')->to('Auth#login');
 
-  $r->post('/login')->to('API#login');
+  $r->get('/api/config/')->over(authenticated => 1)->to('API#config');
 
-  $r->get('/edit/')->over(authenticated => 1)->to('API#edit');
+  $r->get('/api/constants/')->over(authenticated => 1)->to('API#constants');
 
-  $r->post('/update')->over(authenticated => 1)->to('API#update');
+  $r->put('/api/update/', {'cors.origin' => '*'})->over(authenticated => 1)->to('API#update');
 
-  $r->get('/advanced/')->over(authenticated => 1)->to('API#advanced');
 }
 
 1;
