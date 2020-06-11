@@ -2,22 +2,43 @@
     export let view;
     export let id;
     import { Link } from "svelte-routing";
-    import { constants } from '../store.js';
+    import { constants, config, UpdateConfig } from '../store.js';
+    import { getNotificationsContext } from 'svelte-notifications';
+    const { addNotification } = getNotificationsContext();
+
 
     let enabled = true;
-
     let gauge = './gauge.png';
+
+    let current_view = {
+        id: id,
+        ...view
+    };
+
+    function UpdateEnabled (el) {
+        enabled=!enabled;
+        current_view['enabled'] = enabled;
+
+        const message_promise = UpdateConfig(current_view, config);
+        message_promise.then((res) => {
+            addNotification({
+                text: res,
+                position: 'top-center',
+            });
+        });
+    }
+    $: view = current_view;
 </script>
 
 <div class="bg-grey-light border m-4 border-gray-400 rounded-b p-4 leading-normal">
-    <div on:click={()=> { enabled=!enabled }}>
+    <div on:click={() => { UpdateEnabled() }}>
         {#if enabled}
             <label for="checked" class="mt-3 inline-flex items-center cursor-pointer">
                 <span class="relative">
-                <span class="block w-10 h-6 bg-gray-400 rounded-full shadow-inner"></span>
-                <span class="absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out bg-purple-600 transform translate-x-full">
-                    <input id="checked" type="checkbox" class="absolute opacity-0 w-0 h-0" />
-                </span>
+                    <span class="block w-10 h-6 bg-gray-400 rounded-full shadow-inner"></span>
+                    <span class="absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out bg-purple-600 transform translate-x-full">
+                        <input type="checkbox" class="absolute opacity-0 w-0 h-0" />
+                    </span>
                 </span>
                 <span class="ml-3 text-sm">Enabled</span>
             </label>
