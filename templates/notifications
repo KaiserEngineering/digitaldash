@@ -2,7 +2,6 @@
 %   foreach my $notice ( @{$c->session('notifications')} ){
 <div class="border-t border-b <% $css{$notice->{'type'}} %> px-4 py-3" role="alert">
   <p><% $notice->{'message'} %></p>
-  <p><% $notice->{'type'} %></p>
 </div>
 % }
 %   delete($c->session->{'notifications'});

@@ -3,7 +3,6 @@
     import { Router, Link, Route } from "svelte-routing";
     import Edit from './views/edit.svelte';
     import Config from './views/config.svelte';
-    import Login from './views/login.svelte';
     import Loadable from "svelte-loadable";
     import { getConstants, getConfig } from './store.js';
     import Notifications from 'svelte-notifications';
@@ -35,9 +34,6 @@
                 <Route path="/" component="{Config}"></Route>
                 <Route path="/view/:id" let:params component="{Edit}">
                     <Loadable loader={() => import("./views/edit.svelte")} id="{params.id}" />
-                </Route>
-                <Route path="/login">
-                    <Loadable loader={() => import("./views/login.svelte")} />
                 </Route>
             </div>
         </Router>

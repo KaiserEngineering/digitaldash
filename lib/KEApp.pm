@@ -32,6 +32,7 @@ sub startup {
         my $self = shift;
         my $uid  = shift;
 
+        # Hack as heck
         if ( $uid eq 999 ) {
             return %{$file_auth};
         }
@@ -108,13 +109,15 @@ sub startup {
 
   $r->get('/')->over(authenticated => 0)->to('Auth#login');
 
+  $r->get('/login')->over(authenticated => 0)->to('Auth#login');
+
   $r->post('/login')->to('Auth#login');
 
   $r->get('/api/config/')->over(authenticated => 1)->to('API#config');
 
   $r->get('/api/constants/')->over(authenticated => 1)->to('API#constants');
 
-  $r->put('/api/update/', {'cors.origin' => '*'})->over(authenticated => 1)->to('API#update');
+  $r->put('/api/update', {'cors.origin' => '*'})->to('API#update');
 
 }
 
