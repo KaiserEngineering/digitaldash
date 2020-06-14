@@ -1,0 +1,16 @@
+image: craigkai/ke-gui:latest
+
+stages:
+  - test
+
+before_script:
+  - export DISPLAY=:99.0;
+  - pip3 install poetry
+  - poetry config virtualenvs.create false
+  - poetry install
+  - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1280x720x24 -ac +extension GLX
+
+Unit Tests:
+    stage: test
+    script:
+      - poetry run pytest
