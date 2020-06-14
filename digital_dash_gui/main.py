@@ -44,12 +44,13 @@ from .digitaldash.alert import Alert
 from .digitaldash.clock import Clock as KEClock
 
 
-try:
-    from digital_dash_gui.ke_protocol import Serial
-    Data_Source = Serial()
-    Logger.info("Using serial data source" + str(Data_Source))
-except Exception as e:
-    Logger.info("Running without serial data: " + str(e))
+if ( not Data_Source ):
+    try:
+        from digital_dash_gui.ke_protocol import Serial
+        Data_Source = Serial()
+        Logger.info("Using serial data source" + str(Data_Source))
+    except Exception as e:
+        Logger.info("Running without serial data: " + str(e))
 
 def setup(Layouts):
     """
