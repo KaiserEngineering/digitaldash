@@ -3,6 +3,12 @@ image: craigkai/ke-gui:latest
 stages:
   - test
 
+  # Cache modules in between jobs
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+    - .venv/
+
 before_script:
   - export DISPLAY=:99.0;
   - pip3 install poetry
