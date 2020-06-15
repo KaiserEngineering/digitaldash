@@ -1,89 +1,90 @@
 {
    "views" : {
-    "0": {
-            "name": "First view",
-            "enabled" : 1,
-            "default" : 1,
-            "background" : "bg.jpg",
-            "theme" : "Stock",
-            "pids" : [
-                "0x0C",
-                "0x0F",
-                "0x0B"
-            ],
-            "alerts" : [
+        "0": {
+                "name": "First view",
+                "enabled" : 1,
+                "default" : 1,
+                "background" : "bg.jpg",
+                "theme" : "Stock",
+                "pids" : [
+                    "0x0C",
+                    "0x0F",
+                    "0x0B"
+                ],
+                "alerts" : [
+                    {
+                        "pid": "0x0C",
+                        "op": ">",
+                        "value": 4000,
+                        "priority": 1,
+                        "message" : "Danger to Manifold"
+                    }
+                ],
+                "dynamic" : {
+                    "pid" : "0x0C",
+                    "op" : "<",
+                    "priority" : 1,
+                    "value" : 4000
+                },
+                "gauges" : [
                 {
-                    "pid": "0x0C",
-                    "op": ">",
-                    "value": 4000,
-                    "priority": 1,
-                    "message" : "Danger to Manifold"
+                    "themeConfig" : "120",
+                    "pid" : "0x0C",
+                    "module" : "Radial",
+                    "path" : "/Stock/"
+                },
+                {
+                    "themeConfig" : "120",
+                    "pid" : "0x0F",
+                    "module" : "Radial",
+                    "path" : "/Stock/"
+                },
+                {
+                    "themeConfig" : "120",
+                    "pid" : "0x0B",
+                    "module" : "Radial",
+                    "path" : "/Stock/"
                 }
-            ],
-            "dynamic" : {
-                "pid" : "0x0C",
-                "op" : "<",
-                "priority" : 1,
-                "value" : 4000
-            },
-            "gauges" : [
-            {
-                "themeConfig" : "120",
-                "pid" : "0x0C",
-                "module" : "Radial",
-                "path" : "/Stock/"
-            },
-            {
-                "themeConfig" : "120",
-                "pid" : "0x0F",
-                "module" : "Radial",
-                "path" : "/Stock/"
-            },
-            {
-                "themeConfig" : "120",
-                "pid" : "0x0B",
-                "module" : "Radial",
-                "path" : "/Stock/"
-            }
-        ]},
-        "1" : {
-            "name": "Second view",
-            "enabled" : 1,
-            "default" : 0,
-            "background" : "banner1.jpg",
-            "theme" : "Glow",
-            "pids" : [
-                "0x0C",
-                "0x0F",
-                "0x0B"
-            ],
-            "alerts" : [
-            ],
-            "dynamic" : {
-                "pid" : "0x0C",
-                "op" : ">=",
-                "priority" : 2,
-                "value" : 5000
-            },
-            "gauges" : [
-            {
-                "themeConfig" : "120",
-                "pid" : "0x0C",
-                "module" : "Radial",
-                "path" : "/Glow/"
-            },
-            {
-                "themeConfig" : "120",
-                "pid" : "0x0F",
-                "module" : "Radial",
-                "path" : "/Glow/"
-            },
-            {
-                "themeConfig" : "120",
-                "pid" : "0x0B",
-                "module" : "Radial",
-                "path" : "/Glow/"
-            }
-        ]
-    }}
+            ]},
+            "1" : {
+                "name": "Second view",
+                "enabled" : 1,
+                "default" : 0,
+                "background" : "banner1.jpg",
+                "theme" : "Glow",
+                "pids" : [
+                    "0x0C",
+                    "0x0F",
+                    "0x0B"
+                ],
+                "alerts" : [
+                ],
+                "dynamic" : {
+                    "pid" : "0x0C",
+                    "op" : ">=",
+                    "priority" : 2,
+                    "value" : 5000
+                },
+                "gauges" : [
+                {
+                    "themeConfig" : "120",
+                    "pid" : "0x0C",
+                    "module" : "Radial",
+                    "path" : "/Glow/"
+                },
+                {
+                    "themeConfig" : "120",
+                    "pid" : "0x0F",
+                    "module" : "Radial",
+                    "path" : "/Glow/"
+                },
+                {
+                    "themeConfig" : "120",
+                    "pid" : "0x0B",
+                    "module" : "Radial",
+                    "path" : "/Glow/"
+                }
+            ]
+        }
+    }
 }
