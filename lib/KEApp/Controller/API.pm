@@ -56,4 +56,20 @@ sub update {
   $c->render(json => { config => $c->app->{'Config'}, message => "Updated config!" });
 }
 
+sub delete {
+  my $c = shift;
+  my %args = (
+    %{$c->req->json}
+  );
+  my $config = $c->app->{'Config'};
+
+  unless ( $args{'id'} ) {
+    $c->render(json => { config => $c->app->{'Config'}, message => "No ID value provided, could not update." });
+  }
+  
+  delete $config->{'views'}{$args{'id'}};
+  my ($ret, $msg) = $c->UpdateConfig( $config );
+  $c->render(json => { config => $c->app->{'Config'}, message => "Updated config!" });
+}
+
 1;

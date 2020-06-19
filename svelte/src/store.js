@@ -35,3 +35,21 @@ export async function UpdateConfig(current_view, config) {
 
     return conf.message;
 }
+
+export async function DeleteView(id) {
+  const res  = await fetch('http://foundation:3000/api/delete',
+      {
+          method: 'PUT',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id: id})
+      }
+  );
+  const conf = await res.json();
+
+  config.set(conf.config.views);
+
+  return conf.message;
+}

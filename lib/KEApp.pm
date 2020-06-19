@@ -104,6 +104,7 @@ sub startup {
   $self->plugin('SecureCORS');
 
   $r->cors('/api/update');
+  $r->cors('/api/delete');
 
   $r->get('/')->over(authenticated => 1)->to('API#index');
 
@@ -113,11 +114,12 @@ sub startup {
 
   $r->post('/login')->to('Auth#login');
 
-  $r->get('/api/config/')->over(authenticated => 1)->to('API#config');
+  $r->get('/api/config/')->to('API#config');
 
-  $r->get('/api/constants/')->over(authenticated => 1)->to('API#constants');
+  $r->get('/api/constants/')->to('API#constants');
 
   $r->put('/api/update', {'cors.origin' => '*'})->to('API#update');
+  $r->put('/api/delete', {'cors.origin' => '*'})->to('API#delete');
 
 }
 
