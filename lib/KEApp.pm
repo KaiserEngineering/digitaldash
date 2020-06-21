@@ -103,8 +103,7 @@ sub startup {
 
   $self->plugin('SecureCORS');
 
-  $r->cors('/api/update');
-  $r->cors('/api/delete');
+  $r->cors('/api/*');
 
   $r->get('/')->over(authenticated => 1)->to('API#index');
 
@@ -120,6 +119,7 @@ sub startup {
 
   $r->put('/api/update', {'cors.origin' => '*'})->to('API#update');
   $r->put('/api/delete', {'cors.origin' => '*'})->to('API#delete');
+  $r->put('/api/enable', {'cors.origin' => '*'})->to('API#toggle_enable');
 
 }
 
