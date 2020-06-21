@@ -1,10 +1,9 @@
 <script>
     import Preview from '../components/Preview.svelte';
     import SortableList from 'svelte-sortable-list';
-    import { config, getConfig, UpdateConfig, DeleteView } from '../store.js';
+    import { config, getConfig, UpdateConfig } from '../store.js';
     import { getNotificationsContext } from 'svelte-notifications';
     import MdAdd from 'svelte-icons/md/MdAdd.svelte'
-    import MdRemove from 'svelte-icons/md/MdRemove.svelte'
 
     const { addNotification } = getNotificationsContext();
 
@@ -25,16 +24,6 @@
           "id"         : Object.keys( new_config ).length
         };
         const message_promise = UpdateConfig(new_config, config);
-        message_promise.then((res) => {
-            addNotification({
-                text: res,
-                position: 'top-center',
-            });
-        });
-    }
-
-    function Delete( id ) {
-      const message_promise = DeleteView( id );
         message_promise.then((res) => {
             addNotification({
                 text: res,
@@ -79,9 +68,6 @@
     {:then}
         {#each Object.keys( $config ) as key }
             <div class="m-4">
-                <button on:click={() => { Delete(key) }} class="icon mt-3 cursor-pointer">
-                  <MdRemove />
-                </button>
                 <Preview view={$config[key]} id={key} />
             </div>
         {/each}
