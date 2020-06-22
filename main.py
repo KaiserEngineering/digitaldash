@@ -1,10 +1,10 @@
 # Dependent modules and packages
 import getopt
 import sys
-from .test import Test
+from test import Test
 import os
 
-os.environ["KIVY_HOME"] = os.getcwd() + "/digital_dash_gui/etc/kivy/"
+os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 
 (run, Data_Source) = (True, False)
 
@@ -37,16 +37,16 @@ from kivy.uix.boxlayout import BoxLayout
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 from typing import NoReturn, List, TypeVar
-from .etc.config import views
-from .digitaldash.base import Base
-from .digitaldash.dynamic import Dynamic
-from .digitaldash.alert import Alert
-from .digitaldash.clock import Clock as KEClock
+from etc.config import views
+from digitaldash.base import Base
+from digitaldash.dynamic import Dynamic
+from digitaldash.alert import Alert
+from digitaldash.clock import Clock as KEClock
 
 
 if ( not Data_Source ):
     try:
-        from digital_dash_gui.ke_protocol import Serial
+        from ke_protocol import Serial
         Data_Source = Serial()
         Logger.info("Using serial data source" + str(Data_Source))
     except Exception as e:
@@ -169,7 +169,7 @@ class MyHandler(PatternMatchingEventHandler):
         self.process(event)
 
 
-Builder.load_file('digital_dash_gui/digitaldash/kv/main.kv')
+Builder.load_file('digitaldash/kv/main.kv')
 
 (ConfigFile, errors_seen) = (None, {})
 DD = TypeVar('DD', bound='DigitalDash')
@@ -324,7 +324,7 @@ class Background(AnchorLayout):
     """Uses Kivy language to create background."""
     pass
 
-def run():
+if __name__ == '__main__':
     dd = GUI()
 
     config = None

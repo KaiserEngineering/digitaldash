@@ -2,7 +2,7 @@
 from kivy.properties import NumericProperty
 from kivy.graphics import Color, Rectangle
 from functools import lru_cache
-from .ke_lable import KELabel
+from digitaldash.ke_lable import KELabel
 
 class Alert(KELabel):
     """

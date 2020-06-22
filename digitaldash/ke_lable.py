@@ -1,6 +1,6 @@
 from typing import NoReturn, List, TypeVar
 from kivy.uix.label import Label
-from ..static.constants import KE_PID
+from static.constants import KE_PID
 from kivy.logger import Logger
 
 KL = TypeVar('KL', bound='KELabel')

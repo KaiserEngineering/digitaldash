@@ -1,12 +1,12 @@
 # """Testing basics of DigitalDash."""
-from digital_dash_gui.digitaldash.needle.needle import Needle
-from digital_dash_gui.digitaldash.needle.radial import NeedleRadial
-from digital_dash_gui.digitaldash.needle.linear import NeedleLinear
-from digital_dash_gui.digitaldash.needle.ellipse import NeedleEllipse
-from digital_dash_gui.digitaldash.ke_lable import KELabel
-from digital_dash_gui.digitaldash.alert import Alert
-from digital_dash_gui.digitaldash.massager import smooth
-from digital_dash_gui.static.constants import KE_PID
+from digitaldash.needles.needle import Needle
+from digitaldash.needles.radial import NeedleRadial
+from digitaldash.needles.linear import NeedleLinear
+from digitaldash.needles.ellipse import NeedleEllipse
+from digitaldash.ke_lable import KELabel
+from digitaldash.alert import Alert
+from digitaldash.massager import smooth
+from static.constants import KE_PID
 
 def test_needle_simple():
     needles = (

@@ -65,7 +65,7 @@ class Test():
        return ( 1, 'Power cycle' )
 
     def Testing( self, Config=None, Data=None ):
-        from .main import GUI
+        from main import GUI
 
         if ( Data ):
             self.Load( Data )

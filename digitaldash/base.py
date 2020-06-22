@@ -2,14 +2,14 @@
 from kivy.properties import NumericProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.boxlayout import BoxLayout
-from ..etc.config import getThemeConfig
+from etc.config import getThemeConfig
 from kivy.logger import Logger
-from .gauge import Gauge
-from .needle.ellipse import NeedleEllipse as Ellipse
-from .needle.radial import NeedleRadial as Radial
-from .needle.linear import NeedleLinear as Linear
-from .face import Face
-from .ke_lable import KELabel
+from digitaldash.gauge import Gauge
+from digitaldash.needles.ellipse import NeedleEllipse as Ellipse
+from digitaldash.needles.radial import NeedleRadial as Radial
+from digitaldash.needles.linear import NeedleLinear as Linear
+from digitaldash.face import Face
+from digitaldash.ke_lable import KELabel
 
 class GaugeLayout(RelativeLayout):
     gauge_count = NumericProperty(300)

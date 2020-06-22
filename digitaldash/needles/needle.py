@@ -1,6 +1,6 @@
-from ..massager import smooth
+from digitaldash.massager import smooth
 from typing import NoReturn, List, TypeVar
-from ... static.constants import KE_PID
+from static.constants import KE_PID
 
 class Needle():
     """
@@ -35,7 +35,7 @@ class Needle():
             setattr(self, key, args[key])
 
         (self.source, self.degrees, self.min, self.max) = (
-            "digital_dash_gui/static/imgs"+args['path'] + 'needle.png',
+            "static/imgs"+args['path'] + 'needle.png',
             float(args.get('degrees', 0)),
             KE_PID[args['pid']]['Min'],
             KE_PID[args['pid']]['Max']

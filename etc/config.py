@@ -7,7 +7,7 @@ def views(file=None):
     """Get data from JSON."""
     # Allow for a file to be submitted in place of default config, this is useful for tests
     if file == None or file == '':
-        file = 'digital_dash_gui/etc/config.json'
+        file = 'etc/config.json'
     jsonData = {}
     with open(file) as data_file:
         jsonData = json.load(data_file)
@@ -30,7 +30,7 @@ def getThemeConfig(theme):
     jsonData = {}
 
     try:
-        with open('digital_dash_gui/etc/themes/' + theme + '.json') as data_file:
+        with open('etc/themes/' + theme + '.json') as data_file:
             jsonData = json.load(data_file)
 
             data_file.close()

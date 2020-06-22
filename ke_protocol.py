@@ -3,7 +3,7 @@ import serial
 import time
 from kivy.logger import Logger
 import subprocess
-from digital_dash_gui.static.constants import KE_CP_OP_CODES
+from static.constants import KE_CP_OP_CODES
 import os
 import fnmatch
 

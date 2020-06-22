@@ -1,22 +1,22 @@
 """Testing basics of DigitalDash."""
 import unittest
 from kivy.tests.common import GraphicUnitTest
-from digital_dash_gui import test
-from digital_dash_gui import main
-from digital_dash_gui.digitaldash.needle.needle import Needle
-from digital_dash_gui.digitaldash.needle.radial import NeedleRadial
-from digital_dash_gui.digitaldash.needle.linear import NeedleLinear
-from digital_dash_gui.digitaldash.needle.ellipse import NeedleEllipse
-from digital_dash_gui.digitaldash.ke_lable import KELabel
-from digital_dash_gui.digitaldash.alert import Alert
-from digital_dash_gui.digitaldash.massager import smooth
-from digital_dash_gui.static.constants import KE_PID
+import test
+import main
+from digitaldash.needles.needle import Needle
+from digitaldash.needles.radial import NeedleRadial
+from digitaldash.needles.linear import NeedleLinear
+from digitaldash.needles.ellipse import NeedleEllipse
+from digitaldash.ke_lable import KELabel
+from digitaldash.alert import Alert
+from digitaldash.massager import smooth
+from static.constants import KE_PID
 
 t = test.Test()
 class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( Config='digital_dash_gui/etc/configs/single.json' )
+        t.Testing( Config='etc/configs/single.json' )
         t.app.update_values({"0x0C": 50})
 
         for layout in t.app.app.children[0].children:
@@ -31,7 +31,7 @@ class Config_TestCase(GraphicUnitTest):
 class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( Config='digital_dash_gui/etc/configs/alerts.json', Data='tests/data/test.csv' )
+        t.Testing( Config='etc/configs/alerts.json', Data='tests/data/test.csv' )
         # Set this value 20 times to appease the buffer
         t.app.update_values({"0x0C": 50})
         for _ in range(20):
