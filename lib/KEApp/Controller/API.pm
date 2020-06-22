@@ -82,7 +82,13 @@ sub toggle_enable {
   $config->{'views'}->{$id}->{'enabled'} = $view->{'enabled'} ? 0 : 1;
   my ($ret, $msg) = $c->UpdateConfig( $config );
 
-  $c->render(json => { config => $c->app->{'Config'}, message => "$view->{'name'} enabled set to: ".$view->{'enabled'} ? 'True': 'False' });
+  if ( $ret ) {
+    my $bool = $view->{'enabled'} ? 'True': 'False';
+
+    $msg = "$view->{'name'} enabled set to: $bool";
+  }
+
+  $c->render(json => { config => $c->app->{'Config'}, message => $msg });
 }
 
 1;
