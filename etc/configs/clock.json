@@ -13,7 +13,7 @@
             "gauges": [
             {
                 "module": "KEClock",
-                "path": "static/imgs/Clock/",
+                "path": "/Clock/",
                 "themeConfig": "Clock",
                 "pid": "Clock"
             }]

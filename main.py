@@ -1,11 +1,7 @@
-#!/usr/bin/env python
-"""
-"""
-
 # Dependent modules and packages
 import getopt
 import sys
-from t.test import Test
+from test import Test
 import os
 
 os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
@@ -48,12 +44,13 @@ from digitaldash.alert import Alert
 from digitaldash.clock import Clock as KEClock
 
 
-try:
-    import ke_protocol
-    Data_Source = ke_protocol.Serial()
-    Logger.info("Using serial data source" + str(Data_Source))
-except Exception as e:
-    Logger.info("Running without serial data: " + str(e))
+if ( not Data_Source ):
+    try:
+        from ke_protocol import Serial
+        Data_Source = Serial()
+        Logger.info("Using serial data source" + str(Data_Source))
+    except Exception as e:
+        Logger.info("Running without serial data: " + str(e))
 
 def setup(Layouts):
     """
@@ -327,7 +324,7 @@ class Background(AnchorLayout):
     """Uses Kivy language to create background."""
     pass
 
-if ( run ):
+if __name__ == '__main__':
     dd = GUI()
 
     config = None

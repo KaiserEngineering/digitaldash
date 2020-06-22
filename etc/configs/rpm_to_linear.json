@@ -17,19 +17,19 @@
         "gauges" : [
             {
                 "module": "Radial",
-                "path": "static/imgs/Stock/",
+                "path": "/Stock/",
                 "themeConfig": "120",
                 "pid": "0x0C"
             },
             {
                 "module": "Radial",
-                "path": "static/imgs/Stock/",
+                "path": "/Stock/",
                 "themeConfig": "120",
                 "pid": "0x0F"
             },
             {
                 "module": "Radial",
-                "path": "static/imgs/Stock/",
+                "path": "/Stock/",
                 "themeConfig": "120",
                 "pid": "0x0B"
              }
@@ -51,7 +51,7 @@
           "gauges": [
             {
                 "module": "Linear",
-                "path": "static/imgs/Linear/",
+                "path": "/Linear/",
                 "themeConfig": "Linear",
                 "pid": "0x0C"
             }

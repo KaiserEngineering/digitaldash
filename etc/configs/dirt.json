@@ -12,7 +12,7 @@
         "gauges": [
             {
                 "module": "Ellipse",
-                "path": "static/imgs/Dirt/",
+                "path": "/Dirt/",
                 "themeConfig": "120",
                 "pid": "0x0C"
             }

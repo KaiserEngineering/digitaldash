@@ -1,13 +1,6 @@
 """Test harness for GUI that runs on file data."""
 import csv
 
-import os, sys, re
-path_regex = re.compile('(.+)../')
-path = path_regex.findall(os.path.abspath( __file__ ))[0]
-os.chdir(path)
-sys.path.append(os.getcwd())
-
-# DO NOT USE Kivy.Logger for this file
 class Test():
     """Test instance."""
 

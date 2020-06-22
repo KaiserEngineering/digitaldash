@@ -20,7 +20,7 @@
         "gauges": [
             {
                 "module": "Radial",
-                "path": "static/imgs/Stock/",
+                "path": "/Stock/",
                 "themeConfig": "120",
                 "pid": "0x0C"
             }

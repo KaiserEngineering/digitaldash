@@ -5,9 +5,9 @@ from kivy.uix.boxlayout import BoxLayout
 from etc.config import getThemeConfig
 from kivy.logger import Logger
 from digitaldash.gauge import Gauge
-from digitaldash.needle.ellipse import NeedleEllipse as Ellipse
-from digitaldash.needle.radial import NeedleRadial as Radial
-from digitaldash.needle.linear import NeedleLinear as Linear
+from digitaldash.needles.ellipse import NeedleEllipse as Ellipse
+from digitaldash.needles.radial import NeedleRadial as Radial
+from digitaldash.needles.linear import NeedleLinear as Linear
 from digitaldash.face import Face
 from digitaldash.ke_lable import KELabel
 

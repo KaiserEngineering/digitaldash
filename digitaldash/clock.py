@@ -1,10 +1,9 @@
-from digitaldash.ke_lable import KELabel
-from digitaldash import face
+from .ke_lable import KELabel
+from .face import Face
 import datetime
 from kivy.logger import Logger
 from kivy.animation import Animation
-from digitaldash.base import Base
-from digitaldash.face import Face
+from .base import Base
 
 class Clock(Base, KELabel):
     def __init__(self):
@@ -21,11 +20,11 @@ class Clock(Base, KELabel):
         self.container = ARGS['container']
         self.Layout.id = "Widgets-Layout-Clock"
 
-        gauge = Face(path='static/imgs/Clock/')
+        gauge = Face(path='Clock/')
         if gauge._coreimage:
             self.Layout.add_widget(gauge)
         else:
-            Logger.info( "GUI: Could not load gauge image: 'static/imgs/Clock/ClockFace.png'" )
+            Logger.info( "GUI: Could not load gauge image: 'Clock/ClockFace.png'" )
 
         anim = Animation(color=(1, 0, 0, 1))
         anim += Animation(color=(1, 1, 1, 1))

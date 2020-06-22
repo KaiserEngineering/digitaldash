@@ -1,7 +1,7 @@
 from typing import NoReturn, List, TypeVar
 from kivy.properties import ObjectProperty
 from digitaldash.face import Face
-from digitaldash.needle.needle import Needle
+from digitaldash.needles.needle import Needle
 
 G = TypeVar('G', bound='Gauge')
 class Gauge(object):

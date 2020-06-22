@@ -1,18 +1,18 @@
 """Testing basics of DigitalDash."""
 import unittest
 from kivy.tests.common import GraphicUnitTest
-from test import Test
-from main import GUI
-from digitaldash.needle.needle import Needle
-from digitaldash.needle.radial import NeedleRadial
-from digitaldash.needle.linear import NeedleLinear
-from digitaldash.needle.ellipse import NeedleEllipse
+import test
+import main
+from digitaldash.needles.needle import Needle
+from digitaldash.needles.radial import NeedleRadial
+from digitaldash.needles.linear import NeedleLinear
+from digitaldash.needles.ellipse import NeedleEllipse
 from digitaldash.ke_lable import KELabel
 from digitaldash.alert import Alert
 from digitaldash.massager import smooth
 from static.constants import KE_PID
 
-t = Test()
+t = test.Test()
 class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
@@ -31,7 +31,7 @@ class Config_TestCase(GraphicUnitTest):
 class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( Config='etc/configs/alerts.json', Data='t/data/test.csv' )
+        t.Testing( Config='etc/configs/alerts.json', Data='tests/data/test.csv' )
         # Set this value 20 times to appease the buffer
         t.app.update_values({"0x0C": 50})
         for _ in range(20):

@@ -12,7 +12,7 @@
       "gauges": [
         {
             "module": "Radial",
-            "path": "static/imgs/Stock/",
+            "path": "/Stock/",
             "themeConfig": "120",
             "pid": "0x0C"
           }
@@ -34,7 +34,7 @@
         "gauges": [
           {
               "module": "Radial",
-              "path": "static/imgs/Glow/",
+              "path": "/Glow/",
               "themeConfig": "120",
               "pid": "0x0C"
             }

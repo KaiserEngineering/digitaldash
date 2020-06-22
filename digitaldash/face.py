@@ -16,7 +16,7 @@ class Face(AsyncImage):
     def __init__(self, **kwargs):
         """Initite Face Widget."""
         super(Face, self).__init__()
-        self.source     = kwargs.get('path', '') + 'gauge.png'
+        self.source     = "static/imgs"+kwargs.get('path', '') + 'gauge.png'
         self.size_hint  = (1, 1)
         self.pos        = (0, 0)
         for key in kwargs:

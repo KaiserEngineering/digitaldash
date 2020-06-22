@@ -20,7 +20,7 @@ def views(file=None):
         {"views": { "0": {
             "alerts": [], "default": 1, "theme": "Error", "background": "bg.jpg",
             "dynamic": {},"gauges": [{"themeConfig": "Error","pid": "","module": "Misc",
-            "path": "static/imgs/Alerts/"}], "name": "Error", "enabled": 1, "pids": [""]}}}
+            "path": "Alerts/"}], "name": "Error", "enabled": 1, "pids": [""]}}}
         ''')
 
     return jsonData
