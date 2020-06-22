@@ -13,7 +13,7 @@ export default {
         sourcemap: true,
         format: 'iife',
         name: 'app',
-        file: './public/build/bundle.js'
+         file: production ? '../public/bundle.js' : './public/bundle.js'
     },
     plugins: [
         svelte({
@@ -22,16 +22,10 @@ export default {
             // we'll extract any component CSS out into
             // a separate file - better for performance
             css: css => {
-                css.write('./public/build/bundle.css');
+                css.write( production ? '../public/bundle.css' : './public/index.css' );
             },
             preprocess: sveltePreprocess({ postcss: true })
         }),
-
-        // If you have external dependencies installed from
-        // npm, you'll most likely need these plugins. In
-        // some cases you'll need additional configuration -
-        // consult the documentation for details:
-        // https://github.com/rollup/plugins/tree/master/packages/commonjs
         resolve({
             browser: true,
             dedupe: ['svelte']

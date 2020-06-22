@@ -1,14 +1,14 @@
 {
   "version": 3,
-  "file": "bundle.css",
+  "file": "index.css",
   "sources": [
-    "../svelte/IconBase.svelte",
-    "../svelte/DefaultNotification.svelte",
-    "../svelte/Notifications.svelte",
-    "../svelte/SortableList.svelte",
-    "../svelte/Tailwindcss.svelte",
-    "../svelte/Preview.svelte",
-    "../svelte/config.svelte"
+    "../IconBase.svelte",
+    "../DefaultNotification.svelte",
+    "../Notifications.svelte",
+    "../SortableList.svelte",
+    "../Tailwindcss.svelte",
+    "../Preview.svelte",
+    "../config.svelte"
   ],
   "sourcesContent": [
     "<script>\n  export let title = null;\n  export let viewBox;\n</script>\n\n<style>svg {\n  stroke: currentColor;\n  fill: currentColor;\n  stroke-width: 0;\n  width: 100%;\n  height: auto;\n  max-height: 100%;\n}  \n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm5vZGVfbW9kdWxlcy9zdmVsdGUtaWNvbnMvY29tcG9uZW50cy9JY29uQmFzZS5zdmVsdGUiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0E7RUFDRSxvQkFBb0I7RUFDcEIsa0JBQWtCO0VBQ2xCLGVBQWU7RUFDZixXQUFXO0VBQ1gsWUFBWTtFQUNaLGdCQUFnQjtBQUNsQiIsImZpbGUiOiJub2RlX21vZHVsZXMvc3ZlbHRlLWljb25zL2NvbXBvbmVudHMvSWNvbkJhc2Uuc3ZlbHRlIiwic291cmNlc0NvbnRlbnQiOlsiXG5zdmcge1xuICBzdHJva2U6IGN1cnJlbnRDb2xvcjtcbiAgZmlsbDogY3VycmVudENvbG9yO1xuICBzdHJva2Utd2lkdGg6IDA7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IGF1dG87XG4gIG1heC1oZWlnaHQ6IDEwMCU7XG59ICBcbiJdfQ== */</style>\n\n<svg xmlns=\"http://www.w3.org/2000/svg\" {viewBox}>\n  {#if title}\n    <title>{title}</title>\n  {/if}\n  <slot />\n</svg>\n",

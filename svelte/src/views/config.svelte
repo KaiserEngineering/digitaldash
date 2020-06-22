@@ -55,7 +55,7 @@
 </style>
 
 <button on:click="{AddView}" class="hover:bg-grey-light">
-    <div class="fixed right-0 mx-2 bottom-0 my-10">
+    <div class="flex-grow right-0 mx-2 bottom-0 my-10">
         <div class="icon bg-white rounded-full h-16 w-16 flex items-center justify-center">
           <MdAdd />
         </div>
