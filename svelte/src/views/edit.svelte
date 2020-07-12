@@ -25,7 +25,7 @@
     let backgrounds  = ['banner1.jpg', 'bg.jpg', 'CarbonFiber.png', 'BlackBackground.png'];
 
     function Update() {
-        const message_promise = UpdateConfig(current_view, config);
+        const message_promise = UpdateConfig(current_view, config, id);
         message_promise.then((res) => {
             addNotification({
                 text: res,

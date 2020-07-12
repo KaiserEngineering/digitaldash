@@ -18,7 +18,8 @@ export async function getConfig() {
     config.set(conf.views);
 }
 
-export async function UpdateConfig(current_view, config) {
+export async function UpdateConfig(current_view, config, id) {
+    current_view['id'] = id;
     const res  = await fetch('http://foundation:3000/api/update',
         {
             method: 'PUT',
