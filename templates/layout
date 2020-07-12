@@ -3,14 +3,12 @@
   <header>
     <title><% $Title %></title>
   </header>
-  <body class="flex flex-col h-full">
+  <body>
     <& header, %ARGS &>
-    <div class="flex-1 mx-auto">
       <div class="pb-4">
         <& notifications, %ARGS &>
       </div>
       <% $content | n %>
-    </div>
   </body>
 </html>
 

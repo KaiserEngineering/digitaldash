@@ -39,31 +39,220 @@
     width: 32px;
     height: 32px;
   }
+
+  body {
+      min-height: 100vh;
+      font-family: Roboto, Arial;
+      color: #ADAFB6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #F5F9FF;
+    transform:scale(2);
+    /* this is just to zoom the pen */
+    }
+  input[type=checkbox]{
+    height: 0;
+    width: 0;
+    visibility: hidden;
+  }
+
+  label {
+      cursor: pointer;
+      text-indent: -9999px;
+      width: 50px;
+      height: 25px;
+      display: block;
+      border-radius: 50px;
+      position: relative;
+      /* filter: url('#gooey'); */
+      
+      background: #FF4651;
+      box-shadow: 0 8px 16px -1px rgba(255, 70, 81, 0.2);
+      transition: .3s ease-in-out;
+      transition-delay: .2s;
+  }
+
+  label:after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 21px;
+      height: 21px;
+      background: #fff;
+      border-radius: 21px;
+      /* transition: 0.3s; */
+      animation:expand-left .5s linear forwards;
+      
+
+  }
+
+  input:checked+label {
+      /* background: #bada55; */
+      background: #48EA8B;
+      box-shadow: 0 8px 16px -1px rgba(72, 234, 139, 0.8);
+      /* animation: jelly-left  */
+  }
+
+  input:checked+label:after {
+      background:#fff;
+      animation:expand-right .5s linear forwards;
+      /* left: calc(100% - 5px); */
+      /* transform: translateX(-100%); */
+  }
+
+  /* label:active:after {
+      width: 20px;
+  } */
+  @-webkit-keyframes expand-right
+  {
+      0%
+      {
+          left:2px;
+          /* background:white; */
+      }
+      30%,50%    /* 50% 80% */
+      {
+          left:2px;
+          width:46px;
+          
+      }
+      
+      60%
+      {
+          left:34px;
+          width:14px;
+      }
+      80%
+      {
+          left:24px;
+          width:24px;   
+      }
+      90%
+      {
+          left:29px;
+          width:19px;  
+      }
+      100%
+      {
+          left:27px;
+          width:21px;
+      }
+  }
+
+  @keyframes expand-right
+  {
+      0%
+      {
+          left:2px;
+          /* background:white; */
+      }
+      30%,50%    /* 50% 80% */
+      {
+          left:2px;
+          width:46px;
+          
+      }
+      
+      60%
+      {
+          left:34px;
+          width:14px;
+      }
+      80%
+      {
+          left:24px;
+          width:24px;   
+      }
+      90%
+      {
+          left:29px;
+          width:19px;  
+      }
+      100%
+      {
+          left:27px;
+          width:21px;
+      }
+  }
+
+  @-webkit-keyframes expand-left
+  {
+      0%
+      {
+          left:27px;
+          /* background:white; */
+      }
+      30%,50%
+      {
+          left:2px;
+          width:46px;
+      }
+      60%
+      {
+          right:34px;
+          width:14px;
+      }
+      80%
+      {
+          right:24px;
+          width:24px;   
+      }
+      90%
+      {
+          right:29px;
+          width:19px;  
+      }
+      100%
+      {
+          left:2px;
+          width:21px;
+      }
+  }
+
+  @keyframes expand-left
+  {
+      0%
+      {
+          left:27px;
+          /* background:white; */
+      }
+      30%,50%
+      {
+          left:2px;
+          width:46px;
+      }
+      60%
+      {
+          right:34px;
+          width:14px;
+      }
+      80%
+      {
+          right:24px;
+          width:24px;   
+      }
+      90%
+      {
+          right:29px;
+          width:19px;  
+      }
+      100%
+      {
+          left:2px;
+          width:21px;
+      }
+  }
 </style>
 
 <div class="bg-grey-light border m-4 border-gray-400 rounded-b p-4 leading-normal">
 
   <div class="flex justify-between">
-    <div on:click={ToggleEnabled}>
-      {#if current_view['enabled']}
-        <div class="mt-3 inline-flex items-center cursor-pointer">
-            <span class="relative">
-                <span class="block w-10 h-6 bg-gray-400 rounded-full shadow-inner"></span>
-                <span class="absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out bg-purple-600 transform translate-x-full">
-                </span>
-            </span>
-            <span class="ml-3 text-sm">Enabled</span>
-          </div>
-      {:else}
-        <div class="mt-3 items-center inline-flex cursor-pointer">
-            <span class="relative">
-              <span class="block w-10 h-6 bg-gray-400 rounded-full shadow-inner"></span>
-              <span class="absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 left-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out">
-              </span>
-            </span>
-            <span class="ml-3 text-sm">Disabled</span>
-          </div>
-      {/if}
+
+    <div class="switch mb-4">
+      <input bind:checked={current_view['enabled']} on:click={ToggleEnabled} type="checkbox" name="gooey-switch" id="gooey-switch-{id}" />
+      <label for="gooey-switch-{id}">On/Off</label>
     </div>
 
     <div>

@@ -5613,126 +5613,14 @@ var app = (function () {
 
     function get_each_context$4(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[9] = list[i];
+    	child_ctx[10] = list[i];
     	return child_ctx;
     }
 
-    // (57:6) {:else}
-    function create_else_block$1(ctx) {
-    	let div;
-    	let span2;
-    	let span0;
-    	let t0;
-    	let span1;
-    	let t1;
-    	let span3;
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			span2 = element("span");
-    			span0 = element("span");
-    			t0 = space();
-    			span1 = element("span");
-    			t1 = space();
-    			span3 = element("span");
-    			span3.textContent = "Disabled";
-    			attr_dev(span0, "class", "block w-10 h-6 bg-gray-400 rounded-full shadow-inner");
-    			add_location(span0, file$8, 59, 14, 2213);
-    			attr_dev(span1, "class", "absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 left-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out");
-    			add_location(span1, file$8, 60, 14, 2302);
-    			attr_dev(span2, "class", "relative");
-    			add_location(span2, file$8, 58, 12, 2175);
-    			attr_dev(span3, "class", "ml-3 text-sm");
-    			add_location(span3, file$8, 63, 12, 2524);
-    			attr_dev(div, "class", "mt-3 items-center inline-flex cursor-pointer");
-    			add_location(div, file$8, 57, 8, 2104);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			append_dev(div, span2);
-    			append_dev(span2, span0);
-    			append_dev(span2, t0);
-    			append_dev(span2, span1);
-    			append_dev(div, t1);
-    			append_dev(div, span3);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_else_block$1.name,
-    		type: "else",
-    		source: "(57:6) {:else}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (48:6) {#if current_view['enabled']}
-    function create_if_block$3(ctx) {
-    	let div;
-    	let span2;
-    	let span0;
-    	let t0;
-    	let span1;
-    	let t1;
-    	let span3;
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			span2 = element("span");
-    			span0 = element("span");
-    			t0 = space();
-    			span1 = element("span");
-    			t1 = space();
-    			span3 = element("span");
-    			span3.textContent = "Enabled";
-    			attr_dev(span0, "class", "block w-10 h-6 bg-gray-400 rounded-full shadow-inner");
-    			add_location(span0, file$8, 50, 16, 1676);
-    			attr_dev(span1, "class", "absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out bg-purple-600 transform translate-x-full");
-    			add_location(span1, file$8, 51, 16, 1767);
-    			attr_dev(span2, "class", "relative");
-    			add_location(span2, file$8, 49, 12, 1636);
-    			attr_dev(span3, "class", "ml-3 text-sm");
-    			add_location(span3, file$8, 54, 12, 2023);
-    			attr_dev(div, "class", "mt-3 inline-flex items-center cursor-pointer");
-    			add_location(div, file$8, 48, 8, 1565);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			append_dev(div, span2);
-    			append_dev(span2, span0);
-    			append_dev(span2, t0);
-    			append_dev(span2, span1);
-    			append_dev(div, t1);
-    			append_dev(div, span3);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$3.name,
-    		type: "if",
-    		source: "(48:6) {#if current_view['enabled']}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (86:10) {#each current_view.pids as pid}
+    // (290:10) {#each current_view.pids as pid}
     function create_each_block$4(ctx) {
     	let div;
-    	let t0_value = /*$constants*/ ctx[2][/*pid*/ ctx[9]].shortName + "";
+    	let t0_value = /*$constants*/ ctx[2][/*pid*/ ctx[10]].shortName + "";
     	let t0;
     	let t1;
 
@@ -5742,7 +5630,7 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = space();
     			attr_dev(div, "class", "bg-blue-400 rounded-lg text-center w-1/3 text-gray-800");
-    			add_location(div, file$8, 86, 10, 3376);
+    			add_location(div, file$8, 290, 10, 11206);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5750,7 +5638,7 @@ var app = (function () {
     			append_dev(div, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*$constants, current_view*/ 6 && t0_value !== (t0_value = /*$constants*/ ctx[2][/*pid*/ ctx[9]].shortName + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*$constants, current_view*/ 6 && t0_value !== (t0_value = /*$constants*/ ctx[2][/*pid*/ ctx[10]].shortName + "")) set_data_dev(t0, t0_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
@@ -5761,14 +5649,14 @@ var app = (function () {
     		block,
     		id: create_each_block$4.name,
     		type: "each",
-    		source: "(86:10) {#each current_view.pids as pid}",
+    		source: "(290:10) {#each current_view.pids as pid}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (78:2) <Link to="/view/{id}">
+    // (282:2) <Link to="/view/{id}">
     function create_default_slot$1(ctx) {
     	let div1;
     	let div0;
@@ -5803,15 +5691,15 @@ var app = (function () {
     			attr_dev(div0, "class", "h-24 bg-cover overflow-hidden");
     			set_style(div0, "background-image", "url('images/" + /*current_view*/ ctx[1].theme + ".png')");
     			attr_dev(div0, "title", "Some gauge");
-    			add_location(div0, file$8, 79, 10, 3030);
+    			add_location(div0, file$8, 283, 10, 10860);
     			attr_dev(div1, "class", "h-32 bg-cover overflow-hidden");
     			set_style(div1, "background-image", "url('images/" + /*current_view*/ ctx[1].background + "')");
     			attr_dev(div1, "title", "Some gauge");
-    			add_location(div1, file$8, 78, 6, 2891);
+    			add_location(div1, file$8, 282, 6, 10721);
     			attr_dev(div2, "class", "text-gray-700 m-2 text-center font-bold text-xl");
-    			add_location(div2, file$8, 81, 6, 3183);
+    			add_location(div2, file$8, 285, 6, 11013);
     			attr_dev(div3, "class", "flex space-x-1");
-    			add_location(div3, file$8, 84, 6, 3294);
+    			add_location(div3, file$8, 288, 6, 11124);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -5875,7 +5763,7 @@ var app = (function () {
     		block,
     		id: create_default_slot$1.name,
     		type: "slot",
-    		source: "(78:2) <Link to=\\\"/view/{id}\\\">",
+    		source: "(282:2) <Link to=\\\"/view/{id}\\\">",
     		ctx
     	});
 
@@ -5886,21 +5774,19 @@ var app = (function () {
     	let div4;
     	let div3;
     	let div0;
+    	let input;
+    	let input_id_value;
     	let t0;
+    	let label;
+    	let t1;
+    	let label_for_value;
+    	let t2;
     	let div2;
     	let button;
     	let div1;
-    	let t1;
+    	let t3;
     	let current;
     	let dispose;
-
-    	function select_block_type(ctx, dirty) {
-    		if (/*current_view*/ ctx[1]["enabled"]) return create_if_block$3;
-    		return create_else_block$1;
-    	}
-
-    	let current_block_type = select_block_type(ctx);
-    	let if_block = current_block_type(ctx);
     	const mdremove = new MdRemove({ $$inline: true });
 
     	const link = new Link({
@@ -5917,24 +5803,36 @@ var app = (function () {
     			div4 = element("div");
     			div3 = element("div");
     			div0 = element("div");
-    			if_block.c();
+    			input = element("input");
     			t0 = space();
+    			label = element("label");
+    			t1 = text("On/Off");
+    			t2 = space();
     			div2 = element("div");
     			button = element("button");
     			div1 = element("div");
     			create_component(mdremove.$$.fragment);
-    			t1 = space();
+    			t3 = space();
     			create_component(link.$$.fragment);
-    			add_location(div0, file$8, 46, 4, 1490);
-    			attr_dev(div1, "class", "icon bg-white rounded-full h-16 w-16 flex items-center justify-center svelte-18701bt");
-    			add_location(div1, file$8, 70, 8, 2701);
+    			attr_dev(input, "type", "checkbox");
+    			attr_dev(input, "name", "gooey-switch");
+    			attr_dev(input, "id", input_id_value = "gooey-switch-" + /*id*/ ctx[0]);
+    			attr_dev(input, "class", "svelte-u1m9eo");
+    			add_location(input, file$8, 268, 6, 10241);
+    			attr_dev(label, "for", label_for_value = "gooey-switch-" + /*id*/ ctx[0]);
+    			attr_dev(label, "class", "svelte-u1m9eo");
+    			add_location(label, file$8, 269, 6, 10380);
+    			attr_dev(div0, "class", "switch mb-4");
+    			add_location(div0, file$8, 267, 4, 10209);
+    			attr_dev(div1, "class", "icon bg-white rounded-full h-16 w-16 flex items-center justify-center svelte-u1m9eo");
+    			add_location(div1, file$8, 274, 8, 10531);
     			attr_dev(button, "class", "hover:bg-grey-light");
-    			add_location(button, file$8, 69, 6, 2624);
-    			add_location(div2, file$8, 68, 4, 2612);
+    			add_location(button, file$8, 273, 6, 10454);
+    			add_location(div2, file$8, 272, 4, 10442);
     			attr_dev(div3, "class", "flex justify-between");
-    			add_location(div3, file$8, 45, 2, 1451);
+    			add_location(div3, file$8, 265, 2, 10169);
     			attr_dev(div4, "class", "bg-grey-light border m-4 border-gray-400 rounded-b p-4 leading-normal");
-    			add_location(div4, file$8, 43, 0, 1364);
+    			add_location(div4, file$8, 263, 0, 10082);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5943,37 +5841,44 @@ var app = (function () {
     			insert_dev(target, div4, anchor);
     			append_dev(div4, div3);
     			append_dev(div3, div0);
-    			if_block.m(div0, null);
-    			append_dev(div3, t0);
+    			append_dev(div0, input);
+    			input.checked = /*current_view*/ ctx[1]["enabled"];
+    			append_dev(div0, t0);
+    			append_dev(div0, label);
+    			append_dev(label, t1);
+    			append_dev(div3, t2);
     			append_dev(div3, div2);
     			append_dev(div2, button);
     			append_dev(button, div1);
     			mount_component(mdremove, div1, null);
-    			append_dev(div4, t1);
+    			append_dev(div4, t3);
     			mount_component(link, div4, null);
     			current = true;
     			if (remount) run_all(dispose);
 
     			dispose = [
-    				listen_dev(div0, "click", /*ToggleEnabled*/ ctx[3], false, false, false),
-    				listen_dev(button, "click", /*click_handler*/ ctx[8], false, false, false)
+    				listen_dev(input, "change", /*input_change_handler*/ ctx[8]),
+    				listen_dev(input, "click", /*ToggleEnabled*/ ctx[3], false, false, false),
+    				listen_dev(button, "click", /*click_handler*/ ctx[9], false, false, false)
     			];
     		},
     		p: function update(ctx, [dirty]) {
-    			if (current_block_type !== (current_block_type = select_block_type(ctx))) {
-    				if_block.d(1);
-    				if_block = current_block_type(ctx);
+    			if (!current || dirty & /*id*/ 1 && input_id_value !== (input_id_value = "gooey-switch-" + /*id*/ ctx[0])) {
+    				attr_dev(input, "id", input_id_value);
+    			}
 
-    				if (if_block) {
-    					if_block.c();
-    					if_block.m(div0, null);
-    				}
+    			if (dirty & /*current_view*/ 2) {
+    				input.checked = /*current_view*/ ctx[1]["enabled"];
+    			}
+
+    			if (!current || dirty & /*id*/ 1 && label_for_value !== (label_for_value = "gooey-switch-" + /*id*/ ctx[0])) {
+    				attr_dev(label, "for", label_for_value);
     			}
 
     			const link_changes = {};
     			if (dirty & /*id*/ 1) link_changes.to = "/view/" + /*id*/ ctx[0];
 
-    			if (dirty & /*$$scope, current_view, $constants*/ 4102) {
+    			if (dirty & /*$$scope, current_view, $constants*/ 8198) {
     				link_changes.$$scope = { dirty, ctx };
     			}
 
@@ -5992,7 +5897,6 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div4);
-    			if_block.d();
     			destroy_component(mdremove);
     			destroy_component(link);
     			run_all(dispose);
@@ -6047,6 +5951,11 @@ var app = (function () {
     	let { $$slots = {}, $$scope } = $$props;
     	validate_slots("Preview", $$slots, []);
 
+    	function input_change_handler() {
+    		current_view["enabled"] = this.checked;
+    		(($$invalidate(1, current_view), $$invalidate(6, $config)), $$invalidate(0, id));
+    	}
+
     	const click_handler = () => {
     		Delete(id);
     	};
@@ -6099,6 +6008,7 @@ var app = (function () {
     		view,
     		$config,
     		addNotification,
+    		input_change_handler,
     		click_handler
     	];
     }
@@ -6183,7 +6093,7 @@ var app = (function () {
     }
 
     // (84:0) {#if list && list.length}
-    function create_if_block$4(ctx) {
+    function create_if_block$3(ctx) {
     	let ul;
     	let each_blocks = [];
     	let each_1_lookup = new Map();
@@ -6258,7 +6168,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$4.name,
+    		id: create_if_block$3.name,
     		type: "if",
     		source: "(84:0) {#if list && list.length}",
     		ctx
@@ -6426,7 +6336,7 @@ var app = (function () {
     function create_fragment$d(ctx) {
     	let if_block_anchor;
     	let current;
-    	let if_block = /*list*/ ctx[0] && /*list*/ ctx[0].length && create_if_block$4(ctx);
+    	let if_block = /*list*/ ctx[0] && /*list*/ ctx[0].length && create_if_block$3(ctx);
 
     	const block = {
     		c: function create() {
@@ -6450,7 +6360,7 @@ var app = (function () {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block$4(ctx);
+    					if_block = create_if_block$3(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -7251,7 +7161,7 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block_4, create_if_block_5, create_else_block$2];
+    	const if_block_creators = [create_if_block_4, create_if_block_5, create_else_block$1];
     	const if_blocks = [];
 
     	function select_block_type_1(ctx, dirty) {
@@ -7401,7 +7311,7 @@ var app = (function () {
     }
 
     // (145:0) {#if state === STATES.ERROR}
-    function create_if_block$5(ctx) {
+    function create_if_block$4(ctx) {
     	let current;
     	const error_slot_template = /*$$slots*/ ctx[17].error;
     	const error_slot = create_slot(error_slot_template, ctx, /*$$scope*/ ctx[16], get_error_slot_context);
@@ -7440,7 +7350,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$5.name,
+    		id: create_if_block$4.name,
     		type: "if",
     		source: "(145:0) {#if state === STATES.ERROR}",
     		ctx
@@ -7450,7 +7360,7 @@ var app = (function () {
     }
 
     // (156:2) {:else}
-    function create_else_block$2(ctx) {
+    function create_else_block$1(ctx) {
     	let switch_instance_anchor;
     	let current;
     	const switch_instance_spread_levels = [/*componentProps*/ ctx[3]];
@@ -7532,7 +7442,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$2.name,
+    		id: create_else_block$1.name,
     		type: "else",
     		source: "(156:2) {:else}",
     		ctx
@@ -7644,7 +7554,7 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block$5, create_if_block_1$1, create_if_block_2, create_if_block_3];
+    	const if_block_creators = [create_if_block$4, create_if_block_1$1, create_if_block_2, create_if_block_3];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
