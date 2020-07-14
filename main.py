@@ -259,16 +259,12 @@ class GUI(App):
     def check_callback(self: DD, callback, priority, data):
         # Check if any dynamic changes need to be made
         if ( callback.check(data[callback.pid]) ):
-            if (self.current != callback.index and type(callback) is Alert):
-                self.alerts.clear_widgets()
             return callback
         return False
 
     def change(self: DD, app, my_callback) -> NoReturn:
         if ( my_callback.change(self, my_callback) ):
             self.current = my_callback.index
-        elif type(my_callback) is Alert and my_callback.parent is None and self.current == my_callback.index:
-            self.alerts.add_widget(my_callback)
 
     def update_values(self: DD, data: List[float]) -> NoReturn:
         for widget in self.ObjectsToUpdate:
@@ -299,7 +295,10 @@ class GUI(App):
 
                 if(my_callback):
                     self.change(self, my_callback)
-                    break
+                    if ( callback.parent is None ):
+                      self.alerts.add_widget( my_callback )
+                elif ( callback.parent ):
+                    self.alerts.remove_widget( callback )
             self.update_values(data)
         except Exception as e:
             error = 'Error found in main application loop on line {}: '.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e
