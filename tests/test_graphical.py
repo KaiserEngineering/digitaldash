@@ -34,8 +34,6 @@ class Alerts_TestCase(GraphicUnitTest):
         t.Testing( Config='etc/configs/alerts.json', Data='tests/data/test.csv' )
         # Set this value 20 times to appease the buffer
         t.app.update_values({"0x0C": 50})
-        for _ in range(20):
-            t.app.loop(1)
 
         seen = False
         for alert in t.app.alerts.children:

@@ -259,15 +259,9 @@ class GUI(App):
     def check_callback(self: DD, callback, priority, data):
         # Check if any dynamic changes need to be made
         if ( callback.check(data[callback.pid]) ):
-            callback.buffer += 1
-
-            # # Buffer is how many times we have seen our
-            if ( callback.buffer >= 20 ):
-                if (self.current != callback.index and type(callback) is Alert):
-                    self.alerts.clear_widgets()
+            if (self.current != callback.index and type(callback) is Alert):
+                self.alerts.clear_widgets()
             return callback
-        else:
-            callback.buffer = 0
         return False
 
     def change(self: DD, app, my_callback) -> NoReturn:
