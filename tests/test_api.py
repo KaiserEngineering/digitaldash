@@ -102,8 +102,6 @@ def test_alert_simple():
         pid       = "0x0B"
     )
     assert alert.check(99) is False, print("Check fails when it should")
-    assert alert.text != 'Hello, from tests', print("Do not set alert value")
 
     assert alert.check(101) is True, print("Check passes when it should")
-    alert.change('', '')
     assert alert.text == 'Hello, from tests', print("Do not set alert value")
