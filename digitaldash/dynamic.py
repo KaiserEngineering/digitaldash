@@ -1,5 +1,4 @@
 from functools import lru_cache
-
 """Dynamic widget will monitour a specified value and make a view change."""
 
 class Dynamic(object):
@@ -62,8 +61,13 @@ class Dynamic(object):
         App.alerts.clear_widgets()
 
         (App.background, App.background_source, App.alerts, App.ObjectsToUpdate, App.pids) = App.views[callback.index].values()
+
         App.background.add_widget(App.containers[callback.index])
         App.background.add_widget(App.alerts)
+
+        # Sort our dynamic and alerts callbacks by priority
+        App.dynamic_callbacks = sorted(App.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
+        App.alert_callbacks   = sorted(App.callbacks[App.current], key=lambda x: x.priority, reverse=True)
 
         App.app.add_widget(App.background)
 
