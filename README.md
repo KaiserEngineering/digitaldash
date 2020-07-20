@@ -2,10 +2,9 @@
 
 [![pipeline status](https://gitlab.com/kaiserengineering/DigitalDash_GUI/badges/master/pipeline.svg)](https://gitlab.com/kaiserengineering/DigitalDash_GUI/-/commits/master)
 
-[![pipeline status](https://gitlab.com/kaiserengineering/DigitalDash_GUI/badges/master/pipeline.svg)](https://gitlab.com/kaiserengineering/DigitalDash_GUI/-/commits/master)
+[[_TOC_]]
 
-##### Install Deps ( >=Python3.7)
-
+## Install Deps ( >=Python3.7)
 
 ```sh
 pip3 install -r requirements.txt
