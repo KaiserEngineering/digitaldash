@@ -259,22 +259,16 @@ class GUI(App):
     def check_callback(self: DD, callback, priority, data):
         # Check if any dynamic changes need to be made
         if ( callback.check(data[callback.pid]) ):
-            callback.buffer += 1
-
-            # # Buffer is how many times we have seen our
-            if ( callback.buffer >= 20 ):
-                if (self.current != callback.index and type(callback) is Alert):
-                    self.alerts.clear_widgets()
             return callback
-        else:
-            callback.buffer = 0
         return False
 
     def change(self: DD, app, my_callback) -> NoReturn:
-        if ( my_callback.change(self, my_callback) ):
-            self.current = my_callback.index
-        elif type(my_callback) is Alert and my_callback.parent is None and self.current == my_callback.index:
-            self.alerts.add_widget(my_callback)
+        """
+        This method only handles dynamic changing, the alert changing is handled in
+        the main application loop.
+        """
+        self.current = my_callback.index
+        my_callback.change(self, my_callback)
 
     def update_values(self: DD, data: List[float]) -> NoReturn:
         for widget in self.ObjectsToUpdate:
@@ -290,6 +284,8 @@ class GUI(App):
                     Logger.error( msg )
                 self.first_iteration = False
             ( my_callback, priority, data ) = ( None, 0, Data_Source.Start(pids=self.pids) )
+
+            dynamic_change = False
             # Check dynamic gauges before any alerts in case we make a change
             for dynamic in self.dynamic_callbacks:
                 if self.current == dynamic.index:
@@ -298,14 +294,20 @@ class GUI(App):
 
                 if(my_callback):
                     self.change(self, my_callback)
+                    dynamic_change = True
                     break
 
-            for callback in self.alert_callbacks:
-                my_callback = self.check_callback(callback, priority, data)
+            # Check our alerts if no dynamic changes have occured
+            if ( not dynamic_change ):
+                for callback in self.alert_callbacks:
+                    my_callback = self.check_callback(callback, priority, data)
 
-                if(my_callback):
-                    self.change(self, my_callback)
-                    break
+                    if(my_callback):
+                        if ( callback.parent is None ):
+                          self.alerts.add_widget( my_callback )
+                    elif ( callback.parent ):
+                        self.alerts.remove_widget( callback )
+
             self.update_values(data)
         except Exception as e:
             error = 'Error found in main application loop on line {}: '.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e

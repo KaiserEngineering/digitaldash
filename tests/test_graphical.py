@@ -32,20 +32,20 @@ class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
         t.Testing( Config='etc/configs/alerts.json', Data='tests/data/test.csv' )
-        # Set this value 20 times to appease the buffer
-        t.app.update_values({"0x0C": 50})
-        for _ in range(20):
+        for value, text in zip([50, 4001], ["Hello, world", "Alert two"]):
+            t.app.data_source.data = [[value]]
+            t.app.data_source.iteration = 0
             t.app.loop(1)
 
-        seen = False
-        for alert in t.app.alerts.children:
-            self.assertLessEqual(alert.text, "Hello, world", "Alert displays correctly")
-            seen = True
-        self.assertTrue(seen, "Alert did show up")
+            seen = False
+            for alert in t.app.alerts.children:
+                self.assertEqual(alert.text, text, "Alert displays correctly for value set to: " + str(value))
+                seen = True
+            self.assertTrue(seen, "Alert did show up")
 
-        for layout in t.app.app.children[0].children:
-            for child in layout.children:
-                gauge = child.children
+            for layout in t.app.app.children[0].children:
+                for child in layout.children:
+                    gauge = child.children
 
 if __name__ == '__main__':
     unittest.main()

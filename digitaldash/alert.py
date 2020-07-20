@@ -31,6 +31,7 @@ class Alert(KELabel):
         self.priority  = args['priority']
         self.pid       = args['pid']
         self.message   = str(args['message'])
+        self.text      = self.message
         self.buffer    = 0
 
     @lru_cache(maxsize=512)
@@ -43,13 +44,3 @@ class Alert(KELabel):
         if value == value:
             return (eval(str(value) + self.op + str(self.value)))
         return 0
-
-    def change(self, App, callback) -> bool:
-        """
-        Perform view change
-            :param self: Alert object
-            :param App: main application object
-            :param callback: current callback object
-        """
-        self.text = self.message
-        return False

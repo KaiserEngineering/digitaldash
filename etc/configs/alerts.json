@@ -14,8 +14,15 @@
                 "op": "<",
                 "value": 4000,
                 "priority": 1,
-                "message" : "Hello, wolrd"
-            }
+                "message" : "Hello, world"
+            },
+            {
+              "pid": "0x0C",
+              "op": ">=",
+              "value": 4000,
+              "priority": 2,
+              "message" : "Alert two"
+          }
           ],
         "gauges": [
             {
@@ -25,6 +32,32 @@
                 "pid": "0x0C"
             }
         ]
-      }
+      },
+    "1" : {
+      "name":"alerts config two",
+      "enabled" : 1,
+      "default" : 0,
+      "theme" : "Stock",
+      "background":"bg.jpg",
+      "pids": ["0x0C"],
+        "dynamic": {},
+        "alerts": [
+          {
+              "pid": "0x0C",
+              "op": ">",
+              "value": 4000,
+              "priority": 1,
+              "message" : "Alert two"
+          }
+        ],
+      "gauges": [
+          {
+              "module": "Radial",
+              "path": "/Stock/",
+              "themeConfig": "120",
+              "pid": "0x0C"
+          }
+      ]
     }
+  }
 }
