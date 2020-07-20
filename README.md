@@ -2,7 +2,7 @@
 
 #### Installing:
 
-[![pipeline status](https://gitlab.com/kaiserengineering/DigitalDash_GUI/badges/poetry/pipeline.svg)](https://gitlab.com/kaiserengineering/DigitalDash_GUI/-/commits/master)
+[![pipeline status](https://gitlab.com/kaiserengineering/DigitalDash_GUI/badges/master/pipeline.svg)](https://gitlab.com/kaiserengineering/DigitalDash_GUI/-/commits/master)
 
 ##### Install Deps ( >=Python3.7)
 
