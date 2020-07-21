@@ -23,7 +23,7 @@ for o, arg in opts:
         Data_Source = Test(file=arg)
 
 if not len(opts):
-    run      = False
+    run      = True
     sys.argv = ['main.py']
 
 # Our Kivy deps
