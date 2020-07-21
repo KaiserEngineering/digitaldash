@@ -4,8 +4,6 @@ import sys
 from test import Test
 import os
 
-os.chdir( os.path.dirname(__file__) )
-
 os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 
 (run, Data_Source) = (True, False)
