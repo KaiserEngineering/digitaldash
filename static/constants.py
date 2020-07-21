@@ -44,6 +44,14 @@ KE_PID = {
     "0x04": {
        'name': 'CALCULATED_ENGINE_LOAD', 'shortName' : 'LOAD', 'decimals' : '1', 'units' : '%'
     },
+    "0x5C": {
+       'name': 'ENGINE_OIL_TEMPERATURE', 'shortName' : 'Oil Temp', 'decimals' : '0', 'uints' : 'Celcius',
+        'Min' : 0, 'Max' : 150
+    },
+    "0x6F": {
+       'name': 'TURBO_INLET_PRESSURE', 'shortName' : 'Boost', 'decimals' : '0', 'uints' : 'kPa',
+        'Min' : 0, 'Max' : 210
+    },
 }
 
 def GetConstants():
