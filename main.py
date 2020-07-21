@@ -141,8 +141,7 @@ class MyHandler(PatternMatchingEventHandler):
         super(MyHandler, self).__init__()
         self.DigitalDash = DigitalDash
 
-
-    patterns = ["*.json", "*.py", ".*kv"]
+    patterns = ["*.json"]
 
     def process(self, event):
         """
@@ -158,10 +157,6 @@ class MyHandler(PatternMatchingEventHandler):
 
     def on_modified(self, event):
         self.process(event)
-
-    def on_created(self, event):
-        self.process(event)
-
 
 Builder.load_file('digitaldash/kv/main.kv')
 
