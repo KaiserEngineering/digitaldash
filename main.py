@@ -6,23 +6,17 @@ import os
 
 os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
 
-(run, Data_Source) = (True, False)
+Data_Source = False
 
 opts, args = getopt.getopt(sys.argv[1:], "tdf:c:", ["test", "development", "file=", "config="])
 
+sys.argv = ['main.py']
 for o, arg in opts:
-    # test mode will not run GUI
-    if ( o in ("-t", "--test") ):
-        sys.argv = ['main.py']
     # Development mode runs with debug console - ctr + e to open it in GUI
-    elif ( o in ( "-d", "--development" )  ):
+    if ( o in ( "-d", "--development" )  ):
         sys.argv = ['main.py -m console']
     if ( o in ( "-f", "--file" ) ):
         Data_Source = Test(file=arg)
-
-if not len(opts):
-    run      = True
-    sys.argv = ['main.py']
 
 # Our Kivy deps
 import kivy
