@@ -308,7 +308,7 @@ class GUI(App):
                     elif ( callback.parent ):
                         self.alerts.remove_widget( callback )
 
-            self.update_values(data)
+                self.update_values(data)
         except Exception as e:
             error = 'Error found in main application loop on line {}: '.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e
             Logger.error(error)
