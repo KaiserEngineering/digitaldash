@@ -266,7 +266,7 @@ class GUI(App):
         the main application loop.
         """
         self.current = my_callback.index
-        my_callback.change(self, my_callback)
+        my_callback.change(self)
 
     def update_values(self: DD, data: List[float]) -> NoReturn:
         for widget in self.ObjectsToUpdate:

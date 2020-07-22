@@ -48,23 +48,23 @@ class Dynamic(object):
             return (eval(str(value) + self.op + str(self.value)))
         return 0
 
-    def change(self, App, callback) -> bool:
+    def change(self, App) -> bool:
         """
         Perform view change
             :param self: <DigitalDash.Dynamic.Dynamic>
             :param App: <DigitalDash> main application object
             :param callback: current callback object
         """
-        (ret, msg) = App.data_source.UpdateRequirements( App, App.views[callback.index]['pids'] )
+        (ret, msg) = App.data_source.UpdateRequirements( App, App.views[self.index]['pids'] )
         if not ret: Logger.error( "Could not update requirements from dynamic: %s" % msg )
 
         App.app.clear_widgets()
         App.background.clear_widgets()
         App.alerts.clear_widgets()
 
-        (App.background, App.background_source, App.alerts, App.ObjectsToUpdate, App.pids) = App.views[callback.index].values()
+        (App.background, App.background_source, App.alerts, App.ObjectsToUpdate, App.pids) = App.views[self.index].values()
 
-        App.background.add_widget(App.containers[callback.index])
+        App.background.add_widget(App.containers[self.index])
         App.background.add_widget(App.alerts)
 
         # Sort our dynamic and alerts callbacks by priority
