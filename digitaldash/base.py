@@ -15,14 +15,14 @@ class GaugeLayout(RelativeLayout):
     gauge_count = NumericProperty(300)
 
     def __init__(self, gauge_count):
-       super(GaugeLayout, self).__init__()
+        super(GaugeLayout, self).__init__()
 
-       if ( gauge_count == 1 ):
-           self.gauge_count = 0.015
-       elif ( gauge_count == 2 ):
-           self.gauge_count = 0.030
-       else:
-           self.gauge_count = 0.1
+        if ( gauge_count == 1 ):
+            self.gauge_count = 0.015
+        elif ( gauge_count == 2 ):
+            self.gauge_count = 0.030
+        else:
+            self.gauge_count = 0.1
 
 
 class Base(object):

@@ -48,7 +48,6 @@ from digitaldash.dynamic import Dynamic
 from digitaldash.alert import Alert
 from digitaldash.clock import Clock as KEClock
 
-
 if ( not Data_Source ):
     try:
         from ke_protocol import Serial
@@ -88,7 +87,7 @@ def setup(Layouts):
             dynamic_obj = Dynamic()
             (ret, msg) = dynamic_obj.new(**dynamic)
             if ( ret ):
-              callbacks.setdefault('dynamic', []).append(dynamic_obj)
+                callbacks.setdefault('dynamic', []).append(dynamic_obj)
             else:
                 Logger.error( msg )
                 callbacks.setdefault('dynamic', [])
@@ -125,25 +124,25 @@ def setup(Layouts):
     return (views, containers, callbacks)
 
 def on_config_change(self):
-        """
-        Method for reloading config data.
-        """
-        global ConfigFile
+    """
+    Method for reloading config data.
+    """
+    global ConfigFile
 
-        (self.views, self.containers, self.callbacks) = setup(views(ConfigFile))
+    (self.views, self.containers, self.callbacks) = setup(views(ConfigFile))
 
-        self.app.clear_widgets()
-        self.alerts.clear_widgets()
+    self.app.clear_widgets()
+    self.alerts.clear_widgets()
 
-        (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
+    (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
-        self.app.add_widget(self.background)
-        self.background.add_widget(self.containers[0])
-        self.background.add_widget(self.alerts)
+    self.app.add_widget(self.background)
+    self.background.add_widget(self.containers[0])
+    self.background.add_widget(self.alerts)
 
-        # Sort our dynamic and alerts callbacks by priority
-        self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
-        self.alert_callbacks   = sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True)
+    # Sort our dynamic and alerts callbacks by priority
+    self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
+    self.alert_callbacks   = sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True)
 
 def build_from_config(self):
     self.current = 0
@@ -159,7 +158,7 @@ def build_from_config(self):
     (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
     if ( not self.first_iteration and Data_Source and type(Data_Source) != Test ):
-        #Initialize our hardware set-up and verify everything is peachy
+    #Initialize our hardware set-up and verify everything is peachy
         (ret, msg) = Data_Source.InitializeHardware()
 
         if ( not ret ):
@@ -302,7 +301,7 @@ class GUI(App):
 
                     if(my_callback):
                         if ( callback.parent is None ):
-                          self.alerts.add_widget( my_callback )
+                            self.alerts.add_widget( my_callback )
                     elif ( callback.parent ):
                         self.alerts.remove_widget( callback )
 

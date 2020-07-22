@@ -6,7 +6,7 @@ class Dynamic(object):
     """
     Dynamic class for changing cached views. Use this class to switch between the
     views in **views[]**.
-        :param object: 
+        :param object:
     """
 
     def __init__(self):

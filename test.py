@@ -40,7 +40,7 @@ class Test():
     def Enumerate(self):
         """
         Iterate over test data.
-            :param self: <DigitalDash.Test>Test instance 
+            :param self: <DigitalDash.Test>Test instance
         """
         self.iteration += 1
         if (self.iteration >= self.rows):
@@ -63,7 +63,7 @@ class Test():
         return ( 1, "Reset hardware" )
 
     def PowerCycle( self ):
-       return ( 1, 'Power cycle' )
+        return ( 1, 'Power cycle' )
 
     def Testing( self, Config=None, Data=None ):
         from main import GUI
