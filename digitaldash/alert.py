@@ -6,22 +6,20 @@ from digitaldash.ke_lable import KELabel
 
 class Alert(KELabel):
     """
-    Create an Alert label if triggered.
-        :param Label: Kivy label class
+    Wrapper on digitaldash.ke_label that adds method for checking
+    when the label should be displayed.
     """
 
     def __init__(self, **args):
         """
-        Create Alert widget.
-            :param self: KE Alert object
-            :param args: {
-                    value     : <Float>,
-                    op        : <String>,
-                    index     : <Int>,
-                    priority  : <Int>,
-                    pid       : <String>,
-                    message   : <String>,
-                }
+        Args:
+          self (<digitaldash.alert>)
+          value (Float)  : value to compare pid value against
+          op (str)       : Operator for comparison
+          index (int)    : View id that this alert is bound to
+          priority (int) : Determines which alert is shown if multiple are true at once
+          pid (str)      : Byte code value of PID to check value of
+          message (str)  : Message to show on label
         """
         super(Alert, self).__init__(**args)
 
@@ -37,9 +35,9 @@ class Alert(KELabel):
     @lru_cache(maxsize=512)
     def check(self, value:float) -> bool:
         """
-        Check logic here.
-            :param self: Alert object
-            :param value: value to check Alert condition against
+        Args:
+            self (<digitaldash.alert>)
+            value (float) : value to check Alert condition against
         """
         if value == value:
             return (eval(str(value) + self.op + str(self.value)))

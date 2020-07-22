@@ -5,16 +5,7 @@ from kivy.properties import StringProperty
 from kivy.uix.image import Image
 
 class NeedleRadial(Needle, Image):
-    """
-    Create Needle widget.
-
-    Needle class is used to generate the needle for
-    gauges. This class also has the **setData()**
-    method, which can be called and update the needles
-    angle value.
-
-        :param MetaWidget: <DigitalDash.Components.NeedleRadial>
-    """
+    """Wrapper combining digitaldash.needles.needle and kivy.uix.image."""
 
     update = NumericProperty()
 

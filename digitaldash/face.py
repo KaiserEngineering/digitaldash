@@ -3,18 +3,13 @@ from kivy.uix.image import Image
 
 F = TypeVar('F', bound='Face')
 class Face(Image):
-    """
-    Create Face widget.
-
-    Face class will return Kivy Image for the face of
-    the gauge. Requires one argument of a path to the
-    image dir, where **gauge.png** should be stored.
-
-        :param MetaWidget: <DigitalDash.Components.Face>
-    """
+    "Wrapper around Kivy.uix.image."
 
     def __init__(self, **kwargs):
-        """Initite Face Widget."""
+        """
+        Args:
+          path (str): Path to png image for gauge face
+        """
         super(Face, self).__init__()
         working_path = kwargs.get( 'working_path', '' )
 

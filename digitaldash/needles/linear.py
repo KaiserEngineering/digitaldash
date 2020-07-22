@@ -6,16 +6,8 @@ from kivy.uix.stencilview import StencilView
 from typing import NoReturn
 
 class NeedleLinear(Needle, StencilView):
-    """
-    Create Needle widget.
+    """Wrapper combining digitaldash.needles.needle and kivy.uix.stencilview."""
 
-    Needle class is used to generate the needle for
-    gauges. This class also has the **setData()**
-    method, which can be called and update the needles
-    angle value.
-
-        :param MetaWidget: <DigitalDash.Components.NeedleLinear>
-    """
     update = NumericProperty()
     source = StringProperty()
     step   = NumericProperty()
@@ -31,18 +23,35 @@ class NeedleLinear(Needle, StencilView):
         self.Type = 'Linear'
 
     def _size(self, gauge) -> NoReturn:
-        '''Helper method that runs when gauge face changes size.'''
+        """
+        Helper method that runs when gauge face changes size.
+
+        Args:
+          self (<digitaldash.needles.linear>)
+          gauge (<digitaldash.gauge) : Base needle size off the size of the rest of
+            the gauge
+        """
         self.setStep()
         self.setData(self.true_value)
 
     def setStep(self) -> NoReturn:
-        """Method for setting the step size for Linear needles."""
+        """
+        Method for setting the step size for Linear needles.
+
+        Args:
+          self <digitaldash.needles.linear>
+        """
         self.step = self.width / (abs(self.min) + abs(self.max))
         if ( self.step == 0 ):
             self.step = 1.
 
     def SetOffset(self) -> NoReturn:
-        """Set offset for negative values"""
+        """
+        Set offset for negative values or 0 for strictly positive PIDs
+
+        Args:
+          self <digitaldash.needles.linear>
+        """
         if (self.min < 0):
             self.offset = self.min
         else:

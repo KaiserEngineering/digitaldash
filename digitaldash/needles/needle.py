@@ -47,8 +47,10 @@ class Needle():
     def setData(self, value=0) -> NoReturn:
         """
         Abstract setData method most commonly used.
-            :param self: Widget Object
-            :param value: Update value for gauge needle
+
+        Args:
+          self (<needle.*>) : One of the needle objects inheriting from digitaldash.needle
+          value (float)     : Value to set the needle to
         """
         value = float(value)
         self.true_value = value

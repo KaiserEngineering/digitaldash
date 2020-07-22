@@ -6,19 +6,23 @@ from kivy.logger import Logger
 KL = TypeVar('KL', bound='KELabel')
 class KELabel(Label):
     """
-    Create Label widget.
-
-    Send a default value that will stay with the Label
-    at all times 'default'.
-
-        :param MetaWidget: <DigitalDash.Components.KELabel>
-
-    If default value of label is set to '__PID__' then that string will
-    be replaced with the PID name for the data index the label is for.
+    Simple wrapper around Kivy.uix.label.
     """
 
     def __init__(self, **args):
-        """Intiate Label widget."""
+        """
+        Args:
+          default (str)     : The text that should always be displayed ie "Max: <num>"
+            (default is nothing)
+          color (tuple)     : RGBA values for text color
+            (default is white (1, 1, 1, 1))
+          font_size (int)   : Font size of label
+            (default is 25)
+          decimals (int)    : Number of decimal places displayed if receiving data
+            (default is 2)
+          pid (str)         : Byte code value of PID to get data from
+            (default is nothing)
+        """
         super(KELabel, self).__init__()
         self.minObserved     = 9999
         self.maxObserved     = -9999
@@ -48,9 +52,12 @@ class KELabel(Label):
     def setData(self: KL, value='') -> NoReturn:
         """
         Send data to Label widget.
+
         Check for Min/Max key words to cache values with regex checks.
-            :param self: LabelWidget object
-            :param value='': Numeric value for label
+
+        Args:
+            self (<digitaldash.ke_label>): KELabel object
+            value (float) : value that label is being updated to
         """
         value = float(value)
 

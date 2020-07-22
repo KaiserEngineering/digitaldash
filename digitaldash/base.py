@@ -13,6 +13,10 @@ from digitaldash.ke_lable import KELabel
 from typing import List
 
 class GaugeLayout(RelativeLayout):
+    """
+    Layout to organize objects that makeup a single gauge
+    Labels/Needle(s)/Face/Alert(s)
+    """
     gauge_count = NumericProperty(300)
 
     def __init__(self, gauge_count):
@@ -27,6 +31,8 @@ class GaugeLayout(RelativeLayout):
 
 
 class Base(object):
+    """Base class used to provide helper method for creating a gauge."""
+
     def __init__(self, **kwargs):
         super(Base, self).__init__()
         # Optional values
