@@ -87,7 +87,7 @@ class Serial():
 
         return self.ser_val
 
-    def UpdateRequirements(self, requirements):
+    def UpdateRequirements(self, app, requirements):
         global KE_CP_OP_CODES
         Logger.info("GUI: Updating requirements: " + str(requirements))
 

@@ -279,7 +279,7 @@ class GUI(App):
         global errors_seen
         try:
             if ( self.first_iteration ):
-                (ret, msg) = Data_Source.UpdateRequirements( self.pids )
+                (ret, msg) = Data_Source.UpdateRequirements( self, self.pids )
                 if ( not ret ):
                     Logger.error( msg )
                 self.first_iteration = False

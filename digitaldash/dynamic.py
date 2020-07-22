@@ -1,4 +1,5 @@
 from functools import lru_cache
+from kivy.logger import Logger
 """Dynamic widget will monitour a specified value and make a view change."""
 
 class Dynamic(object):
@@ -53,8 +54,8 @@ class Dynamic(object):
             :param App: <DigitalDash> main application object
             :param callback: current callback object
         """
-
-        App.data_source.UpdateRequirements(App.views[callback.index]['pids'])
+        (ret, msg) = App.data_source.UpdateRequirements( App, App.views[callback.index]['pids'] )
+        if not ret: Logger.error( "Could not update requirements from dynamic: %s" % msg )
 
         App.app.clear_widgets()
         App.background.clear_widgets()
