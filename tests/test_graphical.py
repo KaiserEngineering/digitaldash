@@ -12,12 +12,16 @@ from digitaldash.alert import Alert
 from digitaldash.massager import smooth
 from static.constants import KE_PID
 
+import pathlib
+working_path = str(pathlib.Path(__file__).parent.parent.absolute())
+
 t = test.Test()
 class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
         t.Testing( Config='etc/configs/single.json' )
         t.app.update_values({"0x0C": 50})
+        t.app.working_path = working_path
 
         for layout in t.app.app.children[0].children:
             for child in layout.children:
@@ -32,6 +36,8 @@ class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
         t.Testing( Config='etc/configs/alerts.json', Data='tests/data/test.csv' )
+        t.app.working_path = working_path
+
         for value, text in zip([50, 4001], ["Hello, world", "Alert two"]):
             t.app.data_source.data = [[value]]
             t.app.data_source.iteration = 0

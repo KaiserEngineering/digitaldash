@@ -3,17 +3,10 @@ import getopt
 import sys
 from test import Test
 import os
-from contextlib import contextmanager
+import pathlib
 
-@contextmanager
-def cd( newdir ):
-    prevdir = os.getcwd()
-    os.chdir( os.path.expanduser(newdir) )
-    try:
-        os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
-        yield True
-    finally:
-        os.chdir(prevdir)
+working_path = str(pathlib.Path(__file__).parent.absolute())
+os.environ["KIVY_HOME"] = working_path + "/etc/kivy/"
 
 (Data_Source, Testing) = (False, False)
 
@@ -29,11 +22,6 @@ for o, arg in opts:
     if ( o in ( "-t", "--test" ) ):
         Testing = True
 
-# Do not change directory when running tests, gitlab-runner runs into issues with cd
-if ( not Testing ):
-    with cd( os.getcwd() ) as resource:
-        if not resource: raise Exception("There's no place like home.")
-
 # Our Kivy deps
 import kivy
 from kivy.logger import Logger
@@ -47,10 +35,13 @@ from kivy.uix.boxlayout import BoxLayout
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 from typing import NoReturn, List, TypeVar
-from etc.config import views
+from etc.config import views, setWorkingPath
 from digitaldash.base import Base
 from digitaldash.dynamic import Dynamic
 from digitaldash.alert import Alert
+
+setWorkingPath( working_path )
+
 
 # Register standalone gauges
 from digitaldash.clock import Clock as KEClock
@@ -120,7 +111,7 @@ def setup(Layouts):
                 mod = globals()[widget['module']]()
             except KeyError:
                 mod = Base(gauge_count=len(view['gauges']))
-            ObjectsToUpdate.append(mod.buildComponent(container=container, view_id=int(id), **widget, **view))
+            ObjectsToUpdate.append(mod.buildComponent(working_path=working_path, container=container, view_id=int(id), **widget, **view))
 
         containers.append(container)
 
@@ -190,7 +181,7 @@ def build_from_config(self):
     if self.data_source: Clock.schedule_interval(self.loop, 0)
 
     observer = Observer()
-    observer.schedule(MyHandler(self), './etc/', recursive=True)
+    observer.schedule(MyHandler(self), working_path+'/etc/', recursive=True)
     observer.start()
 
     return self.app
@@ -220,7 +211,9 @@ class MyHandler(PatternMatchingEventHandler):
     def on_modified(self, event):
         self.process(event)
 
-Builder.load_file('digitaldash/kv/main.kv')
+# Load our KV files
+for file in os.listdir( working_path+'/digitaldash/kv/' ):
+    Builder.load_file(working_path+'/digitaldash/kv/'+str(file))
 
 (ConfigFile, errors_seen) = (None, {})
 DD = TypeVar('DD', bound='DigitalDash')
@@ -258,6 +251,7 @@ class GUI(App):
         self.app = AnchorLayout()
 
         self.data_source = Data_Source
+        self.working_path = working_path
         return build_from_config(self)
 
     def check_callback(self: DD, callback, priority, data):

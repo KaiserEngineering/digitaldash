@@ -14,4 +14,4 @@
             id: 'Alert-'+str(self.message)
             size: self.size
             pos: self.pos
-            source: 'static/imgs/Alerts/FordWarning.png'
+            source: app.working_path+'/static/imgs/Alerts/FordWarning.png' if hasattr(app, 'working_path') else 'static/imgs/Alerts/FordWarning.png'

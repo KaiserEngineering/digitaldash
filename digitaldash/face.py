@@ -16,7 +16,9 @@ class Face(Image):
     def __init__(self, **kwargs):
         """Initite Face Widget."""
         super(Face, self).__init__()
-        self.source     = "static/imgs"+kwargs.get('path', '') + 'gauge.png'
+        working_path = kwargs.get( 'working_path', '' )
+
+        self.source     = working_path+"/static/imgs"+kwargs.get('path', '') + 'gauge.png'
         self.size_hint  = (1, 1)
         self.pos        = (0, 0)
         for key in kwargs:

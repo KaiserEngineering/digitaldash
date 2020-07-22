@@ -60,7 +60,7 @@ class Base(object):
             self.needle.pid = ARGS['pid']
             # Adding widgets that get updated with data
             self.liveWidgets.append(self.needle)
-        self.face = Face(**args)
+        self.face = Face(**args, working_path=ARGS.get('working_path', ''))
 
         self.gauge = Gauge(Face=self.face, Needle=self.needle)
         self.Layout.add_widget(self.face)

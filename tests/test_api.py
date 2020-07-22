@@ -7,6 +7,10 @@ from digitaldash.ke_lable import KELabel
 from digitaldash.alert import Alert
 from digitaldash.massager import smooth
 from static.constants import KE_PID
+import test
+
+import pathlib
+working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
 def test_needle_simple():
     needles = (

@@ -3,11 +3,17 @@ import json
 from kivy.logger import Logger
 from kivy.core.window import Window
 
+working_path = '';
+
+def setWorkingPath(path):
+  global working_path
+  working_path = path
+
 def views(file=None):
     """Get data from JSON."""
     # Allow for a file to be submitted in place of default config, this is useful for tests
     if file == None or file == '':
-        file = 'etc/config.json'
+        file = working_path+'/etc/config.json'
     jsonData = {}
     with open(file) as data_file:
         jsonData = json.load(data_file)
@@ -30,12 +36,12 @@ def getThemeConfig(theme):
     jsonData = {}
 
     try:
-        with open('etc/themes/' + theme + '.json') as data_file:
+        with open(working_path+'/etc/themes/' + theme + '.json') as data_file:
             jsonData = json.load(data_file)
 
             data_file.close()
     except FileNotFoundError:
-        Logger.info( "Config: Could not find config file: " + 'etc/themes/' + theme + '.json' )
+        Logger.info( "Config: Could not find config file: " + '/etc/themes/' + theme + '.json' )
 
     return jsonData
 

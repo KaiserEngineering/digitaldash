@@ -34,8 +34,10 @@ class Needle():
         for key in args:
             setattr(self, key, args[key])
 
+        working_path = args.get( 'working_path', '' )
+
         (self.source, self.degrees, self.min, self.max) = (
-            "static/imgs"+args['path'] + 'needle.png',
+            working_path+"/static/imgs"+args['path'] + 'needle.png',
             float(args.get('degrees', 0)),
             KE_PID[args['pid']]['Min'],
             KE_PID[args['pid']]['Max']
