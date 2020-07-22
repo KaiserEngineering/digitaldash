@@ -22,7 +22,7 @@ class Test():
             for row in datareader:
                 self.data.append(row)
 
-    def Start(self, pids=[]):
+    def Start(self, pids=[], **args):
         """
         Main start method for test data.
             :param self: <DigitalDash.Test>Test instance
