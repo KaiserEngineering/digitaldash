@@ -1,8 +1,8 @@
 from typing import NoReturn, List, TypeVar
-from kivy.uix.image import AsyncImage
+from kivy.uix.image import Image
 
 F = TypeVar('F', bound='Face')
-class Face(AsyncImage):
+class Face(Image):
     """
     Create Face widget.
 

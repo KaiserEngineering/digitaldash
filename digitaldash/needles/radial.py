@@ -2,9 +2,9 @@ from kivy.uix.widget import Widget
 from digitaldash.needles.needle import Needle
 from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
-from kivy.uix.image import AsyncImage
+from kivy.uix.image import Image
 
-class NeedleRadial(Needle, AsyncImage):
+class NeedleRadial(Needle, Image):
     """
     Create Needle widget.
 
