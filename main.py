@@ -3,8 +3,19 @@ import getopt
 import sys
 from test import Test
 import os
+from contextlib import contextmanager
 
-os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
+@contextmanager
+def cd( newdir ):
+    prevdir = os.getcwd()
+    os.chdir( os.path.expanduser(newdir) )
+    try:
+        os.environ["KIVY_HOME"] = os.getcwd() + "/etc/kivy/"
+        yield True
+    finally:
+        os.chdir(prevdir)
+with cd( os.getcwd() ) as resource:
+    if not resource: raise Exception("There's no place like home.")
 
 Data_Source = False
 
@@ -120,7 +131,9 @@ def on_config_change(self):
         global ConfigFile
 
         (self.views, self.containers, self.callbacks) = setup(views(ConfigFile))
+
         self.app.clear_widgets()
+        self.alerts.clear_widgets()
 
         (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
