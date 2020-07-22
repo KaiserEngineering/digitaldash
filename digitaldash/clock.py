@@ -1,14 +1,14 @@
-from .ke_lable import KELabel
-from .face import Face
+from digitaldash.ke_lable import KELabel
+from digitaldash.face import Face
 import datetime
 from kivy.logger import Logger
 from kivy.animation import Animation
-from .base import Base
+from digitaldash.base import Base
 
 class Clock(Base, KELabel):
-    def __init__(self):
+    def __init__(self, pid=''):
         super(Clock, self).__init__()
-        self.text        = '12:00'
+        self.text = '12:00'
 
     def setData(self, val) -> None:
         now = datetime.datetime.now()
@@ -18,7 +18,6 @@ class Clock(Base, KELabel):
 
     def buildComponent(self, **ARGS) -> []:
         self.container = ARGS['container']
-        self.Layout.id = "Widgets-Layout-Clock"
 
         gauge = Face(path='Clock/')
         if gauge._coreimage:

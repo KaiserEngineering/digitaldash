@@ -29,7 +29,7 @@ class KELabel(Label):
         self.font_size       = self.ConfigFontSize
         self.decimals        = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
         self.ObjectType      = 'Label'
-        self.pid             = args['pid']
+        self.pid             = args.get('pid', None)
 
         if ( self.default == '__PID__' ):
             if ( args['pid'] in KE_PID ):

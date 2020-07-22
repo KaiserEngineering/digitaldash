@@ -46,6 +46,8 @@ from etc.config import views
 from digitaldash.base import Base
 from digitaldash.dynamic import Dynamic
 from digitaldash.alert import Alert
+
+# Register standalone gauges
 from digitaldash.clock import Clock as KEClock
 
 if ( not Data_Source ):
@@ -180,7 +182,7 @@ def build_from_config(self):
     self.background.add_widget(self.containers[0])
     self.background.add_widget(self.alerts)
 
-    if self.data_source: Clock.schedule_interval(self.loop, 0.1)
+    if self.data_source: Clock.schedule_interval(self.loop, 0)
 
     observer = Observer()
     observer.schedule(MyHandler(self), './etc/', recursive=True)
@@ -270,7 +272,13 @@ class GUI(App):
     def update_values(self: DD, data: List[float]) -> NoReturn:
         for widget in self.ObjectsToUpdate:
             for obj in widget:
-                obj.setData(data[obj.pid])
+                # REVIEW Is this a waste of resources checking every loop?
+                if obj.pid:
+                  obj.setData(data[obj.pid])
+                else:
+                  # This is for widgets that subscribe to
+                  # updates but don't need any pid data ( Clock ).
+                  obj.setData(0)
 
     def loop(self, dt):
         global errors_seen
