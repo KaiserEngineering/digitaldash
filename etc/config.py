@@ -35,7 +35,7 @@ def getThemeConfig(theme):
 
             data_file.close()
     except FileNotFoundError:
-        Logger.error( "Config: Could not find config file: " + 'etc/themes/' + theme + '.json' )
+        Logger.info( "Config: Could not find config file: " + 'etc/themes/' + theme + '.json' )
 
     return jsonData
 
