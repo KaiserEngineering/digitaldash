@@ -14,10 +14,8 @@ def cd( newdir ):
         yield True
     finally:
         os.chdir(prevdir)
-with cd( os.getcwd() ) as resource:
-    if not resource: raise Exception("There's no place like home.")
 
-Data_Source = False
+(Data_Source, Testing) = (False, False)
 
 opts, args = getopt.getopt(sys.argv[1:], "tdf:c:", ["test", "development", "file=", "config="])
 
@@ -28,6 +26,13 @@ for o, arg in opts:
         sys.argv = ['main.py -m console']
     if ( o in ( "-f", "--file" ) ):
         Data_Source = Test(file=arg)
+    if ( o in ( "-t", "--test" ) ):
+        Testing = True
+
+# Do not change directory when running tests, gitlab-runner runs into issues with cd
+if ( not Testing ):
+    with cd( os.getcwd() ) as resource:
+        if not resource: raise Exception("There's no place like home.")
 
 # Our Kivy deps
 import kivy
