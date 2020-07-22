@@ -2,6 +2,7 @@ from kivy.uix.widget import Widget
 from digitaldash.needles.needle import Needle
 from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
+from typing import NoReturn
 
 class NeedleEllipse(Needle, Widget):
     """
@@ -22,7 +23,7 @@ class NeedleEllipse(Needle, Widget):
         self.angle_start = -self.offset
         self.Type = 'Ellipse'
 
-    def _size(self, gauge):
+    def _size(self, gauge) -> NoReturn:
         '''Helper method that runs when gauge face changes size.'''
 
         if self.sizex == 512: return

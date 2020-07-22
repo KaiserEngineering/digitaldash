@@ -121,7 +121,7 @@ def setup(Layouts):
 
     return (views, containers, callbacks)
 
-def on_config_change(self):
+def on_config_change(self) -> NoReturn:
     """
     Method for reloading config data.
     """
@@ -142,7 +142,7 @@ def on_config_change(self):
     self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
     self.alert_callbacks   = sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True)
 
-def build_from_config(self):
+def build_from_config(self) -> NoReturn:
     self.current = 0
     self.first_iteration = False if hasattr(self, 'first_iteration') else True
     global ConfigFile

@@ -1,5 +1,5 @@
 from digitaldash.massager import smooth
-from typing import NoReturn, List, TypeVar
+from typing import NoReturn
 from static.constants import KE_PID
 
 class Needle():
@@ -13,7 +13,7 @@ class Needle():
         self.update = self.min * self.step - self.offset
         self.true_value = self.min
 
-    def _size(self, gauge):
+    def _size(self, gauge) -> NoReturn:
         '''Helper method that runs when gauge face changes size.'''
         (self.sizex, self.sizey) = gauge.face.norm_image_size
 

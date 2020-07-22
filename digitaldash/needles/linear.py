@@ -3,7 +3,7 @@ from digitaldash.needles.needle import Needle
 from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
 from kivy.uix.stencilview import StencilView
-from typing import NoReturn, List, TypeVar
+from typing import NoReturn
 
 class NeedleLinear(Needle, StencilView):
     """
@@ -30,7 +30,7 @@ class NeedleLinear(Needle, StencilView):
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
         self.Type = 'Linear'
 
-    def _size(self, gauge):
+    def _size(self, gauge) -> NoReturn:
         '''Helper method that runs when gauge face changes size.'''
         self.setStep()
         self.setData(self.true_value)

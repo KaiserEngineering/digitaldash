@@ -2,7 +2,7 @@
 from kivy.logger import Logger
 from math import *
 
-def smooth(Old, New, **args):
+def smooth(Old, New, **args) -> float:
     """
     Smoothing transitions between data points
         :param self: <DigitalDash.Massage>

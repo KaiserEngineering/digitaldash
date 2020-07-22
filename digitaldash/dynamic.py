@@ -1,5 +1,6 @@
 from functools import lru_cache
 from kivy.logger import Logger
+from typing import Tuple
 """Dynamic widget will monitour a specified value and make a view change."""
 
 class Dynamic(object):
@@ -24,7 +25,7 @@ class Dynamic(object):
         super(Dynamic, self).__init__()
         self.buffer = 0
 
-    def new( self, **args ):
+    def new( self, **args ) -> Tuple:
         if ( len(list(filter(lambda key: ( args.get(key, 'missing') == 'missing' ), ['value', 'op', 'index', 'priority', 'pid']))) ):
             return ( 0, "Missing required args for new dynamic object" )
 
@@ -37,7 +38,7 @@ class Dynamic(object):
         return ( 1, "New dynamic object successfully created" )
 
     @lru_cache(maxsize=512)
-    def check(self, value):
+    def check(self, value) -> bool:
         """
         Check logic here.
             :param self: Dynamic object
@@ -47,7 +48,7 @@ class Dynamic(object):
             return (eval(str(value) + self.op + str(self.value)))
         return 0
 
-    def change(self, App, callback):
+    def change(self, App, callback) -> bool:
         """
         Perform view change
             :param self: <DigitalDash.Dynamic.Dynamic>

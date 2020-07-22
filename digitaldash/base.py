@@ -10,6 +10,7 @@ from digitaldash.needles.radial import NeedleRadial as Radial
 from digitaldash.needles.linear import NeedleLinear as Linear
 from digitaldash.face import Face
 from digitaldash.ke_lable import KELabel
+from typing import List
 
 class GaugeLayout(RelativeLayout):
     gauge_count = NumericProperty(300)
@@ -37,7 +38,7 @@ class Base(object):
     def buildComponent(self,
                 container=BoxLayout(),
                 **ARGS
-            ):
+            ) -> List:
         """
         Create widgets for Dial.
             :param **ARGS:

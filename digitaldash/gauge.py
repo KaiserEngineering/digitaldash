@@ -2,6 +2,7 @@ from typing import NoReturn, List, TypeVar
 from kivy.properties import ObjectProperty
 from digitaldash.face import Face
 from digitaldash.needles.needle import Needle
+from typing import NoReturn
 
 G = TypeVar('G', bound='Gauge')
 class Gauge(object):
@@ -19,7 +20,7 @@ class Gauge(object):
         self.needle = ObjectProperty(None, ObjectType='Needle')
         self.buildGauge(Face=Face, Needle=Needle, **kwargs)
 
-    def buildGauge(self, **args):
+    def buildGauge(self, **args) -> NoReturn:
         self.needle = args.get('Needle', False)
         if ( self.needle ):
             self.needle.setStep()
@@ -27,11 +28,11 @@ class Gauge(object):
         self.face = args.get('Face', False)
 
         # This normalizes our canvas needle sizes and label positions
-        def _size(instance, size):
+        def _size(instance, size) -> NoReturn:
             if self.needle: self.needle._size(self)
             self._label_position()
         if ( self.face ): self.face.bind(size=_size)
 
-    def _label_position(self):
+    def _label_position(self) -> NoReturn:
         for label in self.labels:
             label.pos = (min(self.face.size) * label.new_pos[0], min(self.face.size) * label.new_pos[1])
