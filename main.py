@@ -145,6 +145,49 @@ def on_config_change(self):
         self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
         self.alert_callbacks   = sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True)
 
+def build_from_config(self):
+    self.current = 0
+    self.first_iteration = False if hasattr(self, 'first_iteration') else True
+    global ConfigFile
+
+    (self.views, self.containers, self.callbacks) = setup(views(file=ConfigFile))
+
+    # Sort our dynamic and alerts callbacks by priority
+    self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
+    self.alert_callbacks   = sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True)
+
+    (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
+
+    if ( not self.first_iteration and Data_Source and type(Data_Source) != Test ):
+        #Initialize our hardware set-up and verify everything is peachy
+        (ret, msg) = Data_Source.InitializeHardware()
+
+        if ( not ret ):
+            Logger.error("Hardware: Could not initialize hardware: " + msg)
+            count = 0
+            # Loop in the restart process until we succeed
+            while ( not ret and count < 3 ):
+                Logger.error("Hardware: Running hardware restart, attempt :#" + str(count))
+                (ret, msg) = Data_Source.InitializeHardware()
+
+                if ( not ret ):
+                    count = count + 1
+                    Logger.error( "Hardware: Hardware restart attempt: #"+str(count)+" failed: " + msg )
+        else:
+            Logger.info( msg )
+        self.data_source = Data_Source
+
+    self.app.add_widget(self.background)
+    self.background.add_widget(self.containers[0])
+    self.background.add_widget(self.alerts)
+
+    if self.data_source: Clock.schedule_interval(self.loop, 0.1)
+
+    observer = Observer()
+    observer.schedule(MyHandler(self), './etc/', recursive=True)
+    observer.start()
+
+    return self.app
 
 class MyHandler(PatternMatchingEventHandler):
     """
@@ -166,7 +209,7 @@ class MyHandler(PatternMatchingEventHandler):
             path/to/observed/file
         """
         # the file will be processed there
-        on_config_change(self.DigitalDash)
+        build_from_config(self.DigitalDash)
 
     def on_modified(self, event):
         self.process(event)
@@ -203,58 +246,13 @@ class GUI(App):
             Data_Source = data
 
     def build(self):
-        """Perform main build loop for Kivy app."""
+        """Called at start of application"""
 
         # Our main application object
         self.app = AnchorLayout()
 
         self.data_source = Data_Source
-
-        self.current = 0
-        global ConfigFile
-
-        (self.views, self.containers, self.callbacks) = setup(views(file=ConfigFile))
-
-        # Sort our dynamic and alerts callbacks by priority
-        self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
-        self.alert_callbacks   = sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True)
-
-        (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
-
-        if ( Data_Source and type(Data_Source) != Test ):
-            #Initialize our hardware set-up and verify everything is peachy
-            (ret, msg) = Data_Source.InitializeHardware()
-
-            if ( not ret ):
-                Logger.error("Hardware: Could not initialize hardware: " + msg)
-                count = 0
-                # Loop in the restart process until we succeed
-                while ( not ret and count < 3 ):
-                    Logger.error("Hardware: Running hardware restart, attempt :#" + str(count))
-                    (ret, msg) = Data_Source.InitializeHardware()
-
-                    if ( not ret ):
-                        count = count + 1
-                        Logger.error( "Hardware: Hardware restart attempt: #"+str(count)+" failed: " + msg )
-            else:
-                Logger.info( msg )
-            self.data_source = Data_Source
-
-        self.first_iteration = True
-        self.app.add_widget(self.background)
-        self.background.add_widget(self.containers[0])
-        self.background.add_widget(self.alerts)
-
-        # We consider program start a config change since it is just loading
-        # data from the config file
-        on_config_change(self)
-        if self.data_source: Clock.schedule_interval(self.loop, 0)
-
-        observer = Observer()
-        observer.schedule(MyHandler(self), './', recursive=True)
-        observer.start()
-
-        return self.app
+        return build_from_config(self)
 
     def check_callback(self: DD, callback, priority, data):
         # Check if any dynamic changes need to be made
