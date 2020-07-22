@@ -288,7 +288,7 @@ class GUI(App):
                 if ( not ret ):
                     Logger.error( msg )
                 self.first_iteration = False
-            ( my_callback, priority, data ) = ( None, 0, Data_Source.Start(pids=self.pids) )
+            ( my_callback, priority, data ) = ( None, 0, Data_Source.Start(app=self, pids=self.pids) )
 
             dynamic_change = False
             # Check dynamic gauges before any alerts in case we make a change
