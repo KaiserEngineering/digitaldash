@@ -5,8 +5,11 @@ use JSON;
 sub startup {
   my $self = shift;
 
-  $self->config(hypnotoad => {listen => ['http://*:3000'], proxy => 1, user => 'root'});
-  $self->plugin('mason1_renderer', { interp_params  => { comp_root => "/Users/craigkaiser/kaiserengineering/ke_webapp/templates/"}});
+  my $web_home = $ENV{'KEWebAppHome'} || '/opt/ke_webapp';
+  my $gui_home = $ENV{'KEGUIHome'} || '/opt/DigitalDash_GUI';
+
+  $self->config(hypnotoad => {listen => ['http://*:80'], proxy => 1, user => 'root'});
+  $self->plugin('mason1_renderer', { interp_params  => { comp_root => "$web_home/templates/" } });
 
   my $config = $self->plugin('Config');
   $self->secrets(['Kaiser-ke']);
@@ -15,7 +18,7 @@ sub startup {
   my $json;
   {
     local $/; #Enable 'slurp' mode
-    open my $fh, "<", "auth.txt";
+    open my $fh, "<", "$web_home/auth.txt";
     $json = <$fh>;
     close $fh;
   }
@@ -55,7 +58,7 @@ sub startup {
     my $json;
     {
       local $/; #Enable 'slurp' mode
-      open my $fh, "<", "/Users/craigkaiser/kaiserengineering/DigitalDash_GUI/digital_dash_gui/etc/config.json";
+      open my $fh, "<", "$gui_home/etc/config.json";
       $json = <$fh>;
       close $fh;
     }
@@ -70,7 +73,7 @@ sub startup {
     my $json_pretty = JSON::to_json( $config, { canonical => 1, pretty => 1 });
     {
       local $/; #Enable 'slurp' mode
-      open my $fh, ">", "/Users/craigkaiser/kaiserEngineering/DigitalDash_GUI/digital_dash_gui/etc/config.json";
+      open my $fh, ">", "$gui_home/etc/config.json";
       print $fh $json_pretty;
       close $fh;
     }
@@ -82,7 +85,7 @@ sub startup {
     my $json;
     {
       local $/; #Enable 'slurp' mode
-      open my $fh, "<", "/Users/craigkaiser/kaiserengineering/DigitalDash_GUI/digital_dash_gui/static/constants.json";
+      open my $fh, "<", "$gui_home/static/constants.json";
       $json = <$fh>;
       close $fh;
     }

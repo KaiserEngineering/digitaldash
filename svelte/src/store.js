@@ -5,14 +5,14 @@ export let constants     = writable( {} );
 export let notifications = writable( [] );
 
 export async function getConstants() {
-    const res  = await fetch('http://localhost:3000/api/constants');
+    const res  = await fetch('http://localhost/api/constants');
     const cons = await res.json();
 
     constants.set(cons);
 }
 
 export async function getConfig() {
-    const res = await fetch('http://localhost:3000/api/config');
+    const res = await fetch('http://localhost/api/config');
     const conf = await res.json();
 
     config.set(conf.views);
@@ -20,7 +20,7 @@ export async function getConfig() {
 
 export async function UpdateConfig(current_view, config, id) {
     current_view['id'] = id;
-    const res  = await fetch('http://foundation:3000/api/update',
+    const res  = await fetch('http://localhost/api/update',
         {
             method: 'PUT',
             headers: {
@@ -38,7 +38,7 @@ export async function UpdateConfig(current_view, config, id) {
 }
 
 export async function UpdateEnable( id ) {
-  const res  = await fetch('http://foundation:3000/api/enable',
+  const res  = await fetch('http://localhost/api/enable',
       {
           method: 'PUT',
           headers: {
@@ -55,7 +55,7 @@ export async function UpdateEnable( id ) {
 }
 
 export async function DeleteView(id) {
-  const res  = await fetch('http://foundation:3000/api/delete',
+  const res  = await fetch('http://localhost/api/delete',
       {
           method: 'PUT',
           headers: {
