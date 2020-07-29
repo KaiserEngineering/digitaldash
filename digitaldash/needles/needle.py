@@ -6,9 +6,9 @@ class Needle():
     """
     Base class for Needle classes to inherit from.
     """
-    def SetUp(self, **kwargs):
-        self.SetAttrs(**kwargs)
-        self.SetOffset()
+    def setUp(self, **kwargs):
+        self.setAttrs(**kwargs)
+        self.setOffset()
 
         self.update = self.min * self.step - self.offset
         self.true_value = self.min
@@ -17,7 +17,7 @@ class Needle():
         '''Helper method that runs when gauge face changes size.'''
         (self.sizex, self.sizey) = gauge.face.norm_image_size
 
-    def SetOffset(self) -> NoReturn:
+    def setOffset(self) -> NoReturn:
         if (self.min < 0):
             self.offset = self.degrees / 2 - ( abs(self.min) * self.step )
         else:
@@ -29,7 +29,7 @@ class Needle():
         if ( self.step == 0 ):
             self.step = 1
 
-    def SetAttrs(self, **args) -> NoReturn:
+    def setAttrs(self, **args) -> NoReturn:
         """Set basic attributes for widget."""
         for key in args:
             setattr(self, key, args[key])
