@@ -45,6 +45,7 @@ setWorkingPath( working_path )
 
 # Register standalone gauges
 from digitaldash.clock import Clock as KEClock
+from digitaldash.custom import Custom as KECustom
 
 if ( not Data_Source ):
     try:

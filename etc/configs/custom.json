@@ -1,0 +1,22 @@
+{
+  "views" : {
+    "0":
+      {
+          "name":"Custom config",
+          "enabled" : 1,
+          "default" : 1,
+          "background":"bg.jpg",
+          "theme" : "Custom",
+          "pids": ["0x0C"],
+          "dynamic": {},
+          "alerts": [],
+          "gauges": [
+          {
+              "module": "KECustom",
+              "path": "/Custom/",
+              "themeConfig": "Custom",
+              "pid": "Custom"
+          }]
+      }
+  }
+}
