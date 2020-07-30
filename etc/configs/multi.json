@@ -1,0 +1,46 @@
+{
+  "views" : {
+    "0": {
+            "name": "First view",
+            "enabled" : 1,
+            "default" : 1,
+            "background" : "bg.jpg",
+            "theme" : "Stock",
+            "pids" : [
+                "0x0C",
+                "0x0F",
+                "0x0B"
+            ],
+            "alerts" : [
+                {
+                    "pid": "0x0C",
+                    "op": ">",
+                    "value": 4000,
+                    "priority": 1,
+                    "message" : "Danger to Manifold"
+                }
+            ],
+            "dynamic" : {
+            },
+            "gauges" : [
+            {
+                "themeConfig" : "120",
+                "pid" : "0x0C",
+                "module" : "Ellipse",
+                "path" : "/Dirt/"
+            },
+            {
+              "themeConfig" : "120",
+              "pid" : "0x0C",
+              "module" : "Radial",
+              "path" : "/Modern/"
+          },
+          {
+            "themeConfig" : "Linear",
+            "pid" : "0x0C",
+            "module" : "Linear",
+            "path" : "/Linear/"
+        }
+        ]}
+    }
+}
