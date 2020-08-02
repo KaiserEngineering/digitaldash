@@ -3,6 +3,13 @@ from digitaldash.face import Face
 from kivy.logger import Logger
 from kivy.uix.relativelayout import RelativeLayout
 from digitaldash.base import Base
+from kivy.lang import Builder
+
+# KV Styling, here we set color of our text
+Builder.load_string("""
+<MyCustomLabel>:
+      color: 1, 0, 0, 1
+""")
 
 class MyCustomLabel(Label):
     '''Custom label class'''
