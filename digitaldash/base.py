@@ -9,7 +9,7 @@ from digitaldash.needles.ellipse import NeedleEllipse as Ellipse
 from digitaldash.needles.radial import NeedleRadial as Radial
 from digitaldash.needles.linear import NeedleLinear as Linear
 from digitaldash.face import Face
-from digitaldash.ke_lable import KELabel
+from digitaldash.ke_label import KELabel
 from typing import List
 
 class GaugeLayout(RelativeLayout):

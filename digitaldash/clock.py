@@ -1,4 +1,4 @@
-from digitaldash.ke_lable import KELabel
+from digitaldash.ke_label import KELabel
 from digitaldash.face import Face
 import datetime
 from kivy.logger import Logger
