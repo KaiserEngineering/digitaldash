@@ -13,8 +13,6 @@ class Face(Image):
         super(Face, self).__init__()
         working_path = kwargs.get( 'working_path', '' )
 
-        self.source     = working_path+"/static/imgs"+kwargs.get('path', '') + 'gauge.png'
-        self.size_hint  = (1, 1)
-        self.pos        = (0, 0)
+        self.source = working_path+"/static/imgs"+kwargs.get('path', '') + 'gauge.png'
         for key in kwargs:
             setattr(self, key, kwargs[key])
