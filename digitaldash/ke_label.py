@@ -46,8 +46,8 @@ class KELabel(Label):
         else:
             self.text = self.default
 
-        # Set position dynamically
-        self.new_pos = list(map( lambda x: x / 100, args.get('pos', (0, 0)) ))
+        pos_hints = args.get('pos', (0, 0))
+        self.pos_hint = {'x':pos_hints[0] / 100, 'y':pos_hints[1] / 100}
 
     def setData(self: KL, value='') -> NoReturn:
         """
