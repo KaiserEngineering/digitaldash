@@ -21,4 +21,5 @@ Unit Tests:
     script:
       - echo 'Starting tests'
       - python3 -m pytest tests/
+      - python3 -m bandit *.py
       - echo 'Finished tests'

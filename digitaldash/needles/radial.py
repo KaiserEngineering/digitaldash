@@ -12,5 +12,5 @@ class NeedleRadial(Needle, Image):
     def __init__(self, **kwargs):
         """Initiate Needle widget."""
         super(NeedleRadial, self).__init__()
-        self.setUp(**kwargs)
+        self.set_up(**kwargs)
         self.Type = 'Radial'

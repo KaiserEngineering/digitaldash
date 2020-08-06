@@ -18,7 +18,7 @@ class NeedleEllipse(Needle, Widget):
     def __init__(self, **kwargs):
         super(NeedleEllipse, self).__init__()
 
-        self.setUp(**kwargs)
-        self.setOffset()
+        self.set_up(**kwargs)
+        self.set_offset()
         self.angle_start = -self.offset
         self.Type = 'Ellipse'

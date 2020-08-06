@@ -1,7 +1,6 @@
 """Monitour a datapoint and create a alert if triggered."""
-from kivy.properties import NumericProperty
-from kivy.graphics import Color, Rectangle
 from functools import lru_cache
+import ast
 from digitaldash.ke_label import KELabel
 
 class Alert(KELabel):
@@ -23,22 +22,21 @@ class Alert(KELabel):
         """
         super(Alert, self).__init__(**args)
 
-        self.value     = args['value']
-        self.op        = args['op']
-        self.index     = int(args.get('index'))
-        self.priority  = args['priority']
-        self.pid       = args['pid']
-        self.message   = str(args['message'])
-        self.text      = self.message
-        self.buffer    = 0
+        self.value = args['value']
+        self.op = args['op']
+        self.index = int(args.get('index'))
+        self.priority = args['priority']
+        self.pid = args['pid']
+        self.message = str(args['message'])
+        self.text = self.message
+        self.buffer = 0
 
     @lru_cache(maxsize=512)
-    def check(self, value:float) -> bool:
+    def check(self, value: float) -> bool:
         """
         Args:
             self (<digitaldash.alert>)
             value (float) : value to check Alert condition against
         """
-        if value == value:
-            return (eval(str(value) + self.op + str(self.value)))
-        return 0
+        test = str(value) + self.op + str(self.value)
+        return eval(test)

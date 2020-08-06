@@ -18,7 +18,7 @@ class NeedleLinear(Needle, StencilView):
 
     def __init__(self, **kwargs):
         super(NeedleLinear, self).__init__()
-        self.setUp(**kwargs)
+        self.set_up(**kwargs)
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
         self.Type = 'Linear'
 
@@ -34,7 +34,7 @@ class NeedleLinear(Needle, StencilView):
         self.setStep()
         self.setData(self.true_value)
 
-    def setStep(self) -> NoReturn:
+    def set_step(self) -> NoReturn:
         """
         Method for setting the step size for Linear needles.
 
@@ -45,7 +45,7 @@ class NeedleLinear(Needle, StencilView):
         if ( self.step == 0 ):
             self.step = 1.
 
-    def setOffset(self) -> NoReturn:
+    def set_offset(self) -> NoReturn:
         """
         Set offset for negative values or 0 for strictly positive PIDs
 

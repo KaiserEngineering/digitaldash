@@ -1,8 +1,10 @@
+"""Dynamic class used for changing views"""
+from typing import Tuple
+import ast
 from functools import lru_cache
 from kivy.logger import Logger
-from typing import Tuple
 
-class Dynamic(object):
+class Dynamic():
     """
     The dynamic class is applied on per view, where the dynamic object has
     the ability to change the current active view to the linked view.
@@ -23,7 +25,7 @@ class Dynamic(object):
         super(Dynamic, self).__init__()
         self.buffer = 0
 
-    def new( self, **args ) -> Tuple:
+    def new(self, **args) -> Tuple:
         """
         We use 'new' here so that we can return a failure notice
 
@@ -36,16 +38,18 @@ class Dynamic(object):
           priority (int) : This is used to determine order of dynamic checks
           pid            : The pid to get a value to compare to the 'value' arg provided
         """
-        if ( len(list(filter(lambda key: ( args.get(key, 'missing') == 'missing' ), ['value', 'op', 'index', 'priority', 'pid']))) ):
-            return ( 0, "Missing required args for new dynamic object" )
+        if len(list(filter(lambda key:
+                           (args.get(key, 'missing') == 'missing'),
+                           ['value', 'op', 'index', 'priority', 'pid']))) > 0:
+            return (0, "Missing required args for new dynamic object")
 
-        self.value     = int(args.get('value'))
-        self.op        = args.get('op')
-        self.index     = int(args.get('index'))
-        self.priority  = int(args.get('priority'))
-        self.pid       = args.get('pid', '')
+        self.value = int(args.get('value'))
+        self.op = args.get('op')
+        self.index = int(args.get('index'))
+        self.priority = int(args.get('priority'))
+        self.pid = args.get('pid', '')
 
-        return ( 1, "New dynamic object successfully created" )
+        return (1, "New dynamic object successfully created")
 
     @lru_cache(maxsize=512)
     def check(self, value) -> bool:
@@ -54,34 +58,37 @@ class Dynamic(object):
           self (<digitaldash.dynamic>) : Current dynamic object
           value (float): Value to perform comparison against
         """
-        if value == value:
-            return (eval(str(value) + self.op + str(self.value)))
-        return 0
+        test = str(value) + self.op + str(self.value)
+        return eval(test)
 
-    def change(self, App) -> bool:
+    def change(self, app) -> bool:
         """
         Perform view change
 
         Args:
           self (<digitaldash.dynamic>) : The current Dynamic object
-          App (<GUI>) : The main application object
+          app (<GUI>) : The main application object
         """
-        (ret, msg) = App.data_source.UpdateRequirements( App, App.views[self.index]['pids'] )
-        if not ret: Logger.error( "Could not update requirements from dynamic: %s" % msg )
+        (ret, msg) = app.data_source.update_requirements(app, app.views[self.index]['pids'])
+        if not ret:
+            Logger.error("Could not update requirements from dynamic: %s", msg)
 
-        App.app.clear_widgets()
-        App.background.clear_widgets()
-        App.alerts.clear_widgets()
+        app.app.clear_widgets()
+        app.background.clear_widgets()
+        app.alerts.clear_widgets()
 
-        (App.background, App.background_source, App.alerts, App.ObjectsToUpdate, App.pids) = App.views[self.index].values()
+        (app.background, app.background_source, app.alerts,
+         app.ObjectsToUpdate, app.pids) = app.views[self.index].values()
 
-        App.background.add_widget(App.containers[self.index])
-        App.background.add_widget(App.alerts)
+        app.background.add_widget(app.containers[self.index])
+        app.background.add_widget(app.alerts)
 
         # Sort our dynamic and alerts callbacks by priority
-        App.dynamic_callbacks = sorted(App.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
-        App.alert_callbacks   = sorted(App.callbacks[App.current], key=lambda x: x.priority, reverse=True)
+        app.dynamic_callbacks = sorted(app.callbacks['dynamic'],
+                                       key=lambda x: x.priority, reverse=True)
+        app.alert_callbacks = sorted(app.callbacks[app.current],
+                                     key=lambda x: x.priority, reverse=True)
 
-        App.app.add_widget(App.background)
+        app.app.add_widget(app.background)
 
         return True

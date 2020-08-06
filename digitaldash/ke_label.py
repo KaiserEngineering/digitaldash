@@ -1,4 +1,5 @@
-from typing import NoReturn, List, TypeVar
+"""Wrapper around kivy.uix.label"""
+from typing import NoReturn, TypeVar
 from kivy.uix.label import Label
 from static.constants import KE_PID
 from kivy.logger import Logger
@@ -24,24 +25,24 @@ class KELabel(Label):
             (default is nothing)
         """
         super(KELabel, self).__init__()
-        self.minObserved     = 9999
-        self.maxObserved     = -9999
-        self.default         = args.get('default', '')
-        self.ConfigColor     = args.get('color', (1, 1, 1 ,1)) # White
-        self.color           = self.ConfigColor
-        self.ConfigFontSize  = args.get('font_size', 25)
-        self.font_size       = self.ConfigFontSize
-        self.decimals        = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
-        self.ObjectType      = 'Label'
-        self.pid             = args.get('pid', None)
+        self.min_observed = 9999
+        self.max_observed = -9999
+        self.default = args.get('default', '')
+        self.config_color = args.get('color', (1, 1, 1, 1)) # White
+        self.color = self.config_color
+        self.config_font_size = args.get('font_size', 25)
+        self.font_size = self.config_font_size
+        self.decimals = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
+        self.object_type = 'Label'
+        self.pid = args.get('pid', None)
 
-        if ( self.default == '__PID__' ):
-            if ( args['pid'] in KE_PID ):
+        if self.default == '__PID__':
+            if args['pid'] in KE_PID:
                 self.default = str(KE_PID[self.pid]['shortName'])
             else:
                 self.default = KE_PID[self.pid]['name']
-                Logger.error( "Could not load shortName from Static.Constants for PID: "+self.pid+" : "+str(e) )
-        if ( 'data' in args and args['data'] ):
+                Logger.error("Could not load shortName from Static.Constants for PID: %s : %s", self.pid, str(e))
+        if 'data' in args and args['data']:
             self.text = self.default +' 0'
         else:
             self.text = self.default
@@ -49,7 +50,7 @@ class KELabel(Label):
         pos_hints = args.get('pos', (0, 0))
         self.pos_hint = {'x':pos_hints[0] / 100, 'y':pos_hints[1] / 100}
 
-    def setData(self: KL, value='') -> NoReturn:
+    def set_data(self: KL, value='') -> NoReturn:
         """
         Send data to Label widget.
 
@@ -61,13 +62,13 @@ class KELabel(Label):
         """
         value = float(value)
 
-        if ( self.default == 'Min: ' ):
-            if ( self.minObserved > value ):
-                self.minObserved = value
+        if self.default == 'Min: ':
+            if self.min_observed > value:
+                self.min_observed = value
                 self.text = ("{0:.%sf}"%(self.decimals)).format(value)
-        elif ( self.default == 'Max: ' ):
-            if ( self.maxObserved < value ):
-                self.maxObserved = value
+        elif self.default == 'Max: ':
+            if self.max_observed < value:
+                self.max_observed = value
                 self.text = ("{0:.%sf}"%(self.decimals)).format(value)
         else:
             self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)

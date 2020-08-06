@@ -1,3 +1,5 @@
+"""Place for storing useful constants"""
+
 KE_CP_OP_CODES = {
     'KE_RESERVED'                : 0x00,    # Reserved
     'KE_ACK'                     : 0x01,    # Positive acknowledgment
@@ -26,33 +28,36 @@ KE_CP_OP_CODES = {
 }
 
 KE_PID = {
-   "0x0C": {
-       'name': 'ENGINE_RPM', 'shortName' : 'RPM', 'decimals' : '0', 'units' : 'RPM',
-       'Min' : 0, 'Max' : 8000
+    "0x0C": {
+        'name': 'ENGINE_RPM', 'shortName' : 'RPM', 'decimals' : '0',
+        'units' : 'RPM', 'Min' : 0, 'Max' : 8000
     },
-   "0x0F": {
-       'name': 'INTAKE_AIR_TEMPERATURE', 'shortName' : 'IAT', 'decimals' : '2', 'units' : 'Celcius',
-       'Min' : 0, 'Max' : 215
+    "0x0F": {
+        'name': 'INTAKE_AIR_TEMPERATURE', 'shortName' : 'IAT', 'decimals' : '2',
+        'units' : 'Celcius', 'Min' : 0, 'Max' : 215
     },
     "0x0B": {
-       'name': 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE', 'shortName' : 'MAP', 'decimals' : '0', 'units' : 'kPa',
-       'Min' : 0, 'Max' : 255
+        'name': 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE', 'shortName' : 'MAP',
+        'decimals' : '0', 'units' : 'kPa', 'Min' : 0, 'Max' : 255
     },
     "0x05": {
-       'name': 'ENGINE_COOLANT_TEMPERATURE', 'shortName' : 'ECT', 'decimals' : '1', 'units' : 'Celcius'
+        'name': 'ENGINE_COOLANT_TEMPERATURE', 'shortName' : 'ECT', 'decimals' : '1',
+        'units' : 'Celcius'
     },
     "0x04": {
-       'name': 'CALCULATED_ENGINE_LOAD', 'shortName' : 'LOAD', 'decimals' : '1', 'units' : '%'
+        'name': 'CALCULATED_ENGINE_LOAD', 'shortName' : 'LOAD', 'decimals' : '1',
+        'units' : '%'
     },
     "0x5C": {
-       'name': 'ENGINE_OIL_TEMPERATURE', 'shortName' : 'Oil Temp', 'decimals' : '0', 'uints' : 'Celcius',
-        'Min' : 0, 'Max' : 150
+        'name': 'ENGINE_OIL_TEMPERATURE', 'shortName' : 'Oil Temp', 'decimals' : '0',
+        'uints' : 'Celcius', 'Min' : 0, 'Max' : 150
     },
     "0x6F": {
-       'name': 'TURBO_INLET_PRESSURE', 'shortName' : 'Boost', 'decimals' : '0', 'uints' : 'kPa',
-        'Min' : 0, 'Max' : 210
+        'name': 'TURBO_INLET_PRESSURE', 'shortName' : 'Boost', 'decimals' : '0',
+        'uints' : 'kPa', 'Min' : 0, 'Max' : 210
     },
 }
 
-def GetConstants():
-    return { **KE_PID, **KE_CP_OP_CODES }
+def get_constants():
+    """Return combined constants dictionary"""
+    return {**KE_PID, **KE_CP_OP_CODES}

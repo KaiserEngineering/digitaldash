@@ -10,7 +10,7 @@ from digitaldash.ke_label import KELabel
 from typing import List
 from etc import config
 
-class Base(object):
+class Base():
     """Base class used to provide helper method for creating a gauge."""
 
     def __init__(self, **kwargs):
@@ -18,7 +18,7 @@ class Base(object):
         # Optional values
         self.liveWidgets = []
 
-    def buildComponent(self, container, **ARGS) -> List:
+    def build_component(self, container, **ARGS) -> List:
         """
         Create widgets for Dial.
             :param **ARGS:

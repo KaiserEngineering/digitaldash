@@ -1,11 +1,9 @@
-from typing import NoReturn, List, TypeVar
+"""Class to hold gauges face and needle"""
+from typing import NoReturn, TypeVar
 from kivy.properties import ObjectProperty
-from digitaldash.face import Face
-from digitaldash.needles.needle import Needle
-from typing import NoReturn
 
 G = TypeVar('G', bound='Gauge')
-class Gauge(object):
+class Gauge():
     """
     Class for coupling Needle and Face instances.
     """
@@ -18,13 +16,14 @@ class Gauge(object):
         """
         super(Gauge, self).__init__(**kwargs)
         self.labels = []
-        self.face   = ObjectProperty(Face, ObjectType='Face')
+        self.face = ObjectProperty(Face, ObjectType='Face')
         self.needle = ObjectProperty(None, ObjectType='Needle')
-        self.buildGauge(Face=Face, Needle=Needle, **kwargs)
+        self.build_gauge(Face=Face, Needle=Needle, **kwargs)
 
-    def buildGauge(self, **args) -> NoReturn:
+    def build_gauge(self, **args) -> NoReturn:
+        """Build"""
         self.needle = args.get('Needle', False)
-        if ( self.needle ):
-            self.needle.setStep()
-            self.needle.setData(self.needle.min)
+        if self.needle:
+            self.needle.set_step()
+            self.needle.set_data(self.needle.min)
         self.face = args.get('Face', False)

@@ -1,3 +1,4 @@
+"""Wrapper around kivy.uix.image for gauge face"""
 from typing import NoReturn, List, TypeVar
 from kivy.uix.image import Image
 
@@ -11,7 +12,7 @@ class Face(Image):
           path (str): Path to png image for gauge face
         """
         super(Face, self).__init__()
-        working_path = kwargs.get( 'working_path', '' )
+        working_path = kwargs.get('working_path', '')
 
         self.source = working_path+"/static/imgs"+kwargs.get('path', '') + 'gauge.png'
         for key in kwargs:

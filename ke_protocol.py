@@ -45,7 +45,7 @@ class Serial():
 
         # There shall always be an opcode and EOL
         if ( len(data_line) < 2 ):
-            self.UpdateRequirements( args.get('app', {}), self.requirements )
+            self.update_requirements( args.get('app', {}), self.requirements )
             Logger.info("GUI: Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
             return self.ser_val
 
@@ -87,7 +87,7 @@ class Serial():
 
         return self.ser_val
 
-    def UpdateRequirements(self, app, requirements):
+    def update_requirements(self, app, requirements):
         global KE_CP_OP_CODES
         Logger.info("GUI: Updating requirements: " + str(requirements))
 
