@@ -28,17 +28,3 @@ class Gauge(object):
             self.needle.setStep()
             self.needle.setData(self.needle.min)
         self.face = args.get('Face', False)
-
-        def _size(instance, size) -> NoReturn:
-            "This normalizes our canvas needle sizes and label positions"
-            if self.needle:
-              self.needle._size(self)
-            self._label_position()
-
-        if ( self.face ):
-          self.face.bind(size=_size)
-
-    def _label_position(self) -> NoReturn:
-        "This ensure our labels are correctly positioned"
-        for label in self.labels:
-            label.pos = (min(self.face.size) * label.new_pos[0], min(self.face.size) * label.new_pos[1])
