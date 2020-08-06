@@ -1,4 +1,5 @@
 # """Testing basics of DigitalDash."""
+import test
 from digitaldash.needles.needle import Needle
 from digitaldash.needles.radial import NeedleRadial
 from digitaldash.needles.linear import NeedleLinear
@@ -7,12 +8,12 @@ from digitaldash.ke_label import KELabel
 from digitaldash.alert import Alert
 from digitaldash.massager import smooth
 from static.constants import KE_PID
-import test
 
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
 def test_needle_simple():
+    assert 1 == 1
     needles = (
         NeedleRadial(
             themeConfig=120, degrees=120, path='/Stock/',
