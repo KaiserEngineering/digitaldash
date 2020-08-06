@@ -72,5 +72,5 @@ class Test():
             self.Load( Data )
 
         self.app = GUI()
-        self.app.new(config=Config, data=self)
+        self.app.new(configFile=Config, data=self)
         self.app.run()

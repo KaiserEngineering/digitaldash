@@ -32,16 +32,16 @@ from kivy.properties import StringProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.relativelayout import RelativeLayout
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 from typing import NoReturn, List, TypeVar
-from etc.config import views, setWorkingPath
+from etc import config
 from digitaldash.base import Base
 from digitaldash.dynamic import Dynamic
 from digitaldash.alert import Alert
 
-setWorkingPath( working_path )
-
+config.setWorkingPath( working_path )
 
 # Register standalone gauges
 from digitaldash.clock import Clock as KEClock
@@ -128,7 +128,7 @@ def on_config_change(self) -> NoReturn:
     """
     global ConfigFile
 
-    (self.views, self.containers, self.callbacks) = setup(views(ConfigFile))
+    (self.views, self.containers, self.callbacks) = setup(config.views(ConfigFile))
 
     self.app.clear_widgets()
     self.alerts.clear_widgets()
@@ -148,7 +148,7 @@ def build_from_config(self) -> NoReturn:
     self.first_iteration = False if hasattr(self, 'first_iteration') else True
     global ConfigFile
 
-    (self.views, self.containers, self.callbacks) = setup(views(file=ConfigFile))
+    (self.views, self.containers, self.callbacks) = setup(config.views(file=ConfigFile))
 
     # Sort our dynamic and alerts callbacks by priority
     self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
@@ -232,13 +232,13 @@ class GUI(App):
 
     background_source = StringProperty()
 
-    def new(self, config=None, data=None):
+    def new(self, configFile=None, data=None):
         """
         This method can be used to set any values before the app starts, this is useful for
         testing.
         """
         global ConfigFile
-        ConfigFile  = config
+        ConfigFile  = configFile
         self.config = ConfigFile
 
         if ( data ):
@@ -336,10 +336,10 @@ class Background(AnchorLayout):
 if __name__ == '__main__':
     dd = GUI()
 
-    config = None
+    configFile = None
     for o, arg in opts:
         if o in ( "-c", "--config" ):
-            config = arg
-    dd.new(config=config, data=Data_Source)
+            configFile = arg
+    dd.new(configFile=configFile, data=Data_Source)
 
     dd.run()

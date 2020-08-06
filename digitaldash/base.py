@@ -36,28 +36,21 @@ class Base(object):
     def __init__(self, **kwargs):
         super(Base, self).__init__()
         # Optional values
-        self.Layout      = GaugeLayout(kwargs.get('gauge_count', 0))
         self.liveWidgets = []
-        self.container   = None
 
-
-    def buildComponent(self,
-                container=BoxLayout(),
-                **ARGS
-            ) -> List:
+    def buildComponent(self, container, **ARGS) -> List:
         """
         Create widgets for Dial.
             :param **ARGS:
         """
+        self.container = container
         args = {}
         not_error = ARGS['theme'] != 'Error'
-
-        self.container = container
 
         args['path'] = ARGS['path']
 
         # Import theme specifc Config
-        themeConfig = getThemeConfig(ARGS['module'] + '/' + str(ARGS['themeConfig']))
+        themeConfig = config.getThemeConfig(ARGS['module'] + '/' + str(ARGS['themeConfig']))
         args['themeConfig'] = {**ARGS, **themeConfig}
 
         self.needle = None
