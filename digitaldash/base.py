@@ -1,8 +1,5 @@
 """Abstract classes."""
 from kivy.properties import NumericProperty
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.boxlayout import BoxLayout
-from etc.config import getThemeConfig
 from kivy.logger import Logger
 from digitaldash.gauge import Gauge
 from digitaldash.needles.ellipse import NeedleEllipse as Ellipse
@@ -11,24 +8,7 @@ from digitaldash.needles.linear import NeedleLinear as Linear
 from digitaldash.face import Face
 from digitaldash.ke_label import KELabel
 from typing import List
-
-class GaugeLayout(RelativeLayout):
-    """
-    Layout to organize objects that makeup a single gauge
-    Labels/Needle(s)/Face/Alert(s)
-    """
-    gauge_count = NumericProperty(300)
-
-    def __init__(self, gauge_count):
-        super(GaugeLayout, self).__init__()
-
-        if ( gauge_count == 1 ):
-            self.gauge_count = 0.015
-        elif ( gauge_count == 2 ):
-            self.gauge_count = 0.030
-        else:
-            self.gauge_count = 0.1
-
+from etc import config
 
 class Base(object):
     """Base class used to provide helper method for creating a gauge."""
@@ -63,9 +43,11 @@ class Base(object):
         self.face = Face(**args, working_path=ARGS.get('working_path', ''))
 
         self.gauge = Gauge(Face=self.face, Needle=self.needle)
-        self.Layout.add_widget(self.face)
+        self.container.add_widget(self.face)
+
         # Needle needs to be added after so its on top
-        if self.needle: self.Layout.add_widget(self.needle)
+        if self.needle:
+            self.container.add_widget(self.needle)
 
         # Create our labels
         for labelConfig in themeConfig['labels']:
@@ -78,8 +60,6 @@ class Base(object):
             # Add to data recieving widgets
             if ('data' in labelConfig):
                 self.liveWidgets.append(label)
-            self.Layout.add_widget(label)
-
-        self.container.add_widget(self.Layout)
+            self.container.add_widget(label)
 
         return self.liveWidgets
