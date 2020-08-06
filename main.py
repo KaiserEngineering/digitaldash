@@ -101,18 +101,35 @@ def setup(Layouts):
         else:
             callbacks.setdefault(view_count, [])
 
-        container = BoxLayout(padding=(30, 0, 30, 0))
+        container = FloatLayout()
         ObjectsToUpdate = []
 
+        num_gauges = len(view['gauges'])
+        # Get our % width that each gauge should claim
+        percent_width = ( 1 / num_gauges ) - 0.03
+
+        # If we have more than 1 gauge we need a negative offset since we start centered
+        multi_offset = percent_width if num_gauges > 1 else 0
+
+        gauge_count = 0
         for widget in view['gauges']:
             mod = None
+
+            # This handles our gauge positions, see the following for reference:
+            # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
+            subcontainer = RelativeLayout(
+              pos_hint={'x': percent_width * gauge_count - multi_offset, 'top': .98 },
+              size_hint_max_y= 250
+            )
+            container.add_widget(subcontainer)
 
             try:
                 # This loads any standalone modules
                 mod = globals()[widget['module']]()
             except KeyError:
                 mod = Base(gauge_count=len(view['gauges']))
-            ObjectsToUpdate.append(mod.buildComponent(working_path=working_path, container=container, view_id=int(id), **widget, **view))
+            ObjectsToUpdate.append(mod.buildComponent(working_path=working_path, container=subcontainer, view_id=int(id), **widget, **view))
+            gauge_count += 1
 
         containers.append(container)
 
