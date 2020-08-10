@@ -53,8 +53,10 @@ class Base():
         for labelConfig in themeConfig['labels']:
             labelConfig['pid'] = ARGS['pids'][ARGS['pids'].index(ARGS['pid'])]
 
+            labelConfig = {**ARGS, **labelConfig}
+
             # Create Label widget
-            label = KELabel(**labelConfig, min=self.needle.min if self.needle else 0)
+            label = KELabel(**labelConfig, gauge=self.gauge, min=self.needle.min if self.needle else 0)
             self.gauge.labels.append(label)
 
             # Add to data recieving widgets

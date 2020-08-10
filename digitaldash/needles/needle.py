@@ -13,10 +13,6 @@ class Needle():
         self.update = self.min * self.step - self.offset
         self.true_value = self.min
 
-    def _size(self, gauge) -> NoReturn:
-        '''Helper method that runs when gauge face changes size.'''
-        (self.sizex, self.sizey) = gauge.face.norm_image_size
-
     def set_offset(self) -> NoReturn:
         if (self.min < 0):
             self.offset = self.degrees / 2 - ( abs(self.min) * self.step )

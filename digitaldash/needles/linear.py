@@ -22,18 +22,6 @@ class NeedleLinear(Needle, StencilView):
         (self.r, self.g, self.b, self.a) = (1, 1, 1, 1)
         self.Type = 'Linear'
 
-    def _size(self, gauge) -> NoReturn:
-        """
-        Helper method that runs when gauge face changes size.
-
-        Args:
-          self (<digitaldash.needles.linear>)
-          gauge (<digitaldash.gauge) : Base needle size off the size of the rest of
-            the gauge
-        """
-        self.setStep()
-        self.setData(self.true_value)
-
     def set_step(self) -> NoReturn:
         """
         Method for setting the step size for Linear needles.
@@ -41,7 +29,7 @@ class NeedleLinear(Needle, StencilView):
         Args:
           self <digitaldash.needles.linear>
         """
-        self.step = self.width / (abs(self.min) + abs(self.max))
+        self.step = (self.width * 2) / (abs(self.min) + abs(self.max))
         if ( self.step == 0 ):
             self.step = 1.
 

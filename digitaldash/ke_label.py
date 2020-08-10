@@ -47,8 +47,19 @@ class KELabel(Label):
         else:
             self.text = self.default
 
+        self.set_pos(**args)
+
+    def set_pos(self: KL, **args):
+        """This allows the position code to be overwritten, we use this
+        for alerts."""
         pos_hints = args.get('pos', (0, 0))
-        self.pos_hint = {'x':pos_hints[0] / 100, 'y':pos_hints[1] / 100}
+
+        if args.get('gauge'):
+            self.pos = (args.get('x_position') + pos_hints[0], self.pos[1] + pos_hints[1])
+        else:
+            self.pos_hint = {'x':pos_hints[0] / 100, 'y':pos_hints[1] / 100}
+
+        # self.pos = (pos_hints[0], pos_hints[1])
 
     def set_data(self: KL, value='') -> NoReturn:
         """

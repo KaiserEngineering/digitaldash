@@ -12,8 +12,6 @@ class NeedleEllipse(Needle, Widget):
     source       = StringProperty()
     degrees      = NumericProperty()
     angle_start  = NumericProperty()
-    sizex        = NumericProperty()
-    sizey        = NumericProperty()
 
     def __init__(self, **kwargs):
         super(NeedleEllipse, self).__init__()

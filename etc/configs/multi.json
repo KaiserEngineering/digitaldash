@@ -4,7 +4,7 @@
             "name": "First view",
             "enabled" : 1,
             "default" : 1,
-            "background" : "bg.jpg",
+            "background" : "alignment.png",
             "theme" : "Stock",
             "pids" : [
                 "0x0C",
@@ -15,7 +15,7 @@
                 {
                     "pid": "0x0C",
                     "op": ">",
-                    "value": 4000,
+                    "value": -4000,
                     "priority": 1,
                     "message" : "Danger to Manifold"
                 }

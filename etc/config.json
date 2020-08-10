@@ -5,7 +5,7 @@
                "enabled" : 1,
                "default" : 1,
                "background" : "bg.jpg",
-               "theme" : "Stock",
+               "theme" : "Modern",
                "pids" : [
                    "0x0C",
                    "0x0F",
@@ -31,19 +31,19 @@
                    "themeConfig" : "120",
                    "pid" : "0x0C",
                    "module" : "Radial",
-                   "path" : "/Stock/"
+                   "path" : "/Modern/"
                },
                {
                    "themeConfig" : "120",
                    "pid" : "0x0F",
                    "module" : "Radial",
-                   "path" : "/Stock/"
+                   "path" : "/Modern/"
                },
                {
                    "themeConfig" : "120",
                    "pid" : "0x0B",
                    "module" : "Radial",
-                   "path" : "/Stock/"
+                   "path" : "/Modern/"
                }
            ]},
            "1" : {

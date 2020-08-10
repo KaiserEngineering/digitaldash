@@ -51,7 +51,7 @@ class Test():
 
         return self.iteration
 
-    def UpdateRequirements(self, app, requirements):
+    def update_requirements(self, app, requirements):
         print("Updating requirements: " + str(requirements))
         app.pids = requirements
         return (1, "PIDs updated")

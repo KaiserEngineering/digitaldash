@@ -33,7 +33,6 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
@@ -43,6 +42,7 @@ from etc import config
 from digitaldash.base import Base
 from digitaldash.dynamic import Dynamic
 from digitaldash.alert import Alert
+from digitaldash.alerts import Alerts
 
 config.setWorkingPath(WORKING_PATH)
 
@@ -125,6 +125,7 @@ def setup(Layouts):
                 pos_hint={'x': percent_width * gauge_count - multi_offset, 'top': .98},
                 size_hint_max_y=250
             )
+            x_position = (percent_width * gauge_count - multi_offset)
             container.add_widget(subcontainer)
 
             try:
@@ -137,6 +138,7 @@ def setup(Layouts):
                         working_path=WORKING_PATH,
                         container=subcontainer,
                         view_id=int(id),
+                        x_position = x_position,
                         **widget,
                         **view
                     )
@@ -320,7 +322,7 @@ class GUI(App):
         global errors_seen
         try:
             if self.first_iteration:
-                (ret, msg) = Data_Source.UpdateRequirements(self, self.pids)
+                (ret, msg) = Data_Source.update_requirements(self, self.pids)
                 if not ret:
                     Logger.error(msg)
                 self.first_iteration = False

@@ -31,6 +31,9 @@ class Alert(KELabel):
         self.text = self.message
         self.buffer = 0
 
+    def set_pos(self, **args):
+      self.pos = (self.center_x + self.width / 4, self.center_y + self.height / 1.5)
+
     @lru_cache(maxsize=512)
     def check(self, value: float) -> bool:
         """
