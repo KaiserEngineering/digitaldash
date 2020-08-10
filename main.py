@@ -128,21 +128,22 @@ def setup(Layouts):
             x_position = (percent_width * gauge_count - multi_offset)
             container.add_widget(subcontainer)
 
+            mod = None
             try:
                 # This loads any standalone modules
                 mod = globals()[widget['module']]()
             except KeyError:
                 mod = Base(gauge_count=len(view['gauges']))
-                ObjectsToUpdate.append(
-                    mod.build_component(
-                        working_path=WORKING_PATH,
-                        container=subcontainer,
-                        view_id=int(id),
-                        x_position = x_position,
-                        **widget,
-                        **view
-                    )
+            ObjectsToUpdate.append(
+                mod.build_component(
+                    working_path=WORKING_PATH,
+                    container=subcontainer,
+                    view_id=int(id),
+                    x_position = x_position,
+                    **widget,
+                    **view
                 )
+            )
             gauge_count += 1
 
         containers.append(container)
