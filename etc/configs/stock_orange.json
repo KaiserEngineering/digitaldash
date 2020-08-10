@@ -12,7 +12,7 @@
         "gauges": [
           {
                 "module": "Radial",
-                "path": "/Modern/",
+                "path": "/Stock_orange/",
                 "themeConfig": "120",
                 "pid": "0x0C"
             }
