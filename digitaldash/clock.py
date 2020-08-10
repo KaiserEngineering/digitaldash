@@ -22,11 +22,11 @@ class Clock(Base, KELabel):
     def build_component(self, **ARGS) -> []:
         self.container = ARGS['container']
 
-        gauge = Face(path='Clock/')
-        if gauge._coreimage:
-            self.Layout.add_widget(gauge)
+        face = Face(path='/Clock/', working_path=ARGS.get('working_path', ''))
+        if face._coreimage:
+            self.container.add_widget(face)
         else:
-            Logger.info("GUI: Could not load gauge image: 'Clock/ClockFace.png'")
+            Logger.info("GUI: Could not load gauge image: 'Clock/Clock/gauge.png'")
 
         anim = Animation(color=(1, 0, 0, 1))
         anim += Animation(color=(1, 1, 1, 1))
@@ -35,8 +35,7 @@ class Clock(Base, KELabel):
         anim.repeat = True
         anim.start(self)
 
-        self.Layout.add_widget(self)
-        self.container.add_widget(self.Layout)
+        self.container.add_widget(self)
 
         self.liveWidgets.append(self)
 
