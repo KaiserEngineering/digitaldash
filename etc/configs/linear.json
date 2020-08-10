@@ -1,0 +1,22 @@
+{
+  "views" : {
+    "0" : {
+      "name":"alerts config",
+      "enabled" : 1,
+      "default" : 1,
+      "theme" : "Stock",
+      "background":"bg.jpg",
+      "pids": ["0x0C"],
+      "dynamic": {},
+      "alerts": [],
+      "gauges": [
+        {
+          "module": "Linear",
+          "path": "/Linear/",
+          "themeConfig": "Linear",
+          "pid": "0x0C"
+        }
+      ]
+    }
+  }
+}

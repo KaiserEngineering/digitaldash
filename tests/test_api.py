@@ -1,4 +1,5 @@
 # """Testing basics of DigitalDash."""
+import test
 from digitaldash.needles.needle import Needle
 from digitaldash.needles.radial import NeedleRadial
 from digitaldash.needles.linear import NeedleLinear
@@ -7,12 +8,12 @@ from digitaldash.ke_label import KELabel
 from digitaldash.alert import Alert
 from digitaldash.massager import smooth
 from static.constants import KE_PID
-import test
 
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
 def test_needle_simple():
+    assert 1 == 1
     needles = (
         NeedleRadial(
             themeConfig=120, degrees=120, path='/Stock/',
@@ -41,11 +42,10 @@ def test_needle_simple():
 
         old_value = needle.update
 
-        needle.setData(4000)
-        value = float(50) if needle.Type == 'Linear' else float(0)
+        needle.set_data(4000)
 
         assert needle.true_value == float(4000), print( needle.Type+" component defaults to minimum value")
-        assert needle.update == smooth(New=value, Old=old_value), print(needle.Type+" component sets the correct rotational value with smoothing (not true value)")
+        assert needle.update == smooth( Old=old_value, New=4000 * needle.step - needle.offset ), print(needle.Type+" component sets the correct rotational value with smoothing (not true value)")
 
 
 def test_label_simple():
@@ -60,20 +60,20 @@ def test_label_simple():
     assert label.text == "hello, world", print("Default text value is set correctly")
     assert label.decimals == str(KE_PID["0x0C"]['decimals']), print("Decimal place set correctly for label")
 
-    label.setData(100)
-    assert label.text == "hello, world100", print("Default text value is set correctly form setData method")
+    label.set_data(100)
+    assert label.text == "hello, world100", print("Default text value is set correctly form set_data method")
 
     label = KELabel(
         default        = 'Min: ',
         data           = 1,
         pid            = "0x0B"
     )
-    label.setData(0)
+    label.set_data(0)
     assert label.text == "0", print("Default text value is set correctly")
-    label.setData(-100)
+    label.set_data(-100)
     assert label.text == "-100", print("Min value sets correctly")
 
-    label.setData(100)
+    label.set_data(100)
     assert label.text == "-100", print("Min value stays minimum seen")
 
     label = KELabel(
@@ -81,12 +81,12 @@ def test_label_simple():
         data           = 1,
         pid            = "0x0B"
     )
-    label.setData(0)
+    label.set_data(0)
     assert label.text == "0", print("Default text value is set correctly")
-    label.setData(100)
+    label.set_data(100)
     assert label.text == "100", print("Max value sets correctly")
 
-    label.setData(10)
+    label.set_data(10)
     assert label.text == "100", print("Max value stays max seen")
 
     # Test PID labels

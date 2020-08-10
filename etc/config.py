@@ -3,7 +3,7 @@ import json
 from kivy.logger import Logger
 from kivy.core.window import Window
 
-working_path = '';
+working_path = ''
 
 def setWorkingPath(path):
   global working_path

@@ -10,7 +10,7 @@ working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 def test_config_file_from_cli():
     dd = main.GUI()
     dd.working_path = working_path
-    dd.new(config=working_path+'/etc/configs/single.json')
+    dd.new(configFile=working_path+'/etc/configs/single.json')
     assert dd.config == working_path+"/etc/configs/single.json", print("Can set config file on DD instantiation")
 
     (views, containers, callbacks) = main.setup(config.views(working_path+'/etc/configs/single.json'))

@@ -1,3 +1,5 @@
+"""Main start module"""
+
 # Dependent modules and packages
 import getopt
 import sys
@@ -5,22 +7,22 @@ from test import Test
 import os
 import pathlib
 
-working_path = str(pathlib.Path(__file__).parent.absolute())
-os.environ["KIVY_HOME"] = working_path + "/etc/kivy/"
+WORKING_PATH = str(pathlib.Path(__file__).parent.absolute())
+os.environ["KIVY_HOME"] = WORKING_PATH + "/etc/kivy/"
 
-(Data_Source, Testing) = (False, False)
+(Data_Source, TESTING) = (False, False)
 
 opts, args = getopt.getopt(sys.argv[1:], "tdf:c:", ["test", "development", "file=", "config="])
 
 sys.argv = ['main.py']
 for o, arg in opts:
     # Development mode runs with debug console - ctr + e to open it in GUI
-    if ( o in ( "-d", "--development" )  ):
+    if o in ("-d", "--development"):
         sys.argv = ['main.py -m console']
-    if ( o in ( "-f", "--file" ) ):
+    if o in ("-f", "--file"):
         Data_Source = Test(file=arg)
-    if ( o in ( "-t", "--test" ) ):
-        Testing = True
+    if o in ("-t", "--test"):
+        TESTING = True
 
 # Our Kivy deps
 import kivy
@@ -31,23 +33,24 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.relativelayout import RelativeLayout
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 from typing import NoReturn, List, TypeVar
-from etc.config import views, setWorkingPath
+
+from etc import config
 from digitaldash.base import Base
 from digitaldash.dynamic import Dynamic
 from digitaldash.alert import Alert
+from digitaldash.alerts import Alerts
 
-setWorkingPath( working_path )
-
+config.setWorkingPath(WORKING_PATH)
 
 # Register standalone gauges
 from digitaldash.clock import Clock as KEClock
 from digitaldash.custom import Custom as KECustom
 
-if ( not Data_Source ):
+if not Data_Source:
     try:
         from ke_protocol import Serial
         Data_Source = Serial()
@@ -63,20 +66,21 @@ def setup(Layouts):
     values for views. Then it will build the views and return them.
     """
 
-    callbacks  = {}
-    views      = []
+    callbacks = {}
+    views = []
     containers = []
 
     view_count = 0
 
     # Sort based on default value
-    for id in sorted(Layouts['views'], key=lambda id: Layouts['views'][id].get('default', 0), reverse=True):
+    for id in sorted(Layouts['views'],
+                     key=lambda id: Layouts['views'][id].get('default', 0), reverse=True):
         view = Layouts['views'][id]
         # Skip disabled views
-        if (not view['enabled']): continue
+        if not view['enabled']: continue
 
         background = view['background']
-        pids       = view['pids']
+        pids = view['pids']
 
         # Create our callbacks
         if view['dynamic'].keys():
@@ -85,10 +89,10 @@ def setup(Layouts):
 
             dynamic_obj = Dynamic()
             (ret, msg) = dynamic_obj.new(**dynamic)
-            if ( ret ):
+            if ret:
                 callbacks.setdefault('dynamic', []).append(dynamic_obj)
             else:
-                Logger.error( msg )
+                Logger.error(msg)
                 callbacks.setdefault('dynamic', [])
         else:
             callbacks.setdefault('dynamic', [])
@@ -101,23 +105,51 @@ def setup(Layouts):
         else:
             callbacks.setdefault(view_count, [])
 
-        container = BoxLayout(padding=(30, 0, 30, 0))
+        container = FloatLayout()
         ObjectsToUpdate = []
 
+        num_gauges = len(view['gauges'])
+        # Get our % width that each gauge should claim
+        percent_width = (1 / num_gauges) - 0.03
+
+        # If we have more than 1 gauge we need a negative offset since we start centered
+        multi_offset = percent_width if num_gauges > 1 else 0
+
+        gauge_count = 0
         for widget in view['gauges']:
             mod = None
 
+            # This handles our gauge positions, see the following for reference:
+            # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
+            subcontainer = RelativeLayout(
+                pos_hint={'x': percent_width * gauge_count - multi_offset, 'top': .96},
+                size_hint_max_y=250
+            )
+            x_position = (percent_width * gauge_count - multi_offset)
+            container.add_widget(subcontainer)
+
+            mod = None
             try:
                 # This loads any standalone modules
                 mod = globals()[widget['module']]()
             except KeyError:
                 mod = Base(gauge_count=len(view['gauges']))
-            ObjectsToUpdate.append(mod.buildComponent(working_path=working_path, container=container, view_id=int(id), **widget, **view))
+            ObjectsToUpdate.append(
+                mod.build_component(
+                    working_path=WORKING_PATH,
+                    container=subcontainer,
+                    view_id=int(id),
+                    x_position = x_position,
+                    **widget,
+                    **view
+                )
+            )
+            gauge_count += 1
 
         containers.append(container)
 
         views.append({'app': Background(), 'background': background, 'alerts': FloatLayout(),
-                    'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
+                      'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
         view_count += 1
 
     return (views, containers, callbacks)
@@ -128,51 +160,58 @@ def on_config_change(self) -> NoReturn:
     """
     global ConfigFile
 
-    (self.views, self.containers, self.callbacks) = setup(views(ConfigFile))
+    (self.views, self.containers, self.callbacks) = setup(config.views(ConfigFile))
 
     self.app.clear_widgets()
     self.alerts.clear_widgets()
 
-    (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
+    (self.background, self.background_source,
+     self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
     self.app.add_widget(self.background)
     self.background.add_widget(self.containers[0])
     self.background.add_widget(self.alerts)
 
     # Sort our dynamic and alerts callbacks by priority
-    self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
-    self.alert_callbacks   = sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True)
+    self.dynamic_callbacks = sorted(self.callbacks['dynamic'],
+                                    key=lambda x: x.priority, reverse=True)
+    self.alert_callbacks = sorted(self.callbacks[self.current],
+                                  key=lambda x: x.priority, reverse=True)
 
 def build_from_config(self) -> NoReturn:
     self.current = 0
     self.first_iteration = False if hasattr(self, 'first_iteration') else True
     global ConfigFile
 
-    (self.views, self.containers, self.callbacks) = setup(views(file=ConfigFile))
+    (self.views, self.containers, self.callbacks) = setup(config.views(file=ConfigFile))
 
     # Sort our dynamic and alerts callbacks by priority
-    self.dynamic_callbacks = sorted(self.callbacks['dynamic'], key=lambda x: x.priority, reverse=True)
-    self.alert_callbacks   = sorted(self.callbacks[self.current], key=lambda x: x.priority, reverse=True)
+    self.dynamic_callbacks = sorted(self.callbacks['dynamic'],
+                                    key=lambda x: x.priority, reverse=True)
+    self.alert_callbacks = sorted(self.callbacks[self.current],
+                                  key=lambda x: x.priority, reverse=True)
 
-    (self.background, self.background_source, self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
+    (self.background, self.background_source, self.alerts,
+     self.ObjectsToUpdate, self.pids) = self.views[0].values()
 
-    if ( not self.first_iteration and Data_Source and type(Data_Source) != Test ):
+    if not self.first_iteration and Data_Source and type(Data_Source) != Test:
     #Initialize our hardware set-up and verify everything is peachy
         (ret, msg) = Data_Source.InitializeHardware()
 
-        if ( not ret ):
+        if not ret:
             Logger.error("Hardware: Could not initialize hardware: " + msg)
             count = 0
             # Loop in the restart process until we succeed
-            while ( not ret and count < 3 ):
+            while (not ret and count < 3):
                 Logger.error("Hardware: Running hardware restart, attempt :#" + str(count))
                 (ret, msg) = Data_Source.InitializeHardware()
 
-                if ( not ret ):
+                if not ret:
                     count = count + 1
-                    Logger.error( "Hardware: Hardware restart attempt: #"+str(count)+" failed: " + msg )
+                    Logger.error("Hardware: Hardware restart attempt: #"+str(count)
+                                 +" failed: " + msg)
         else:
-            Logger.info( msg )
+            Logger.info(msg)
         self.data_source = Data_Source
 
     self.app.add_widget(self.background)
@@ -182,7 +221,7 @@ def build_from_config(self) -> NoReturn:
     if self.data_source: Clock.schedule_interval(self.loop, 0)
 
     observer = Observer()
-    observer.schedule(MyHandler(self), working_path+'/etc/', recursive=True)
+    observer.schedule(MyHandler(self), WORKING_PATH+'/etc/', recursive=True)
     observer.start()
 
     return self.app
@@ -213,8 +252,8 @@ class MyHandler(PatternMatchingEventHandler):
         self.process(event)
 
 # Load our KV files
-for file in os.listdir( working_path+'/digitaldash/kv/' ):
-    Builder.load_file(working_path+'/digitaldash/kv/'+str(file))
+for file in os.listdir(WORKING_PATH+'/digitaldash/kv/'):
+    Builder.load_file(WORKING_PATH+'/digitaldash/kv/'+str(file))
 
 (ConfigFile, errors_seen) = (None, {})
 DD = TypeVar('DD', bound='DigitalDash')
@@ -225,23 +264,23 @@ class GUI(App):
     This class instantiates the KE module which will build
     the DigitalDash. Main loop is here for updating data within
     DigitalDash. The loop will iterate through the **widgets**
-    array and call the **setData()** method on each item in the
+    array and call the **set_data()** method on each item in the
     array. Only add Objects to the **widgets** array if they are
     to be updated and have the necessary methods.
     """
 
     background_source = StringProperty()
 
-    def new(self, config=None, data=None):
+    def new(self, configFile=None, data=None):
         """
         This method can be used to set any values before the app starts, this is useful for
         testing.
         """
         global ConfigFile
-        ConfigFile  = config
+        ConfigFile = configFile
         self.config = ConfigFile
 
-        if ( data ):
+        if data:
             global Data_Source
             Data_Source = data
 
@@ -252,12 +291,12 @@ class GUI(App):
         self.app = AnchorLayout()
 
         self.data_source = Data_Source
-        self.working_path = working_path
+        self.working_path = WORKING_PATH
         return build_from_config(self)
 
     def check_callback(self: DD, callback, priority, data):
         # Check if any dynamic changes need to be made
-        if ( callback.check(data[callback.pid]) ):
+        if callback.check(data[callback.pid]):
             return callback
         return False
 
@@ -274,21 +313,21 @@ class GUI(App):
             for obj in widget:
                 # REVIEW Is this a waste of resources checking every loop?
                 if obj.pid:
-                  obj.setData(data[obj.pid])
+                    obj.set_data(data[obj.pid])
                 else:
-                  # This is for widgets that subscribe to
-                  # updates but don't need any pid data ( Clock ).
-                  obj.setData(0)
+                    # This is for widgets that subscribe to
+                    # updates but don't need any pid data ( Clock ).
+                    obj.set_data(0)
 
     def loop(self, dt):
         global errors_seen
         try:
-            if ( self.first_iteration ):
-                (ret, msg) = Data_Source.UpdateRequirements( self, self.pids )
-                if ( not ret ):
-                    Logger.error( msg )
+            if self.first_iteration:
+                (ret, msg) = Data_Source.update_requirements(self, self.pids)
+                if not ret:
+                    Logger.error(msg)
                 self.first_iteration = False
-            ( my_callback, priority, data ) = ( None, 0, Data_Source.Start(app=self, pids=self.pids) )
+            (my_callback, priority, data) = (None, 0, Data_Source.Start(app=self, pids=self.pids))
 
             dynamic_change = False
             # Check dynamic gauges before any alerts in case we make a change
@@ -297,25 +336,26 @@ class GUI(App):
                     continue
                 my_callback = self.check_callback(dynamic, priority, data)
 
-                if(my_callback):
+                if my_callback:
                     self.change(self, my_callback)
                     dynamic_change = True
                     break
 
             # Check our alerts if no dynamic changes have occured
-            if ( not dynamic_change ):
+            if not dynamic_change:
                 for callback in self.alert_callbacks:
                     my_callback = self.check_callback(callback, priority, data)
 
-                    if(my_callback):
-                        if ( callback.parent is None ):
-                            self.alerts.add_widget( my_callback )
-                    elif ( callback.parent ):
-                        self.alerts.remove_widget( callback )
+                    if my_callback:
+                        if callback.parent is None:
+                            self.alerts.add_widget(my_callback)
+                    elif callback.parent:
+                        self.alerts.remove_widget(callback)
 
                 self.update_values(data)
         except Exception as e:
-            error = 'Error found in main application loop on line {}: '.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e
+            error = 'Error found in main application loop on line {}:'\
+                        .format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e
             Logger.error(error)
 
             if e in errors_seen:
@@ -325,21 +365,20 @@ class GUI(App):
 
             if errors_seen[e] >= 3:
                 (ret, msg) = Data_Source.PowerCycle()
-                if ( not ret ):
-                    Logger.error( msg )
+                if not ret:
+                    Logger.error(msg)
 
 
 class Background(AnchorLayout):
     """Uses Kivy language to create background."""
-    pass
 
 if __name__ == '__main__':
     dd = GUI()
 
-    config = None
+    configFile = None
     for o, arg in opts:
-        if o in ( "-c", "--config" ):
-            config = arg
-    dd.new(config=config, data=Data_Source)
+        if o in ("-c", "--config"):
+            configFile = arg
+    dd.new(configFile=configFile, data=Data_Source)
 
     dd.run()

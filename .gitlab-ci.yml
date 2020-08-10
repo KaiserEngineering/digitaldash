@@ -1,20 +1,25 @@
 image: craigkai/ke-gui:latest
 
-stages:
-  - test
+# Change pip's cache directory to be inside the project directory since we can
+# only cache local items.
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
-  # Cache modules in between jobs
+# Cache modules in between jobs
 cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
+    - .cache/pip
     - .venv/
 
 before_script:
   - export DISPLAY=:99.0;
-  - pip3 install -r requirements.txt
+  - pip3 -q --disable-pip-version-check install -r requirements.txt
   - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1280x720x24 -ac +extension GLX
 
 Unit Tests:
-    stage: test
     script:
-      - python3 -m pytest tests
+      - echo 'Starting tests'
+      - python3 -m pytest tests/
+      - python3 -m bandit *.py
+      - echo 'Finished tests'

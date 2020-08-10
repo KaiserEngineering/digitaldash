@@ -1,3 +1,5 @@
+"""Simple Clock Example"""
+
 from digitaldash.ke_label import KELabel
 from digitaldash.face import Face
 import datetime
@@ -6,24 +8,25 @@ from kivy.animation import Animation
 from digitaldash.base import Base
 
 class Clock(Base, KELabel):
-    def __init__(self, pid=''):
+    """Clock gauge"""
+    def __init__(self):
         super(Clock, self).__init__()
         self.text = '12:00'
 
-    def setData(self, val) -> None:
+    def set_data(self, val) -> None:
         now = datetime.datetime.now()
-        self.text  = str(now.hour)+":"+str(now.minute)
+        self.text = str(now.hour)+":"+str(now.minute)
         self.color = (0, 0, 0, 1)
         self.font_size = 45
 
-    def buildComponent(self, **ARGS) -> []:
+    def build_component(self, **ARGS) -> []:
         self.container = ARGS['container']
 
-        gauge = Face(path='Clock/')
-        if gauge._coreimage:
-            self.Layout.add_widget(gauge)
+        face = Face(path='/Clock/', working_path=ARGS.get('working_path', ''))
+        if face._coreimage:
+            self.container.add_widget(face)
         else:
-            Logger.info( "GUI: Could not load gauge image: 'Clock/ClockFace.png'" )
+            Logger.info("GUI: Could not load gauge image: 'Clock/Clock/gauge.png'")
 
         anim = Animation(color=(1, 0, 0, 1))
         anim += Animation(color=(1, 1, 1, 1))
@@ -32,8 +35,7 @@ class Clock(Base, KELabel):
         anim.repeat = True
         anim.start(self)
 
-        self.Layout.add_widget(self)
-        self.container.add_widget(self.Layout)
+        self.container.add_widget(self)
 
         self.liveWidgets.append(self)
 

@@ -1,9 +1,8 @@
-from kivy.uix.label import Label
-from digitaldash.face import Face
+"""Custom guage exmaple"""
 from kivy.logger import Logger
 from kivy.uix.relativelayout import RelativeLayout
-from digitaldash.base import Base
 from kivy.lang import Builder
+from kivy.uix.label import Label
 
 # KV Styling, here we set color of our text
 Builder.load_string("""
@@ -12,20 +11,23 @@ Builder.load_string("""
 """)
 
 class MyCustomLabel(Label):
-    '''Custom label class'''
+    """Custom label class"""
 
-    def setData(self, val) -> None:
-        Logger.info("Custom gauge setData method called")
+    def set_data(self, val) -> None:
+        """Method to subscribe for data"""
+        Logger.info("Custom gauge setData method called, got: %s", val)
 
 
 class Custom():
-    def __init__(self, pid=''):
+    """Custom gauge"""
+    def __init__(self):
         super(Custom, self).__init__()
         Logger.info("Instantiate new custom gauge")
 
-    def buildComponent(self, **ARGS) -> []:
+    def build_component(self, **ARGS) -> []:
+        """Function that is called when gauge is created"""
         self.container = ARGS['container']
-        liveWidgets    = []
+        live_widgets = []
 
         label = MyCustomLabel(text='Custom gauge!')
 
@@ -37,10 +39,10 @@ class Custom():
         self.container.add_widget(layout)
 
         # We can add out label here if we'd like it to receive data
-        liveWidgets.append(label)
+        live_widgets.append(label)
 
         # Need to provide a pid attribute for our label to update from,
         # see static/constants.py
         label.pid = '0x0C'
 
-        return liveWidgets
+        return live_widgets

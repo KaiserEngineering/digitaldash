@@ -5,16 +5,16 @@
         # Draw our stencil
         StencilPush
         Ellipse:
-            size: self.sizex, self.sizey
-            pos: self.width / 2 - self.sizex / 2, self.height / 2 - self.sizey / 2
+            size: (min(self.size), min(self.size))
+            pos: (self.width / 2 - min(self.width, self.height) / 2, 0)
             angle_start: self.angle_start
             angle_end: self.update
         StencilUse
 
         # Now we want to draw our gauge and crop it
         Ellipse:
-            size: self.sizex, self.sizey
-            pos: self.width / 2 - self.sizex / 2, self.height / 2 - self.sizey / 2
+            size: (min(self.size), min(self.size))
+            pos: (self.width / 2 - min(self.width, self.height) / 2, 0)
             source: self.source
             angle_start: self.angle_start
             angle_end: self.update
@@ -22,8 +22,8 @@
 
         # Redraw our stencil to remove it
         Ellipse:
-            size: self.sizex, self.sizey
-            pos: self.width / 2 - self.sizex / 2, self.height / 2 - self.sizey / 2
+            pos: (self.width / 2 - min(self.width, self.height) / 2, 0)
+            pos: (self.width / 2, self.center_y)
             angle_start: self.angle_start
             angle_end: self.update
         StencilPop

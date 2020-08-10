@@ -4,11 +4,6 @@ from kivy.tests.common import GraphicUnitTest
 import test
 import main
 from digitaldash.needles.needle import Needle
-from digitaldash.needles.radial import NeedleRadial
-from digitaldash.needles.linear import NeedleLinear
-from digitaldash.needles.ellipse import NeedleEllipse
-from digitaldash.ke_label import KELabel
-from digitaldash.alert import Alert
 from digitaldash.massager import smooth
 from static.constants import KE_PID
 

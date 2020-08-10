@@ -2,7 +2,7 @@
 import serial
 import time
 from kivy.logger import Logger
-import subprocess
+import subprocess #nosec
 from static.constants import KE_CP_OP_CODES
 import os
 import fnmatch
@@ -45,7 +45,7 @@ class Serial():
 
         # There shall always be an opcode and EOL
         if ( len(data_line) < 2 ):
-            self.UpdateRequirements( args.get('app', {}), self.requirements )
+            self.update_requirements( args.get('app', {}), self.requirements )
             Logger.info("GUI: Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
             return self.ser_val
 
@@ -64,7 +64,7 @@ class Serial():
             Logger.info("SYS: Shutdown received")
             positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
             self.ser.write(positive_ack)
-            call("sudo nohup shutdown -h now", shell=True)
+            call("sudo nohup shutdown -h now", shell=True) # nosec
 
         elif cmd == KE_CP_OP_CODES['KE_ACK']:
             Logger.info("GUI: >> ACK RX'd" + "\n")
@@ -87,7 +87,7 @@ class Serial():
 
         return self.ser_val
 
-    def UpdateRequirements(self, app, requirements):
+    def update_requirements(self, app, requirements):
         global KE_CP_OP_CODES
         Logger.info("GUI: Updating requirements: " + str(requirements))
 
@@ -171,7 +171,7 @@ class Serial():
                 else :
                     Logger.warning("Firmware Update Required")
                     command = "sh ../ford-focus-binary/flash.sh"
-                    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+                    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE) # nosec
                     process.wait()
             except:
                 Logger.warning("Firmware decode misaligned")
