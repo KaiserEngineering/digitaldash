@@ -9,7 +9,8 @@
                "pids" : [
                    "0x0C",
                    "0x0F",
-                   "0x0B"
+                   "0x6F",
+                   "0x5C"
                ],
                "alerts" : [
                    {
@@ -29,19 +30,19 @@
                "gauges" : [
                {
                    "themeConfig" : "120",
-                   "pid" : "0x0C",
-                   "module" : "Radial",
-                   "path" : "/Stock/"
-               },
-               {
-                   "themeConfig" : "120",
                    "pid" : "0x0F",
                    "module" : "Radial",
                    "path" : "/Stock/"
                },
                {
                    "themeConfig" : "120",
-                   "pid" : "0x0B",
+                   "pid" : "0x6F",
+                   "module" : "Radial",
+                   "path" : "/Stock/"
+               },
+               {
+                   "themeConfig" : "120",
+                   "pid" : "0x5C",
                    "module" : "Radial",
                    "path" : "/Stock/"
                }
