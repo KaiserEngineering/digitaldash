@@ -43,10 +43,9 @@ def test_needle_simple():
         old_value = needle.update
 
         needle.set_data(4000)
-        value = float(50) if needle.Type == 'Linear' else float(0)
 
         assert needle.true_value == float(4000), print( needle.Type+" component defaults to minimum value")
-        assert needle.update == smooth(New=value, Old=old_value), print(needle.Type+" component sets the correct rotational value with smoothing (not true value)")
+        assert needle.update == smooth( Old=old_value, New=4000 * needle.step - needle.offset ), print(needle.Type+" component sets the correct rotational value with smoothing (not true value)")
 
 
 def test_label_simple():
