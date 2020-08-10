@@ -1,15 +1,15 @@
 {
     "labels":
       [{
-        "pos": [-5, 0], "font_size": 20, "default": "Max: ",
+        "pos": [85, 0], "font_size": 20, "default": "Max: ",
         "data": 1
       },
       {
-        "pos": [5, 0], "font_size": 20, "default": "Min: ",
+        "pos": [-85, 0], "font_size": 20, "default": "Min: ",
         "data": 1
       },
       {
-       "pos": [0, 10], "font_size": 25, "data": 1, "dataIndex" : 1, "default": ""
+       "pos": [0, 20], "font_size": 25, "data": 1, "dataIndex" : 1, "default": ""
       },
       {
         "pos": [0, 0], "font_size": 25, "default": "__PID__"
