@@ -2,7 +2,7 @@
 import serial
 import time
 from kivy.logger import Logger
-import subprocess
+import subprocess #nosec
 from static.constants import KE_CP_OP_CODES
 import os
 import fnmatch
@@ -171,7 +171,7 @@ class Serial():
                 else :
                     Logger.warning("Firmware Update Required")
                     command = "sh ../ford-focus-binary/flash.sh"
-                    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+                    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE) # nosec
                     process.wait()
             except:
                 Logger.warning("Firmware decode misaligned")
