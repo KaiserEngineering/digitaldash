@@ -64,7 +64,7 @@ class Serial():
             Logger.info("SYS: Shutdown received")
             positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
             self.ser.write(positive_ack)
-            call("sudo nohup shutdown -h now", shell=True)
+            call("sudo nohup shutdown -h now", shell=True) # nosec
 
         elif cmd == KE_CP_OP_CODES['KE_ACK']:
             Logger.info("GUI: >> ACK RX'd" + "\n")
