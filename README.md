@@ -16,8 +16,6 @@ pip3 install -r requirements.txt
 
 ## Testing
 
-Auto CI is enabled for the DD but lets be good about running tests before every push!
-
 ```bash
     python3 -m pytest tests
 ```
