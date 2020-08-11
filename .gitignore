@@ -44,3 +44,5 @@ kivy.log
 etc/*.json
 etc/kivy/*
 etc/kivy/config.ini
+
+local/

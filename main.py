@@ -46,9 +46,8 @@ from digitaldash.alerts import Alerts
 
 config.setWorkingPath(WORKING_PATH)
 
-# Register standalone gauges
-from digitaldash.clock import Clock as KEClock
-from digitaldash.custom import Custom as KECustom
+# Import custom gauges
+from local.gauges import *
 
 if not Data_Source:
     try:
