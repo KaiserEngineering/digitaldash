@@ -1,9 +1,5 @@
 # Kaiser Engineering Digital Dash GUI
 
-[![pipeline status](https://gitlab.com/kaiserengineering/DigitalDash_GUI/badges/master/pipeline.svg)](https://gitlab.com/kaiserengineering/DigitalDash_GUI/-/commits/master)
-
-[[_TOC_]]
-
 ## Install Deps
 
 Requires Python3.7
