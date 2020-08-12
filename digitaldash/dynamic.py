@@ -44,22 +44,20 @@ class Dynamic():
             return (0, "Missing required args for new dynamic object")
 
         self.value = float(args.get('value'))
-        self.op = args.get('op')
+
+        if ( len(args.get('op')) == 2 ):
+            operator = bytearray( args.get('op').encode() )
+            self.op = (operator[0] << 8) | (operator[1] & 0xFF)
+        else:
+            operator = " "+str(args.get('op'))
+            operator = bytearray( operator.encode() )
+            self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
+
         self.index = int(args.get('index'))
         self.priority = int(args.get('priority'))
         self.pid = args.get('pid', '')
 
         return (1, "New dynamic object successfully created")
-
-    @lru_cache(maxsize=512)
-    def check(self, value) -> bool:
-        """
-        Args:
-          self (<digitaldash.dynamic>) : Current dynamic object
-          value (float): Value to perform comparison against
-        """
-        test = str(value) + self.op + str(self.value)
-        return eval(test)
 
     def change(self, app) -> bool:
         """

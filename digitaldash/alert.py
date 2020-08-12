@@ -23,7 +23,15 @@ class Alert(KELabel):
         super(Alert, self).__init__(**args)
 
         self.value = float(args['value'])
-        self.op = args['op']
+
+        if ( len(args.get('op')) == 2 ):
+            operator = bytearray( args.get('op').encode() )
+            self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
+        else:
+            operator = " "+str(args.get('op'))
+            operator = bytearray( operator.encode() )
+            self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
+
         self.index = int(args.get('index'))
         self.priority = args['priority']
         self.pid = args['pid']
@@ -33,13 +41,3 @@ class Alert(KELabel):
 
     def set_pos(self, **args):
       self.pos = (self.center_x + self.width / 4, self.center_y + self.height / 1.5)
-
-    @lru_cache(maxsize=512)
-    def check(self, value: float) -> bool:
-        """
-        Args:
-            self (<digitaldash.alert>)
-            value (float) : value to check Alert condition against
-        """
-        test = str(value) + self.op + str(self.value)
-        return eval(test)
