@@ -25,7 +25,7 @@ for o, arg in opts:
         TESTING = True
 
 from ctypes import CDLL, c_double, c_bool, c_ushort
-lib = CDLL("rust/target/release/librust_in_python.dylib")
+lib = CDLL("rust/target/release/libdigitaldash.dylib")
 lib.check.argtypes = (c_double, c_double, c_ushort)
 lib.check.restype = bool
 
