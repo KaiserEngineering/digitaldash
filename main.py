@@ -57,6 +57,7 @@ from digitaldash.base import Base
 from digitaldash.dynamic import Dynamic
 from digitaldash.alert import Alert
 from digitaldash.alerts import Alerts
+from ke_protocol import build_update_requirements_bytearray
 
 config.setWorkingPath(WORKING_PATH)
 
@@ -161,8 +162,10 @@ def setup(Layouts):
 
         containers.append(container)
 
+        pid_byte_code = build_update_requirements_bytearray( pids )
+
         views.append({'app': Background(), 'background': background, 'alerts': FloatLayout(),
-                      'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
+                      'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids, 'pid_byte_code': pid_byte_code})
         view_count += 1
 
     return (views, containers, callbacks)
@@ -179,7 +182,7 @@ def on_config_change(self) -> NoReturn:
     self.alerts.clear_widgets()
 
     (self.background, self.background_source,
-     self.alerts, self.ObjectsToUpdate, self.pids) = self.views[0].values()
+     self.alerts, self.ObjectsToUpdate, self.pids, self.pid_byte_code) = self.views[0].values()
 
     self.app.add_widget(self.background)
     self.background.add_widget(self.containers[0])
@@ -205,7 +208,7 @@ def build_from_config(self) -> NoReturn:
                                   key=lambda x: x.priority, reverse=True)
 
     (self.background, self.background_source, self.alerts,
-     self.ObjectsToUpdate, self.pids) = self.views[0].values()
+     self.ObjectsToUpdate, self.pids, self.pid_byte_code) = self.views[0].values()
 
     if not self.first_iteration and Data_Source and type(Data_Source) != Test:
     #Initialize our hardware set-up and verify everything is peachy
@@ -338,7 +341,7 @@ class GUI(App):
 
     def loop(self, dt):
         if self.first_iteration:
-            (ret, msg) = Data_Source.update_requirements(self, self.pids)
+            (ret, msg) = Data_Source.update_requirements(self, self.pid_byte_code, self.pids)
             if not ret:
                 Logger.error(msg)
             self.first_iteration = False
