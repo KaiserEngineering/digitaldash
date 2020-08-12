@@ -254,7 +254,7 @@ class MyHandler(PatternMatchingEventHandler):
 for file in os.listdir(WORKING_PATH+'/digitaldash/kv/'):
     Builder.load_file(WORKING_PATH+'/digitaldash/kv/'+str(file))
 
-(ConfigFile, errors_seen) = (None, {})
+ConfigFile = None
 DD = TypeVar('DD', bound='DigitalDash')
 class GUI(App):
     """
@@ -319,54 +319,37 @@ class GUI(App):
                     obj.set_data(0)
 
     def loop(self, dt):
-        global errors_seen
-        try:
-            if self.first_iteration:
-                (ret, msg) = Data_Source.update_requirements(self, self.pids)
-                if not ret:
-                    Logger.error(msg)
-                self.first_iteration = False
-            (my_callback, priority, data) = (None, 0, Data_Source.Start(app=self, pids=self.pids))
+        if self.first_iteration:
+            (ret, msg) = Data_Source.update_requirements(self, self.pids)
+            if not ret:
+                Logger.error(msg)
+            self.first_iteration = False
+        (my_callback, priority, data) = (None, 0, Data_Source.start(app=self, pids=self.pids))
 
-            dynamic_change = False
-            # Check dynamic gauges before any alerts in case we make a change
-            for dynamic in self.dynamic_callbacks:
-                if self.current == dynamic.index:
-                    continue
-                my_callback = self.check_callback(dynamic, priority, data)
+        dynamic_change = False
+        # Check dynamic gauges before any alerts in case we make a change
+        for dynamic in self.dynamic_callbacks:
+            if self.current == dynamic.index:
+                continue
+            my_callback = self.check_callback(dynamic, priority, data)
+
+            if my_callback:
+                self.change(self, my_callback)
+                dynamic_change = True
+                break
+
+        # Check our alerts if no dynamic changes have occured
+        if not dynamic_change:
+            for callback in self.alert_callbacks:
+                my_callback = self.check_callback(callback, priority, data)
 
                 if my_callback:
-                    self.change(self, my_callback)
-                    dynamic_change = True
-                    break
+                    if callback.parent is None:
+                        self.alerts.add_widget(my_callback)
+                elif callback.parent:
+                    self.alerts.remove_widget(callback)
 
-            # Check our alerts if no dynamic changes have occured
-            if not dynamic_change:
-                for callback in self.alert_callbacks:
-                    my_callback = self.check_callback(callback, priority, data)
-
-                    if my_callback:
-                        if callback.parent is None:
-                            self.alerts.add_widget(my_callback)
-                    elif callback.parent:
-                        self.alerts.remove_widget(callback)
-
-                self.update_values(data)
-        except Exception as e:
-            error = 'Error found in main application loop on line {}:'\
-                        .format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e
-            Logger.error(error)
-
-            if e in errors_seen:
-                errors_seen[e] = errors_seen[e] + 1
-            else:
-                errors_seen[e] = 1
-
-            if errors_seen[e] >= 3:
-                (ret, msg) = Data_Source.PowerCycle()
-                if not ret:
-                    Logger.error(msg)
-
+            self.update_values(data)
 
 class Background(AnchorLayout):
     """Uses Kivy language to create background."""
