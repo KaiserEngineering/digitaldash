@@ -24,6 +24,11 @@ for o, arg in opts:
     if o in ("-t", "--test"):
         TESTING = True
 
+from ctypes import CDLL, c_double, c_bool, c_ushort
+lib = CDLL("rust/target/release/libdigitaldash.dylib")
+lib.check.argtypes = (c_double, c_double, c_ushort)
+lib.check.restype = bool
+
 # Our Kivy deps
 import kivy
 from kivy.logger import Logger
@@ -293,9 +298,9 @@ class GUI(App):
         self.working_path = WORKING_PATH
         return build_from_config(self)
 
-    def check_callback(self: DD, callback, priority, data):
+    def check_callback(self: DD, callback, data):
         # Check if any dynamic changes need to be made
-        if callback.check(data[callback.pid]):
+        if lib.check(float(data[callback.pid]), callback.value, callback.op):
             return callback
         return False
 
@@ -331,7 +336,7 @@ class GUI(App):
         for dynamic in self.dynamic_callbacks:
             if self.current == dynamic.index:
                 continue
-            my_callback = self.check_callback(dynamic, priority, data)
+            my_callback = self.check_callback(dynamic, data)
 
             if my_callback:
                 self.change(self, my_callback)
@@ -341,7 +346,7 @@ class GUI(App):
         # Check our alerts if no dynamic changes have occured
         if not dynamic_change:
             for callback in self.alert_callbacks:
-                my_callback = self.check_callback(callback, priority, data)
+                my_callback = self.check_callback(callback, data)
 
                 if my_callback:
                     if callback.parent is None:
