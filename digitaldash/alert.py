@@ -22,7 +22,7 @@ class Alert(KELabel):
         """
         super(Alert, self).__init__(**args)
 
-        self.value = args['value']
+        self.value = float(args['value'])
         self.op = args['op']
         self.index = int(args.get('index'))
         self.priority = args['priority']

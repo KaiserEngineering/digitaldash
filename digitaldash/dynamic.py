@@ -43,7 +43,7 @@ class Dynamic():
                            ['value', 'op', 'index', 'priority', 'pid']))) > 0:
             return (0, "Missing required args for new dynamic object")
 
-        self.value = int(args.get('value'))
+        self.value = float(args.get('value'))
         self.op = args.get('op')
         self.index = int(args.get('index'))
         self.priority = int(args.get('priority'))
