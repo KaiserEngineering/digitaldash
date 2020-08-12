@@ -14,8 +14,8 @@ t = test.Test()
 class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( Config='etc/configs/single.json' )
-        t.app.update_values({"0x0C": 50})
+        t.new( Config='etc/configs/single.json', Data=[[50, 100]] )
+        t.app.update_values(data={"0x0C": 50})
         t.app.working_path = working_path
 
         for layout in t.app.app.children[0].children:
@@ -30,7 +30,7 @@ class Config_TestCase(GraphicUnitTest):
 class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.Testing( Config='etc/configs/alerts.json', Data='tests/data/test.csv' )
+        t.new( Config='etc/configs/alerts.json', CSV='tests/data/test.csv' )
         t.app.working_path = working_path
 
         for value, text in zip([50, 4001], ["Hello, world", "Alert two"]):

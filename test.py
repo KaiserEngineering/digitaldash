@@ -8,10 +8,17 @@ class Test():
         self.iteration = 0
         self.data = []
         if ( args.get('file') ):
-            self.Load(**args)
+            self.load_csv(**args)
         self.rows = len(self.data)
 
-    def Load(self, file, **args):
+        array = self.data[0]
+        self.cols = len(array)
+
+    def set_data(self, data):
+      '''Set testing data source.'''
+      self.data = data
+
+    def load_csv(self, file, **args):
         """
         Load data from file.
             :param self: <DigitalDash.Test>Test instance
@@ -22,7 +29,7 @@ class Test():
             for row in datareader:
                 self.data.append(row)
 
-    def Start(self, pids=[], **args):
+    def start(self, pids=[], **args):
         """
         Main start method for test data.
             :param self: <DigitalDash.Test>Test instance
@@ -32,12 +39,14 @@ class Test():
         key_val = {}
         i = 0
         for pid in pids:
+            if self.cols >= i:
+              i = 0
             key_val[pid] = data[i]
             i = i + 1
-        self.Enumerate()
+        self.enumerate()
         return key_val
 
-    def Enumerate(self):
+    def enumerate(self):
         """
         Iterate over test data.
             :param self: <DigitalDash.Test>Test instance
@@ -51,25 +60,27 @@ class Test():
 
         return self.iteration
 
-    def update_requirements(self, app, requirements):
-        print("Updating requirements: " + str(requirements))
-        app.pids = requirements
+    def update_requirements(self, app, pids):
+        print("Updating requirements: " + str(pids))
+        app.pids = pids
         return (1, "PIDs updated")
 
-    def InitializeHardware( self ):
+    def initialize_hardware( self ):
         return ( 1, "Hardware initialized" )
 
-    def ResetHardware( self ):
+    def reset_hardware( self ):
         return ( 1, "Reset hardware" )
 
-    def PowerCycle( self ):
+    def power_cycle( self ):
         return ( 1, 'Power cycle' )
 
-    def Testing( self, Config=None, Data=None ):
+    def new( self, Config=None, Data=None, CSV=None ):
         from main import GUI
 
-        if ( Data ):
-            self.Load( Data )
+        if (CSV):
+            self.load_csv(CSV)
+        elif (Data):
+            self.set_data(Data)
 
         self.app = GUI()
         self.app.new(configFile=Config, data=self)
