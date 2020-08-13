@@ -25,7 +25,7 @@ for o, arg in opts:
         TESTING = True
 
 from ctypes import CDLL, c_double, c_bool, c_ushort
-lib = CDLL("rust/target/release/libdigitaldash.dylib")
+lib = CDLL("./libdigitaldash.so")
 lib.check.argtypes = (c_double, c_double, c_ushort)
 lib.check.restype = bool
 
@@ -200,7 +200,7 @@ def build_from_config(self) -> NoReturn:
 
     if not self.first_iteration and Data_Source and type(Data_Source) != Test:
     #Initialize our hardware set-up and verify everything is peachy
-        (ret, msg) = Data_Source.InitializeHardware()
+        (ret, msg) = Data_Source.initialize_hardware()
 
         if not ret:
             Logger.error("Hardware: Could not initialize hardware: " + msg)
@@ -208,7 +208,7 @@ def build_from_config(self) -> NoReturn:
             # Loop in the restart process until we succeed
             while (not ret and count < 3):
                 Logger.error("Hardware: Running hardware restart, attempt :#" + str(count))
-                (ret, msg) = Data_Source.InitializeHardware()
+                (ret, msg) = Data_Source.initialize_hardware()
 
                 if not ret:
                     count = count + 1
