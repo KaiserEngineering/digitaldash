@@ -12,6 +12,11 @@ from static.constants import KE_PID
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
+from ctypes import CDLL, c_double, c_bool, c_ushort
+lib = CDLL("rust/target/release/libdigitaldash.dylib")
+lib.check.argtypes = (c_double, c_double, c_ushort)
+lib.check.restype = bool
+
 def test_needle_simple():
     assert 1 == 1
     needles = (
@@ -105,7 +110,6 @@ def test_alert_simple():
         message   = 'Hello, from tests',
         pid       = "0x0B"
     )
-    assert alert.check(99) is False, print("Check fails when it should")
-
-    assert alert.check(101) is True, print("Check passes when it should")
+    assert lib.check(float(99), alert.value, alert.op) is False, print("Check fails when it should")
+    assert lib.check(float(101), alert.value, alert.op) is True, print("Check passes when it should")
     assert alert.text == 'Hello, from tests', print("Do not set alert value")

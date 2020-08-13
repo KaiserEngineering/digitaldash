@@ -11,12 +11,16 @@ class Test():
             self.load_csv(**args)
         self.rows = len(self.data)
 
-        array = self.data[0]
-        self.cols = len(array)
+        if self.data:
+          array = self.data[0]
+          self.cols = len(array)
 
     def set_data(self, data):
       '''Set testing data source.'''
       self.data = data
+      if self.data:
+          array = self.data[0]
+          self.cols = len(array)
 
     def load_csv(self, file, **args):
         """
@@ -28,6 +32,9 @@ class Test():
             datareader = csv.reader(csvfile, delimiter=',', quotechar='|')
             for row in datareader:
                 self.data.append(row)
+        if self.data:
+          array = self.data[0]
+          self.cols = len(array)
 
     def start(self, pids=[], **args):
         """
