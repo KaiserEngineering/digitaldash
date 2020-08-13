@@ -24,8 +24,17 @@ for o, arg in opts:
     if o in ("-t", "--test"):
         TESTING = True
 
+from sys import platform
+libdigitaldash_path = ''
+if platform == "linux" or platform == "linux2":
+    libdigitaldash_path = './libdigitaldash.so'
+elif platform == "darwin":
+    libdigitaldash_path = './libdigitaldash.dylib'
+elif platform == "win32":
+    libdigitaldash_path = './libdigitaldash.dll'
+
 from ctypes import CDLL, c_double, c_bool, c_ushort
-lib = CDLL("./libdigitaldash.so")
+lib = CDLL(libdigitaldash_path)
 lib.check.argtypes = (c_double, c_double, c_ushort)
 lib.check.restype = bool
 
