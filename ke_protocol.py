@@ -32,7 +32,7 @@ class Serial():
         self.requirements = []
 
 
-    def Start(self, **args):
+    def start(self, **args):
         """L1612773-4oop for checking Serial connection for data."""
         # Handle grabbing data
         data_line = ''
@@ -110,7 +110,7 @@ class Serial():
 
         return( 1, msg )
 
-    def InitializeHardware( self ):
+    def initialize_hardware( self ):
         """
             Handle making sure that our hardware is initialized and
             it is safe to start the main application loop.
@@ -178,20 +178,7 @@ class Serial():
 
         return ( True, "Hardware: Successfully initiated hardware" )
 
-    def ResetHardware( self ):
-        """
-            Re-run the hardware initialize function.
-        """
-        global KE_CP_OP_CODES
-
-        # STUB FOR @MATT
-            # Reboot the hardware here
-        # END STUB
-
-        # After reboot attempt to initialize the hardware again
-        return ( self.InitializeHardware() )
-
-    def PowerCycle( self ):
+    def power_cycle( self ):
         """
            Reboot the Raspberry Pi
         """
