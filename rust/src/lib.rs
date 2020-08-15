@@ -32,6 +32,12 @@ mod tests {
         for operator in operators.iter() {
             assert!(check(current, value, *operator.0) == *operator.1);
         }
+
+        let current = 200.0;
+        let value   = 200.0;
+
+        assert!(check(current, value, 0x203D) == true);
+        assert!(check(current, value, 0x3E3D) == true);
     }
 }
 
