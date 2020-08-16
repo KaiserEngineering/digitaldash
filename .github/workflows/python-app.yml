@@ -1,0 +1,45 @@
+name: Python application
+
+on: [push]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+    - name: Install OS dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-mixer-dev libmtdev1
+        sudo apt-get -y install libsmpeg-dev libswscale-dev libavformat-dev libavcodec-dev libjpeg-dev libtiff5-dev libx11-dev libmtdev-dev
+        sudo apt-get -y install build-essential libgl1-mesa-dev libgles2-mesa-dev
+        sudo apt install rustc
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Build Rust shared libraries
+      run: |
+        cd rust/
+        cargo build --release
+        cp target/release/libdigitaldash.so ../
+
+    - name: Run Rust tests
+      run: |
+        cd rust/
+        cargo test
+
+    - name: Run Python tests
+      run: |
+        export DISPLAY=:99.0;
+        /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1280x720x24 -ac +extension GLX
+        python -m pytest tests/
+        # python -m bandit *.py
