@@ -27,11 +27,11 @@ for o, arg in opts:
 from sys import platform
 libdigitaldash_path = ''
 if platform == "linux" or platform == "linux2":
-    libdigitaldash_path = './libdigitaldash.so'
+    libdigitaldash_path = './rust/target/release/libdigitaldash.so'
 elif platform == "darwin":
-    libdigitaldash_path = './libdigitaldash.dylib'
+    libdigitaldash_path = './rust/target/release/libdigitaldash.dylib'
 elif platform == "win32":
-    libdigitaldash_path = './libdigitaldash.dll'
+    libdigitaldash_path = './rust/target/release/libdigitaldash.dll'
 
 from ctypes import CDLL, c_double, c_bool, c_ushort
 lib = CDLL(libdigitaldash_path)

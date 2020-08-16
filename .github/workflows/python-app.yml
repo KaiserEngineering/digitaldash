@@ -30,7 +30,6 @@ jobs:
       run: |
         cd rust/
         cargo build --release
-        cp target/release/libdigitaldash.so ../
 
     - name: Run Rust tests
       run: |
