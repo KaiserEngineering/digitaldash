@@ -7,7 +7,7 @@
           "default" : 1,
           "background":"bg.jpg",
           "theme" : "Custom",
-          "pids": ["0x0C"],
+          "pids": ["0x010C"],
           "dynamic": {},
           "alerts": [],
           "gauges": [

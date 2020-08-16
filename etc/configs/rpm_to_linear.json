@@ -6,9 +6,9 @@
         "default" : 1,
         "name":"rpm to linear config",
         "background":"bg.jpg",
-        "pids": ["0x0C", "0x0F", "0x0B"],
+        "pids": ["0x010C", "0x010F", "0x010B"],
         "dynamic": {
-            "pid": "0x0C",
+            "pid": "0x010C",
             "op": "<",
             "value": 500,
             "priority": 1
@@ -19,19 +19,19 @@
                 "module": "Radial",
                 "path": "/Stock/",
                 "themeConfig": "120",
-                "pid": "0x0C"
+                "pid": "0x010C"
             },
             {
                 "module": "Radial",
                 "path": "/Stock/",
                 "themeConfig": "120",
-                "pid": "0x0F"
+                "pid": "0x010F"
             },
             {
                 "module": "Radial",
                 "path": "/Stock/",
                 "themeConfig": "120",
-                "pid": "0x0B"
+                "pid": "0x010B"
              }
           ]
         },
@@ -40,9 +40,9 @@
           "enabled" : 1,
           "name": "linear",
           "background":"banner1.jpg",
-          "pids": ["0x0C"],
+          "pids": ["0x010C"],
           "dynamic": {
-            "pid": "0x0C",
+            "pid": "0x010C",
             "op": ">=",
             "value": 500,
             "priority": 10
@@ -53,7 +53,7 @@
                 "module": "Linear",
                 "path": "/Linear/",
                 "themeConfig": "Linear",
-                "pid": "0x0C"
+                "pid": "0x010C"
             }
           ]
         }

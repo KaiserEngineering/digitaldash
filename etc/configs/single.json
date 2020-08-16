@@ -6,7 +6,7 @@
       "default" : 1,
       "theme" : "Stock",
       "background":"bg.jpg",
-      "pids": ["0x0C", "0x0F"],
+      "pids": ["0x010C", "0x010F"],
       "dynamic": {},
       "alerts": [],
       "gauges": [
@@ -14,7 +14,7 @@
             "module": "Radial",
             "path": "/Stock/",
             "themeConfig": "120",
-            "pid": "0x0C"
+            "pid": "0x010C"
           }
         ]
     },
@@ -23,9 +23,9 @@
         "enabled" : 0,
         "theme" : "Glow",
         "background":"bg.jpg",
-        "pids": ["0x0C"],
+        "pids": ["0x010C"],
         "dynamic": {
-            "pid": "0x0C",
+            "pid": "0x010C",
             "op": ">=",
             "value": 1000,
             "priority": 10
@@ -36,7 +36,7 @@
               "module": "Radial",
               "path": "/Glow/",
               "themeConfig": "120",
-              "pid": "0x0C"
+              "pid": "0x010C"
             }
           ]
       }

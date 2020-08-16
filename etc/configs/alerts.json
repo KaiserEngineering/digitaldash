@@ -6,18 +6,18 @@
         "default" : 1,
         "theme" : "Stock",
         "background":"bg.jpg",
-        "pids": ["0x0C"],
+        "pids": ["0x010C"],
           "dynamic": {},
           "alerts": [
             {
-                "pid": "0x0C",
+                "pid": "0x010C",
                 "op": "<",
                 "value": 4000,
                 "priority": 1,
                 "message" : "Hello, world"
             },
             {
-              "pid": "0x0C",
+              "pid": "0x010C",
               "op": ">=",
               "value": 4000,
               "priority": 2,
@@ -29,7 +29,7 @@
                 "module": "Radial",
                 "path": "/Stock/",
                 "themeConfig": "120",
-                "pid": "0x0C"
+                "pid": "0x010C"
             }
         ]
       },
@@ -39,11 +39,11 @@
       "default" : 0,
       "theme" : "Stock",
       "background":"bg.jpg",
-      "pids": ["0x0C"],
+      "pids": ["0x010C"],
         "dynamic": {},
         "alerts": [
           {
-              "pid": "0x0C",
+              "pid": "0x010C",
               "op": ">",
               "value": 4000,
               "priority": 1,
@@ -55,7 +55,7 @@
               "module": "Radial",
               "path": "/Stock/",
               "themeConfig": "120",
-              "pid": "0x0C"
+              "pid": "0x010C"
           }
       ]
     }

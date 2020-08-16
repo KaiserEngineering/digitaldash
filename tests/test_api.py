@@ -31,15 +31,15 @@ def test_needle_simple():
     needles = (
         NeedleRadial(
             themeConfig=120, degrees=120, path='/Stock/',
-            pids=["0x0C"], pid="0x0C"
+            pids=["0x010C"], pid="0x010C"
         ),
         NeedleEllipse(
             themeConfig=120, degrees=120, path='/Dirt/',
-            pids=["0x0C"], pid="0x0C"
+            pids=["0x010C"], pid="0x010C"
         ),
         NeedleLinear(
             themeConfig=120, degrees=120, path='/Linear/',
-            pids=["0x0C"], pid="0x0C"
+            pids=["0x010C"], pid="0x010C"
         ),
     )
 
@@ -68,11 +68,11 @@ def test_label_simple():
         ConfigColor    = (1, 1, 1 ,1),
         ConfigFontSize = 25,
         data           = 0,
-        pid            = "0x0C",
-        **KE_PID["0x0C"]
+        pid            = "0x010C",
+        **KE_PID["0x010C"]
     )
     assert label.text == "hello, world", print("Default text value is set correctly")
-    assert label.decimals == str(KE_PID["0x0C"]['decimals']), print("Decimal place set correctly for label")
+    assert label.decimals == str(KE_PID["0x010C"]['decimals']), print("Decimal place set correctly for label")
 
     label.set_data(100)
     assert label.text == "hello, world100", print("Default text value is set correctly form set_data method")
@@ -80,7 +80,7 @@ def test_label_simple():
     label = KELabel(
         default        = 'Min: ',
         data           = 1,
-        pid            = "0x0B"
+        pid            = "0x010B"
     )
     label.set_data(0)
     assert label.text == "0", print("Default text value is set correctly")
@@ -93,7 +93,7 @@ def test_label_simple():
     label = KELabel(
         default        = 'Max: ',
         data           = 1,
-        pid            = "0x0B"
+        pid            = "0x010B"
     )
     label.set_data(0)
     assert label.text == "0", print("Default text value is set correctly")
@@ -106,7 +106,7 @@ def test_label_simple():
     # Test PID labels
     label = KELabel(
         default        = '__PID__',
-        pid            = "0x0C"
+        pid            = "0x010C"
     )
     assert label.text == "RPM", print("Sets PID label correctly")
 
@@ -117,7 +117,7 @@ def test_alert_simple():
         index     = 0,
         priority  = 0,
         message   = 'Hello, from tests',
-        pid       = "0x0B"
+        pid       = "0x010B"
     )
     assert lib.check(float(99), alert.value, alert.op) is False, print("Check fails when it should")
     assert lib.check(float(101), alert.value, alert.op) is True, print("Check passes when it should")

@@ -6,7 +6,7 @@
         "default" : 1,
         "background":"bg.jpg",
         "theme" : "Modern",
-        "pids": ["0x0C"],
+        "pids": ["0x010C"],
         "dynamic": {},
         "alerts": [],
         "gauges": [
@@ -14,7 +14,7 @@
                 "module": "Radial",
                 "path": "/Stock_orange/",
                 "themeConfig": "120",
-                "pid": "0x0C"
+                "pid": "0x010C"
             }
           ]
       }

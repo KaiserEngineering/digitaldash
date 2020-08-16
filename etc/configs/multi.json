@@ -7,13 +7,13 @@
             "background" : "alignment.png",
             "theme" : "Stock",
             "pids" : [
-                "0x0C",
-                "0x0F",
-                "0x0B"
+                "0x010C",
+                "0x010F",
+                "0x010B"
             ],
             "alerts" : [
                 {
-                    "pid": "0x0C",
+                    "pid": "0x010C",
                     "op": ">",
                     "value": -4000,
                     "priority": 1,
@@ -25,19 +25,19 @@
             "gauges" : [
             {
                 "themeConfig" : "120",
-                "pid" : "0x0C",
+                "pid" : "0x010C",
                 "module" : "Ellipse",
                 "path" : "/Dirt/"
             },
             {
               "themeConfig" : "120",
-              "pid" : "0x0C",
+              "pid" : "0x010C",
               "module" : "Radial",
               "path" : "/Stock_orange/"
           },
           {
             "themeConfig" : "Linear",
-            "pid" : "0x0C",
+            "pid" : "0x010C",
             "module" : "Linear",
             "path" : "/Linear/"
         }

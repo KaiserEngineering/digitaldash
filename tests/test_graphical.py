@@ -15,7 +15,7 @@ class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
         t.new( Config='etc/configs/single.json', Data=[[50, 100]] )
-        t.app.update_values(data={"0x0C": 50})
+        t.app.update_values(data={"0x010C": 50})
         t.app.working_path = working_path
 
         for layout in t.app.app.children[0].children:
