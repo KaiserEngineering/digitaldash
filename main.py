@@ -331,9 +331,11 @@ class GUI(App):
     def update_values(self: DD, data: List[float]) -> NoReturn:
         for widget in self.ObjectsToUpdate:
             for obj in widget:
-                # REVIEW Is this a waste of resources checking every loop?
                 if obj.pid:
-                    obj.set_data(data[obj.pid])
+                    try:
+                        obj.set_data(data[obj.pid])
+                    except:
+                        Logger.error( "GUI: Firmware did not provide data value for key: %s", obj.pid )
                 else:
                     # This is for widgets that subscribe to
                     # updates but don't need any pid data ( Clock ).
