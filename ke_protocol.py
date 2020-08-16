@@ -87,23 +87,14 @@ class Serial():
 
         return self.ser_val
 
-    def update_requirements(self, app, requirements):
+    def update_requirements(self, app, pid_byte_code, pids):
         global KE_CP_OP_CODES
-        Logger.info("GUI: Updating requirements: " + str(requirements))
+        Logger.info("GUI: Updating requirements: " + str(pid_byte_code))
 
-        #Save current PID request
-        self.requirements = requirements
+        # Save current PID request
+        app.requirements = pids
 
-        pid_byte_code = []
-        byte_count    = 3
-        for requirement in requirements:
-            pid_byte_code.append( 0x00 )                           # Units
-            pid_byte_code.append( 0x00 )                           # Spare
-            pid_byte_code.append( 0x00 )                           # Service Identifier
-            pid_byte_code.append( ( int(requirement,16) ) & 0xFF ) # PID
-
-            byte_count += 4
-        bytes_written = self.ser.write( [ UART_SOL , byte_count, KE_CP_OP_CODES['KE_PID_STREAM_NEW']]+ pid_byte_code );
+        bytes_written = self.ser.write( pid_byte_code )
 
         msg = "PIDs updated " + str( bytes_written ) + " written"
         Logger.info( msg )
@@ -190,3 +181,25 @@ class Serial():
 
         Logger.info( msg )
         return ( ret, msg )
+
+
+def build_update_requirements_bytearray(requirements):
+    '''Function to build bytearray that is passed to micro on view change.'''
+    global KE_CP_OP_CODES
+
+    pid_byte_code = []
+    byte_count    = 3
+    for requirement in requirements:
+        pid_byte_code.append( 0x00 )                                    # Units
+        pid_byte_code.append( 0x00 )                                    # Spare
+        pid_byte_code.append( 0x01 )                                    # Mode
+        if len(requirement) == 6:
+            pid_byte_code.append( 0x00 )                                # PID byte 0
+        else:
+            pid_byte_code.append( ( int(requirement,16) >> 8 ) & 0xFF ) # PID byte 0
+        pid_byte_code.append( ( int(requirement,16) ) & 0xFF )          # PID byte 1
+
+        byte_count += 5
+
+    pid_byte_code = [ UART_SOL , byte_count, KE_CP_OP_CODES['KE_PID_STREAM_NEW'] ] + pid_byte_code
+    return pid_byte_code

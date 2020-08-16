@@ -67,7 +67,7 @@ class Dynamic():
           self (<digitaldash.dynamic>) : The current Dynamic object
           app (<GUI>) : The main application object
         """
-        (ret, msg) = app.data_source.update_requirements(app, app.views[self.index]['pids'])
+        (ret, msg) = app.data_source.update_requirements(app, app.pid_byte_code, app.pids)
         if not ret:
             Logger.error("Could not update requirements from dynamic: %s", msg)
 
@@ -76,7 +76,7 @@ class Dynamic():
         app.alerts.clear_widgets()
 
         (app.background, app.background_source, app.alerts,
-         app.ObjectsToUpdate, app.pids) = app.views[self.index].values()
+         app.ObjectsToUpdate, app.pids, app.pid_byte_code) = app.views[self.index].values()
 
         app.background.add_widget(app.containers[self.index])
         app.background.add_widget(app.alerts)

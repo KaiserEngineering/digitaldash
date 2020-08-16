@@ -7,14 +7,14 @@
                "background" : "bg.jpg",
                "theme" : "Stock",
                "pids" : [
-                   "0x0C",
-                   "0x0F",
-                   "0x6F",
-                   "0x5C"
+                   "0x010C",
+                   "0x010F",
+                   "0x016F",
+                   "0x015C"
                ],
                "alerts" : [
                    {
-                       "pid": "0x0C",
+                       "pid": "0x010C",
                        "op": ">",
                        "value": 4000,
                        "priority": 1,
@@ -22,7 +22,7 @@
                    }
                ],
                "dynamic" : {
-                   "pid" : "0x0C",
+                   "pid" : "0x010C",
                    "op" : "<",
                    "priority" : 1,
                    "value" : 4000
@@ -30,19 +30,19 @@
                "gauges" : [
                {
                    "themeConfig" : "120",
-                   "pid" : "0x0F",
+                   "pid" : "0x010F",
                    "module" : "Radial",
                    "path" : "/Stock/"
                },
                {
                    "themeConfig" : "120",
-                   "pid" : "0x6F",
+                   "pid" : "0x016F",
                    "module" : "Radial",
                    "path" : "/Stock/"
                },
                {
                    "themeConfig" : "120",
-                   "pid" : "0x5C",
+                   "pid" : "0x015C",
                    "module" : "Radial",
                    "path" : "/Stock/"
                }
@@ -54,14 +54,14 @@
                "background" : "banner1.jpg",
                "theme" : "Glow",
                "pids" : [
-                   "0x0C",
-                   "0x0F",
-                   "0x0B"
+                   "0x010C",
+                   "0x010F",
+                   "0x010B"
                ],
                "alerts" : [
                ],
                "dynamic" : {
-                   "pid" : "0x0C",
+                   "pid" : "0x010C",
                    "op" : ">=",
                    "priority" : 2,
                    "value" : 5000
@@ -69,19 +69,19 @@
                "gauges" : [
                {
                    "themeConfig" : "120",
-                   "pid" : "0x0C",
+                   "pid" : "0x010C",
                    "module" : "Radial",
                    "path" : "/Glow/"
                },
                {
                    "themeConfig" : "120",
-                   "pid" : "0x0F",
+                   "pid" : "0x010F",
                    "module" : "Radial",
                    "path" : "/Glow/"
                },
                {
                    "themeConfig" : "120",
-                   "pid" : "0x0B",
+                   "pid" : "0x010B",
                    "module" : "Radial",
                    "path" : "/Glow/"
                }

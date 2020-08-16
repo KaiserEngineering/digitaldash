@@ -28,31 +28,31 @@ KE_CP_OP_CODES = {
 }
 
 KE_PID = {
-    "0x0C": {
+    "0x010C": {
         'name': 'ENGINE_RPM', 'shortName' : 'RPM', 'decimals' : '0',
         'units' : 'RPM', 'Min' : 0, 'Max' : 8000
     },
-    "0x0F": {
+    "0x010F": {
         'name': 'INTAKE_AIR_TEMPERATURE', 'shortName' : 'IAT', 'decimals' : '2',
         'units' : 'Celcius', 'Min' : 0, 'Max' : 215
     },
-    "0x0B": {
+    "0x010B": {
         'name': 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE', 'shortName' : 'MAP',
         'decimals' : '0', 'units' : 'kPa', 'Min' : 0, 'Max' : 255
     },
-    "0x05": {
+    "0x0105": {
         'name': 'ENGINE_COOLANT_TEMPERATURE', 'shortName' : 'ECT', 'decimals' : '1',
         'units' : 'Celcius'
     },
-    "0x04": {
+    "0x0104": {
         'name': 'CALCULATED_ENGINE_LOAD', 'shortName' : 'LOAD', 'decimals' : '1',
         'units' : '%'
     },
-    "0x5C": {
+    "0x015C": {
         'name': 'ENGINE_OIL_TEMPERATURE', 'shortName' : 'Oil Temp', 'decimals' : '0',
         'uints' : 'Celcius', 'Min' : 0, 'Max' : 150
     },
-    "0x6F": {
+    "0x016F": {
         'name': 'TURBO_INLET_PRESSURE', 'shortName' : 'Boost', 'decimals' : '0',
         'uints' : 'kPa', 'Min' : 0, 'Max' : 210
     },
