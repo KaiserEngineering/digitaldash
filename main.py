@@ -308,10 +308,14 @@ class GUI(App):
         return build_from_config(self)
 
     def check_callback(self: DD, callback, data):
-        # Check if any dynamic changes need to be made
-        if lib.check(float(data[callback.pid]), callback.value, callback.op):
-            return callback
-        return False
+        ret = False
+        try:
+          # Check if any dynamic changes need to be made
+          if lib.check(float(data[callback.pid]), callback.value, callback.op):
+              ret = callback
+        except:
+          Logger.error( "GUI: Firmware did not provide data value for key: %s", callback.pid )
+        return ret
 
     def change(self: DD, app, my_callback) -> NoReturn:
         """
