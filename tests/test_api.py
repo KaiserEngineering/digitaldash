@@ -8,23 +8,11 @@ from digitaldash.ke_label import KELabel
 from digitaldash.alert import Alert
 from digitaldash.massager import smooth
 from static.constants import KE_PID
+import libdigitaldash
 
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
-from sys import platform
-libdigitaldash_path = ''
-if platform == "linux" or platform == "linux2":
-    libdigitaldash_path = './rust/target/release/libdigitaldash.so'
-elif platform == "darwin":
-    libdigitaldash_path = './rust/target/release/libdigitaldash.dylib'
-elif platform == "win32":
-    libdigitaldash_path = './rust/target/release/libdigitaldash.dll'
-
-from ctypes import CDLL, c_double, c_bool, c_ushort
-lib = CDLL(libdigitaldash_path)
-lib.check.argtypes = (c_double, c_double, c_ushort)
-lib.check.restype = bool
 
 def test_needle_simple():
     assert 1 == 1
@@ -119,6 +107,6 @@ def test_alert_simple():
         message   = 'Hello, from tests',
         pid       = "0x010B"
     )
-    assert lib.check(float(99), alert.value, alert.op) is False, print("Check fails when it should")
-    assert lib.check(float(101), alert.value, alert.op) is True, print("Check passes when it should")
+    assert libdigitaldash.check(float(99), alert.value, alert.op) is False, print("Check fails when it should")
+    assert libdigitaldash.check(float(101), alert.value, alert.op) is True, print("Check passes when it should")
     assert alert.text == 'Hello, from tests', print("Do not set alert value")
