@@ -50,4 +50,7 @@ rust/debug/
 **/*.rs.bk
 rust/target/
 rust/target/.rustc_info.json
-
+build/
+dist/
+libdigitaldash_rust.egg-info/
+libdigitaldash/target/
