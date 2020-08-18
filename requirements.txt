@@ -4,3 +4,4 @@ kivy>=1.11.1
 pytest>=5.2
 bandit
 pyserial
+setuptools_rust
