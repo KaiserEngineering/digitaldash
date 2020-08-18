@@ -24,20 +24,6 @@ for o, arg in opts:
     if o in ("-t", "--test"):
         TESTING = True
 
-from sys import platform
-libdigitaldash_path = ''
-if platform == "linux" or platform == "linux2":
-    libdigitaldash_path = './rust/target/release/libdigitaldash.so'
-elif platform == "darwin":
-    libdigitaldash_path = './rust/target/release/libdigitaldash.dylib'
-elif platform == "win32":
-    libdigitaldash_path = './rust/target/release/libdigitaldash.dll'
-
-from ctypes import CDLL, c_double, c_bool, c_ushort
-lib = CDLL(libdigitaldash_path)
-lib.check.argtypes = (c_double, c_double, c_ushort)
-lib.check.restype = bool
-
 # Our Kivy deps
 import kivy
 from kivy.logger import Logger
@@ -51,6 +37,9 @@ from kivy.uix.relativelayout import RelativeLayout
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 from typing import NoReturn, List, TypeVar
+
+# Rust import
+import libdigitaldash
 
 from etc import config
 from digitaldash.base import Base
@@ -314,7 +303,7 @@ class GUI(App):
         ret = False
         try:
           # Check if any dynamic changes need to be made
-          if lib.check(float(data[callback.pid]), callback.value, callback.op):
+          if libdigitaldash.check(float(data[callback.pid]), callback.value, callback.op):
               ret = callback
         except:
           Logger.error( "GUI: Firmware did not provide data value for key: %s", callback.pid )

@@ -1,14 +1,24 @@
-#[no_mangle]
-fn check(current: f64, val: f64, op: u16) -> bool {
+use pyo3::prelude::*;
+use pyo3::wrap_pyfunction;
 
-    match op {
-      0x203C => return current < val,
-      0x203E => return current > val,
-      0x203D => return current == val,
-      0x3C3D => return current <= val,
-      0x3E3D => return current >= val,
-      _      => return false
-    }
+#[pyfunction]
+fn check(current: f64, val: f64, op: u16) -> bool {
+  let ret = match op {
+    0x203C => current < val,
+    0x203E => current > val,
+    0x203D => current == val,
+    0x3C3D => current <= val,
+    0x3E3D => current >= val,
+    _      => false
+  };
+  return ret
+}
+
+#[pymodule]
+fn libdigitaldash(_py: Python, m: &PyModule) -> PyResult<()> {
+    m.add_wrapped(wrap_pyfunction!(check)).unwrap();
+
+    Ok(())
 }
 
 #[cfg(test)]
@@ -40,4 +50,3 @@ mod tests {
         assert!(check(current, value, 0x3E3D) == true);
     }
 }
-

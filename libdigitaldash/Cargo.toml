@@ -1,0 +1,15 @@
+[package]
+name = "libdigitaldash"
+version = "0.1.0"
+authors = ["Craig Kaiser <craig@kaiserengineering.io>"]
+edition = "2018"
+
+[lib]
+name = "libdigitaldash"
+crate-type = ["cdylib"]
+
+[dependencies.pyo3]
+version = "0.11.1"
+features = ["extension-module"]
+
+[dependencies]
