@@ -26,9 +26,10 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+
     - name: Run Rust tests
       run: |
-        cd rust/
+        cd libdigitaldash/
         cargo test
 
     - name: Run Python tests
