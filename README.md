@@ -22,4 +22,7 @@ python3 main.py -d --file tests/data/rpm_increasing.csv -c etc/configs/single.js
 
 ```bash
 python3 -m pytest tests
+
+cd libdigitaldash
+cargo test
 ```
