@@ -104,25 +104,15 @@ sub startup {
   # Router
   my $r = $self->routes;
 
-  $self->plugin('SecureCORS');
+  $r->get('/home')->over(signed => 1)->to('App#home');
 
-  $r->cors('/api/*');
+  $r->get('/settings')->over(signed => 1)->to('App#settings');
 
-  $r->get('/')->over(authenticated => 1)->to('API#index');
+  $r->get('/edit')->over(signed => 1)->to('App#edit');
 
-  $r->get('/')->over(authenticated => 0)->to('Auth#login');
+  $r->any('/')->to('App#login');
 
-  $r->get('/login')->over(authenticated => 0)->to('Auth#login');
-
-  $r->post('/login')->to('Auth#login');
-
-  $r->get('/api/config/')->to('API#config');
-
-  $r->get('/api/constants/')->to('API#constants');
-
-  $r->put('/api/update', {'cors.origin' => '*'})->to('API#update');
-  $r->put('/api/delete', {'cors.origin' => '*'})->to('API#delete');
-  $r->put('/api/enable', {'cors.origin' => '*'})->to('API#toggle_enable');
+  $r->any('*whatever')->to('App#login');
 
 }
 
