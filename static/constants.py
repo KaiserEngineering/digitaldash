@@ -42,11 +42,11 @@ KE_PID = {
     },
     "0x0105": {
         'name': 'ENGINE_COOLANT_TEMPERATURE', 'shortName' : 'ECT', 'decimals' : '1',
-        'units' : 'Celcius'
+        'units' : 'Celcius', 'Min' : 0, 'Max' : 150
     },
     "0x0104": {
         'name': 'CALCULATED_ENGINE_LOAD', 'shortName' : 'LOAD', 'decimals' : '1',
-        'units' : '%'
+        'units' : '%', 'Min' : 0, 'Max' : 150
     },
     "0x015C": {
         'name': 'ENGINE_OIL_TEMPERATURE', 'shortName' : 'Oil Temp', 'decimals' : '0',
@@ -55,6 +55,14 @@ KE_PID = {
     "0x016F": {
         'name': 'TURBO_INLET_PRESSURE', 'shortName' : 'Boost', 'decimals' : '0',
         'uints' : 'kPa', 'Min' : 0, 'Max' : 210
+    },
+    "0x220461": {
+        'name': 'CHARGE_AIR_TEMP', 'shortName' : 'CAT', 'decimals' : '1',
+        'uints' : 'Celcius', 'Min' : -40, 'Max' : 300
+    },
+    "0x22F40F": {
+        'name': 'INTAKE_AIR_TEMP', 'shortName' : 'IAT', 'decimals' : '1',
+        'uints' : 'Celcius', 'Min' : -40, 'Max' : 300
     },
 }
 
