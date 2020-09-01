@@ -190,14 +190,15 @@ def build_update_requirements_bytearray(requirements):
     pid_byte_code = []
     byte_count    = 3
     for requirement in requirements:
-        pid_byte_code.append( 0x00 )                                    # Units
-        pid_byte_code.append( 0x00 )                                    # Spare
-        pid_byte_code.append( 0x01 )                                    # Mode
+        pid_byte_code.append( 0x00 )                                     # Units
+        pid_byte_code.append( 0x00 )                                     # Spare
         if len(requirement) == 6:
-            pid_byte_code.append( 0x00 )                                # PID byte 0
+            pid_byte_code.append( ( int(requirement,16) >> 8 ) & 0xFF )  # Mode
+            pid_byte_code.append( 0x00 )                                 # PID byte 0
         else:
-            pid_byte_code.append( ( int(requirement,16) >> 8 ) & 0xFF ) # PID byte 0
-        pid_byte_code.append( ( int(requirement,16) ) & 0xFF )          # PID byte 1
+            pid_byte_code.append( ( int(requirement,16) >> 16 ) & 0xFF ) # Mode
+            pid_byte_code.append( ( int(requirement,16) >> 8 ) & 0xFF )  # PID byte 0
+        pid_byte_code.append( ( int(requirement,16) ) & 0xFF )           # PID byte 1
 
         byte_count += 5
 
