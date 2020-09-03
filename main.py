@@ -125,8 +125,8 @@ def setup(Layouts):
             # This handles our gauge positions, see the following for reference:
             # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
             subcontainer = RelativeLayout(
-                pos_hint={'x': percent_width * gauge_count - multi_offset, 'top': .96},
-                size_hint_max_y=250
+                pos_hint={'x': percent_width * gauge_count - multi_offset, 'top': .95},
+                size_hint_max_y=225
             )
             x_position = (percent_width * gauge_count - multi_offset)
             container.add_widget(subcontainer)
