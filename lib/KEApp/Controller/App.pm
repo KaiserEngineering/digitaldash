@@ -58,7 +58,7 @@ sub edit {
   my $c  = shift;
 
   my $id = @{$c->every_param('id')}[0];
-  unless ( $id ) {
+  unless ( defined $id ) {
       $log->error( "Must provide ID value for edit page" );
   }
 
