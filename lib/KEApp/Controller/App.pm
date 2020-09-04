@@ -48,6 +48,27 @@ sub login {
 sub settings {
   my $c  = shift;
 
+  my $args = $c->req->params->to_hash;
+
+  if ( $args->{'username'} && $args->{'password'} ) {
+
+    {
+      local $/; #Enable 'slurp' mode
+      open my $fh, ">", "$ENV{'KEWebAppHome'}/auth.txt";
+      print $fh qq[
+{
+  "user":"$args->{'username'}",
+  "pass":"$args->{'password'}"
+}];
+      close $fh;
+    }
+  }
+
+  push @{ $c->session->{'notifications'} }, {
+    message => "Login updated!",
+    type    => "info"
+  };
+
   $c->render(
       "pages/settings.html",
       handler => 'mason',
@@ -68,8 +89,6 @@ sub edit {
       id => $id
   );
 }
-
-
 
 sub update {
   my $c = shift;

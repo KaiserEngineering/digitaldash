@@ -106,7 +106,7 @@ sub startup {
 
   $r->get('/home')->over(signed => 1)->to('App#home');
 
-  $r->get('/settings')->over(signed => 1)->to('App#settings');
+  $r->any('/settings')->over(signed => 1)->to('App#settings');
 
   $r->get('/edit')->over(signed => 1)->to('App#edit');
 

@@ -1,5 +1,30 @@
 <&| /layouts/layout, %ARGS, Nav => 1 &>
 
-hi
+  <form method="POST">
+    <div class="row">
+      <div class="col-md-12 order-md-1">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName">Username</label>
+              <input type="text" class="form-control" name="username" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Username is required
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="firstName">Password</label>
+              <input type="text" class="form-control" name="password" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Password is required
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Update settings</button>
+        </form>
+      </div>
+    </div>
+  </form>
 
 </&>
