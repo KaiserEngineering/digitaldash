@@ -62,12 +62,11 @@ sub settings {
 }];
       close $fh;
     }
+    push @{ $c->session->{'notifications'} }, {
+      message => "Login updated!",
+      type    => "info"
+    };
   }
-
-  push @{ $c->session->{'notifications'} }, {
-    message => "Login updated!",
-    type    => "info"
-  };
 
   $c->render(
       "pages/settings.html",
