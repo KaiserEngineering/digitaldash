@@ -9,7 +9,7 @@
        "pos": [-85, 25], "font_size": 22, "default": "Min: ", "data": 1
        },
       {
-       "pos": [0, 55], "font_size": 32, "default": "", "data": 1
+       "pos": [0, 55], "font_size": 26, "default": "", "data": 1
       },
       {
         "pos": [0, 30], "font_size": 20, "default": "__PID__"
