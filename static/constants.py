@@ -27,45 +27,60 @@ KE_CP_OP_CODES = {
     'KE_FIRMWARE_UPDATE'         : 0x17     # Place device in firmware update mode
 }
 
+PID_UNITS = {
+    'PID_UNITS_RESERVED'         : 0x00,
+    'PID_UNITS_PERCENT'          : 0x01,
+    'PID_UNITS_CELCIUS'          : 0x02,
+    'PID_UNITS_FAHRENHEIT'       : 0x03,
+    'PID_UNITS_KPA'              : 0x04,
+    'PID_UNITS_PSI'              : 0x05,
+    'PID_UNITS_RPM'              : 0x06,
+    'PID_UNITS_KMH'              : 0x07,
+    'PID_UNITS_MPH'              : 0x08,
+    'PID_UNITS_GRAMSEC'          : 0x09,
+    'PID_UNITS_DEGREES'          : 0x0A
+}
+
 KE_PID = {
     "0x010C": {
         'name': 'ENGINE_RPM', 'shortName' : 'RPM', 'decimals' : '0',
-        'units' : 'RPM', 'Min' : 0, 'Max' : 8000
+        'units' : PID_UNITS['PID_UNITS_RPM'], 'Min' : 0, 'Max' : 8000
     },
     "0x010F": {
         'name': 'INTAKE_AIR_TEMPERATURE', 'shortName' : 'IAT', 'decimals' : '2',
-        'units' : 'Celcius', 'Min' : 0, 'Max' : 215
+        'units' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : 0, 'Max' : 215
     },
     "0x010B": {
         'name': 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE', 'shortName' : 'MAP',
-        'decimals' : '0', 'units' : 'kPa', 'Min' : 0, 'Max' : 255
+        'decimals' : '0', 'units' : PID_UNITS['PID_UNITS_KPA'], 'Min' : 0, 'Max' : 255
     },
     "0x0105": {
         'name': 'ENGINE_COOLANT_TEMPERATURE', 'shortName' : 'ECT', 'decimals' : '1',
-        'units' : 'Celcius', 'Min' : 0, 'Max' : 150
+        'units' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : 0, 'Max' : 150
     },
     "0x0104": {
         'name': 'CALCULATED_ENGINE_LOAD', 'shortName' : 'LOAD', 'decimals' : '1',
-        'units' : '%', 'Min' : 0, 'Max' : 150
+        'units' : PID_UNITS['PID_UNITS_PERCENT'], 'Min' : 0, 'Max' : 150
     },
     "0x015C": {
         'name': 'ENGINE_OIL_TEMPERATURE', 'shortName' : 'Oil Temp', 'decimals' : '0',
-        'uints' : 'Celcius', 'Min' : 0, 'Max' : 150
+        'uints' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : 0, 'Max' : 150
     },
     "0x016F": {
         'name': 'TURBO_INLET_PRESSURE', 'shortName' : 'Boost', 'decimals' : '0',
-        'uints' : 'kPa', 'Min' : 0, 'Max' : 210
+        'uints' : PID_UNITS['PID_UNITS_KPA'], 'Min' : 0, 'Max' : 210
     },
     "0x220461": {
         'name': 'CHARGE_AIR_TEMP', 'shortName' : 'CAT', 'decimals' : '1',
-        'uints' : 'Celcius', 'Min' : -40, 'Max' : 300
+        'uints' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : -40, 'Max' : 300
     },
     "0x22F40F": {
         'name': 'INTAKE_AIR_TEMP', 'shortName' : 'IAT', 'decimals' : '1',
-        'uints' : 'Celcius', 'Min' : -40, 'Max' : 300
+        'uints' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : -40, 'Max' : 300
     },
 }
 
 def get_constants():
     """Return combined constants dictionary"""
-    return {**KE_PID, **KE_CP_OP_CODES}
+    return {**KE_PID, **KE_CP_OP_CODES, **KE_UNITS}
+
