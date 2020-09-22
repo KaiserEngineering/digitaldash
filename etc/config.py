@@ -26,7 +26,7 @@ def views(file=None):
         {"views": { "0": {
             "alerts": [], "default": 1, "theme": "Error", "background": "bg.jpg",
             "dynamic": {},"gauges": [{"themeConfig": "Error","pid": "","module": "Misc",
-            "path": "Alerts/"}], "name": "Error", "enabled": 1, "pids": [""]}}}
+            "path": "Alerts/"}], "name": "Error", "enabled": 1}}}
         ''')
 
     return jsonData
@@ -54,8 +54,6 @@ def validateConfig(config):
                 "enabled" : int,
                 "theme" : str,
                 "background": str,
-                "pids": list,
-                "units": list,
                 "dynamic": dict,
                 "alerts": list,
                 "gauges": list
