@@ -12,11 +12,18 @@
                    "0x016F",
                    "0x015C"
                ],
+               "units" : [
+                   "PID_UNITS_RPM",
+                   "PID_UNITS_FAHRENHEIT",
+                   "PID_UNITS_PSI",
+                   "PID_UNITS_FAHRENHEIT"
+               ],
                "alerts" : [
                    {
                        "pid": "0x010C",
                        "op": ">",
                        "value": 4000,
+                       "unit" : "PID_UNITS_RPM",
                        "priority": 1,
                        "message" : "Danger to Manifold"
                    }
@@ -25,24 +32,28 @@
                    "pid" : "0x010C",
                    "op" : "<",
                    "priority" : 1,
-                   "value" : 4000
+                   "value" : 4000,
+                   "unit" : "PID_UNITS_RPM"
                },
                "gauges" : [
                {
                    "themeConfig" : "120",
                    "pid" : "0x010F",
+                   "unit" : "PID_UNITS_FAHRENHEIT",
                    "module" : "Radial",
                    "path" : "/Stock/"
                },
                {
                    "themeConfig" : "120",
                    "pid" : "0x016F",
+                   "unit" : "PID_UNITS_PSI",
                    "module" : "Radial",
                    "path" : "/Stock/"
                },
                {
                    "themeConfig" : "120",
                    "pid" : "0x015C",
+                   "unit" : "PID_UNITS_FAHRENHEIT",
                    "module" : "Radial",
                    "path" : "/Stock/"
                }
@@ -58,30 +69,39 @@
                    "0x010F",
                    "0x010B"
                ],
+               "units" : [
+                   "PID_UNITS_FAHRENHEIT",
+                   "PID_UNITS_PSI",
+                   "PID_UNITS_FAHRENHEIT"
+               ],
                "alerts" : [
                ],
                "dynamic" : {
                    "pid" : "0x010C",
                    "op" : ">=",
                    "priority" : 2,
-                   "value" : 5000
+                   "value" : 5000,
+                   "unit" : "PID_UNITS_RPM"
                },
                "gauges" : [
                {
                    "themeConfig" : "120",
                    "pid" : "0x010C",
+                   "unit" : "PID_UNITS_RPM",
                    "module" : "Radial",
                    "path" : "/Glow/"
                },
                {
                    "themeConfig" : "120",
                    "pid" : "0x010F",
+                   "unit" : "PID_UNITS_FAHRENHEIT",
                    "module" : "Radial",
                    "path" : "/Glow/"
                },
                {
                    "themeConfig" : "120",
                    "pid" : "0x010B",
+                   "unit" : "PID_UNITS_PSI",
                    "module" : "Radial",
                    "path" : "/Glow/"
                }

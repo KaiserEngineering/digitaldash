@@ -55,6 +55,7 @@ def validateConfig(config):
                 "theme" : str,
                 "background": str,
                 "pids": list,
+                "units": list,
                 "dynamic": dict,
                 "alerts": list,
                 "gauges": list
@@ -63,12 +64,14 @@ def validateConfig(config):
             "pid": str,
             "op": str,
             "value": int,
+            "unit" : str,
             "priority": int,
             "message" : str
         },
         "gauges" : {
             "themeConfig" : str,
             "pid" : str,
+            "unit" : str,
             "module" : str,
             "path" : str
         },
@@ -76,7 +79,8 @@ def validateConfig(config):
             "pid" : str,
             "op" : str,
             "priority" : int,
-            "value" : int
+            "value" : int,
+            "unit" : str
         },
     }
 

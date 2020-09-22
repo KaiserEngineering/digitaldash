@@ -4,6 +4,7 @@ import time
 from kivy.logger import Logger
 import subprocess #nosec
 from static.constants import KE_CP_OP_CODES
+from static.constants import PID_UNITS
 import os
 import fnmatch
 
@@ -183,15 +184,16 @@ class Serial():
         return ( ret, msg )
 
 
-def build_update_requirements_bytearray(requirements):
+def build_update_requirements_bytearray(units, requirements):
     '''Function to build bytearray that is passed to micro on view change.'''
     global KE_CP_OP_CODES
 
+    index         = 0
     pid_byte_code = []
     byte_count    = 3
     for requirement in requirements:
-        pid_byte_code.append( 0x00 )                                     # Units
         pid_byte_code.append( 0x00 )                                     # Spare
+        pid_byte_code.append( PID_UNITS[units[index]] )                  # Units
         if len(requirement) == 6:
             pid_byte_code.append( ( int(requirement,16) >> 8 ) & 0xFF )  # Mode
             pid_byte_code.append( 0x00 )                                 # PID byte 0
@@ -200,6 +202,7 @@ def build_update_requirements_bytearray(requirements):
             pid_byte_code.append( ( int(requirement,16) >> 8 ) & 0xFF )  # PID byte 0
         pid_byte_code.append( ( int(requirement,16) ) & 0xFF )           # PID byte 1
 
+        index += 1
         byte_count += 5
 
     pid_byte_code = [ UART_SOL , byte_count, KE_CP_OP_CODES['KE_PID_STREAM_NEW'] ] + pid_byte_code

@@ -84,6 +84,7 @@ def setup(Layouts):
 
         background = view['background']
         pids = view['pids']
+        units = view['units']
 
         # Create our callbacks
         if view['dynamic'].keys():
@@ -151,7 +152,7 @@ def setup(Layouts):
 
         containers.append(container)
 
-        pid_byte_code = build_update_requirements_bytearray( pids )
+        pid_byte_code = build_update_requirements_bytearray( units, pids )
 
         views.append({'app': Background(), 'background': background, 'alerts': FloatLayout(),
                       'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids, 'pid_byte_code': pid_byte_code})
