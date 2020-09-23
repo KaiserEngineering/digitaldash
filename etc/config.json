@@ -52,16 +52,6 @@
                "default" : 0,
                "background" : "banner1.jpg",
                "theme" : "Glow",
-               "pids" : [
-                   "0x010C",
-                   "0x010F",
-                   "0x010B"
-               ],
-               "units" : [
-                   "PID_UNITS_FAHRENHEIT",
-                   "PID_UNITS_PSI",
-                   "PID_UNITS_FAHRENHEIT"
-               ],
                "alerts" : [
                ],
                "dynamic" : {

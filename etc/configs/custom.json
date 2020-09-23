@@ -7,7 +7,6 @@
           "default" : 1,
           "background":"bg.jpg",
           "theme" : "Custom",
-          "pids": ["0x010C"],
           "dynamic": {},
           "alerts": [],
           "gauges": [
@@ -15,7 +14,8 @@
               "module": "KECustom",
               "path": "/Custom/",
               "themeConfig": "Custom",
-              "pid": "Custom"
+              "pid": "Custom",
+              "unit" : "PID_UNITS_RPM"
           }]
       }
   }
