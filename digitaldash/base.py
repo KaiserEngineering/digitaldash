@@ -51,7 +51,7 @@ class Base():
 
         # Create our labels
         for labelConfig in themeConfig['labels']:
-            labelConfig['pid'] = ARGS['pids'][ARGS['pids'].index(ARGS['pid'])]
+            labelConfig['pid'] = ARGS['pid']
 
             labelConfig = {**ARGS, **labelConfig}
 

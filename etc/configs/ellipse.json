@@ -6,7 +6,6 @@
         "enabled" : 1,
         "default" : 1,
         "background":"bg.jpg",
-        "pids": ["0x010C", "0x010F"],
         "dynamic": {},
         "alerts": [],
         "gauges": [
@@ -14,7 +13,8 @@
                 "module": "Ellipse",
                 "path": "/Dirt/",
                 "themeConfig": "120",
-                "pid": "0x010C"
+                "pid": "0x010C",
+                "unit" : "PID_UNITS_RPM"
             }
         ]
       }

@@ -82,9 +82,26 @@ def setup(Layouts):
         # Skip disabled views
         if not view['enabled']: continue
 
+        # Get our PIDs list from the gauges, alerts and dynamic config
+        pids_dict = {}
+        for gauge in view['gauges']:
+          pids_dict[gauge['pid']] = 1
+        for alert in view['alerts']:
+          pids_dict[alert['pid']] = 1
+        if view['dynamic']:
+          pids_dict[view['dynamic']['pid']] = 1
+        pids = list(pids_dict.keys())
+
+        # Get our units dict from the gauges, alerts and dynamic config
+        units = {}
+        for gauge in view['gauges']:
+          units[gauge['pid']] = gauge['unit']
+        for alert in view['alerts']:
+          units[alert['pid']] = alert['unit']
+        if view['dynamic']:
+          units[view['dynamic']['pid']] = view['dynamic']['unit']
+
         background = view['background']
-        pids = view['pids']
-        units = view['units']
 
         # Create our callbacks
         if view['dynamic'].keys():

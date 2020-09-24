@@ -6,18 +6,14 @@
             "default" : 1,
             "background" : "alignment.png",
             "theme" : "Stock",
-            "pids" : [
-                "0x010C",
-                "0x010F",
-                "0x010B"
-            ],
             "alerts" : [
                 {
                     "pid": "0x010C",
                     "op": ">",
                     "value": -4000,
                     "priority": 1,
-                    "message" : "Danger to Manifold"
+                    "message" : "Danger to Manifold",
+                    "unit" : "PID_UNITS_RPM"
                 }
             ],
             "dynamic" : {
@@ -27,19 +23,22 @@
                 "themeConfig" : "120",
                 "pid" : "0x010C",
                 "module" : "Ellipse",
-                "path" : "/Dirt/"
+                "path" : "/Dirt/",
+                "unit" : "PID_UNITS_RPM"
             },
             {
               "themeConfig" : "120",
               "pid" : "0x010C",
               "module" : "Radial",
-              "path" : "/Stock_orange/"
+              "path" : "/Stock_orange/",
+              "unit" : "PID_UNITS_RPM"
           },
           {
             "themeConfig" : "Linear",
             "pid" : "0x010C",
             "module" : "Linear",
-            "path" : "/Linear/"
+            "path" : "/Linear/",
+            "unit" : "PID_UNITS_RPM"
         }
         ]}
     }

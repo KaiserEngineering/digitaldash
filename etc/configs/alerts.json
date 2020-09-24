@@ -6,7 +6,6 @@
         "default" : 1,
         "theme" : "Stock",
         "background":"bg.jpg",
-        "pids": ["0x010C"],
           "dynamic": {},
           "alerts": [
             {
@@ -14,14 +13,16 @@
                 "op": "<",
                 "value": 4000,
                 "priority": 1,
-                "message" : "Hello, world"
+                "message" : "Hello, world",
+                "unit" : "PID_UNITS_RPM"
             },
             {
               "pid": "0x010C",
               "op": ">=",
               "value": 4000,
               "priority": 2,
-              "message" : "Alert two"
+              "message" : "Alert two",
+              "unit" : "PID_UNITS_RPM"
           }
           ],
         "gauges": [
@@ -29,7 +30,8 @@
                 "module": "Radial",
                 "path": "/Stock/",
                 "themeConfig": "120",
-                "pid": "0x010C"
+                "pid": "0x010C",
+                "unit" : "PID_UNITS_RPM"
             }
         ]
       },
@@ -39,7 +41,6 @@
       "default" : 0,
       "theme" : "Stock",
       "background":"bg.jpg",
-      "pids": ["0x010C"],
         "dynamic": {},
         "alerts": [
           {
@@ -47,7 +48,8 @@
               "op": ">",
               "value": 4000,
               "priority": 1,
-              "message" : "Alert two"
+              "message" : "Alert two",
+              "unit" : "PID_UNITS_RPM"
           }
         ],
       "gauges": [
@@ -55,7 +57,8 @@
               "module": "Radial",
               "path": "/Stock/",
               "themeConfig": "120",
-              "pid": "0x010C"
+              "pid": "0x010C",
+              "unit" : "PID_UNITS_RPM"
           }
       ]
     }
