@@ -82,13 +82,7 @@ sub startup {
   });
 
   $self->helper(LoadConstants => sub {
-    my $json;
-    {
-      local $/; #Enable 'slurp' mode
-      open my $fh, "<", "$gui_home/static/constants.json";
-      $json = <$fh>;
-      close $fh;
-    }
+    my $json = `python3 $gui_home/static/Constants.py`;
     $self->{'Constants'} = JSON::from_json($json);
   });
   $self->LoadConstants();

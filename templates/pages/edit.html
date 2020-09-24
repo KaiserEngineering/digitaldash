@@ -51,7 +51,7 @@
               <select class="form-control custom-select d-block w-100" id="theme" required>
                 <option value="">-</option>
 %             foreach my $pid ( @pids ) {
-                <option value="<% $pid %>"><% $c->app->{'Constants'}->{$pid}->{'name'} %></option>
+                <option value="<% $pid %>"><% $c->app->{'Constants'}->{'KE_PID'}->{$pid}->{'name'} %></option>
 %             }
               </select>
             </div>
@@ -63,7 +63,7 @@
               <select class="form-control custom-select d-block w-100" id="theme" required>
                 <option value="">-</option>
 %             foreach my $pid ( @pids ) {
-                <option value="<% $pid %>"><% $c->app->{'Constants'}->{$pid}->{'name'} %></option>
+                <option value="<% $pid %>"><% $c->app->{'Constants'}->{'KE_PID'}->{$pid}->{'name'} %></option>
 %             }
               </select>
             </div>
@@ -75,7 +75,7 @@
               <select class="form-control custom-select d-block w-100" id="theme" required>
                 <option value="">-</option>
 %             foreach my $pid ( @pids ) {
-                <option value="<% $pid %>"><% $c->app->{'Constants'}->{$pid}->{'name'} %></option>
+                <option value="<% $pid %>"><% $c->app->{'Constants'}->{'KE_PID'}->{$pid}->{'name'} %></option>
 %             }
               </select>
             </div>
@@ -92,7 +92,7 @@
 <%init>
 my $view = $c->app->{'Config'}->{'views'}->{$id};
 
-my @pids = ('0x0C', '0x0F', '0x0B', '0x05', '0x04');
+my @pids = ('0x010B', '0x010C', '0x010F');
 </%init>
 
 <%args>
