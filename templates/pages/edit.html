@@ -1,90 +1,91 @@
 <&| /layouts/layout, %ARGS, Nav => 1 &>
-
-  <div class="row">
-    <div class="col-md-12 order-md-1">
-      <h4 class="mb-3">Editing view #<%$id%></h4>
-      <form class="needs-validation" novalidate>
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="firstName">View name</label>
-            <input type="text" class="form-control" id="firstName" placeholder="" value="<% $view->{'name'} %>" required>
-            <div class="invalid-feedback">
-              View name is required
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-3 row">
-          <div class="col-6">
-            <label for="username">Background</label>
-            <div class="input-group">
-              <select class="custom-select form-control d-block w-100" id="country" required>
-                <option value="">-</option>
-                <option <% $view->{'background'} eq 'banner1.jpg' ? qq[selected="selected"] : '' %> value="banner1.jpg">banner1</option>
-                <option <% $view->{'background'} eq 'bg.jpg' ? qq[selected="selected"] : '' %> value="bg.jpg">bg</option>
-                <option <% $view->{'background'} eq 'BlackBackground.png' ? qq[selected="selected"] : '' %> value="BlackBackground.png">BlackBackground</option>
-                <option <% $view->{'background'} eq 'CarbonFiber.png' ? qq[selected="selected"] : '' %> value="CarbonFiber.png">CarbonFiber</option>
-              </select>
-              <div class="invalid-feedback" style="width: 100%;">
-                Background is required
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 order-md-1">
+        <h4 class="mb-3">Editing view #<%$id%></h4>
+        <form class="needs-validation" novalidate>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName">View name</label>
+              <input type="text" class="form-control" id="firstName" placeholder="" value="<% $view->{'name'} %>" required>
+              <div class="invalid-feedback">
+                View name is required
               </div>
             </div>
           </div>
-          <div class="col-6">
-            <label for="username">Theme</label>
-            <div class="input-group">
-              <select class="form-control custom-select d-block w-100" id="theme" required>
-                <option value="">-</option>
-                <option <% $view->{'theme'} eq 'Stock' ? qq[selected="selected"] : '' %> value="Stock">Stock</option>
-              </select>
-              <div class="invalid-feedback" style="width: 100%;">
-                Theme is required
+
+          <div class="mb-3 row">
+            <div class="col-6">
+              <label for="username">Background</label>
+              <div class="input-group">
+                <select class="custom-select form-control d-block w-100" id="country" required>
+                  <option value="">-</option>
+                  <option <% $view->{'background'} eq 'banner1.jpg' ? qq[selected="selected"] : '' %> value="banner1.jpg">banner1</option>
+                  <option <% $view->{'background'} eq 'bg.jpg' ? qq[selected="selected"] : '' %> value="bg.jpg">bg</option>
+                  <option <% $view->{'background'} eq 'BlackBackground.png' ? qq[selected="selected"] : '' %> value="BlackBackground.png">BlackBackground</option>
+                  <option <% $view->{'background'} eq 'CarbonFiber.png' ? qq[selected="selected"] : '' %> value="CarbonFiber.png">CarbonFiber</option>
+                </select>
+                <div class="invalid-feedback" style="width: 100%;">
+                  Background is required
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <label for="username">Theme</label>
+              <div class="input-group">
+                <select class="form-control custom-select d-block w-100" id="theme" required>
+                  <option value="">-</option>
+                  <option <% $view->{'theme'} eq 'Stock' ? qq[selected="selected"] : '' %> value="Stock">Stock</option>
+                </select>
+                <div class="invalid-feedback" style="width: 100%;">
+                  Theme is required
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="mb-3 row">
-          <div class="col-4">
-            <label for="username">PID</label>
-            <div class="input-group">
-              <select class="form-control custom-select d-block w-100" id="theme" required>
-                <option value="">-</option>
-%             foreach my $pid ( @pids ) {
-                <option value="<% $pid %>"><% $c->app->{'Constants'}->{'KE_PID'}->{$pid}->{'name'} %></option>
+          <div class="mb-3 row">
+            <div class="col-4">
+              <label for="username">PID</label>
+              <div class="input-group">
+                <select class="form-control custom-select d-block w-100" id="theme" required>
+                  <option value="">-</option>
+%             foreach my $pid ( sort keys %{$pids} ) {
+                  <option <% $pid eq $selected_pids[0] ? qq[selected="selected"] : "" %> value="<% $pid %>"><% $pids->{$pid}->{'name'} %></option>
 %             }
-              </select>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-4">
+              <label for="username">PID</label>
+              <div class="input-group">
+                <select class="form-control custom-select d-block w-100" id="theme" required>
+                  <option value="">-</option>
+%             foreach my $pid ( sort keys %{$pids} ) {
+                  <option <% $pid eq $selected_pids[1] ? qq[selected="selected"] : "" %> value="<% $pid %>"><% $pids->{$pid}->{'name'} %></option>
+%             }
+                </select>
+              </div>
+            </div>
+
+            <div class="col-4">
+              <label for="username">PID</label>
+              <div class="input-group">
+                <select class="form-control custom-select d-block w-100" id="theme" required>
+                  <option value="">-</option>
+%             foreach my $pid ( sort keys %{$pids} ) {
+                  <option <% $pid eq $selected_pids[2] ? qq[selected="selected"] : "" %> value="<% $pid %>"><% $pids->{$pid}->{'name'} %></option>
+%             }
+                </select>
+              </div>
             </div>
           </div>
 
-          <div class="col-4">
-            <label for="username">PID</label>
-            <div class="input-group">
-              <select class="form-control custom-select d-block w-100" id="theme" required>
-                <option value="">-</option>
-%             foreach my $pid ( @pids ) {
-                <option value="<% $pid %>"><% $c->app->{'Constants'}->{'KE_PID'}->{$pid}->{'name'} %></option>
-%             }
-              </select>
-            </div>
-          </div>
-
-          <div class="col-4">
-            <label for="username">PID</label>
-            <div class="input-group">
-              <select class="form-control custom-select d-block w-100" id="theme" required>
-                <option value="">-</option>
-%             foreach my $pid ( @pids ) {
-                <option value="<% $pid %>"><% $c->app->{'Constants'}->{'KE_PID'}->{$pid}->{'name'} %></option>
-%             }
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
-      </form>
+          <hr class="mb-4">
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
+        </form>
+      </div>
     </div>
   </div>
 </&>
@@ -92,7 +93,9 @@
 <%init>
 my $view = $c->app->{'Config'}->{'views'}->{$id};
 
-my @pids = ('0x010B', '0x010C', '0x010F');
+my $pids = $c->app->{'Constants'}->{'KE_PID'};
+
+my @selected_pids = map { $_->{'pid'} } @{$view->{'gauges'}};
 </%init>
 
 <%args>
