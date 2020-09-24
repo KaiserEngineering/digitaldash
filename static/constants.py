@@ -1,4 +1,5 @@
 """Place for storing useful constants"""
+import json
 
 KE_CP_OP_CODES = {
     'KE_RESERVED'                : 0x00,    # Reserved
@@ -82,5 +83,19 @@ KE_PID = {
 
 def get_constants():
     """Return combined constants dictionary"""
-    return {**KE_PID, **KE_CP_OP_CODES, **KE_UNITS}
+    return {
+        "KE_PID"         : KE_PID,
+        "KE_CP_OP_CODES" : KE_CP_OP_CODES,
+        "PID_UNITS"      : PID_UNITS
+    }
 
+def export_json():
+    """This is used by the web app to get Constants.py as JSON"""
+    return json.dumps({
+        "KE_PID"         : KE_PID,
+        "KE_CP_OP_CODES" : KE_CP_OP_CODES,
+        "PID_UNITS"      : PID_UNITS
+    })
+
+if __name__ == '__main__':
+    print(export_json())
