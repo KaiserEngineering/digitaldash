@@ -106,6 +106,8 @@ sub startup {
 
   $r->any('/')->to('App#login');
 
+  $r->post('/toggle_enabled')->to('App#toggle_enabled');
+
   $r->any('*whatever')->to('App#login');
 
 }

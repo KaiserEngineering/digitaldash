@@ -131,9 +131,9 @@ sub delete {
   $c->render(json => { config => $c->app->{'Config'}, message => "Updated config!" });
 }
 
-sub toggle_enable {
+sub toggle_enabled {
   my $c = shift;
-  my $id = $c->req->json;
+  my $id = $c->req->json->{'id'};
 
   my $config = $c->app->{'Config'};
   my $view = $config->{'views'}->{$id};

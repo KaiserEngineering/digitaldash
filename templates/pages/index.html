@@ -4,35 +4,51 @@
 % my $view = $views->{"$id"};
 
   <div class="container col-sm-10 col-md-6 pr-4 pl-4">
-    <div class="card img-fluid">
-      <img class="card-img-top" src="images/<%$view->{'background'}%>" alt="view background">
+    <a href="/edit?id=<%$id%>">
+      <div class="card img-fluid">
+        <img class="card-img-top" src="images/<%$view->{'background'}%>" alt="view background">
 
-      <div class="card-img-overlay">
-        <img src="images/<% $view->{'theme'} %>.png" class="card-img-top" alt="...">
+        <div class="card-img-overlay">
+          <img src="images/<% $view->{'theme'} %>.png" class="card-img-top" alt="...">
+        </div>
       </div>
-    </div>
-    <div class="card-body text0-center">
-      <h5 class="card-title"><% $view->{"name"} %>
-        <label class="switch">
-          <input type="checkbox" <% $view->{'enabled'} ? qq[checked] : '' %>>
-          <span class="slider round"></span>
-        </label>
-      </h5>
+      <div class="card-body text0-center">
+        <h5 class="card-title"><% $view->{"name"} %>
+          <label class="switch">
+            <input onchange="ToggleEnabled('<% $id %>');" type="checkbox" <% $view->{'enabled'} ? qq[checked] : '' %>>
+            <span class="slider round"></span>
+          </label>
+        </h5>
 %     foreach my $pid ( @{$view->{'pids'}} ) {
 %         if ( $constants->{$pid} ) {
-              <p><% $constants->{$pid}->{'shortName'} ? $constants->{$pid}->{'shortName'} : $constants->{$pid}->{'name'} %></p>
+        <p><% $constants->{$pid}->{'shortName'} ? $constants->{$pid}->{'shortName'} : $constants->{$pid}->{'name'} %></p>
 %         }
 %         else {
-              <p>Invalid PID found: "<%$pid%>"</p>
+        <p>Invalid PID found: "<%$pid%>"</p>
 %         }
         <p><% $constants->{$pid} %></p>
 %     }
-      <a href="/edit?id=<%$id%>" class="btn btn-primary">Edit</a>
-    </div>
+      </div>
+    </a>
   </div>
 % }
 
 </&>
+
+<script type="text/javascript">
+  async function ToggleEnabled(id) {
+    let payload = { id: id };
+
+    let response = await fetch('/toggle_enabled', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(payload)
+    });
+
+  }
+</script>
 
 <%init>
 # Do we need to refresh config on each page load?
