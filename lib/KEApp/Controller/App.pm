@@ -2,6 +2,9 @@ package KEApp::Controller::App;
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::Log;
 my $log = Mojo::Log->new;
+use KEApp::Model::Config;
+use strict;
+use warnings;
 
 sub home {
   my $c  = shift;
@@ -75,7 +78,7 @@ sub settings {
 }
 
 sub edit {
-  my $c  = shift;
+  my $c = shift;
 
   my $id = @{$c->every_param('id')}[0];
   unless ( defined $id ) {
@@ -85,34 +88,30 @@ sub edit {
   $c->render(
       "pages/edit.html",
       handler => 'mason',
-      id => $id
+      id      => $id
   );
 }
 
 sub update {
-  my $c = shift;
-  my %args = (
-    %{$c->req->json}
-  );
+  my $c      = shift;
+  my %args   = %{$c->req->params->to_hash};
   my $config = $c->app->{'Config'};
 
-  my $temp_view = $config->{'views'}->{$args{'id'}};
-  %{$temp_view} = %args;
-
-  my @gauges = ();
-  foreach my $gauge ( @{ $temp_view->{'gauges'} } ) {
-      push @gauges, {
-            %{$gauge},
-            "path" => "\/$args{'theme'}\/"
-      };
+  my $id = @{$c->every_param('id')}[0];
+  unless ( defined $id ) {
+      $log->error( "Must provide ID value for edit page" );
   }
-  $temp_view->{'gauges'} = \@gauges;
+
+  my $temp_view = $config->{'views'}->{$args{'id'}};
+  # %{$temp_view} = (%{$temp_view}, %args);
+
+  KEApp::Model::Config::UpdateAlerts( $temp_view, %args );
+  KEApp::Model::Config::UpdateGauges( $temp_view, %args );
 
   $config->{'views'}->{$args{'id'}} = $temp_view;
 
   my ($ret, $msg) = $c->UpdateConfig( $config );
-
-  $c->render(json => { config => $c->app->{'Config'}, message => "Updated config!" });
+  $c->redirect_to( "/edit.html?id=$id" );
 }
 
 sub delete {

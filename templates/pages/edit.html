@@ -1,91 +1,158 @@
 <&| /layouts/layout, %ARGS, Nav => 1 &>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 order-md-1">
-        <h4 class="mb-3">Editing view #<%$id%></h4>
-        <form class="needs-validation" novalidate>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="firstName">View name</label>
-              <input type="text" class="form-control" id="firstName" placeholder="" value="<% $view->{'name'} %>" required>
-              <div class="invalid-feedback">
-                View name is required
+
+  <div class="row">
+    <div class="col-md-12 order-md-1">
+      <h4 class="mb-3">Editing view #<%$id%></h4>
+      <form class="needs-validation" action="/update" method="POST" >
+        <input type="hidden" value="<%$id%>" name="id"/>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="name">View name</label>
+            <input name="name" type="text" class="form-control" id="name" placeholder="" value="<% $view->{'name'} %>" required>
+            <div class="invalid-feedback">
+              View name is required
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <div class="col-6">
+            <label for="background">Background</label>
+            <div class="input-group">
+              <select name="background" class="custom-select form-control d-block w-100" id="country" required>
+                <option value="">-</option>
+                <option <% $view->{'background'} eq 'banner1.jpg' ? qq[selected="selected"] : '' %> value="banner1.jpg">banner1</option>
+                <option <% $view->{'background'} eq 'bg.jpg' ? qq[selected="selected"] : '' %> value="bg.jpg">bg</option>
+                <option <% $view->{'background'} eq 'BlackBackground.png' ? qq[selected="selected"] : '' %> value="BlackBackground.png">BlackBackground</option>
+                <option <% $view->{'background'} eq 'CarbonFiber.png' ? qq[selected="selected"] : '' %> value="CarbonFiber.png">CarbonFiber</option>
+              </select>
+              <div class="invalid-feedback" style="width: 100%;">
+                Background is required
               </div>
             </div>
           </div>
-
-          <div class="mb-3 row">
-            <div class="col-6">
-              <label for="username">Background</label>
-              <div class="input-group">
-                <select class="custom-select form-control d-block w-100" id="country" required>
-                  <option value="">-</option>
-                  <option <% $view->{'background'} eq 'banner1.jpg' ? qq[selected="selected"] : '' %> value="banner1.jpg">banner1</option>
-                  <option <% $view->{'background'} eq 'bg.jpg' ? qq[selected="selected"] : '' %> value="bg.jpg">bg</option>
-                  <option <% $view->{'background'} eq 'BlackBackground.png' ? qq[selected="selected"] : '' %> value="BlackBackground.png">BlackBackground</option>
-                  <option <% $view->{'background'} eq 'CarbonFiber.png' ? qq[selected="selected"] : '' %> value="CarbonFiber.png">CarbonFiber</option>
-                </select>
-                <div class="invalid-feedback" style="width: 100%;">
-                  Background is required
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <label for="username">Theme</label>
-              <div class="input-group">
-                <select class="form-control custom-select d-block w-100" id="theme" required>
-                  <option value="">-</option>
-                  <option <% $view->{'theme'} eq 'Stock' ? qq[selected="selected"] : '' %> value="Stock">Stock</option>
-                </select>
-                <div class="invalid-feedback" style="width: 100%;">
-                  Theme is required
-                </div>
+          <div class="col-6">
+            <label for="theme">Theme</label>
+            <div class="input-group">
+              <select name="theme" class="form-control custom-select d-block w-100" id="theme" required>
+                <option value="">-</option>
+                <option <% $view->{'theme'} eq 'Stock' ? qq[selected="selected"] : '' %> value="Stock">Stock</option>
+              </select>
+              <div class="invalid-feedback" style="width: 100%;">
+                Theme is required
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="mb-3 row">
-            <div class="col-4">
-              <label for="username">PID</label>
-              <div class="input-group">
-                <select class="form-control custom-select d-block w-100" id="theme" required>
-                  <option value="">-</option>
-%             foreach my $pid ( sort keys %{$pids} ) {
-                  <option <% $pid eq $selected_pids[0] ? qq[selected="selected"] : "" %> value="<% $pid %>"><% $pids->{$pid}->{'name'} %></option>
+        <div class="col-12">
+          Vehicle Parameters
+        </div>
+
+        <div class="mb-3 row">
+% for (my $i=0; $i < 3; $i++) {
+          <div class="col-4">
+            <div class="input-group">
+              <select name="pid" class="form-control custom-select" id="pid<%$i%>">
+                <option value="">-</option>
+%   foreach my $key ( @pids ) {
+<%perl>
+      my $default;
+      if ( scalar @{$view->{'gauges'}} >= $i ) {
+          $default = $view->{'gauges'}[$i]->{'pid'};
+      }
+      my $pid = $KE_PID{$key};
+</%perl>
+                <option <% $default && $default eq $key ? qq[selected="selected"] : '' %> value="<% $key %>">
+                  <% $pid->{'shortName'} ? $pid->{'shortName'} : $pid->{'name'} %>
+                </option>
 %             }
-                </select>
-              </div>
+              </select>
+            </div>
+          </div>
+% }
+        </div>
+
+        <div class="col-12">
+          Alerts
+        </div>
+
+        <div class="mb-3 row">
+          <div class="col-3">
+            <label for="alertMessage">Message</label>
+            <input value="<% $alert->{'message'} %>" class="form-control" type="text" name="alertMessage"/>
+           </div>
+
+           <div class="col-auto">
+            <label for="alertValue">Value</label>
+            <input value="<% $alert->{'value'} %>" class="form-control" type="text" name="alertValue"/>
+           </div>
+
+           <div class="col-1">
+            <label for="alertOP">OP</label>
+            <select name="alertOP" class="form-control custom-select">
+              <option value="">-</option>
+%   foreach my $op ( '=', '>', '<', '>=', '<=' ) {
+              <option <% $alert->{'op'} eq $op ? qq[selected="selected"] : '' %> value="<% $op %>">
+                <% $op %>
+              </option>
+%             }
+            </select>
+           </div>
+
+           <div class="col-1">
+            <label for="alertPriority">Priority</label>
+            <input value="<% $alert->{'priority'} %>" class="form-control" type="number" name="alertPriority"/>
+           </div>
+
+           <div class="col-auto">
+            <label for="alertUnit">Unit</label>
+            <input value="<% $alert->{'unit'} %>" class="form-control" type="text" name="alertUnit"/>
+           </div>
+          </div>
+
+        <div class="col-12">
+          Dynamic
+        </div>
+
+        <div class="mb-3 row">
+          <div class="col-3">
+            <label for="dynamicPID">PID</label>
+            <input value="<% $dynamic->{'pid'} %>" class="form-control" type="text" name="alertMessage"/>
             </div>
 
-            <div class="col-4">
-              <label for="username">PID</label>
-              <div class="input-group">
-                <select class="form-control custom-select d-block w-100" id="theme" required>
-                  <option value="">-</option>
-%             foreach my $pid ( sort keys %{$pids} ) {
-                  <option <% $pid eq $selected_pids[1] ? qq[selected="selected"] : "" %> value="<% $pid %>"><% $pids->{$pid}->{'name'} %></option>
-%             }
-                </select>
-              </div>
+            <div class="col-auto">
+            <label for="dynamicValue">Value</label>
+            <input value="<% $dynamic->{'value'} %>" class="form-control" type="text" name="alertValue"/>
             </div>
 
-            <div class="col-4">
-              <label for="username">PID</label>
-              <div class="input-group">
-                <select class="form-control custom-select d-block w-100" id="theme" required>
-                  <option value="">-</option>
-%             foreach my $pid ( sort keys %{$pids} ) {
-                  <option <% $pid eq $selected_pids[2] ? qq[selected="selected"] : "" %> value="<% $pid %>"><% $pids->{$pid}->{'name'} %></option>
+            <div class="col-1">
+            <label for="dynamicOP">OP</label>
+            <select name="dynamicOP" class="form-control custom-select">
+              <option value="">-</option>
+%   foreach my $op ( '=', '>', '<', '>=', '<=' ) {
+              <option <% $dynamic->{'op'} eq $op ? qq[selected="selected"] : '' %> value="<% $op %>">
+                <% $op %>
+              </option>
 %             }
-                </select>
-              </div>
+            </select>
+            </div>
+
+            <div class="col-1">
+            <label for="dynamicPriority">Priority</label>
+            <input value="<% $dynamic->{'priority'} %>" class="form-control" type="number" name="alertPriority"/>
+            </div>
+
+            <div class="col-auto">
+            <label for="dynamicUnit">Unit</label>
+            <input value="<% $dynamic->{'unit'} %>" class="form-control" type="text" name="alertUnit"/>
             </div>
           </div>
 
-          <hr class="mb-4">
-          <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
-        </form>
-      </div>
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
+      </form>
     </div>
   </div>
 </&>
@@ -93,9 +160,13 @@
 <%init>
 my $view = $c->app->{'Config'}->{'views'}->{$id};
 
-my $pids = $c->app->{'Constants'}->{'KE_PID'};
+my %KE_PID = %{$c->app->{'Constants'}->{'KE_PID'}};
+my @pids = keys %KE_PID;
 
-my @selected_pids = map { $_->{'pid'} } @{$view->{'gauges'}};
+my @alert = @{$view->{'alerts'}};
+my $alert = scalar @alert ? $alert[0] : {};
+
+my $dynamic = $view->{'dynamic'} || {};
 </%init>
 
 <%args>
