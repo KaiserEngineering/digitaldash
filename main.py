@@ -106,7 +106,7 @@ def setup(Layouts):
         # Create our callbacks
         if view['dynamic'].keys():
             dynamic = view['dynamic']
-            dynamic['index'] = id
+            dynamic['index'] = view_count
 
             dynamic_obj = Dynamic()
             (ret, msg) = dynamic_obj.new(**dynamic)
@@ -120,7 +120,7 @@ def setup(Layouts):
 
         if len(view['alerts']):
             for alert in view['alerts']:
-                alert['index'] = id
+                alert['index'] = view_count
 
                 callbacks.setdefault(view_count, []).append(Alert(**alert))
         else:
