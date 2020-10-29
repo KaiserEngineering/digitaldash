@@ -1,10 +1,15 @@
 <&| /layouts/layout, %ARGS, Nav => 1 &>
 
-  <div class="container">
+  <div id="edit-container" class="container">
     <div class="col-md-12 order-md-1">
       <h4 class="mb-3">Editing view #<%$id%></h4>
       <form class="needs-validation" action="/update" method="POST" >
         <input type="hidden" value="<%$id%>" name="id"/>
+
+        <div class="col-12">
+          <h4>Basics</h4>
+          <hr/>
+        </div>
 
         <div class="row">
           <div class="col-md-6 mb-3">
@@ -74,79 +79,84 @@
 % }
         </div>
 
-        <div class="col-12">
-          Alerts
+        <div class="mt-3 col-12">
+          <h4>Alerts</h4>
+          <hr/>
         </div>
 
-        <div class="mb-3 row">
-          <div class="col-3">
-            <label for="alertMessage">Message</label>
-            <input value="<% $alert->{'message'} %>" class="form-control" type="text" name="alertMessage"/>
-           </div>
-
-           <div class="col-auto">
-            <label for="alertValue">Value</label>
-            <input value="<% $alert->{'value'} %>" class="form-control" type="text" name="alertValue"/>
-           </div>
-
-           <div class="col-auto">
-            <label for="alertOP">OP</label>
-            <select name="alertOP" class="form-control custom-select">
-              <option value="">-</option>
-%   foreach my $op ( '=', '>', '<', '>=', '<=' ) {
-              <option <% $alert->{'op'} eq $op ? qq[selected="selected"] : '' %> value="<% $op %>">
-                <% $op %>
-              </option>
-%             }
-            </select>
-           </div>
-
-           <div class="col-auto">
-            <label for="alertPriority">Priority</label>
-            <input value="<% $alert->{'priority'} %>" class="form-control" type="number" name="alertPriority"/>
-           </div>
-
-           <div class="col-auto">
-            <label for="alertUnit">Unit</label>
-            <input value="<% $alert->{'unit'} %>" class="form-control" type="text" name="alertUnit"/>
-           </div>
-          </div>
-
-        <div class="col-12">
-          Dynamic
-        </div>
-
-        <div class="mb-3 row">
-          <div class="col-3">
-            <label for="dynamicPID">PID</label>
-            <input value="<% $dynamic->{'pid'} %>" class="form-control" type="text" name="alertMessage"/>
+        <div v-for="alert in alerts">
+          <div class="mb-3 row">
+            <div class="col-md-3 col-12">
+              <label for="alertMessage">Message</label>
+              <input v-model="alert.message" class="form-control" type="text" name="alertMessage"/>
             </div>
 
-            <div class="col-auto">
-            <label for="dynamicValue">Value</label>
-            <input value="<% $dynamic->{'value'} %>" class="form-control" type="text" name="alertValue"/>
+            <div class="col-md-3 col-12">
+              <label for="alertValue">Value</label>
+              <input v-model="alert.value" class="form-control" type="text" name="alertValue"/>
             </div>
 
-            <div class="col-auto">
-              <label for="dynamicOP">OP</label>
-              <select name="dynamicOP" class="form-control custom-select">
+            <div class="col-md-auto col-12">
+              <label for="alertOP">OP</label>
+              <select v-model="alert.op" name="alertOP" class="form-control custom-select">
                 <option value="">-</option>
-%   foreach my $op ( '=', '>', '<', '>=', '<=' ) {
-                <option <% $dynamic->{'op'} eq $op ? qq[selected="selected"] : '' %> value="<% $op %>">
-                  <% $op %>
+                <option v-for="option in ['=', '>', '<', '>=', '<=']" v-bind:value="option">
+                  {{ option }}
                 </option>
-%             }
               </select>
             </div>
 
-            <div class="col-auto">
-              <label for="dynamicPriority">Priority</label>
-              <input value="<% $dynamic->{'priority'} %>" class="form-control" type="number" name="alertPriority"/>
+           <div class="col-md-auto col-12">
+            <label for="alertPriority">Priority</label>
+            <input v-model="alert.priority" class="form-control" type="number" name="alertPriority"/>
+           </div>
+
+           <div class="col-md-auto col-12">
+            <label for="alertUnit">Unit</label>
+            <input v-model="alert.unit" class="form-control" type="text" name="alertUnit"/>
+           </div>
+          </div>
+          <hr/>
+        </div>
+
+        <div class="col-md-1 col-auto">
+          <button class="form-control" v-on:click="Alert($event)">New alert</button>
+        </div>
+
+        <div class="mt-3 col-12">
+          <h4>Dynamic</h4>
+          <hr/>
+        </div>
+
+        <div class="mb-3 row">
+          <div class="col-md-3 col-12">
+            <label for="dynamicPID">PID</label>
+            <input v-model="dynamic.pid" class="form-control" type="text" name="dynamicMessage"/>
+          </div>
+
+            <div class="col-md-auto col-12">
+              <label for="dynamicValue">Value</label>
+              <input v-model="dynamic.value" class="form-control" type="text" name="dynamicValue"/>
             </div>
 
-            <div class="col-auto">
+            <div class="col-md-auto col-12">
+              <label for="dynamicOP">OP</label>
+              <select v-model="dynamic.op" name="dynamicOP" class="form-control custom-select">
+                <option value="">-</option>
+                <option v-for="option in ['=', '>', '<', '>=', '<=']" v-bind:value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-md-auto col-12">
+              <label for="dynamicPriority">Priority</label>
+              <input v-model="dynamic.priority" class="form-control" type="number" name="dynamicPriority"/>
+            </div>
+
+            <div class="col-md-auto col-12">
               <label for="dynamicUnit">Unit</label>
-              <input value="<% $dynamic->{'unit'} %>" class="form-control" type="text" name="alertUnit"/>
+              <input v-model="dynamic.unit" class="form-control" type="text" name="dynamicUnit"/>
             </div>
           </div>
 
@@ -157,14 +167,45 @@
   </div>
 </&>
 
+<script src="https://unpkg.com/vue@3.0.2/dist/vue.global.js"></script>
+
+<script>
+  const Edit = {
+    data() {
+      return {
+        pids   : <% to_json( \@pids ) %>,
+        alerts : <% to_json( \@alert ) %>,
+        dynamic: <% to_json( $dynamic ) %>,
+      }
+    },
+    methods: {
+        Alert: function(event) {
+          if (event) {
+            event.preventDefault()
+          }
+          this.alerts.push({
+            "message" : "",
+            "op"      : "",
+            "priority": "",
+            "unit"    : "",
+            "value"   : "",
+          });
+        }
+    }
+  }
+
+  Vue.createApp(Edit).mount('#edit-container')
+</script>
+
 <%init>
+use JSON qw/to_json/;
+
 my $view = $c->app->{'Config'}->{'views'}->{$id};
 
 my %KE_PID = %{$c->app->{'Constants'}->{'KE_PID'}};
 my @pids = keys %KE_PID;
 
 my @alert = @{$view->{'alerts'}};
-my $alert = scalar @alert ? $alert[0] : {};
 
 my $dynamic = $view->{'dynamic'} || {};
 </%init>

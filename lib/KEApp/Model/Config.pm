@@ -31,13 +31,19 @@ sub UpdateAlerts {
     @_
   );
 
-  $view->{'alerts'} = [{
-    "message"  => $args{'alertMessage'},
-    "op"       => $args{'alertOP'},
-    "priority" => $args{'alertPriority'},
-    "unit"     => $args{'alertUnit'},
-    "value"    => $args{'alertValue'},
-  }];
+  my ($i, @alerts) = (0, ());
+  foreach my $message ( @{$args{'alertMessage'}} ) {
+    push @alerts,
+    {
+      "message"  => $args{'alertMessage'}[$i],
+      "op"       => $args{'alertOP'}[$i],
+      "priority" => $args{'alertPriority'}[$i],
+      "unit"     => $args{'alertUnit'}[$i],
+      "value"    => $args{'alertValue'}[$i],
+    };
+    $i = $i + 1;
+  }
+  $view->{'alerts'} = \@alerts;
 }
 
 sub UpdateDynamic {
