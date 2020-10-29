@@ -88,17 +88,17 @@
           <div class="mb-3 row">
             <div class="col-md-3 col-12">
               <label for="alertMessage">Message</label>
-              <input v-model="alert.message" class="form-control" type="text" name="alertMessage"/>
+              <input required v-model="alert.message" class="form-control" type="text" name="alertMessage"/>
             </div>
 
             <div class="col-md-3 col-12">
               <label for="alertValue">Value</label>
-              <input v-model="alert.value" class="form-control" type="text" name="alertValue"/>
+              <input required v-model="alert.value" class="form-control" type="text" name="alertValue"/>
             </div>
 
             <div class="col-md-auto col-12">
               <label for="alertOP">OP</label>
-              <select v-model="alert.op" name="alertOP" class="form-control custom-select">
+              <select required v-model="alert.op" name="alertOP" class="form-control custom-select">
                 <option value="">-</option>
                 <option v-for="option in ['=', '>', '<', '>=', '<=']" v-bind:value="option">
                   {{ option }}
@@ -108,14 +108,15 @@
 
            <div class="col-md-auto col-12">
             <label for="alertPriority">Priority</label>
-            <input v-model="alert.priority" class="form-control" type="number" name="alertPriority"/>
+            <input required v-model="alert.priority" class="form-control" type="number" name="alertPriority"/>
            </div>
 
            <div class="col-md-auto col-12">
             <label for="alertUnit">Unit</label>
-            <input v-model="alert.unit" class="form-control" type="text" name="alertUnit"/>
+            <input required v-model="alert.unit" class="form-control" type="text" name="alertUnit"/>
            </div>
           </div>
+
           <hr/>
         </div>
 
@@ -131,17 +132,17 @@
         <div class="mb-3 row">
           <div class="col-md-3 col-12">
             <label for="dynamicPID">PID</label>
-            <input v-model="dynamic.pid" class="form-control" type="text" name="dynamicMessage"/>
+            <input required v-model="dynamic.pid" class="form-control" type="text" name="dynamicMessage"/>
           </div>
 
             <div class="col-md-auto col-12">
               <label for="dynamicValue">Value</label>
-              <input v-model="dynamic.value" class="form-control" type="text" name="dynamicValue"/>
+              <input required v-model="dynamic.value" class="form-control" type="text" name="dynamicValue"/>
             </div>
 
             <div class="col-md-auto col-12">
               <label for="dynamicOP">OP</label>
-              <select v-model="dynamic.op" name="dynamicOP" class="form-control custom-select">
+              <select required v-model="dynamic.op" name="dynamicOP" class="form-control custom-select">
                 <option value="">-</option>
                 <option v-for="option in ['=', '>', '<', '>=', '<=']" v-bind:value="option">
                   {{ option }}
@@ -151,12 +152,12 @@
 
             <div class="col-md-auto col-12">
               <label for="dynamicPriority">Priority</label>
-              <input v-model="dynamic.priority" class="form-control" type="number" name="dynamicPriority"/>
+              <input required v-model="dynamic.priority" class="form-control" type="number" name="dynamicPriority"/>
             </div>
 
             <div class="col-md-auto col-12">
               <label for="dynamicUnit">Unit</label>
-              <input v-model="dynamic.unit" class="form-control" type="text" name="dynamicUnit"/>
+              <input required v-model="dynamic.unit" class="form-control" type="text" name="dynamicUnit"/>
             </div>
           </div>
 
