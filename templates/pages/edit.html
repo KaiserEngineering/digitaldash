@@ -89,7 +89,7 @@
             <input value="<% $alert->{'value'} %>" class="form-control" type="text" name="alertValue"/>
            </div>
 
-           <div class="col-1">
+           <div class="col-auto">
             <label for="alertOP">OP</label>
             <select name="alertOP" class="form-control custom-select">
               <option value="">-</option>
@@ -101,7 +101,7 @@
             </select>
            </div>
 
-           <div class="col-1">
+           <div class="col-auto">
             <label for="alertPriority">Priority</label>
             <input value="<% $alert->{'priority'} %>" class="form-control" type="number" name="alertPriority"/>
            </div>
@@ -127,26 +127,26 @@
             <input value="<% $dynamic->{'value'} %>" class="form-control" type="text" name="alertValue"/>
             </div>
 
-            <div class="col-1">
-            <label for="dynamicOP">OP</label>
-            <select name="dynamicOP" class="form-control custom-select">
-              <option value="">-</option>
+            <div class="col-auto">
+              <label for="dynamicOP">OP</label>
+              <select name="dynamicOP" class="form-control custom-select">
+                <option value="">-</option>
 %   foreach my $op ( '=', '>', '<', '>=', '<=' ) {
-              <option <% $dynamic->{'op'} eq $op ? qq[selected="selected"] : '' %> value="<% $op %>">
-                <% $op %>
-              </option>
+                <option <% $dynamic->{'op'} eq $op ? qq[selected="selected"] : '' %> value="<% $op %>">
+                  <% $op %>
+                </option>
 %             }
-            </select>
-            </div>
-
-            <div class="col-1">
-            <label for="dynamicPriority">Priority</label>
-            <input value="<% $dynamic->{'priority'} %>" class="form-control" type="number" name="alertPriority"/>
+              </select>
             </div>
 
             <div class="col-auto">
-            <label for="dynamicUnit">Unit</label>
-            <input value="<% $dynamic->{'unit'} %>" class="form-control" type="text" name="alertUnit"/>
+              <label for="dynamicPriority">Priority</label>
+              <input value="<% $dynamic->{'priority'} %>" class="form-control" type="number" name="alertPriority"/>
+            </div>
+
+            <div class="col-auto">
+              <label for="dynamicUnit">Unit</label>
+              <input value="<% $dynamic->{'unit'} %>" class="form-control" type="text" name="alertUnit"/>
             </div>
           </div>
 
