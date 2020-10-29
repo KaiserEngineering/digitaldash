@@ -82,18 +82,10 @@ sub startup {
   });
 
   $self->helper(LoadConstants => sub {
-    my $json = `python3 $gui_home/static/Constants.py`;
+    my $json = `python3 $gui_home/static/constants.py`;
     $self->{'Constants'} = JSON::from_json($json);
   });
   $self->LoadConstants();
-
-  $self->hook(after_dispatch => sub {
-      my $c = shift;
-      $c->res->headers->header('Access-Control-Allow-Origin' => 'foundation:5000');
-      $c->res->headers->access_control_allow_origin('*');
-      $c->res->headers->header('Access-Control-Allow-Methods' => 'GET, OPTIONS, POST, DELETE, PUT');
-      $c->res->headers->header('Access-Control-Allow-Headers' => 'Content-Type' => '*');
-  });
 
   # Router
   my $r = $self->routes;
