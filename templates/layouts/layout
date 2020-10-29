@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <header>
     <title><% $Title %></title>
   </header>
