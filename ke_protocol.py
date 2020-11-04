@@ -7,6 +7,7 @@ from static.constants import KE_CP_OP_CODES
 from static.constants import PID_UNITS
 import os
 import fnmatch
+from gpiozero import CPUTemperature
 
 UART_SOL                 = 0xFF
 UART_PCKT_SOL_POS        = 0x00
@@ -31,9 +32,13 @@ class Serial():
         self.hardwareFirmware = [0, 0, 0]
         self.firmwareVerified = False  #False to do a firmware request
         self.requirements = []
+        self.fan_speed = 0
 
 
     def start(self, **args):
+
+        cpu = CPUTemperature()
+
         """L1612773-4oop for checking Serial connection for data."""
         # Handle grabbing data
         data_line = ''
@@ -71,7 +76,16 @@ class Serial():
             Logger.info("GUI: >> ACK RX'd" + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
-            positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
+            if( cpu.temperature > 70 ):
+                self.fan_speed = 0x03
+            elif( cpu.temperature > 60 ):
+                self.fan_speed = 0x02
+            elif( cpu.temperature > 50 ):
+                self.fan_speed = 0x01
+            elif( cpu.temperature < 35 ):
+                self.fan_speed = 0x00
+
+            positive_ack = [UART_SOL, 0x04, KE_CP_OP_CODES['KE_ACK'], self.fan_speed ]
             self.ser.write(positive_ack)
             Logger.info("Clipped Data: " + str(data_line))
             Logger.info("GUI: << ACK" + "\n")

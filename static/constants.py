@@ -25,7 +25,8 @@ KE_CP_OP_CODES = {
     'KE_POWER_CYCLE'             : 0x14,    # Power cycle
     'KE_FIRMWARE_REQ'            : 0x15,    # Request firmware version
     'KE_FIRMWARE_REPORT'         : 0x16,    # Report firmware version
-    'KE_FIRMWARE_UPDATE'         : 0x17     # Place device in firmware update mode
+    'KE_FIRMWARE_UPDATE'         : 0x17,    # Place device in firmware update mode
+    'KE_ACTIVE_COOLING'          : 0x18     # Enable or disable active cooling
 }
 
 PID_UNITS = {
