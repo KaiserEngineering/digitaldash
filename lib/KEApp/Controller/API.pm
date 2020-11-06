@@ -58,9 +58,30 @@ sub config {
   my $c = shift;
 
   $c->render(json => {
-    config    => $c->app->{'Config'}->{'views'},
+    views     => $c->app->{'Config'}->{'views'},
     constants => $c->app->{'Constants'},
   });
 }
+
+
+sub toggleEnabled {
+  my $c  = shift;
+  my $id = $c->req->json->{'id'};
+
+  my $config = $c->app->{'Config'};
+  my $view = $config->{'views'}->{$id};
+
+  $config->{'views'}->{$id}->{'enabled'} = $view->{'enabled'} ? 0 : 1;
+  my ($ret, $msg) = $c->UpdateConfig( $config );
+
+  if ( $ret ) {
+    my $bool = $view->{'enabled'} ? 'True': 'False';
+
+    $msg = "$view->{'name'} enabled set to: $bool";
+  }
+
+  $c->render(json => { views => $c->app->{'Config'}->{'views'}, message => $msg });
+}
+
 
 1;

@@ -146,7 +146,7 @@ sub toggle_enabled {
     $msg = "$view->{'name'} enabled set to: $bool";
   }
 
-  $c->render(json => { config => $c->app->{'Config'}, message => $msg });
+  $c->render(json => { config => $c->app->{'Config'}->{'views'}, message => $msg });
 }
 
 1;

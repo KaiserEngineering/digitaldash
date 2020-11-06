@@ -86,6 +86,16 @@ sub startup {
   });
   $self->LoadConstants();
 
+
+  $self->hook(after_dispatch => sub {
+      my $c = shift;
+      $c->res->headers->header('Access-Control-Allow-Origin' => 'foundation:5000');
+      $c->res->headers->access_control_allow_origin('*');
+      $c->res->headers->header('Access-Control-Allow-Methods' => 'GET, OPTIONS, POST, DELETE, PUT');
+      $c->res->headers->header('Access-Control-Allow-Headers' => 'Content-Type' => '*');
+  });
+
+  # $self->plugin('SecureCORS');
   # Router
   my $r = $self->routes;
 
@@ -93,6 +103,8 @@ sub startup {
   $r->post('/api/authenticate')->to('API#auth');
   $r->post('/api/settings')->to('API#settings');
   $r->get('/api/config')->to('API#config');
+  $r->get('/edit/api/config')->to('API#config');
+  $r->post('/api/toggle_enabled')->to('API#toggleEnabled');
 }
 
 1;
