@@ -89,27 +89,10 @@ sub startup {
   # Router
   my $r = $self->routes;
 
-  $r->post('/api/authenticate')->to('API#auth');
   $r->get('/')->to(cb => sub ($c) { $c->reply->static( 'index.html' ) });
-
-
-
-
-
-  $r->get('/home')->over(signed => 1)->to('App#home');
-
-  $r->any('/settings')->over(signed => 1)->to('App#settings');
-
-  $r->get('/edit')->over(signed => 1)->to('App#edit');
-
-  $r->any('/')->to('App#login');
-
-  $r->post('/toggle_enabled')->to('App#toggle_enabled');
-
-  $r->post('/update')->to('App#update');
-
-  $r->any('*whatever')->to('App#login');
-
+  $r->post('/api/authenticate')->to('API#auth');
+  $r->post('/api/settings')->to('API#settings');
+  $r->get('/api/config')->to('API#config');
 }
 
 1;

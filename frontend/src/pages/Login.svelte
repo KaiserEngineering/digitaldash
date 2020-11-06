@@ -26,7 +26,6 @@
   let password;
 
   function handleSubmit(event) {
-    console.log(username)
     fetch("./api/authenticate", {
         method      : "POST",
         mode        : 'cors',

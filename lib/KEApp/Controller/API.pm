@@ -24,11 +24,6 @@ sub auth {
     }
     else {
       $log->warn("Failed login for user: $args->{'username'}");
-
-      push @{ $c->session->{'notifications'} }, {
-        message => "Failed login",
-        type    => "error"
-      };
       $c->render(json => {message => 'Login failed'});
       return;
     }
@@ -37,6 +32,35 @@ sub auth {
     $c->render(json => {message => 'Provide username and password to login'});
     return;
   }
+}
+
+
+sub settings {
+  my $c    = shift;
+  my $args = $c->req->json;
+
+  if ( $args->{'username'} && $args->{'password'} ) {
+    {
+      local $/; #Enable 'slurp' mode
+      open my $fh, ">", "$ENV{'KEWebAppHome'}/auth.txt";
+      print $fh qq[
+{
+  "user":"$args->{'username'}",
+  "pass":"$args->{'password'}"
+}];
+      close $fh;
+    }
+  }
+  $c->render(json => {message => 'Settings updated'});
+}
+
+sub config {
+  my $c = shift;
+
+  $c->render(json => {
+    config    => $c->app->{'Config'}->{'views'},
+    constants => $c->app->{'Constants'},
+  });
 }
 
 1;
