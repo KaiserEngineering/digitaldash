@@ -1,5 +1,5 @@
 package KEApp;
-use Mojo::Base 'Mojolicious';
+use Mojo::Base Mojolicious, -strict, -signatures;
 use JSON;
 
 sub startup {
@@ -9,7 +9,6 @@ sub startup {
   my $gui_home = $ENV{'KEGUIHome'} || '/opt/DigitalDash_GUI';
 
   $self->config(hypnotoad => {listen => ['http://*:80'], proxy => 1, user => 'root'});
-  $self->plugin('mason1_renderer', { interp_params  => { comp_root => "$web_home/templates/" } });
 
   my $config = $self->plugin('Config');
   $self->secrets(['Kaiser-ke']);
@@ -89,6 +88,13 @@ sub startup {
 
   # Router
   my $r = $self->routes;
+
+  $r->post('/api/authenticate')->to('API#auth');
+  $r->get('/')->to(cb => sub ($c) { $c->reply->static( 'index.html' ) });
+
+
+
+
 
   $r->get('/home')->over(signed => 1)->to('App#home');
 
