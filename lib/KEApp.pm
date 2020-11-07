@@ -1,5 +1,5 @@
 package KEApp;
-use Mojo::Base 'Mojolicious';
+use Mojo::Base Mojolicious, -strict, -signatures;
 use JSON;
 
 sub startup {
@@ -9,7 +9,6 @@ sub startup {
   my $gui_home = $ENV{'KEGUIHome'} || '/opt/DigitalDash_GUI';
 
   $self->config(hypnotoad => {listen => ['http://*:80'], proxy => 1, user => 'root'});
-  $self->plugin('mason1_renderer', { interp_params  => { comp_root => "$web_home/templates/" } });
 
   my $config = $self->plugin('Config');
   $self->secrets(['Kaiser-ke']);
@@ -82,16 +81,11 @@ sub startup {
   });
 
   $self->helper(LoadConstants => sub {
-    my $json;
-    {
-      local $/; #Enable 'slurp' mode
-      open my $fh, "<", "$gui_home/static/constants.json";
-      $json = <$fh>;
-      close $fh;
-    }
+    my $json = `python3 $gui_home/static/constants.py`;
     $self->{'Constants'} = JSON::from_json($json);
   });
   $self->LoadConstants();
+
 
   $self->hook(after_dispatch => sub {
       my $c = shift;
@@ -101,29 +95,23 @@ sub startup {
       $c->res->headers->header('Access-Control-Allow-Headers' => 'Content-Type' => '*');
   });
 
+  # $self->plugin('SecureCORS');
   # Router
   my $r = $self->routes;
 
-  $self->plugin('SecureCORS');
+  $r->get('/')->to(cb => sub ($c) { $c->reply->static( 'index.html' ) });
 
-  $r->cors('/api/*');
+  $r->post('/api/authenticate')->to('API#auth');
 
-  $r->get('/')->over(authenticated => 1)->to('API#index');
+  $r->post('/api/settings')->to('API#settings');
 
-  $r->get('/')->over(authenticated => 0)->to('Auth#login');
+  $r->get('/api/config')->to('API#config');
 
-  $r->get('/login')->over(authenticated => 0)->to('Auth#login');
+  $r->get('/edit/api/config')->to('API#config');
 
-  $r->post('/login')->to('Auth#login');
+  $r->post('/edit/api/update')->to('API#update');
 
-  $r->get('/api/config/')->to('API#config');
-
-  $r->get('/api/constants/')->to('API#constants');
-
-  $r->put('/api/update', {'cors.origin' => '*'})->to('API#update');
-  $r->put('/api/delete', {'cors.origin' => '*'})->to('API#delete');
-  $r->put('/api/enable', {'cors.origin' => '*'})->to('API#toggle_enable');
-
+  $r->post('/api/toggle_enabled')->to('API#toggleEnabled');
 }
 
 1;

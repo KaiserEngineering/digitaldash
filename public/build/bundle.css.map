@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "Notifications.svelte"
+  ],
+  "sourcesContent": [
+    "{#if actions.length}\n  <div class=\"notifications alert alert-info\" role=\"alert\">\n    {#each actions as action}\n    {action}\n    {/each}\n  </div>\n{/if}\n\n<script>\n  export let actions;\n</script>\n\n<style>\n  .notifications {\n    width: 80%;\n    text-align: center;\n    margin-left: auto;\n    margin-right: auto\n  }\n</style>\n"
+  ],
+  "names": [],
+  "mappings": "AAaE,cAAc,cAAC,CAAC,AACd,KAAK,CAAE,GAAG,CACV,UAAU,CAAE,MAAM,CAClB,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI;EACpB,CAAC"
+}

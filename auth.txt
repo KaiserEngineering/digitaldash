@@ -1,4 +1,5 @@
+
 {
-    "user":"craig",
-    "pass":"password"
+  "user":"test",
+  "pass":"test"
 }

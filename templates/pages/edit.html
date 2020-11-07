@@ -1,0 +1,216 @@
+<&| /layouts/layout, %ARGS, Nav => 1 &>
+
+  <div id="edit-container" class="container">
+    <div class="col-md-12 order-md-1">
+      <h4 class="mb-3">Editing view #<%$id%></h4>
+      <form class="needs-validation" action="/update" method="POST" >
+        <input type="hidden" value="<%$id%>" name="id"/>
+
+        <div class="col-12">
+          <h4>Basics</h4>
+          <hr/>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="name">View name</label>
+            <input name="name" type="text" class="form-control" id="name" placeholder="" value="<% $view->{'name'} %>" required>
+            <div class="invalid-feedback">
+              View name is required
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <div class="col-6">
+            <label for="background">Background</label>
+            <div class="input-group">
+              <select name="background" class="custom-select form-control d-block w-100" id="country" required>
+                <option value="">-</option>
+                <option <% $view->{'background'} eq 'banner1.jpg' ? qq[selected="selected"] : '' %> value="banner1.jpg">banner1</option>
+                <option <% $view->{'background'} eq 'bg.jpg' ? qq[selected="selected"] : '' %> value="bg.jpg">bg</option>
+                <option <% $view->{'background'} eq 'BlackBackground.png' ? qq[selected="selected"] : '' %> value="BlackBackground.png">BlackBackground</option>
+                <option <% $view->{'background'} eq 'CarbonFiber.png' ? qq[selected="selected"] : '' %> value="CarbonFiber.png">CarbonFiber</option>
+              </select>
+              <div class="invalid-feedback" style="width: 100%;">
+                Background is required
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <label for="theme">Theme</label>
+            <div class="input-group">
+              <select name="theme" class="form-control custom-select d-block w-100" id="theme" required>
+                <option value="">-</option>
+                <option <% $view->{'theme'} eq 'Stock' ? qq[selected="selected"] : '' %> value="Stock">Stock</option>
+              </select>
+              <div class="invalid-feedback" style="width: 100%;">
+                Theme is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          Vehicle Parameters
+        </div>
+
+        <div class="mb-3 row">
+% for (my $i=0; $i < 3; $i++) {
+          <div class="col-4">
+            <div class="input-group">
+              <select name="pid" class="form-control custom-select" id="pid<%$i%>">
+                <option value="">-</option>
+%   foreach my $key ( @pids ) {
+<%perl>
+      my $default;
+      if ( scalar @{$view->{'gauges'}} >= $i ) {
+          $default = $view->{'gauges'}[$i]->{'pid'};
+      }
+      my $pid = $KE_PID{$key};
+</%perl>
+                <option <% $default && $default eq $key ? qq[selected="selected"] : '' %> value="<% $key %>">
+                  <% $pid->{'shortName'} ? $pid->{'shortName'} : $pid->{'name'} %>
+                </option>
+%             }
+              </select>
+            </div>
+          </div>
+% }
+        </div>
+
+        <div class="mt-3 col-12">
+          <h4>Alerts</h4>
+          <hr/>
+        </div>
+
+        <div v-for="alert in alerts">
+          <div class="mb-3 row">
+            <div class="col-md-3 col-12">
+              <label for="alertMessage">Message</label>
+              <input required v-model="alert.message" class="form-control" type="text" name="alertMessage"/>
+            </div>
+
+            <div class="col-md-3 col-12">
+              <label for="alertValue">Value</label>
+              <input required v-model="alert.value" class="form-control" type="text" name="alertValue"/>
+            </div>
+
+            <div class="col-md-auto col-12">
+              <label for="alertOP">OP</label>
+              <select required v-model="alert.op" name="alertOP" class="form-control custom-select">
+                <option value="">-</option>
+                <option v-for="option in ['=', '>', '<', '>=', '<=']" v-bind:value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </div>
+
+           <div class="col-md-auto col-12">
+            <label for="alertPriority">Priority</label>
+            <input required v-model="alert.priority" class="form-control" type="number" name="alertPriority"/>
+           </div>
+
+           <div class="col-md-auto col-12">
+            <label for="alertUnit">Unit</label>
+            <input required v-model="alert.unit" class="form-control" type="text" name="alertUnit"/>
+           </div>
+          </div>
+
+          <hr/>
+        </div>
+
+        <div class="col-md-1 col-auto">
+          <button class="form-control" v-on:click="Alert($event)">New alert</button>
+        </div>
+
+        <div class="mt-3 col-12">
+          <h4>Dynamic</h4>
+          <hr/>
+        </div>
+
+        <div class="mb-3 row">
+          <div class="col-md-3 col-12">
+            <label for="dynamicPID">PID</label>
+            <input required v-model="dynamic.pid" class="form-control" type="text" name="dynamicMessage"/>
+          </div>
+
+            <div class="col-md-auto col-12">
+              <label for="dynamicValue">Value</label>
+              <input required v-model="dynamic.value" class="form-control" type="text" name="dynamicValue"/>
+            </div>
+
+            <div class="col-md-auto col-12">
+              <label for="dynamicOP">OP</label>
+              <select required v-model="dynamic.op" name="dynamicOP" class="form-control custom-select">
+                <option value="">-</option>
+                <option v-for="option in ['=', '>', '<', '>=', '<=']" v-bind:value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-md-auto col-12">
+              <label for="dynamicPriority">Priority</label>
+              <input required v-model="dynamic.priority" class="form-control" type="number" name="dynamicPriority"/>
+            </div>
+
+            <div class="col-md-auto col-12">
+              <label for="dynamicUnit">Unit</label>
+              <input required v-model="dynamic.unit" class="form-control" type="text" name="dynamicUnit"/>
+            </div>
+          </div>
+
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
+      </form>
+    </div>
+  </div>
+</&>
+
+<script src="https://unpkg.com/vue@3.0.2/dist/vue.global.js"></script>
+
+<script>
+  const Edit = {
+    data() {
+      return {
+        pids   : <% to_json( \@pids ) %>,
+        alerts : <% to_json( \@alert ) %>,
+        dynamic: <% to_json( $dynamic ) %>,
+      }
+    },
+    methods: {
+        Alert: function(event) {
+          if (event) {
+            event.preventDefault()
+          }
+          this.alerts.push({
+            "message" : "",
+            "op"      : "",
+            "priority": "",
+            "unit"    : "",
+            "value"   : "",
+          });
+        }
+    }
+  }
+
+  Vue.createApp(Edit).mount('#edit-container')
+</script>
+
+<%init>
+use JSON qw/to_json/;
+
+my $view = $c->app->{'Config'}->{'views'}->{$id};
+
+my %KE_PID = %{$c->app->{'Constants'}->{'KE_PID'}};
+my @pids = keys %KE_PID;
+
+my @alert = @{$view->{'alerts'}};
+
+my $dynamic = $view->{'dynamic'} || {};
+</%init>
+
+<%args>
+$id
+</%args>
