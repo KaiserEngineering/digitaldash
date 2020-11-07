@@ -5,4 +5,5 @@ pytest>=5.2
 bandit
 pyserial
 setuptools_rust
+gpiozero
 ./libdigitaldash
