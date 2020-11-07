@@ -30,7 +30,7 @@
 
   export let url = "";
 
-  function getProps() {
+  function getProps({ location, href, isPartiallyCurrent, isCurrent }) {
     return {class: 'nav-link'};
   }
 </script>

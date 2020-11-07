@@ -83,26 +83,63 @@ sub toggleEnabled {
   $c->render(json => { views => $c->app->{'Config'}->{'views'}, message => $msg });
 }
 
+=head2 update
+
+Update the main DD config, requires the ID of the view you are updating.
+
+TODO:
+
+  Allow for updating of the whole config and not just one view.
+
+=cut
+
 sub update {
   my $c      = shift;
-  my %args   = %{$c->req->json};
+  my $args   = $c->req->json || {};
   my $config = $c->app->{'Config'};
 
-  my $id = $args{'id'};
-  unless ( defined $id ) {
+  unless ( defined $args->{'id'} ) {
       $log->error( "Must provide ID value for edit page" );
+      $c->render(json => { message => "Could not update view" });
+      return;
   }
+  if ( $args->{'id'} eq 'new' ) {
+    my @ids = sort keys %{$config->{'views'}};
 
-  my $temp_view = $config->{'views'}->{$args{'id'}};
+    $args->{'id'} = pop( @ids ) + 1;
+    $args->{'enabled'} = 1;
+  }
+  my $temp_view = $config->{'views'}->{$args->{'id'}} || {};
 
-  KEApp::Model::Config::UpdateAlerts( $temp_view, %args );
-  KEApp::Model::Config::UpdateGauges( $temp_view, %args );
-  %{$temp_view} = (%{$temp_view}, %args);
+  KEApp::Model::Config::UpdateAlerts( $temp_view, %{$args} );
+  KEApp::Model::Config::UpdateGauges( $temp_view, %{$args} );
+  %{$temp_view} = (%{$temp_view}, %{$args});
 
-  $config->{'views'}->{$args{'id'}} = $temp_view;
+  $config->{'views'}->{$args->{'id'}} = $temp_view;
 
   my ($ret, $msg) = $c->UpdateConfig( $config );
   $c->render(json => { message => $msg });
+}
+
+=head2 delete
+
+Delete a view.
+
+=cut
+
+sub delete {
+  my $c      = shift;
+  my $args   = $c->req->json || {};
+  my $config = $c->app->{'Config'};
+
+  unless ( $args->{'id'} ) {
+    $c->render(json => { res => 0, message => "No ID value provided, could not update." });
+  }
+  
+  delete $config->{'views'}{$args->{'id'}};
+  my ($ret, $msg) = $c->UpdateConfig( $config );
+
+  $c->render(json => { res => $ret, message => "View deleted." });
 }
 
 1;

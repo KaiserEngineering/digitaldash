@@ -26,12 +26,14 @@
 
 <script>
   import Notifications from '../components/Notifications.svelte';
-  let actions = [];
+
+  export let actions = [];
+
   let username;
   let password;
 
   function handleSubmit(event) {
-    fetch("./api/settings", {
+    fetch("/api/settings", {
         method      : "POST",
         body: JSON.stringify({
           username: username,

@@ -9,13 +9,13 @@ sub UpdateGauges {
   );
 
   # It ain't pretty but it will do as an MVP
-  my @current_gauges = @{$view->{'gauges'}};
+  my $current_gauges = $view->{'gauges'} || [];
 
   my @gauges = ();
   my $i = 0;
   foreach my $pid ( @{ $args{'pid'} } ) {
       push @gauges, {
-            %{$current_gauges[$i]},
+            %{@{$current_gauges}[$i]},
             "path" => "\/$view->{'theme'}\/",
             "pid"  => $args{"pid"}[$i]
       };

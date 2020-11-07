@@ -23,12 +23,13 @@
   import Notifications from '../components/Notifications.svelte';
   import { authenticated } from '../stores.js';
 
-  let actions = [];
+  export let actions = [];
+
   let username;
   let password;
 
   function handleSubmit(event) {
-    fetch("./api/authenticate", {
+    fetch("/api/authenticate", {
         method      : "POST",
         mode        : 'cors',
         credentials : 'same-origin',

@@ -105,13 +105,15 @@ sub startup {
 
   $r->post('/api/settings')->to('API#settings');
 
+  $r->post('/api/update')->to('API#update');
+
   $r->get('/api/config')->to('API#config');
 
-  $r->get('/edit/api/config')->to('API#config');
-
-  $r->post('/edit/api/update')->to('API#update');
+  $r->post('/api/delete')->to('API#delete');
 
   $r->post('/api/toggle_enabled')->to('API#toggleEnabled');
+
+  $r->any('/*')->to(cb => sub ($c) { $c->redirect_to('/') });
 }
 
 1;

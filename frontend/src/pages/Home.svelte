@@ -16,15 +16,28 @@
             </div>
           </div>
         </Link>
-        <div class="card-body text0-center">
-          <label class="switch">
+        <div class="card-body text-center">
+
+          <label class="switch d-inline-block float-left">
             <input on:change="{ToggleEnabled(id)}" type="checkbox" checked={configurations.views[id].enabled ? "checked" : ''}>
             <span class="slider round"></span>
           </label>
+
+            {#each configurations.views[id].gauges as gauge}
+            <span class="text-center d-inline-block mr-2">{gauge.pid}</span>
+            {/each}
+
         </div>
       </div>
     {/each}
-  {:catch error}
+
+    <div class="text-center container col-sm-10 col-md-6 pr-4 pl-4">
+      <Link to='/edit/new'>
+        <span class="plus bg-primary">+</span>
+      </Link>
+    </div>
+
+    {:catch error}
     <p style="color: red">{error.message}</p>  
 {/await}
 
@@ -32,11 +45,11 @@
   import Notifications from '../components/Notifications.svelte';
   import { Link } from "svelte-routing";
 
-  let actions = [];
+  export let actions = [];
 
   let configurations = {};
   async function getConfigs() {
-    const res = await fetch("./api/config", {
+    const res = await fetch("/api/config", {
         method : "get",
       });
       const data = await res.json();
@@ -51,7 +64,7 @@
     let promise = getConfigs();
 
   function ToggleEnabled(id) {
-    fetch("./api/toggle_enabled", {
+    fetch("/api/toggle_enabled", {
         method : "post",
         body   : JSON.stringify({id: id})
     }).then(d => d.json())
@@ -61,3 +74,18 @@
     });
   }
 </script>
+
+
+<style>
+  .plus {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    color: white;
+    width: 30px;
+    height: 30px;
+    font: 30px/1 Arial,sans-serif;
+    text-align: center;
+    border-radius: 50%;
+  }
+</style>
