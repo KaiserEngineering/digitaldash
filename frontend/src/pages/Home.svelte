@@ -6,22 +6,23 @@
     {#each Object.keys(configurations.views) as id }
     
       <div class="container col-sm-10 col-md-6 pr-4 pl-4">
-          <Link to="/edit/{id}">
-            <h5>{configurations.views[id].name}</h5>
-            <div class="card img-fluid">
-              <img class="card-img-top" src="images/{configurations.views[id].background}" alt="view background">
+        <Link to="/edit/{id}">
+          <h5>{configurations.views[id].name}</h5>
+          <div class="card img-fluid">
+            <img class="card-img-top" src="images/{configurations.views[id].background}" alt="view background">
 
-              <div class="card-img-overlay">
-                <img src="image/{configurations.views[id].theme}.png" class="card-img-top" alt="...">
-              </div>
+            <div class="card-img-overlay">
+              <img src="images/{configurations.views[id].theme}.png" class="card-img-top" alt="...">
             </div>
-            <div class="card-body text0-center">
-              <label class="switch">
-                <input on:change="{ToggleEnabled(id)}" type="checkbox" checked={configurations.views[id].enabled ? "checked" : ''}>
-                <span class="slider round"></span>
-              </label>
-            </Link>
+          </div>
+        </Link>
+        <div class="card-body text0-center">
+          <label class="switch">
+            <input on:change="{ToggleEnabled(id)}" type="checkbox" checked={configurations.views[id].enabled ? "checked" : ''}>
+            <span class="slider round"></span>
+          </label>
         </div>
+      </div>
     {/each}
   {:catch error}
     <p style="color: red">{error.message}</p>  

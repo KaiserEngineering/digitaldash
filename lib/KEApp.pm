@@ -100,10 +100,17 @@ sub startup {
   my $r = $self->routes;
 
   $r->get('/')->to(cb => sub ($c) { $c->reply->static( 'index.html' ) });
+
   $r->post('/api/authenticate')->to('API#auth');
+
   $r->post('/api/settings')->to('API#settings');
+
   $r->get('/api/config')->to('API#config');
+
   $r->get('/edit/api/config')->to('API#config');
+
+  $r->post('/edit/api/update')->to('API#update');
+
   $r->post('/api/toggle_enabled')->to('API#toggleEnabled');
 }
 

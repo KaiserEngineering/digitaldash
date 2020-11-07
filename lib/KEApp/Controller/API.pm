@@ -19,17 +19,17 @@ sub auth {
 
     if ( $ret ) {
       $log->debug("Successful login for user: $args->{'username'}");
-      $c->render(json => {message => 'Login successful'});
+      $c->render(json => { res => 1, message => 'Login successful'} );
       return;
     }
     else {
       $log->warn("Failed login for user: $args->{'username'}");
-      $c->render(json => {message => 'Login failed'});
+      $c->render(json => {res => 0, message => 'Login failed' });
       return;
     }
   }
   else {
-    $c->render(json => {message => 'Provide username and password to login'});
+    $c->render(json => { res => 0, message => 'Provide username and password to login' });
     return;
   }
 }
@@ -83,5 +83,26 @@ sub toggleEnabled {
   $c->render(json => { views => $c->app->{'Config'}->{'views'}, message => $msg });
 }
 
+sub update {
+  my $c      = shift;
+  my %args   = %{$c->req->json};
+  my $config = $c->app->{'Config'};
+
+  my $id = $args{'id'};
+  unless ( defined $id ) {
+      $log->error( "Must provide ID value for edit page" );
+  }
+
+  my $temp_view = $config->{'views'}->{$args{'id'}};
+
+  KEApp::Model::Config::UpdateAlerts( $temp_view, %args );
+  KEApp::Model::Config::UpdateGauges( $temp_view, %args );
+  %{$temp_view} = (%{$temp_view}, %args);
+
+  $config->{'views'}->{$args{'id'}} = $temp_view;
+
+  my ($ret, $msg) = $c->UpdateConfig( $config );
+  $c->render(json => { message => $msg });
+}
 
 1;

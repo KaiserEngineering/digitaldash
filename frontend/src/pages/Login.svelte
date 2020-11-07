@@ -21,6 +21,8 @@
 
 <script>
   import Notifications from '../components/Notifications.svelte';
+  import { authenticated } from '../stores.js';
+
   let actions = [];
   let username;
   let password;
@@ -36,6 +38,12 @@
         })
       })
       .then(d => d.json())
-      .then(d => (actions = [d.message] ));
+      .then(d => {
+        if ( d.res ) {
+          $authenticated = !$authenticated;
+        }
+
+        actions = [d.message];
+      });
   }
 </script>
