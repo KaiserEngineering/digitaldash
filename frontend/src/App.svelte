@@ -1,10 +1,12 @@
 {#if $authenticated}
 <Router url="{url}">
   <NAV>
-    <nav>
-      <Link to="/">Home</Link>
-      <Link to="settings">Settings</Link>
-    </nav>
+    <li class="nav-item nav-link">
+      <Link getProps="{getProps}" to="/">Home</Link>
+    </li>
+    <li class="nav-item nav-link">
+      <Link getProps="{getProps}" to="settings">Settings</Link>
+    </li>
   </NAV>
 
   <div>
@@ -27,4 +29,8 @@
   import { authenticated } from './stores.js';
 
   export let url = "";
+
+  function getProps() {
+    return {class: 'nav-link'};
+  }
 </script>

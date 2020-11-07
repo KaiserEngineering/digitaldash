@@ -1,8 +1,14 @@
 {
   "version": 3,
   "file": "bundle.css",
-  "sources": [],
-  "sourcesContent": [],
+  "sources": [
+    "Nav.svelte",
+    "Notifications.svelte"
+  ],
+  "sourcesContent": [
+    "<div class=\"nav-scroller py-1 mb-2\">\n  <nav class=\"navbar navbar-expand-md navbar-dark fixed-top bg-dark\">\n    <div class=\"container-fluid\">\n      <a class=\"navbar-brand\" href=\"/\">KE</a>\n      <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarCollapse\" aria-controls=\"navbarCollapse\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n        <span class=\"navbar-toggler-icon\"></span>\n      </button>\n      <div class=\"collapse navbar-collapse\" id=\"navbarCollapse\">\n        <ul class=\"navbar-nav nav mr-auto mb-2 mb-md-0\">\n          <slot></slot>\n        </ul>\n      </div>\n    </div>\n  </nav>\n</div>\n\n\n<style>\n  nav {\n    position: \"absolute\";\n    color: green;\n  }\n</style>\n",
+    "{#if actions.length}\n  <div class=\"notifications alert alert-info\" role=\"alert\">\n    {#each actions as action}\n    {action}\n    {/each}\n  </div>\n{/if}\n\n<script>\n  export let actions;\n</script>\n\n<style>\n  .notifications {\n    width: 80%;\n    text-align: center;\n    margin-left: auto;\n    margin-right: auto\n  }\n</style>\n"
+  ],
   "names": [],
-  "mappings": ""
+  "mappings": "AAkBE,GAAG,eAAC,CAAC,AACH,QAAQ,CAAE,UAAU,CACpB,KAAK,CAAE,KAAK,AACd,CAAC;ACRD,cAAc,cAAC,CAAC,AACd,KAAK,CAAE,GAAG,CACV,UAAU,CAAE,MAAM,CAClB,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI;EACpB,CAAC"
 }

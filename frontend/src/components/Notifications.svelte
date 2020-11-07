@@ -1,13 +1,20 @@
-<div class="m-4">
-  <div class="w-50 text-center">
-    <div class="alert" role="alert">
-      {#each actions as action}
-      <p>{action}</p>
-      {/each}
-    </div>
+{#if actions.length}
+  <div class="notifications alert alert-info" role="alert">
+    {#each actions as action}
+    {action}
+    {/each}
   </div>
-</div>
+{/if}
 
 <script>
   export let actions;
 </script>
+
+<style>
+  .notifications {
+    width: 80%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto
+  }
+</style>

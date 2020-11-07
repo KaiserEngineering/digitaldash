@@ -2182,45 +2182,9 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (4:6) {#each actions as action}
-    function create_each_block(ctx) {
-    	let p;
-    	let t_value = /*action*/ ctx[1] + "";
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			p = element("p");
-    			t = text(t_value);
-    			add_location(p, file$1, 4, 6, 126);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
-    			append_dev(p, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*actions*/ 1 && t_value !== (t_value = /*action*/ ctx[1] + "")) set_data_dev(t, t_value);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block.name,
-    		type: "each",
-    		source: "(4:6) {#each actions as action}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$3(ctx) {
-    	let div2;
-    	let div1;
-    	let div0;
+    // (1:0) {#if actions.length}
+    function create_if_block$1(ctx) {
+    	let div;
     	let each_value = /*actions*/ ctx[0];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -2231,35 +2195,24 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			div2 = element("div");
-    			div1 = element("div");
-    			div0 = element("div");
+    			div = element("div");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div0, "class", "alert");
-    			attr_dev(div0, "role", "alert");
-    			add_location(div0, file$1, 2, 4, 55);
-    			attr_dev(div1, "class", "w-50 text-center");
-    			add_location(div1, file$1, 1, 2, 20);
-    			attr_dev(div2, "class", "m-4");
-    			add_location(div2, file$1, 0, 0, 0);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    			attr_dev(div, "class", "notifications alert alert-info svelte-ecg7g8");
+    			attr_dev(div, "role", "alert");
+    			add_location(div, file$1, 1, 2, 23);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, div1);
-    			append_dev(div1, div0);
+    			insert_dev(target, div, anchor);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div0, null);
+    				each_blocks[i].m(div, null);
     			}
     		},
-    		p: function update(ctx, [dirty]) {
+    		p: function update(ctx, dirty) {
     			if (dirty & /*actions*/ 1) {
     				each_value = /*actions*/ ctx[0];
     				validate_each_argument(each_value);
@@ -2273,7 +2226,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(div0, null);
+    						each_blocks[i].m(div, null);
     					}
     				}
 
@@ -2284,11 +2237,89 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
     		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_each(each_blocks, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$1.name,
+    		type: "if",
+    		source: "(1:0) {#if actions.length}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (3:4) {#each actions as action}
+    function create_each_block(ctx) {
+    	let t_value = /*action*/ ctx[1] + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text(t_value);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*actions*/ 1 && t_value !== (t_value = /*action*/ ctx[1] + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block.name,
+    		type: "each",
+    		source: "(3:4) {#each actions as action}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$3(ctx) {
+    	let if_block_anchor;
+    	let if_block = /*actions*/ ctx[0].length && create_if_block$1(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (/*actions*/ ctx[0].length) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block$1(ctx);
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div2);
-    			destroy_each(each_blocks, detaching);
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
     		}
     	};
 
@@ -2909,7 +2940,6 @@ var app = (function () {
     	let notifications;
     	let t0;
     	let form;
-    	let div6;
     	let div5;
     	let div4;
     	let div1;
@@ -2941,7 +2971,6 @@ var app = (function () {
     			create_component(notifications.$$.fragment);
     			t0 = space();
     			form = element("form");
-    			div6 = element("div");
     			div5 = element("div");
     			div4 = element("div");
     			div1 = element("div");
@@ -2965,36 +2994,34 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "Update settings";
     			attr_dev(label0, "for", "username");
-    			add_location(label0, file$3, 7, 12, 213);
+    			add_location(label0, file$3, 6, 10, 189);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "class", "form-control");
     			attr_dev(input0, "name", "username");
     			input0.required = true;
-    			add_location(input0, file$3, 8, 12, 264);
+    			add_location(input0, file$3, 7, 10, 238);
     			attr_dev(div0, "class", "invalid-feedback");
-    			add_location(div0, file$3, 9, 12, 364);
+    			add_location(div0, file$3, 8, 10, 336);
     			attr_dev(div1, "class", "col-md-6 mb-3");
-    			add_location(div1, file$3, 6, 10, 173);
+    			add_location(div1, file$3, 5, 8, 151);
     			attr_dev(label1, "for", "password");
-    			add_location(label1, file$3, 15, 12, 517);
+    			add_location(label1, file$3, 14, 10, 479);
     			attr_dev(input1, "type", "password");
     			attr_dev(input1, "class", "form-control");
     			attr_dev(input1, "name", "password");
     			input1.required = true;
-    			add_location(input1, file$3, 16, 12, 568);
+    			add_location(input1, file$3, 15, 10, 528);
     			attr_dev(div2, "class", "invalid-feedback");
-    			add_location(div2, file$3, 17, 12, 672);
+    			add_location(div2, file$3, 16, 10, 630);
     			attr_dev(div3, "class", "col-md-6 mb-3");
-    			add_location(div3, file$3, 14, 10, 477);
+    			add_location(div3, file$3, 13, 8, 441);
     			attr_dev(div4, "class", "row");
-    			add_location(div4, file$3, 5, 8, 145);
+    			add_location(div4, file$3, 4, 6, 125);
     			attr_dev(button, "class", "btn btn-lg btn-primary btn-block");
     			attr_dev(button, "type", "submit");
-    			add_location(button, file$3, 23, 6, 796);
-    			attr_dev(div5, "class", "col-md-12 order-md-1");
-    			add_location(div5, file$3, 4, 4, 102);
-    			attr_dev(div6, "class", "row");
-    			add_location(div6, file$3, 3, 2, 80);
+    			add_location(button, file$3, 22, 4, 744);
+    			attr_dev(div5, "class", "p-4 col-md-12 order-md-1");
+    			add_location(div5, file$3, 3, 2, 80);
     			add_location(form, file$3, 2, 0, 29);
     		},
     		l: function claim(nodes) {
@@ -3004,8 +3031,7 @@ var app = (function () {
     			mount_component(notifications, target, anchor);
     			insert_dev(target, t0, anchor);
     			insert_dev(target, form, anchor);
-    			append_dev(form, div6);
-    			append_dev(div6, div5);
+    			append_dev(form, div5);
     			append_dev(div5, div4);
     			append_dev(div4, div1);
     			append_dev(div1, label0);
@@ -4919,7 +4945,7 @@ var app = (function () {
     	}
     }
 
-    const authenticated = writable( false );
+    const authenticated = writable( true );
 
     /* src/pages/Login.svelte generated by Svelte v3.29.4 */
     const file$5 = "src/pages/Login.svelte";
@@ -5185,6 +5211,7 @@ var app = (function () {
     const file$6 = "src/components/Nav.svelte";
 
     function create_fragment$8(ctx) {
+    	let div2;
     	let nav;
     	let div1;
     	let a;
@@ -5200,6 +5227,7 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			div2 = element("div");
     			nav = element("nav");
     			div1 = element("div");
     			a = element("a");
@@ -5212,10 +5240,10 @@ var app = (function () {
     			ul = element("ul");
     			if (default_slot) default_slot.c();
     			attr_dev(a, "class", "navbar-brand");
-    			attr_dev(a, "href", "/home");
-    			add_location(a, file$6, 2, 5, 105);
+    			attr_dev(a, "href", "/");
+    			add_location(a, file$6, 3, 6, 147);
     			attr_dev(span, "class", "navbar-toggler-icon");
-    			add_location(span, file$6, 4, 7, 344);
+    			add_location(span, file$6, 5, 8, 384);
     			attr_dev(button, "class", "navbar-toggler");
     			attr_dev(button, "type", "button");
     			attr_dev(button, "data-toggle", "collapse");
@@ -5223,22 +5251,25 @@ var app = (function () {
     			attr_dev(button, "aria-controls", "navbarCollapse");
     			attr_dev(button, "aria-expanded", "false");
     			attr_dev(button, "aria-label", "Toggle navigation");
-    			add_location(button, file$6, 3, 5, 154);
-    			attr_dev(ul, "class", "navbar-nav mr-auto mb-2 mb-md-0");
-    			add_location(ul, file$6, 7, 7, 472);
+    			add_location(button, file$6, 4, 6, 193);
+    			attr_dev(ul, "class", "navbar-nav nav mr-auto mb-2 mb-md-0");
+    			add_location(ul, file$6, 8, 8, 515);
     			attr_dev(div0, "class", "collapse navbar-collapse");
     			attr_dev(div0, "id", "navbarCollapse");
-    			add_location(div0, file$6, 6, 5, 406);
+    			add_location(div0, file$6, 7, 6, 448);
     			attr_dev(div1, "class", "container-fluid");
-    			add_location(div1, file$6, 1, 2, 70);
+    			add_location(div1, file$6, 2, 4, 111);
     			attr_dev(nav, "class", "navbar navbar-expand-md navbar-dark fixed-top bg-dark");
-    			add_location(nav, file$6, 0, 0, 0);
+    			add_location(nav, file$6, 1, 2, 39);
+    			attr_dev(div2, "class", "nav-scroller py-1 mb-2");
+    			add_location(div2, file$6, 0, 0, 0);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, nav, anchor);
+    			insert_dev(target, div2, anchor);
+    			append_dev(div2, nav);
     			append_dev(nav, div1);
     			append_dev(div1, a);
     			append_dev(div1, t1);
@@ -5271,7 +5302,7 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(nav);
+    			if (detaching) detach_dev(div2);
     			if (default_slot) default_slot.d(detaching);
     		}
     	};
@@ -5320,7 +5351,7 @@ var app = (function () {
     /* src/App.svelte generated by Svelte v3.29.4 */
     const file$7 = "src/App.svelte";
 
-    // (16:0) {:else}
+    // (18:0) {:else}
     function create_else_block$1(ctx) {
     	let login;
     	let current;
@@ -5353,7 +5384,7 @@ var app = (function () {
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(16:0) {:else}",
+    		source: "(18:0) {:else}",
     		ctx
     	});
 
@@ -5361,7 +5392,7 @@ var app = (function () {
     }
 
     // (1:0) {#if $authenticated}
-    function create_if_block$1(ctx) {
+    function create_if_block$2(ctx) {
     	let router;
     	let current;
 
@@ -5408,7 +5439,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$1.name,
+    		id: create_if_block$2.name,
     		type: "if",
     		source: "(1:0) {#if $authenticated}",
     		ctx
@@ -5417,7 +5448,7 @@ var app = (function () {
     	return block;
     }
 
-    // (5:6) <Link to="/">
+    // (5:6) <Link getProps="{getProps}" to="/">
     function create_default_slot_4(ctx) {
     	let t;
 
@@ -5437,14 +5468,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_4.name,
     		type: "slot",
-    		source: "(5:6) <Link to=\\\"/\\\">",
+    		source: "(5:6) <Link getProps=\\\"{getProps}\\\" to=\\\"/\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (6:6) <Link to="settings">
+    // (8:6) <Link getProps="{getProps}" to="settings">
     function create_default_slot_3(ctx) {
     	let t;
 
@@ -5464,7 +5495,7 @@ var app = (function () {
     		block,
     		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(6:6) <Link to=\\\"settings\\\">",
+    		source: "(8:6) <Link getProps=\\\"{getProps}\\\" to=\\\"settings\\\">",
     		ctx
     	});
 
@@ -5473,14 +5504,16 @@ var app = (function () {
 
     // (3:2) <NAV>
     function create_default_slot_2(ctx) {
-    	let nav;
+    	let li0;
     	let link0;
     	let t;
+    	let li1;
     	let link1;
     	let current;
 
     	link0 = new Link({
     			props: {
+    				getProps,
     				to: "/",
     				$$slots: { default: [create_default_slot_4] },
     				$$scope: { ctx }
@@ -5490,6 +5523,7 @@ var app = (function () {
 
     	link1 = new Link({
     			props: {
+    				getProps,
     				to: "settings",
     				$$slots: { default: [create_default_slot_3] },
     				$$scope: { ctx }
@@ -5499,17 +5533,22 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			nav = element("nav");
+    			li0 = element("li");
     			create_component(link0.$$.fragment);
     			t = space();
+    			li1 = element("li");
     			create_component(link1.$$.fragment);
-    			add_location(nav, file$7, 3, 4, 54);
+    			attr_dev(li0, "class", "nav-item nav-link");
+    			add_location(li0, file$7, 3, 4, 54);
+    			attr_dev(li1, "class", "nav-item nav-link");
+    			add_location(li1, file$7, 6, 4, 152);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, nav, anchor);
-    			mount_component(link0, nav, null);
-    			append_dev(nav, t);
-    			mount_component(link1, nav, null);
+    			insert_dev(target, li0, anchor);
+    			mount_component(link0, li0, null);
+    			insert_dev(target, t, anchor);
+    			insert_dev(target, li1, anchor);
+    			mount_component(link1, li1, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
@@ -5540,8 +5579,10 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(nav);
+    			if (detaching) detach_dev(li0);
     			destroy_component(link0);
+    			if (detaching) detach_dev(t);
+    			if (detaching) detach_dev(li1);
     			destroy_component(link1);
     		}
     	};
@@ -5557,7 +5598,7 @@ var app = (function () {
     	return block;
     }
 
-    // (13:4) <Route path="/">
+    // (15:4) <Route path="/">
     function create_default_slot_1(ctx) {
     	let home;
     	let current;
@@ -5589,7 +5630,7 @@ var app = (function () {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(13:4) <Route path=\\\"/\\\">",
+    		source: "(15:4) <Route path=\\\"/\\\">",
     		ctx
     	});
 
@@ -5645,7 +5686,7 @@ var app = (function () {
     			create_component(route1.$$.fragment);
     			t2 = space();
     			create_component(route2.$$.fragment);
-    			add_location(div, file$7, 9, 2, 156);
+    			add_location(div, file$7, 11, 2, 269);
     		},
     		m: function mount(target, anchor) {
     			mount_component(nav, target, anchor);
@@ -5715,7 +5756,7 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block$1, create_else_block$1];
+    	const if_block_creators = [create_if_block$2, create_else_block$1];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -5790,6 +5831,10 @@ var app = (function () {
     	return block;
     }
 
+    function getProps() {
+    	return { class: "nav-link" };
+    }
+
     function instance$9($$self, $$props, $$invalidate) {
     	let $authenticated;
     	validate_store(authenticated, "authenticated");
@@ -5818,6 +5863,7 @@ var app = (function () {
     		NAV: Nav,
     		authenticated,
     		url,
+    		getProps,
     		$authenticated
     	});
 
