@@ -3,25 +3,28 @@ use strict;
 use warnings;
 
 sub UpdateGauges {
-  my $view = shift;
-  my %args = (
-    @_
-  );
+  my $view    = shift;
+  my $argsref = shift;
 
   # It ain't pretty but it will do as an MVP
-  my $current_gauges = $view->{'gauges'} || [];
+  my $current_gauges = $view->{'gauges'} || [{}, {}, {}];
 
   my @gauges = ();
-  my $i = 0;
-  foreach my $pid ( @{ $args{'pid'} } ) {
-      push @gauges, {
-            %{@{$current_gauges}[$i]},
-            "path" => "\/$view->{'theme'}\/",
-            "pid"  => $args{"pid"}[$i]
-      };
-      $i = $i + 1;
+  my $i = -1;
+  foreach my $pid ( @{ $argsref->{'gauges'} } ) {
+    $i = $i + 1;
+    next unless $pid && $pid->{'pid'};
+
+    push @gauges, {
+          "module"      => "Radial",
+          "themeConfig" => "120",
+          "unit"        => "PID_UNITS_RPM",
+          "path"        => "\/$argsref->{'theme'}\/",
+          "pid"         => $pid->{'pid'}
+    };
   }
-  delete $view->{"pid"};
+  delete $argsref->{'gauges'};
+
   $view->{'gauges'} = \@gauges;
 }
 

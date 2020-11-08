@@ -54,6 +54,12 @@ sub settings {
   $c->render(json => {message => 'Settings updated'});
 }
 
+=head2 config
+
+Return the Digital Dash config.json.
+
+=cut
+
 sub config {
   my $c = shift;
 
@@ -63,6 +69,12 @@ sub config {
   });
 }
 
+
+=head2 toggleEnabled
+
+Privide view ID and toggle the enabled flag.
+
+=cut
 
 sub toggleEnabled {
   my $c  = shift;
@@ -106,19 +118,20 @@ sub update {
   if ( $args->{'id'} eq 'new' ) {
     my @ids = sort keys %{$config->{'views'}};
 
-    $args->{'id'} = pop( @ids ) + 1;
+    $args->{'id'}      = pop( @ids ) + 1;
     $args->{'enabled'} = 1;
+    $args->{'dynamic'} = {};
   }
   my $temp_view = $config->{'views'}->{$args->{'id'}} || {};
 
-  KEApp::Model::Config::UpdateAlerts( $temp_view, %{$args} );
-  KEApp::Model::Config::UpdateGauges( $temp_view, %{$args} );
+  KEApp::Model::Config::UpdateAlerts( $temp_view, $args );
+  KEApp::Model::Config::UpdateGauges( $temp_view, $args );
   %{$temp_view} = (%{$temp_view}, %{$args});
 
   $config->{'views'}->{$args->{'id'}} = $temp_view;
 
   my ($ret, $msg) = $c->UpdateConfig( $config );
-  $c->render(json => { message => $msg });
+  $c->render(json => { res => $ret, message => $msg });
 }
 
 =head2 delete

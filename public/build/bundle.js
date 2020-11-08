@@ -164,6 +164,9 @@ var app = (function () {
             }
         }
     }
+    function to_number(value) {
+        return value === '' ? null : +value;
+    }
     function children(element) {
         return Array.from(element.childNodes);
     }
@@ -3351,56 +3354,59 @@ var app = (function () {
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[18] = list[i];
+    	child_ctx[30] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[21] = list[i];
+    	child_ctx[33] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[18] = list[i];
+    	child_ctx[30] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_4(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[21] = list[i];
+    	child_ctx[33] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[24] = list[i];
+    	child_ctx[36] = list[i];
+    	child_ctx[37] = list;
+    	child_ctx[38] = i;
     	return child_ctx;
     }
 
     function get_each_context_6(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[21] = list[i];
+    	child_ctx[33] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_5(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[31] = list[i];
-    	child_ctx[33] = i;
+    	child_ctx[43] = list[i];
+    	child_ctx[44] = list;
+    	child_ctx[45] = i;
     	return child_ctx;
     }
 
     function get_each_context_7(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[36] = list[i];
+    	child_ctx[48] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_8(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[39] = list[i];
+    	child_ctx[51] = list[i];
     	return child_ctx;
     }
 
@@ -3481,33 +3487,28 @@ var app = (function () {
     	let t34;
     	let select2;
     	let option2;
-    	let select2_value_value;
     	let select2_name_value;
     	let t36;
     	let div17;
     	let label4;
     	let t38;
     	let input2;
-    	let input2_value_value;
     	let t39;
     	let div18;
     	let label5;
     	let t41;
     	let select3;
     	let option3;
-    	let select3_value_value;
     	let t43;
     	let div19;
     	let label6;
     	let t45;
     	let input3;
-    	let input3_value_value;
     	let t46;
     	let div20;
     	let label7;
     	let t48;
     	let input4;
-    	let input4_value_value;
     	let t49;
     	let hr2;
     	let t50;
@@ -3780,72 +3781,71 @@ var app = (function () {
     			add_location(div11, file$4, 61, 8, 2219);
     			attr_dev(div12, "class", "mb-3 row");
     			add_location(div12, file$4, 65, 8, 2293);
-    			add_location(h41, file$4, 83, 10, 2966);
+    			add_location(h41, file$4, 83, 10, 2976);
     			attr_dev(button0, "class", "form-control");
-    			add_location(button0, file$4, 139, 12, 5222);
+    			add_location(button0, file$4, 139, 12, 5262);
     			attr_dev(div13, "class", "col-md-1 col-auto");
-    			add_location(div13, file$4, 138, 10, 5178);
+    			add_location(div13, file$4, 138, 10, 5218);
     			attr_dev(div14, "class", "mt-3 col-12");
-    			add_location(div14, file$4, 82, 8, 2930);
-    			add_location(h42, file$4, 144, 10, 5367);
-    			add_location(hr1, file$4, 145, 10, 5394);
+    			add_location(div14, file$4, 82, 8, 2940);
+    			add_location(h42, file$4, 144, 10, 5407);
+    			add_location(hr1, file$4, 145, 10, 5434);
     			attr_dev(div15, "class", "mt-3 col-12");
-    			add_location(div15, file$4, 143, 8, 5331);
+    			add_location(div15, file$4, 143, 8, 5371);
     			attr_dev(label3, "for", "dynamicPID");
-    			add_location(label3, file$4, 151, 12, 5503);
+    			add_location(label3, file$4, 151, 12, 5543);
     			option2.__value = "";
     			option2.value = option2.__value;
-    			add_location(option2, file$4, 154, 14, 5686);
+    			add_location(option2, file$4, 154, 14, 5731);
     			attr_dev(select2, "name", select2_name_value = "pid" + /*id*/ ctx[1]);
     			attr_dev(select2, "class", "form-control custom-select");
     			attr_dev(select2, "id", "dynamicPID");
-    			add_location(select2, file$4, 153, 12, 5552);
+    			if (/*dynamic*/ ctx[6].pid === void 0) add_render_callback(() => /*select2_change_handler*/ ctx[23].call(select2));
+    			add_location(select2, file$4, 153, 12, 5592);
     			attr_dev(div16, "class", "col-md-auto col-12");
-    			add_location(div16, file$4, 150, 10, 5458);
+    			add_location(div16, file$4, 150, 10, 5498);
     			attr_dev(label4, "for", "dynamicValue");
-    			add_location(label4, file$4, 164, 12, 6007);
-    			input2.value = input2_value_value = /*dynamic*/ ctx[6].value;
+    			add_location(label4, file$4, 164, 12, 6052);
     			attr_dev(input2, "class", "form-control");
     			attr_dev(input2, "type", "text");
     			attr_dev(input2, "name", "dynamicValue");
-    			add_location(input2, file$4, 165, 12, 6059);
+    			add_location(input2, file$4, 165, 12, 6104);
     			attr_dev(div17, "class", "col-md-auto col-12");
-    			add_location(div17, file$4, 163, 10, 5962);
+    			add_location(div17, file$4, 163, 10, 6007);
     			attr_dev(label5, "for", "dynamicOP");
-    			add_location(label5, file$4, 169, 12, 6216);
+    			add_location(label5, file$4, 169, 12, 6266);
     			option3.__value = "";
     			option3.value = option3.__value;
-    			add_location(option3, file$4, 171, 14, 6356);
+    			add_location(option3, file$4, 171, 14, 6411);
     			attr_dev(select3, "name", "dynamicOP");
     			attr_dev(select3, "class", "form-control custom-select");
-    			add_location(select3, file$4, 170, 12, 6262);
+    			if (/*dynamic*/ ctx[6].op === void 0) add_render_callback(() => /*select3_change_handler*/ ctx[25].call(select3));
+    			add_location(select3, file$4, 170, 12, 6312);
     			attr_dev(div18, "class", "col-md-auto col-12");
-    			add_location(div18, file$4, 168, 10, 6171);
+    			add_location(div18, file$4, 168, 10, 6221);
     			attr_dev(label6, "for", "dynamicPriority");
-    			add_location(label6, file$4, 181, 12, 6636);
-    			input3.value = input3_value_value = /*dynamic*/ ctx[6].priority;
+    			add_location(label6, file$4, 181, 12, 6691);
     			attr_dev(input3, "class", "form-control");
     			attr_dev(input3, "type", "number");
     			attr_dev(input3, "name", "dynamicPriority");
-    			add_location(input3, file$4, 182, 12, 6694);
+    			add_location(input3, file$4, 182, 12, 6749);
     			attr_dev(div19, "class", "col-md-auto col-12");
-    			add_location(div19, file$4, 180, 10, 6591);
+    			add_location(div19, file$4, 180, 10, 6646);
     			attr_dev(label7, "for", "dynamicUnit");
-    			add_location(label7, file$4, 186, 12, 6859);
-    			input4.value = input4_value_value = /*dynamic*/ ctx[6].unit;
+    			add_location(label7, file$4, 186, 12, 6919);
     			attr_dev(input4, "class", "form-control");
     			attr_dev(input4, "type", "text");
     			attr_dev(input4, "name", "dynamicUnit");
-    			add_location(input4, file$4, 187, 12, 6909);
+    			add_location(input4, file$4, 187, 12, 6969);
     			attr_dev(div20, "class", "col-md-auto col-12");
-    			add_location(div20, file$4, 185, 10, 6814);
+    			add_location(div20, file$4, 185, 10, 6874);
     			attr_dev(div21, "class", "mb-3 row");
-    			add_location(div21, file$4, 148, 8, 5424);
+    			add_location(div21, file$4, 148, 8, 5464);
     			attr_dev(hr2, "class", "mb-4");
-    			add_location(hr2, file$4, 191, 8, 7032);
+    			add_location(hr2, file$4, 191, 8, 7097);
     			attr_dev(button1, "class", "btn btn-primary btn-lg btn-block");
     			attr_dev(button1, "type", "submit");
-    			add_location(button1, file$4, 192, 8, 7058);
+    			add_location(button1, file$4, 192, 8, 7123);
     			attr_dev(form, "class", "needs-validation");
     			add_location(form, file$4, 12, 6, 315);
     			attr_dev(div22, "class", "col-md-12 order-md-1");
@@ -3950,6 +3950,7 @@ var app = (function () {
     			append_dev(div17, label4);
     			append_dev(div17, t38);
     			append_dev(div17, input2);
+    			set_input_value(input2, /*dynamic*/ ctx[6].value);
     			append_dev(div21, t39);
     			append_dev(div21, div18);
     			append_dev(div18, label5);
@@ -3967,11 +3968,13 @@ var app = (function () {
     			append_dev(div19, label6);
     			append_dev(div19, t45);
     			append_dev(div19, input3);
+    			set_input_value(input3, /*dynamic*/ ctx[6].priority);
     			append_dev(div21, t46);
     			append_dev(div21, div20);
     			append_dev(div20, label7);
     			append_dev(div20, t48);
     			append_dev(div20, input4);
+    			set_input_value(input4, /*dynamic*/ ctx[6].unit);
     			append_dev(form, t49);
     			append_dev(form, hr2);
     			append_dev(form, t50);
@@ -3987,6 +3990,11 @@ var app = (function () {
     					listen_dev(select1, "change", /*select1_change_handler*/ ctx[14]),
     					listen_dev(button0, "click", /*addAlert*/ ctx[9], false, false, false),
     					listen_dev(select2, "blur", updatePIDCount, false, false, false),
+    					listen_dev(select2, "change", /*select2_change_handler*/ ctx[23]),
+    					listen_dev(input2, "input", /*input2_input_handler_1*/ ctx[24]),
+    					listen_dev(select3, "change", /*select3_change_handler*/ ctx[25]),
+    					listen_dev(input3, "input", /*input3_input_handler_1*/ ctx[26]),
+    					listen_dev(input4, "input", /*input4_input_handler*/ ctx[27]),
     					listen_dev(form, "submit", prevent_default(/*handleSubmit*/ ctx[8]), false, true, false)
     				];
 
@@ -4090,28 +4098,28 @@ var app = (function () {
     				each_blocks_1.length = each_value_1.length;
     			}
 
-    			if (dirty[0] & /*dynamic, pids*/ 72 && select2_value_value !== (select2_value_value = /*dynamic*/ ctx[6].pid)) {
-    				select_option(select2, /*dynamic*/ ctx[6].pid);
-    			}
-
-    			if (dirty[0] & /*id, pids*/ 10 && select2_name_value !== (select2_name_value = "pid" + /*id*/ ctx[1])) {
+    			if (dirty[0] & /*id*/ 2 && select2_name_value !== (select2_name_value = "pid" + /*id*/ ctx[1])) {
     				attr_dev(select2, "name", select2_name_value);
     			}
 
-    			if (dirty[0] & /*dynamic, pids*/ 72 && input2_value_value !== (input2_value_value = /*dynamic*/ ctx[6].value) && input2.value !== input2_value_value) {
-    				prop_dev(input2, "value", input2_value_value);
+    			if (dirty[0] & /*dynamic, pids*/ 72) {
+    				select_option(select2, /*dynamic*/ ctx[6].pid);
     			}
 
-    			if (dirty[0] & /*dynamic, pids*/ 72 && select3_value_value !== (select3_value_value = /*dynamic*/ ctx[6].op)) {
+    			if (dirty[0] & /*dynamic, pids*/ 72 && input2.value !== /*dynamic*/ ctx[6].value) {
+    				set_input_value(input2, /*dynamic*/ ctx[6].value);
+    			}
+
+    			if (dirty[0] & /*dynamic, pids*/ 72) {
     				select_option(select3, /*dynamic*/ ctx[6].op);
     			}
 
-    			if (dirty[0] & /*dynamic, pids*/ 72 && input3_value_value !== (input3_value_value = /*dynamic*/ ctx[6].priority)) {
-    				prop_dev(input3, "value", input3_value_value);
+    			if (dirty[0] & /*dynamic, pids*/ 72 && to_number(input3.value) !== /*dynamic*/ ctx[6].priority) {
+    				set_input_value(input3, /*dynamic*/ ctx[6].priority);
     			}
 
-    			if (dirty[0] & /*dynamic, pids*/ 72 && input4_value_value !== (input4_value_value = /*dynamic*/ ctx[6].unit) && input4.value !== input4_value_value) {
-    				prop_dev(input4, "value", input4_value_value);
+    			if (dirty[0] & /*dynamic, pids*/ 72 && input4.value !== /*dynamic*/ ctx[6].unit) {
+    				set_input_value(input4, /*dynamic*/ ctx[6].unit);
     			}
 
     			if (dirty[0] & /*id*/ 2 && t51_value !== (t51_value = (/*id*/ ctx[1] == "new" ? "Create" : "Update") + "")) set_data_dev(t51, t51_value);
@@ -4233,8 +4241,8 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			option = element("option");
-    			t = text(/*background*/ ctx[39]);
-    			option.__value = option_value_value = /*background*/ ctx[39];
+    			t = text(/*background*/ ctx[51]);
+    			option.__value = option_value_value = /*background*/ ctx[51];
     			option.value = option.__value;
     			add_location(option, file$4, 37, 16, 1347);
     		},
@@ -4268,8 +4276,8 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			option = element("option");
-    			t = text(/*theme*/ ctx[36]);
-    			option.__value = option_value_value = /*theme*/ ctx[36];
+    			t = text(/*theme*/ ctx[48]);
+    			option.__value = option_value_value = /*theme*/ ctx[48];
     			option.value = option.__value;
     			add_location(option, file$4, 51, 16, 1951);
     		},
@@ -4294,13 +4302,13 @@ var app = (function () {
     	return block;
     }
 
-    // (72:16) {#each pids as pid}
+    // (72:18) {#each pids as pid}
     function create_each_block_6(ctx) {
     	let option;
 
-    	let t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    	? /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    	: /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].name) + "";
+    	let t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    	? /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    	: /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].name) + "";
 
     	let t0;
     	let t1;
@@ -4311,9 +4319,9 @@ var app = (function () {
     			option = element("option");
     			t0 = text(t0_value);
     			t1 = space();
-    			option.__value = option_value_value = /*pid*/ ctx[21];
+    			option.__value = option_value_value = /*pid*/ ctx[33];
     			option.value = option.__value;
-    			add_location(option, file$4, 72, 16, 2672);
+    			add_location(option, file$4, 72, 18, 2670);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -4321,11 +4329,11 @@ var app = (function () {
     			append_dev(option, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*KE_PID, pids*/ 24 && t0_value !== (t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    			? /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    			: /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].name) + "")) set_data_dev(t0, t0_value);
+    			if (dirty[0] & /*KE_PID, pids*/ 24 && t0_value !== (t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    			? /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    			: /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].name) + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty[0] & /*pids*/ 8 && option_value_value !== (option_value_value = /*pid*/ ctx[21])) {
+    			if (dirty[0] & /*pids*/ 8 && option_value_value !== (option_value_value = /*pid*/ ctx[33])) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -4339,7 +4347,7 @@ var app = (function () {
     		block,
     		id: create_each_block_6.name,
     		type: "each",
-    		source: "(72:16) {#each pids as pid}",
+    		source: "(72:18) {#each pids as pid}",
     		ctx
     	});
 
@@ -4352,7 +4360,6 @@ var app = (function () {
     	let div0;
     	let select;
     	let option;
-    	let select_value_value;
     	let select_name_value;
     	let select_id_value;
     	let t1;
@@ -4364,6 +4371,10 @@ var app = (function () {
 
     	for (let i = 0; i < each_value_6.length; i += 1) {
     		each_blocks[i] = create_each_block_6(get_each_context_6(ctx, each_value_6, i));
+    	}
+
+    	function select_change_handler() {
+    		/*select_change_handler*/ ctx[15].call(select, /*i*/ ctx[45]);
     	}
 
     	const block = {
@@ -4381,15 +4392,16 @@ var app = (function () {
     			t1 = space();
     			option.__value = "";
     			option.value = option.__value;
-    			add_location(option, file$4, 70, 16, 2592);
+    			add_location(option, file$4, 70, 18, 2586);
     			attr_dev(select, "name", select_name_value = "pid" + /*id*/ ctx[1]);
     			attr_dev(select, "class", "form-control custom-select");
     			attr_dev(select, "id", select_id_value = "pid" + /*id*/ ctx[1]);
-    			add_location(select, file$4, 69, 14, 2433);
+    			if (/*view*/ ctx[2].gauges[/*i*/ ctx[45]].pid === void 0) add_render_callback(select_change_handler);
+    			add_location(select, file$4, 69, 16, 2439);
     			attr_dev(div0, "class", "input-group");
-    			add_location(div0, file$4, 68, 12, 2393);
+    			add_location(div0, file$4, 68, 14, 2397);
     			attr_dev(div1, "class", "col-4");
-    			add_location(div1, file$4, 67, 10, 2361);
+    			add_location(div1, file$4, 67, 12, 2363);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -4401,18 +4413,21 @@ var app = (function () {
     				each_blocks[i].m(select, null);
     			}
 
-    			select_option(select, /*id*/ ctx[1] == "new"
-    			? ""
-    			: /*view*/ ctx[2].gauges[/*i*/ ctx[33]].pid);
-
+    			select_option(select, /*view*/ ctx[2].gauges[/*i*/ ctx[45]].pid);
     			append_dev(div1, t1);
 
     			if (!mounted) {
-    				dispose = listen_dev(select, "blur", updatePIDCount, false, false, false);
+    				dispose = [
+    					listen_dev(select, "blur", updatePIDCount, false, false, false),
+    					listen_dev(select, "change", select_change_handler)
+    				];
+
     				mounted = true;
     			}
     		},
-    		p: function update(ctx, dirty) {
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+
     			if (dirty[0] & /*pids, KE_PID*/ 24) {
     				each_value_6 = /*pids*/ ctx[3];
     				validate_each_argument(each_value_6);
@@ -4437,27 +4452,23 @@ var app = (function () {
     				each_blocks.length = each_value_6.length;
     			}
 
-    			if (dirty[0] & /*id, view, pids*/ 14 && select_value_value !== (select_value_value = /*id*/ ctx[1] == "new"
-    			? ""
-    			: /*view*/ ctx[2].gauges[/*i*/ ctx[33]].pid)) {
-    				select_option(select, /*id*/ ctx[1] == "new"
-    				? ""
-    				: /*view*/ ctx[2].gauges[/*i*/ ctx[33]].pid);
-    			}
-
-    			if (dirty[0] & /*id, pids*/ 10 && select_name_value !== (select_name_value = "pid" + /*id*/ ctx[1])) {
+    			if (dirty[0] & /*id*/ 2 && select_name_value !== (select_name_value = "pid" + /*id*/ ctx[1])) {
     				attr_dev(select, "name", select_name_value);
     			}
 
-    			if (dirty[0] & /*id, pids*/ 10 && select_id_value !== (select_id_value = "pid" + /*id*/ ctx[1])) {
+    			if (dirty[0] & /*id*/ 2 && select_id_value !== (select_id_value = "pid" + /*id*/ ctx[1])) {
     				attr_dev(select, "id", select_id_value);
+    			}
+
+    			if (dirty[0] & /*view*/ 4) {
+    				select_option(select, /*view*/ ctx[2].gauges[/*i*/ ctx[45]].pid);
     			}
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div1);
     			destroy_each(each_blocks, detaching);
     			mounted = false;
-    			dispose();
+    			run_all(dispose);
     		}
     	};
 
@@ -4476,9 +4487,9 @@ var app = (function () {
     function create_each_block_4(ctx) {
     	let option;
 
-    	let t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    	? /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    	: /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].name) + "";
+    	let t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    	? /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    	: /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].name) + "";
 
     	let t0;
     	let t1;
@@ -4489,9 +4500,9 @@ var app = (function () {
     			option = element("option");
     			t0 = text(t0_value);
     			t1 = space();
-    			option.__value = option_value_value = /*pid*/ ctx[21];
+    			option.__value = option_value_value = /*pid*/ ctx[33];
     			option.value = option.__value;
-    			add_location(option, file$4, 100, 18, 3744);
+    			add_location(option, file$4, 100, 18, 3764);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -4499,11 +4510,11 @@ var app = (function () {
     			append_dev(option, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*KE_PID, pids*/ 24 && t0_value !== (t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    			? /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    			: /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].name) + "")) set_data_dev(t0, t0_value);
+    			if (dirty[0] & /*KE_PID, pids*/ 24 && t0_value !== (t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    			? /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    			: /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].name) + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty[0] & /*pids*/ 8 && option_value_value !== (option_value_value = /*pid*/ ctx[21])) {
+    			if (dirty[0] & /*pids*/ 8 && option_value_value !== (option_value_value = /*pid*/ ctx[33])) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -4534,11 +4545,11 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			option = element("option");
-    			t0 = text(/*op*/ ctx[18]);
+    			t0 = text(/*op*/ ctx[30]);
     			t1 = space();
-    			option.__value = option_value_value = /*op*/ ctx[18];
+    			option.__value = option_value_value = /*op*/ ctx[30];
     			option.value = option.__value;
-    			add_location(option, file$4, 117, 18, 4503);
+    			add_location(option, file$4, 117, 18, 4533);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -4571,47 +4582,45 @@ var app = (function () {
     	let label0;
     	let t3;
     	let input0;
-    	let input0_value_value;
     	let t4;
     	let div1;
     	let label1;
     	let t6;
     	let select0;
     	let option0;
-    	let select0_value_value;
     	let select0_name_value;
     	let t8;
     	let div2;
     	let label2;
     	let t10;
     	let input1;
-    	let input1_value_value;
     	let t11;
     	let div3;
     	let label3;
     	let t13;
     	let select1;
     	let option1;
-    	let select1_value_value;
     	let t15;
     	let div4;
     	let label4;
     	let t17;
     	let input2;
-    	let input2_value_value;
     	let t18;
     	let div5;
     	let label5;
     	let t20;
     	let input3;
-    	let input3_value_value;
     	let t21;
     	let hr;
     	let mounted;
     	let dispose;
 
     	function click_handler(...args) {
-    		return /*click_handler*/ ctx[15](/*alert*/ ctx[24], ...args);
+    		return /*click_handler*/ ctx[16](/*alert*/ ctx[36], ...args);
+    	}
+
+    	function input0_input_handler() {
+    		/*input0_input_handler*/ ctx[17].call(input0, /*each_value_2*/ ctx[37], /*alert_index*/ ctx[38]);
     	}
 
     	let each_value_4 = /*pids*/ ctx[3];
@@ -4622,12 +4631,32 @@ var app = (function () {
     		each_blocks_1[i] = create_each_block_4(get_each_context_4(ctx, each_value_4, i));
     	}
 
+    	function select0_change_handler_1() {
+    		/*select0_change_handler_1*/ ctx[18].call(select0, /*each_value_2*/ ctx[37], /*alert_index*/ ctx[38]);
+    	}
+
+    	function input1_input_handler_1() {
+    		/*input1_input_handler_1*/ ctx[19].call(input1, /*each_value_2*/ ctx[37], /*alert_index*/ ctx[38]);
+    	}
+
     	let each_value_3 = ["=", ">", "<", ">=", "<="];
     	validate_each_argument(each_value_3);
     	let each_blocks = [];
 
     	for (let i = 0; i < 5; i += 1) {
     		each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
+    	}
+
+    	function select1_change_handler_1() {
+    		/*select1_change_handler_1*/ ctx[20].call(select1, /*each_value_2*/ ctx[37], /*alert_index*/ ctx[38]);
+    	}
+
+    	function input2_input_handler() {
+    		/*input2_input_handler*/ ctx[21].call(input2, /*each_value_2*/ ctx[37], /*alert_index*/ ctx[38]);
+    	}
+
+    	function input3_input_handler() {
+    		/*input3_input_handler*/ ctx[22].call(input3, /*each_value_2*/ ctx[37], /*alert_index*/ ctx[38]);
     	}
 
     	const block = {
@@ -4689,73 +4718,71 @@ var app = (function () {
     			hr = element("hr");
     			attr_dev(button, "class", "form-control");
     			attr_dev(button, "type", "button");
-    			add_location(button, file$4, 86, 12, 3029);
+    			add_location(button, file$4, 86, 12, 3039);
     			attr_dev(label0, "for", "alertMessage");
-    			add_location(label0, file$4, 90, 16, 3230);
+    			add_location(label0, file$4, 90, 16, 3240);
     			input0.required = true;
-    			input0.value = input0_value_value = /*alert*/ ctx[24].message;
     			attr_dev(input0, "class", "form-control");
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "alertMessage");
-    			add_location(input0, file$4, 91, 16, 3288);
+    			add_location(input0, file$4, 91, 16, 3298);
     			attr_dev(div0, "class", "col-md-3 col-12");
-    			add_location(div0, file$4, 89, 14, 3184);
+    			add_location(div0, file$4, 89, 14, 3194);
     			attr_dev(label1, "for", "alertPID");
-    			add_location(label1, file$4, 95, 16, 3466);
+    			add_location(label1, file$4, 95, 16, 3481);
     			option0.__value = "";
     			option0.value = option0.__value;
-    			add_location(option0, file$4, 98, 18, 3660);
+    			add_location(option0, file$4, 98, 18, 3680);
     			attr_dev(select0, "name", select0_name_value = "pid" + /*id*/ ctx[1]);
     			attr_dev(select0, "class", "form-control custom-select");
     			attr_dev(select0, "id", "alertPID");
     			select0.required = true;
-    			add_location(select0, file$4, 97, 16, 3517);
+    			if (/*alert*/ ctx[36].pid === void 0) add_render_callback(select0_change_handler_1);
+    			add_location(select0, file$4, 97, 16, 3532);
     			attr_dev(div1, "class", "col-md-auto col-12");
-    			add_location(div1, file$4, 94, 14, 3417);
+    			add_location(div1, file$4, 94, 14, 3432);
     			attr_dev(label2, "for", "alertValue");
-    			add_location(label2, file$4, 108, 16, 4016);
+    			add_location(label2, file$4, 108, 16, 4036);
     			input1.required = true;
-    			input1.value = input1_value_value = /*alert*/ ctx[24].value;
     			attr_dev(input1, "class", "form-control");
     			attr_dev(input1, "type", "text");
     			attr_dev(input1, "name", "alertValue");
-    			add_location(input1, file$4, 109, 16, 4070);
+    			add_location(input1, file$4, 109, 16, 4090);
     			attr_dev(div2, "class", "col-md-3 col-12");
-    			add_location(div2, file$4, 107, 14, 3970);
+    			add_location(div2, file$4, 107, 14, 3990);
     			attr_dev(label3, "for", "alertOP");
-    			add_location(label3, file$4, 113, 16, 4246);
+    			add_location(label3, file$4, 113, 16, 4271);
     			option1.__value = "";
     			option1.value = option1.__value;
-    			add_location(option1, file$4, 115, 18, 4397);
+    			add_location(option1, file$4, 115, 18, 4427);
     			select1.required = true;
     			attr_dev(select1, "name", "alertOP");
     			attr_dev(select1, "class", "form-control custom-select");
-    			add_location(select1, file$4, 114, 16, 4294);
+    			if (/*alert*/ ctx[36].op === void 0) add_render_callback(select1_change_handler_1);
+    			add_location(select1, file$4, 114, 16, 4319);
     			attr_dev(div3, "class", "col-md-auto col-12");
-    			add_location(div3, file$4, 112, 14, 4197);
+    			add_location(div3, file$4, 112, 14, 4222);
     			attr_dev(label4, "for", "alertPriority");
-    			add_location(label4, file$4, 125, 14, 4712);
+    			add_location(label4, file$4, 125, 14, 4742);
     			input2.required = true;
-    			input2.value = input2_value_value = /*alert*/ ctx[24].priority;
     			attr_dev(input2, "class", "form-control");
     			attr_dev(input2, "type", "number");
     			attr_dev(input2, "name", "alertPriority");
-    			add_location(input2, file$4, 126, 14, 4770);
+    			add_location(input2, file$4, 126, 14, 4800);
     			attr_dev(div4, "class", "col-md-auto col-12");
-    			add_location(div4, file$4, 124, 13, 4665);
+    			add_location(div4, file$4, 124, 13, 4695);
     			attr_dev(label5, "for", "alertUnit");
-    			add_location(label5, file$4, 130, 14, 4950);
+    			add_location(label5, file$4, 130, 14, 4985);
     			input3.required = true;
-    			input3.value = input3_value_value = /*alert*/ ctx[24].unit;
     			attr_dev(input3, "class", "form-control");
     			attr_dev(input3, "type", "text");
     			attr_dev(input3, "name", "alertUnit");
-    			add_location(input3, file$4, 131, 14, 5000);
+    			add_location(input3, file$4, 131, 14, 5035);
     			attr_dev(div5, "class", "col-md-auto col-12");
-    			add_location(div5, file$4, 129, 13, 4903);
+    			add_location(div5, file$4, 129, 13, 4938);
     			attr_dev(div6, "class", "mb-3 row");
-    			add_location(div6, file$4, 88, 12, 3147);
-    			add_location(hr, file$4, 135, 12, 5141);
+    			add_location(div6, file$4, 88, 12, 3157);
+    			add_location(hr, file$4, 135, 12, 5181);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -4765,6 +4792,7 @@ var app = (function () {
     			append_dev(div0, label0);
     			append_dev(div0, t3);
     			append_dev(div0, input0);
+    			set_input_value(input0, /*alert*/ ctx[36].message);
     			append_dev(div6, t4);
     			append_dev(div6, div1);
     			append_dev(div1, label1);
@@ -4776,12 +4804,13 @@ var app = (function () {
     				each_blocks_1[i].m(select0, null);
     			}
 
-    			select_option(select0, /*alert*/ ctx[24].pid);
+    			select_option(select0, /*alert*/ ctx[36].pid);
     			append_dev(div6, t8);
     			append_dev(div6, div2);
     			append_dev(div2, label2);
     			append_dev(div2, t10);
     			append_dev(div2, input1);
+    			set_input_value(input1, /*alert*/ ctx[36].value);
     			append_dev(div6, t11);
     			append_dev(div6, div3);
     			append_dev(div3, label3);
@@ -4793,24 +4822,32 @@ var app = (function () {
     				each_blocks[i].m(select1, null);
     			}
 
-    			select_option(select1, /*alert*/ ctx[24].op);
+    			select_option(select1, /*alert*/ ctx[36].op);
     			append_dev(div6, t15);
     			append_dev(div6, div4);
     			append_dev(div4, label4);
     			append_dev(div4, t17);
     			append_dev(div4, input2);
+    			set_input_value(input2, /*alert*/ ctx[36].priority);
     			append_dev(div6, t18);
     			append_dev(div6, div5);
     			append_dev(div5, label5);
     			append_dev(div5, t20);
     			append_dev(div5, input3);
+    			set_input_value(input3, /*alert*/ ctx[36].unit);
     			insert_dev(target, t21, anchor);
     			insert_dev(target, hr, anchor);
 
     			if (!mounted) {
     				dispose = [
     					listen_dev(button, "click", click_handler, false, false, false),
-    					listen_dev(select0, "blur", updatePIDCount, false, false, false)
+    					listen_dev(input0, "input", input0_input_handler),
+    					listen_dev(select0, "blur", updatePIDCount, false, false, false),
+    					listen_dev(select0, "change", select0_change_handler_1),
+    					listen_dev(input1, "input", input1_input_handler_1),
+    					listen_dev(select1, "change", select1_change_handler_1),
+    					listen_dev(input2, "input", input2_input_handler),
+    					listen_dev(input3, "input", input3_input_handler)
     				];
 
     				mounted = true;
@@ -4819,8 +4856,8 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty[0] & /*alerts, pids*/ 40 && input0_value_value !== (input0_value_value = /*alert*/ ctx[24].message) && input0.value !== input0_value_value) {
-    				prop_dev(input0, "value", input0_value_value);
+    			if (dirty[0] & /*alerts, pids*/ 40 && input0.value !== /*alert*/ ctx[36].message) {
+    				set_input_value(input0, /*alert*/ ctx[36].message);
     			}
 
     			if (dirty[0] & /*pids, KE_PID*/ 24) {
@@ -4847,28 +4884,28 @@ var app = (function () {
     				each_blocks_1.length = each_value_4.length;
     			}
 
-    			if (dirty[0] & /*alerts, pids*/ 40 && select0_value_value !== (select0_value_value = /*alert*/ ctx[24].pid)) {
-    				select_option(select0, /*alert*/ ctx[24].pid);
-    			}
-
-    			if (dirty[0] & /*id, pids*/ 10 && select0_name_value !== (select0_name_value = "pid" + /*id*/ ctx[1])) {
+    			if (dirty[0] & /*id*/ 2 && select0_name_value !== (select0_name_value = "pid" + /*id*/ ctx[1])) {
     				attr_dev(select0, "name", select0_name_value);
     			}
 
-    			if (dirty[0] & /*alerts, pids*/ 40 && input1_value_value !== (input1_value_value = /*alert*/ ctx[24].value) && input1.value !== input1_value_value) {
-    				prop_dev(input1, "value", input1_value_value);
+    			if (dirty[0] & /*alerts, pids*/ 40) {
+    				select_option(select0, /*alert*/ ctx[36].pid);
     			}
 
-    			if (dirty[0] & /*alerts, pids*/ 40 && select1_value_value !== (select1_value_value = /*alert*/ ctx[24].op)) {
-    				select_option(select1, /*alert*/ ctx[24].op);
+    			if (dirty[0] & /*alerts, pids*/ 40 && input1.value !== /*alert*/ ctx[36].value) {
+    				set_input_value(input1, /*alert*/ ctx[36].value);
     			}
 
-    			if (dirty[0] & /*alerts, pids*/ 40 && input2_value_value !== (input2_value_value = /*alert*/ ctx[24].priority)) {
-    				prop_dev(input2, "value", input2_value_value);
+    			if (dirty[0] & /*alerts, pids*/ 40) {
+    				select_option(select1, /*alert*/ ctx[36].op);
     			}
 
-    			if (dirty[0] & /*alerts, pids*/ 40 && input3_value_value !== (input3_value_value = /*alert*/ ctx[24].unit) && input3.value !== input3_value_value) {
-    				prop_dev(input3, "value", input3_value_value);
+    			if (dirty[0] & /*alerts, pids*/ 40 && to_number(input2.value) !== /*alert*/ ctx[36].priority) {
+    				set_input_value(input2, /*alert*/ ctx[36].priority);
+    			}
+
+    			if (dirty[0] & /*alerts, pids*/ 40 && input3.value !== /*alert*/ ctx[36].unit) {
+    				set_input_value(input3, /*alert*/ ctx[36].unit);
     			}
     		},
     		d: function destroy(detaching) {
@@ -4899,9 +4936,9 @@ var app = (function () {
     function create_each_block_1$1(ctx) {
     	let option;
 
-    	let t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    	? /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    	: /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].name) + "";
+    	let t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    	? /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    	: /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].name) + "";
 
     	let t0;
     	let t1;
@@ -4912,9 +4949,9 @@ var app = (function () {
     			option = element("option");
     			t0 = text(t0_value);
     			t1 = space();
-    			option.__value = option_value_value = /*pid*/ ctx[21];
+    			option.__value = option_value_value = /*pid*/ ctx[33];
     			option.value = option.__value;
-    			add_location(option, file$4, 156, 14, 5762);
+    			add_location(option, file$4, 156, 14, 5807);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -4922,11 +4959,11 @@ var app = (function () {
     			append_dev(option, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*KE_PID, pids*/ 24 && t0_value !== (t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    			? /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].shortName
-    			: /*KE_PID*/ ctx[4][/*pid*/ ctx[21]].name) + "")) set_data_dev(t0, t0_value);
+    			if (dirty[0] & /*KE_PID, pids*/ 24 && t0_value !== (t0_value = (/*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    			? /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].shortName
+    			: /*KE_PID*/ ctx[4][/*pid*/ ctx[33]].name) + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty[0] & /*pids*/ 8 && option_value_value !== (option_value_value = /*pid*/ ctx[21])) {
+    			if (dirty[0] & /*pids*/ 8 && option_value_value !== (option_value_value = /*pid*/ ctx[33])) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -4957,11 +4994,11 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			option = element("option");
-    			t0 = text(/*op*/ ctx[18]);
+    			t0 = text(/*op*/ ctx[30]);
     			t1 = space();
-    			option.__value = option_value_value = /*op*/ ctx[18];
+    			option.__value = option_value_value = /*op*/ ctx[30];
     			option.value = option.__value;
-    			add_location(option, file$4, 173, 14, 6454);
+    			add_location(option, file$4, 173, 14, 6509);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -4997,7 +5034,7 @@ var app = (function () {
     			button.textContent = "Delete view";
     			attr_dev(button, "type", "button");
     			attr_dev(button, "class", "btn btn-danger btn-lg btn-block");
-    			add_location(button, file$4, 195, 8, 7201);
+    			add_location(button, file$4, 195, 8, 7266);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -5156,6 +5193,10 @@ var app = (function () {
     	let alerts = [];
     	let dynamic = {};
 
+    	if (id == "new") {
+    		view.gauges = [{}, {}, {}];
+    	}
+
     	async function getConfigs() {
     		const res = await fetch("/api/config", { method: "get" });
     		const data = await res.json();
@@ -5182,13 +5223,17 @@ var app = (function () {
 
     	let promise = getConfigs();
 
-    	function handleSubmit(event) {
+    	function handleSubmit() {
     		fetch("/api/update", {
     			method: "POST",
     			mode: "cors",
     			credentials: "same-origin",
-    			body: JSON.stringify(view)
+    			body: JSON.stringify(view, dynamic, alerts)
     		}).then(d => d.json()).then(d => {
+    			if (id == "new" && d.res) {
+    				navigate("/");
+    			}
+
     			$$invalidate(0, actions = [d.message]);
     		});
     	}
@@ -5254,9 +5299,80 @@ var app = (function () {
     		$$invalidate(2, view);
     	}
 
+    	function select_change_handler(i) {
+    		view.gauges[i].pid = select_value(this);
+    		$$invalidate(2, view);
+    	}
+
     	const click_handler = alert => {
     		deleteAlert(alert);
     	};
+
+    	function input0_input_handler(each_value_2, alert_index) {
+    		each_value_2[alert_index].message = this.value;
+    		$$invalidate(5, alerts);
+    		$$invalidate(3, pids);
+    	}
+
+    	function select0_change_handler_1(each_value_2, alert_index) {
+    		each_value_2[alert_index].pid = select_value(this);
+    		$$invalidate(5, alerts);
+    		$$invalidate(3, pids);
+    	}
+
+    	function input1_input_handler_1(each_value_2, alert_index) {
+    		each_value_2[alert_index].value = this.value;
+    		$$invalidate(5, alerts);
+    		$$invalidate(3, pids);
+    	}
+
+    	function select1_change_handler_1(each_value_2, alert_index) {
+    		each_value_2[alert_index].op = select_value(this);
+    		$$invalidate(5, alerts);
+    		$$invalidate(3, pids);
+    	}
+
+    	function input2_input_handler(each_value_2, alert_index) {
+    		each_value_2[alert_index].priority = to_number(this.value);
+    		$$invalidate(5, alerts);
+    		$$invalidate(3, pids);
+    	}
+
+    	function input3_input_handler(each_value_2, alert_index) {
+    		each_value_2[alert_index].unit = this.value;
+    		$$invalidate(5, alerts);
+    		$$invalidate(3, pids);
+    	}
+
+    	function select2_change_handler() {
+    		dynamic.pid = select_value(this);
+    		$$invalidate(6, dynamic);
+    		$$invalidate(3, pids);
+    	}
+
+    	function input2_input_handler_1() {
+    		dynamic.value = this.value;
+    		$$invalidate(6, dynamic);
+    		$$invalidate(3, pids);
+    	}
+
+    	function select3_change_handler() {
+    		dynamic.op = select_value(this);
+    		$$invalidate(6, dynamic);
+    		$$invalidate(3, pids);
+    	}
+
+    	function input3_input_handler_1() {
+    		dynamic.priority = to_number(this.value);
+    		$$invalidate(6, dynamic);
+    		$$invalidate(3, pids);
+    	}
+
+    	function input4_input_handler() {
+    		dynamic.unit = this.value;
+    		$$invalidate(6, dynamic);
+    		$$invalidate(3, pids);
+    	}
 
     	$$self.$$set = $$props => {
     		if ("id" in $$props) $$invalidate(1, id = $$props.id);
@@ -5315,7 +5431,19 @@ var app = (function () {
     		input1_input_handler,
     		select0_change_handler,
     		select1_change_handler,
-    		click_handler
+    		select_change_handler,
+    		click_handler,
+    		input0_input_handler,
+    		select0_change_handler_1,
+    		input1_input_handler_1,
+    		select1_change_handler_1,
+    		input2_input_handler,
+    		input3_input_handler,
+    		select2_change_handler,
+    		input2_input_handler_1,
+    		select3_change_handler,
+    		input3_input_handler_1,
+    		input4_input_handler
     	];
     }
 

@@ -65,18 +65,18 @@
 
         <div class="mb-3 row">
           {#each Array(3) as _, i}
-          <div class="col-4">
-            <div class="input-group">
-              <select on:blur={updatePIDCount} value={id == 'new' ? '' : view.gauges[i].pid} name="pid{id}" class="form-control custom-select" id="pid{id}">
-                <option value="">-</option>
-                {#each pids as pid}
-                <option value={pid}>
-                  {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
-                </option>
-                {/each}
-              </select>
+            <div class="col-4">
+              <div class="input-group">
+                <select on:blur={updatePIDCount} bind:value={view.gauges[i].pid} name="pid{id}" class="form-control custom-select" id="pid{id}">
+                  <option value="">-</option>
+                  {#each pids as pid}
+                  <option value={pid}>
+                    {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
+                  </option>
+                  {/each}
+                </select>
+              </div>
             </div>
-          </div>
           {/each}
         </div>
 
@@ -89,13 +89,13 @@
             <div class="mb-3 row">
               <div class="col-md-3 col-12">
                 <label for="alertMessage">Message</label>
-                <input required value={alert.message} class="form-control" type="text" name="alertMessage"/>
+                <input required bind:value={alert.message} class="form-control" type="text" name="alertMessage"/>
               </div>
 
               <div class="col-md-auto col-12">
                 <label for="alertPID">PID</label>
 
-                <select on:blur={updatePIDCount} value={alert.pid} name="pid{id}" class="form-control custom-select" id="alertPID" required>
+                <select on:blur={updatePIDCount} bind:value={alert.pid} name="pid{id}" class="form-control custom-select" id="alertPID" required>
                   <option value="">-</option>
                   {#each pids as pid}
                   <option value={pid}>
@@ -107,12 +107,12 @@
   
               <div class="col-md-3 col-12">
                 <label for="alertValue">Value</label>
-                <input required value={alert.value} class="form-control" type="text" name="alertValue"/>
+                <input required bind:value={alert.value} class="form-control" type="text" name="alertValue"/>
               </div>
   
               <div class="col-md-auto col-12">
                 <label for="alertOP">OP</label>
-                <select required value={alert.op} name="alertOP" class="form-control custom-select">
+                <select required bind:value={alert.op} name="alertOP" class="form-control custom-select">
                   <option value="">-</option>
                   {#each ['=', '>', '<', '>=', '<='] as op}
                   <option value={op}>
@@ -124,12 +124,12 @@
   
              <div class="col-md-auto col-12">
               <label for="alertPriority">Priority</label>
-              <input required value={alert.priority} class="form-control" type="number" name="alertPriority"/>
+              <input required bind:value={alert.priority} class="form-control" type="number" name="alertPriority"/>
              </div>
   
              <div class="col-md-auto col-12">
               <label for="alertUnit">Unit</label>
-              <input required value={alert.unit} class="form-control" type="text" name="alertUnit"/>
+              <input required bind:value={alert.unit} class="form-control" type="text" name="alertUnit"/>
              </div>
             </div>
   
@@ -151,7 +151,7 @@
           <div class="col-md-auto col-12">
             <label for="dynamicPID">PID</label>
 
-            <select on:blur={updatePIDCount} value={dynamic.pid} name="pid{id}" class="form-control custom-select" id="dynamicPID">
+            <select on:blur={updatePIDCount} bind:value={dynamic.pid} name="pid{id}" class="form-control custom-select" id="dynamicPID">
               <option value="">-</option>
               {#each pids as pid}
               <option value={pid}>
@@ -163,12 +163,12 @@
 
           <div class="col-md-auto col-12">
             <label for="dynamicValue">Value</label>
-            <input value={dynamic.value} class="form-control" type="text" name="dynamicValue"/>
+            <input bind:value={dynamic.value} class="form-control" type="text" name="dynamicValue"/>
           </div>
 
           <div class="col-md-auto col-12">
             <label for="dynamicOP">OP</label>
-            <select value={dynamic.op} name="dynamicOP" class="form-control custom-select">
+            <select bind:value={dynamic.op} name="dynamicOP" class="form-control custom-select">
               <option value="">-</option>
               {#each ['=', '>', '<', '>=', '<='] as op}
               <option value={op}>
@@ -180,12 +180,12 @@
 
           <div class="col-md-auto col-12">
             <label for="dynamicPriority">Priority</label>
-            <input value={dynamic.priority} class="form-control" type="number" name="dynamicPriority"/>
+            <input bind:value={dynamic.priority} class="form-control" type="number" name="dynamicPriority"/>
           </div>
 
           <div class="col-md-auto col-12">
             <label for="dynamicUnit">Unit</label>
-            <input value={dynamic.unit} class="form-control" type="text" name="dynamicUnit"/>
+            <input bind:value={dynamic.unit} class="form-control" type="text" name="dynamicUnit"/>
           </div>
         </div>
 
@@ -213,6 +213,10 @@
   let KE_PID    = {};
   let alerts    = [];
   let dynamic   = {};
+
+  if ( id == 'new' ) {
+    view.gauges = [{}, {}, {}];
+  }
 
   async function getConfigs() {
     const res = await fetch("/api/config", {
@@ -243,15 +247,18 @@
 
   let promise = getConfigs(); 
 
-  function handleSubmit(event) {
+  function handleSubmit() {
     fetch("/api/update", {
         method      : "POST",
         mode        : 'cors',
         credentials : 'same-origin',
-        body: JSON.stringify(view)
+        body: JSON.stringify(view, dynamic, alerts)
       })
       .then(d => d.json())
       .then(d => {
+        if ( id == 'new' && d.res ) {
+          navigate("/");
+        }
         actions = [d.message];
       });
   }
