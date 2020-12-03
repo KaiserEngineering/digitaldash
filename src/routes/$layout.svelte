@@ -5,12 +5,12 @@
 
   export let segment;
 
-  // if ( segment != 'login' && !$authenticated ) {
-  //   goto( '/login' );
-  // }
+  if ( !segment || ( segment != 'login' && !$authenticated )) {
+    goto( '/login' );
+  }
 </script>
 
-{#if segment != 'login'}
+{#if segment && segment != 'login'}
   <Nav segment={segment}/>
 {/if}
 <slot></slot>
