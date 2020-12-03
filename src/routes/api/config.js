@@ -17,8 +17,17 @@ export async function get() {
 
 // Use this to update config
 export async function post( request ) {
+  return new Promise(function(resolve, reject) {
+    const newConfig = request.body;
 
+    fs.writeFile('config.json', JSON.stringify( newConfig, null, 2 ), (err) => {
+      err ? reject( err ) :
+        configCache = JSON.parse( newConfig );
+        resolve({ body: {"ret": 1, message: "Config updated" }});
+    });
+  });
 }
+
 // Right now lets use this for toggling view
 export async function put( request ) {
   return new Promise(function(resolve, reject) {

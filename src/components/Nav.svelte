@@ -1,3 +1,7 @@
+<script>
+  export let segment;
+</script>
+
 <div class="nav-scroller py-1 mb-2">
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
@@ -7,7 +11,8 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav nav mr-auto mb-2 mb-md-0">
-          <slot></slot>
+          <li><a href="/">Home</a></li>
+          <li><a href="/settings">Settings</a></li>
         </ul>
       </div>
     </div>

@@ -1,43 +1,38 @@
+<script context="module">
+  export async function preload({ params, query }) {
+    const id = params.slug;
+
+    const response      = await this.fetch( '/api/config' );
+    const configuration = await response.json();
+
+    const res       = await this.fetch( '/api/constants' );
+    const constants = await res.json();
+
+    return { id: id, configuration: configuration, constants: constants };
+  }
+</script>
+
 <script>
-  import Notifications from '../components/Notifications.svelte';
+  import Notifications from '../../components/Notifications.svelte';
 
   export let id;
-  let actions   = [];
-  let view      = {};
-  let constants = {};
-  let pids      = [];
-  let KE_PID    = {};
-  let alerts    = [];
-  let dynamic   = {};
+  export let configuration;
+  export let constants;
 
-  async function getConfigs() {
-    const res = await fetch("./api/config", {
-        method : "get",
-      });
-      const data = await res.json();
-
-      if (res.ok) {
-        view      = data.views[id];
-        constants = data.constants;
-        KE_PID    = constants.KE_PID;
-        pids      = Object.keys( KE_PID );
-        alerts    = view.alerts;
-        dynamic   = view.dynamic;
-        view.id   = id;
-
-        return data.views[id];
-      } else {
-        throw new Error(data);
-      }
-    }
-    let promise = getConfigs();
+  let actions = [];
+  let view    = configuration ? configuration.views[id] : false;
+  let KE_PID  = constants.KE_PID;
+  let pids    = Object.keys( KE_PID );
+  let alerts  = view.alerts;
+  let dynamic = view.dynamic;
+  view.id     = id;
 
   function handleSubmit(event) {
-    fetch("./api/update", {
+    configuration.views[id] = view;
+
+    fetch("/api/config", {
         method      : "POST",
-        mode        : 'cors',
-        credentials : 'same-origin',
-        body: JSON.stringify(view)
+        body: JSON.stringify( configuration )
       })
       .then(d => d.json())
       .then(d => {
@@ -58,9 +53,7 @@
 
 <Notifications {actions} />
 
-{#await promise}
-  <p>...waiting</p>
-{:then}
+{#if view}
 <div id="edit-container" class="container">
   <div class="col-md-12 order-md-1">
     <h4 class="mb-3">Editing view #{id}</h4>
@@ -246,4 +239,4 @@
     </form>
   </div>
 </div>
-{/await}
+{/if}

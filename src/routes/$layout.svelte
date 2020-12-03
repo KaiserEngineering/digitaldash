@@ -1,6 +1,7 @@
 <script>
-  import { authenticated } from './stores';
+  import { authenticated } from "./stores";
   import { goto } from "$app/navigation";
+  import Nav from "../components/Nav.svelte";
 
   export let segment;
 
@@ -9,6 +10,9 @@
   // }
 </script>
 
+{#if segment != 'login'}
+<Nav segment={segment}/>
+{/if}
 <slot></slot>
 
 <style>

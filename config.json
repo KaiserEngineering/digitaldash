@@ -2,7 +2,7 @@
   "views": {
     "0": {
       "name": "First view",
-      "enabled": false,
+      "enabled": true,
       "default": 1,
       "background": "bg.jpg",
       "theme": "Stock",
@@ -49,7 +49,7 @@
     },
     "1": {
       "name": "Second view",
-      "enabled": true,
+      "enabled": false,
       "default": 0,
       "background": "banner1.jpg",
       "theme": "Glow",
