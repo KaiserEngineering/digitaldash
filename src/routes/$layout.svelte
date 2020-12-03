@@ -11,9 +11,10 @@
 </script>
 
 {#if segment != 'login'}
-<Nav segment={segment}/>
+  <Nav segment={segment}/>
 {/if}
 <slot></slot>
 
 <style>
+  
 </style>

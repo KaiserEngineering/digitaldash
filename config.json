@@ -2,9 +2,9 @@
   "views": {
     "0": {
       "name": "First view",
-      "enabled": true,
+      "enabled": 1,
       "default": 1,
-      "background": "bg.jpg",
+      "background": "BlackBackground.png",
       "theme": "Stock",
       "alerts": [
         {
@@ -13,46 +13,63 @@
           "value": 4000,
           "unit": "PID_UNITS_RPM",
           "priority": 1,
-          "message": "Danger to Manifold"
+          "message": "Hi"
+        },
+        {
+          "message": "Good dat",
+          "op": "=",
+          "priority": 1,
+          "unit": "123",
+          "value": "123",
+          "pid": "0x010C"
+        },
+        {
+          "message": "good day",
+          "op": "=",
+          "priority": 1,
+          "unit": "ROM",
+          "value": "123",
+          "pid": "0x010F"
         }
       ],
       "dynamic": {
         "pid": "0x010C",
         "op": "<",
         "priority": 1,
-        "value": 4000,
+        "value": "1111",
         "unit": "PID_UNITS_RPM"
       },
       "gauges": [
         {
-          "themeConfig": "120",
-          "pid": "0x010F",
-          "unit": "PID_UNITS_FAHRENHEIT",
           "module": "Radial",
-          "path": "/Stock/"
+          "themeConfig": "120",
+          "unit": "PID_UNITS_RPM",
+          "path": "Stock",
+          "pid": "0x010F"
         },
         {
-          "themeConfig": "120",
-          "pid": "0x016F",
-          "unit": "PID_UNITS_PSI",
           "module": "Radial",
-          "path": "/Stock/"
+          "themeConfig": "120",
+          "unit": "PID_UNITS_RPM",
+          "path": "Stock",
+          "pid": "0x016F"
         },
         {
-          "themeConfig": "120",
-          "pid": "0x015C",
-          "unit": "PID_UNITS_FAHRENHEIT",
           "module": "Radial",
-          "path": "/Stock/"
+          "themeConfig": "120",
+          "unit": "PID_UNITS_RPM",
+          "path": "Stock",
+          "pid": "0x015C"
         }
-      ]
+      ],
+      "id": "0"
     },
     "1": {
-      "name": "Second view",
-      "enabled": false,
+      "name": "Wooo",
+      "enabled": 1,
       "default": 0,
       "background": "banner1.jpg",
-      "theme": "Glow",
+      "theme": "Stock",
       "alerts": [],
       "dynamic": {
         "pid": "0x010C",
@@ -63,27 +80,28 @@
       },
       "gauges": [
         {
+          "module": "Radial",
           "themeConfig": "120",
-          "pid": "0x010C",
           "unit": "PID_UNITS_RPM",
-          "module": "Radial",
-          "path": "/Glow/"
+          "path": "Stock",
+          "pid": "0x010C"
         },
         {
-          "themeConfig": "120",
-          "pid": "0x010F",
-          "unit": "PID_UNITS_FAHRENHEIT",
           "module": "Radial",
-          "path": "/Glow/"
+          "themeConfig": "120",
+          "unit": "PID_UNITS_RPM",
+          "path": "Stock",
+          "pid": "0x010F"
         },
         {
-          "themeConfig": "120",
-          "pid": "0x010B",
-          "unit": "PID_UNITS_PSI",
           "module": "Radial",
-          "path": "/Glow/"
+          "themeConfig": "120",
+          "unit": "PID_UNITS_RPM",
+          "path": "Stock",
+          "pid": "0x010B"
         }
-      ]
+      ],
+      "id": "1"
     }
   }
 }

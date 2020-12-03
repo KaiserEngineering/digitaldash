@@ -23,11 +23,21 @@
   let view    = configuration ? configuration.views[id] : false;
   let KE_PID  = constants.KE_PID;
   let pids    = Object.keys( KE_PID );
-  let alerts  = view.alerts;
-  let dynamic = view.dynamic;
   view.id     = id;
 
   function handleSubmit(event) {
+    // Here we need to sanitize our input :/
+    let gauges = [];
+    view.gauges.forEach( pid => {
+      gauges.push({
+        "module"      : "Radial",
+        "themeConfig" : "120",
+        "unit"        : "PID_UNITS_RPM",
+        "path"        : view.theme,
+        "pid"         : pid.pid
+      });
+    });
+    view.gauges  = gauges;
     configuration.views[id] = view;
 
     fetch("/api/config", {
@@ -41,7 +51,7 @@
   }
 
   function addAlert() {
-    alerts = [...alerts, {
+    view.alerts = [...view.alerts, {
       "message" : "",
       "op"      : "",
       "priority": "",
@@ -130,17 +140,17 @@
       <div class="mt-3 col-12">
         <h4>Alerts</h4>
 
-        {#each alerts as alert}
+        {#each view.alerts as alert}
           <div class="mb-3 row">
             <div class="col-md-3 col-12">
               <label for="alertMessage">Message</label>
-              <input required value={alert.message} class="form-control" type="text" name="alertMessage"/>
+              <input required bind:value={alert.message} class="form-control" type="text" name="alertMessage"/>
             </div>
 
             <div class="col-md-auto col-12">
               <label for="alertPID">PID</label>
 
-              <select value={alert.pid} name="pid{id}" class="form-control custom-select" id="alertPID" required>
+              <select bind:value={alert.pid} name="pid{id}" class="form-control custom-select" id="alertPID" required>
                 <option value="">-</option>
                 {#each pids as pid}
                 <option value={pid}>
@@ -152,12 +162,12 @@
 
             <div class="col-md-3 col-12">
               <label for="alertValue">Value</label>
-              <input required value={alert.value} class="form-control" type="text" name="alertValue"/>
+              <input required bind:value={alert.value} class="form-control" type="text" name="alertValue"/>
             </div>
 
             <div class="col-md-auto col-12">
               <label for="alertOP">OP</label>
-              <select required value={alert.op} name="alertOP" class="form-control custom-select">
+              <select required bind:value={alert.op} name="alertOP" class="form-control custom-select">
                 <option value="">-</option>
                 {#each ['=', '>', '<', '>=', '<='] as op}
                 <option value={op}>
@@ -169,12 +179,12 @@
 
             <div class="col-md-auto col-12">
             <label for="alertPriority">Priority</label>
-            <input required value={alert.priority} class="form-control" type="number" name="alertPriority"/>
+            <input required bind:value={alert.priority} class="form-control" type="number" name="alertPriority"/>
             </div>
 
             <div class="col-md-auto col-12">
             <label for="alertUnit">Unit</label>
-            <input required value={alert.unit} class="form-control" type="text" name="alertUnit"/>
+            <input required bind:value={alert.unit} class="form-control" type="text" name="alertUnit"/>
             </div>
           </div>
 
@@ -196,7 +206,7 @@
         <div class="col-md-auto col-12">
           <label for="dynamicPID">PID</label>
 
-          <select value={dynamic.pid} name="pid{id}" class="form-control custom-select" id="dynamicPID" required>
+          <select bind:value={view.dynamic.pid} name="pid{id}" class="form-control custom-select" id="dynamicPID" required>
             <option value="">-</option>
             {#each pids as pid}
             <option value={pid}>
@@ -208,12 +218,12 @@
 
         <div class="col-md-auto col-12">
           <label for="dynamicValue">Value</label>
-          <input required value={dynamic.value} class="form-control" type="text" name="dynamicValue"/>
+          <input required bind:value={view.dynamic.value} class="form-control" type="text" name="dynamicValue"/>
         </div>
 
         <div class="col-md-auto col-12">
           <label for="dynamicOP">OP</label>
-          <select required value={dynamic.op} name="dynamicOP" class="form-control custom-select">
+          <select required bind:value={view.dynamic.op} name="dynamicOP" class="form-control custom-select">
             <option value="">-</option>
             {#each ['=', '>', '<', '>=', '<='] as op}
             <option value={op}>
@@ -225,12 +235,12 @@
 
         <div class="col-md-auto col-12">
           <label for="dynamicPriority">Priority</label>
-          <input required value={dynamic.priority} class="form-control" type="number" name="dynamicPriority"/>
+          <input required bind:value={view.dynamic.priority} class="form-control" type="number" name="dynamicPriority"/>
         </div>
 
         <div class="col-md-auto col-12">
           <label for="dynamicUnit">Unit</label>
-          <input required value={dynamic.unit} class="form-control" type="text" name="dynamicUnit"/>
+          <input required bind:value={view.dynamic.unit} class="form-control" type="text" name="dynamicUnit"/>
         </div>
       </div>
 
