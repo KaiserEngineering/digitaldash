@@ -1,5 +1,5 @@
 <script context="module">
-  export async function preload() {
+  export async function preload(page, session) {
     const response      = await this.fetch( '/api/config' );
     const configuration = await response.json();
     return { configuration };
@@ -10,7 +10,7 @@
 import Notifications from '../components/Notifications.svelte';
 export let configuration;
 
-let actions = [];
+export let actions = [];
 
 function ToggleEnabled( id ) {
   fetch("./api/config", {

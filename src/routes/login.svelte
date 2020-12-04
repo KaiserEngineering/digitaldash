@@ -1,7 +1,14 @@
+<script context="module">
+  export async function preload(page, session) {
+    return { session }
+  }
+</script>
+
 <script>
-  import Notifications from '../components/Notifications.svelte';
-  import { authenticated } from './stores.js';
   import { goto } from "$app/navigation";
+
+  export let session;
+  export let actions = [];
 
   export let actions = [];
 
@@ -27,8 +34,6 @@
       });
   }
 </script>
-
-<Notifications actions={actions} />
 
 <form on:submit|preventDefault="{handleSubmit}" class="form-signin">
   <div class="text-center container">

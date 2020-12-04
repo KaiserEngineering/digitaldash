@@ -1,20 +1,28 @@
-<script>
-  import { authenticated } from "./stores";
-  import { goto } from "$app/navigation";
-  import Nav from "../components/Nav.svelte";
+<script context="module">
+  export async function preload(page, session) {
+    const { user } = session;
 
-  export let segment;
-
-  if ( !segment || ( segment != 'login' && !$authenticated )) {
-    goto( '/login' );
+    if (!user && page.path != '/login' ) {
+      return this.redirect(302, 'login');
+    }
   }
 </script>
 
-{#if segment && segment != 'login'}
+<script>
+  import Nav from "../components/Nav.svelte";
+  import Notifications from '../components/Notifications.svelte';
+
+  export let segment;
+  let actions = [];
+</script>
+
+{#if !segment || segment != 'login'}
   <Nav segment={segment}/>
 {/if}
-<slot></slot>
+
+<Notifications actions={actions} />
+
+<slot actions={actions}></slot>
 
 <style>
-  
 </style>

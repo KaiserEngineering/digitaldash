@@ -2,7 +2,7 @@
   "views": {
     "0": {
       "name": "First view",
-      "enabled": 1,
+      "enabled": false,
       "default": 1,
       "background": "BlackBackground.png",
       "theme": "Stock",

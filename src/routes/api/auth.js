@@ -36,7 +36,6 @@ export async function put( request ) {
   return new Promise(function(resolve, reject){
     let args = JSON.parse( request.body );
     let temp = { Username: args.username, Password: args.password };
-    console.log(temp)
 
     fs.writeFile('auth.json', JSON.stringify( temp, null, 2 ), (err) => {
       err ? reject( err ) :

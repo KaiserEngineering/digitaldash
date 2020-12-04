@@ -1,4 +1,22 @@
-<Notifications {actions} />
+<script>
+  export let actions = [];
+
+  let username;
+  let password;
+
+  function handleSubmit(event) {
+    fetch("/api/settings", {
+        method      : "POST",
+        body: JSON.stringify({
+          username: username,
+          password: password
+        })
+      })
+      .then(d => d.json())
+      .then(d => (actions = [d.message] ));
+  }
+</script>
+
 
 <form on:submit|preventDefault="{handleSubmit}">
   <div class="p-4 col-md-12 order-md-1">
@@ -23,24 +41,3 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit">Update settings</button>
   </div>
 </form>
-
-<script>
-  import Notifications from '../components/Notifications.svelte';
-
-  export let actions = [];
-
-  let username;
-  let password;
-
-  function handleSubmit(event) {
-    fetch("/api/settings", {
-        method      : "POST",
-        body: JSON.stringify({
-          username: username,
-          password: password
-        })
-      })
-      .then(d => d.json())
-      .then(d => (actions = [d.message] ));
-  }
-</script>
