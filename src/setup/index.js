@@ -1,12 +1,16 @@
-// Set default session headers here
+import * as cookie from 'cookie';
+import { get_user } from './db.js';
+
 export async function prepare( headers ) {
+  let cookies;
+  if ( headers.cookie ) {
+    cookies = cookie.parse( headers.cookie );
+  }
+
   return {
     context: {
+      user: headers.cookie ? await get_user( cookies['ke_web_app'] ) : undefined
     },
-    // These headers are for non-logged users
-    headers: {
-      KE_WEBAPP : "Hello, World!"
-    }
   }
 }
 
@@ -16,7 +20,7 @@ export async function prepare( headers ) {
 export function getSession( context ) {
   return {
     user: context.user && {
-      username: context.user.username
+      username: context.user.Username
     }
   }
 }

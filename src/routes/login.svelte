@@ -1,13 +1,6 @@
-<script context="module">
-  export async function preload(page, session) {
-    return { session }
-  }
-</script>
-
 <script>
   import { goto } from "$app/navigation";
 
-  export let session;
   export let actions = [];
 
   export let actions = [];
@@ -21,13 +14,14 @@
         mode        : 'cors',
         credentials : 'same-origin',
         body: JSON.stringify({
-          username: username,
-          password: password
-        })
+          Username: username,
+          Password: password
+        }),
       })
       .then(d => d.json())
       .then(d => {
         if ( d.ret ) {
+          $session  = d;
           goto( '/' );
         }
         actions = [d.message];

@@ -1,6 +1,6 @@
 import * as layout from "/_app/routes/$layout.svelte";
 export { layout };
-export { default as ErrorComponent } from "/_app/assets/components/error.svelte";
+export { default as ErrorComponent } from "/_app/routes/$error.svelte";
 
 export const components = [
 	() => import("/_app/routes/index.svelte"),

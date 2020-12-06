@@ -8,25 +8,42 @@ export async function get() {
     }
     else {
       fs.readFile('auth.json', 'utf8', function(err, jsonString) {
-        credentialsCache = JSON.parse( jsonString );
+        credentialsCache = JSON.parse( jsonString ).User;
         err ? reject( err ) : resolve({ body: credentialsCache});
       });
     }
   });
 }
 
+// Do our login
 export async function post( request ) {
   return new Promise(function(resolve, reject){
     fs.readFile('auth.json', 'utf8', function(err, jsonString) {
-      let credentials = JSON.parse( jsonString );
+      let credentials = JSON.parse( jsonString ).User;
       let attempt     = JSON.parse( request.body );
-      let msg = "Login failed", ret = 0;
 
-      if ( credentials.Username == attempt.username && credentials.Password == attempt.password ) {
-        ret = 1;
-        msg = "Success";
+      let res = {
+        "msg"      : "Login failed",
+        "ret"      : 0,
+        "username" : ""
+      };
+
+      let headers = {};
+      if ( credentials.Username == attempt.Username && credentials.Password == attempt.Password ) {
+        res.ret      = 1;
+        res.msg      = "Success";
+        res.username = attempt.Username;
+
+        headers = {
+          'Set-Cookie' : "ke_web_app="+res.username+"; Path=/; SameSite=Strict; Expires='';"
+        };
+        updateSession( credentials );
       }
-      err ? reject( err ) : resolve({ body: { "message": msg, "ret": ret }});
+
+      err ? reject( err ) : resolve({
+        headers : headers,
+        body    : res
+      });
     });
   });
 }
@@ -35,7 +52,7 @@ export async function post( request ) {
 export async function put( request ) {
   return new Promise(function(resolve, reject){
     let args = JSON.parse( request.body );
-    let temp = { Username: args.username, Password: args.password };
+    let temp = { Session: { ...args.Session }, User: { Username: args.username, Password: args.password }};
 
     fs.writeFile('auth.json', JSON.stringify( temp, null, 2 ), (err) => {
       err ? reject( err ) :
@@ -43,5 +60,21 @@ export async function put( request ) {
 
       resolve({ body: { ret: 1, message: "Login updated" } });
     });
+  });
+}
+
+function updateSession ( credentials ) {
+  let content = {
+    User: {
+      "Username": credentials.Username,
+      "Password": credentials.Password,
+    },
+    "Session" : {
+      "token" : credentials.Username
+    }
+  };
+
+  fs.writeFile('auth.json', JSON.stringify( content, null, 2 ), (err) => {
+    if ( err ) { console.error( err ); }
   });
 }
