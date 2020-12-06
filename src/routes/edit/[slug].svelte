@@ -33,7 +33,7 @@
         "module"      : "Radial",
         "themeConfig" : "120",
         "unit"        : "PID_UNITS_RPM",
-        "path"        : view.theme,
+        "path"        : "/"+view.theme+"/",
         "pid"         : pid.pid
       });
     });
