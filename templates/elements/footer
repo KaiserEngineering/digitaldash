@@ -1,7 +1,0 @@
-<footer class="footer w-100 mt-auto py-3">
-  <div class="container text-center">
-    <span class="text-muted">KaiserEngineerign &copy; 2020-2020</span>
-  </div>
-</footer>
-
-<script src="js/bootstrap.min.js"></script>
