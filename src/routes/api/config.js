@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+const config_path = process.env.KEGUIHome
+
 let configCache;
 export async function get() {
   return new Promise(function(resolve, reject){
@@ -7,7 +9,7 @@ export async function get() {
       resolve({ body: configCache });
     }
     else {
-      fs.readFile('config.json', 'utf8', function(err, jsonString) {
+      fs.readFile( `${config_path}/etc/config.json`, 'utf8', function(err, jsonString) {
         configCache = JSON.parse( jsonString );
         err ? reject( err ) : resolve({ body: configCache });
       });
@@ -20,7 +22,7 @@ export async function post( request ) {
   return new Promise(function(resolve, reject) {
     const newConfig = JSON.parse( request.body );
 
-    fs.writeFile('config.json', JSON.stringify( newConfig, null, 2 ), (err) => {
+    fs.writeFile( `${config_path}/etc/config.json`, JSON.stringify( newConfig, null, 2 ), (err) => {
       err ? reject( err ) :
         configCache = newConfig;
         resolve({ body: {"ret": 1, message: "Config updated" }});
@@ -36,7 +38,7 @@ export async function put( request ) {
     let temp = configCache;
     temp.views[id].enabled = !temp.views[id].enabled;
 
-    fs.writeFile('config.json', JSON.stringify( temp, null, 2 ), (err) => {
+    fs.writeFile( `${config_path}/etc/config.json`, JSON.stringify( temp, null, 2 ), (err) => {
       err ? reject( err ) :
         configCache = temp;
         resolve({ body: {"views": configCache, message: "Config updated" }});
