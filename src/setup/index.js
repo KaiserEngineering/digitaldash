@@ -21,6 +21,7 @@ export function getSession( context ) {
   return {
     user: context.user && {
       username: context.user.Username
-    }
+    },
+    actions: []
   }
 }

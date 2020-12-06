@@ -13,16 +13,18 @@
   import Notifications from '../components/Notifications.svelte';
 
   export let segment;
-  let actions = [];
 </script>
 
-{#if !segment || segment != 'login'}
-  <Nav segment={segment}/>
-{/if}
+<div>
+  {#if !segment || segment != 'login'}
+    <Nav segment={segment}/>
+  {/if}
 
-<Notifications actions={actions} />
+  <Notifications />
 
-<slot actions={actions}></slot>
+  <slot></slot>
+</div>
 
 <style>
+
 </style>

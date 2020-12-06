@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
   import { session } from "$app/stores";
 
-  export let actions = [];
+  export let actions;
 
   let username;
   let password;
@@ -23,7 +23,7 @@
           $session  = d;
           goto( '/' );
         }
-        actions = [d.message];
+        $session.actions = [ d.message, ...$session.actions ];
       });
   }
 </script>

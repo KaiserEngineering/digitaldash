@@ -1,13 +1,23 @@
-{#if actions.length}
+{#if $session.actions && $session.actions.length}
   <div class="notifications alert alert-info" role="alert">
-    {#each actions as action}
-    {action}
+    {#each $session.actions as action, i}
+      {action}
+      <button type="button" on:click="{() => remove(i)}" class="close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     {/each}
   </div>
 {/if}
 
 <script>
-  export let actions;
+  import { session } from "$app/stores";
+
+  function remove( index ) {
+    let temp = $session.actions || [];
+    temp.splice( index, 1 );
+
+    $session.actions = temp;
+  }
 </script>
 
 <style>

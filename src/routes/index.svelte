@@ -7,27 +7,24 @@
 </script>
 
 <script>
-import Notifications from '../components/Notifications.svelte';
-export let configuration;
+  import { session } from "$app/stores";
+  import Notifications from '../components/Notifications.svelte';
+  export let configuration;
 
-export let actions = [];
-
-function ToggleEnabled( id ) {
-  fetch("./api/config", {
-      method : "PUT",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body   : JSON.stringify({id: id})
-  }).then(d => d.json())
-  .then(d => {
-    configuration = d.views;
-    actions = [d.message];
-  });
-}
+  function ToggleEnabled( id ) {
+    fetch("./api/config", {
+        method : "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body   : JSON.stringify({id: id})
+    }).then(d => d.json())
+    .then(d => {
+      configuration    = d.views;
+      $session.actions = [ d.message, ...$session.actions ];
+    });
+  }
 </script>
-
-<Notifications {actions} />
 
 {#if configuration}
   {#each Object.keys(configuration.views) as id }
