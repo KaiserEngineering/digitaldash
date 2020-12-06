@@ -1,7 +1,6 @@
 <script>
   import { goto } from "$app/navigation";
-
-  export let actions = [];
+  import { session } from "$app/stores";
 
   export let actions = [];
 
@@ -9,7 +8,7 @@
   let password;
 
   function handleSubmit(event) {
-    fetch("/api/authenticate", {
+    fetch("/api/auth", {
         method      : "POST",
         mode        : 'cors',
         credentials : 'same-origin',

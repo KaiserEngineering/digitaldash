@@ -23,7 +23,7 @@ export async function post( request ) {
       let attempt     = JSON.parse( request.body );
 
       let res = {
-        "msg"      : "Login failed",
+        "message"  : "Login failed",
         "ret"      : 0,
         "username" : ""
       };
@@ -31,7 +31,7 @@ export async function post( request ) {
       let headers = {};
       if ( credentials.Username == attempt.Username && credentials.Password == attempt.Password ) {
         res.ret      = 1;
-        res.msg      = "Success";
+        res.message  = "Success";
         res.username = attempt.Username;
 
         headers = {
