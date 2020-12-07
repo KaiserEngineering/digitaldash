@@ -6,7 +6,8 @@ export async function get_user( sid ) {
       authObj = JSON.parse( jsonString );
 
       if ( !authObj || !authObj.Session ) {
-        reject( "No session found on file." );
+        console.log( "No session found on file." );
+        resolve( undefined );
       }
       else {
         err ? reject( err ) :

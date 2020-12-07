@@ -2,8 +2,8 @@
   export async function preload(page, session) {
     const { user } = session;
 
-    if (!user && page.path != '/login' ) {
-      return this.redirect(302, 'login');
+    if ( !user && page.path != '/login' ) {
+      return this.redirect( 302, `http://${page.host}/login` );
     }
   }
 </script>

@@ -19,7 +19,7 @@ export async function prepare( headers ) {
 // safe session object for the client.
 export function getSession( context ) {
   return {
-    user: context.user && {
+    user: context.user && context.user && {
       username: context.user.Username
     },
     actions: []
