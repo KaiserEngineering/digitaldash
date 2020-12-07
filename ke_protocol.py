@@ -76,14 +76,14 @@ class Serial():
             Logger.info("GUI: >> ACK RX'd" + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
-            if( cpu.temperature > 70 ):
-                self.fan_speed = 0x03
-            elif( cpu.temperature > 60 ):
-                self.fan_speed = 0x02
-            elif( cpu.temperature > 50 ):
-                self.fan_speed = 0x01
-            elif( cpu.temperature < 35 ):
-                self.fan_speed = 0x00
+            if( cpu.temperature > 80 ):
+                self.fan_speed = 0x03    # Request max fan speed
+            elif( cpu.temperature > 76 ):
+                self.fan_speed = 0x02    # Request med fan speed
+            elif( cpu.temperature > 72 ):
+                self.fan_speed = 0x01    # Request min fan speed
+            elif( cpu.temperature < 60 ):
+                self.fan_speed = 0x00    # Turn off the fan 
 
             positive_ack = [UART_SOL, 0x04, KE_CP_OP_CODES['KE_ACK'], self.fan_speed ]
             self.ser.write(positive_ack)
