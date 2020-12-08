@@ -13,6 +13,7 @@
 </script>
 
 <script>
+  import { session } from "$app/stores";
   import Notifications from '../../components/Notifications.svelte';
 
   export let id;
@@ -46,7 +47,7 @@
       })
       .then(d => d.json())
       .then(d => {
-        actions = [d.message];
+        $session.actions = [ d.message, ...$session.actions ];
       });
   }
 
