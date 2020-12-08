@@ -16,6 +16,8 @@
   export let configuration;
   export let constants;
 
+  let KE_PIDS = constants.KE_PID;
+
   function ToggleEnabled( id ) {
     fetch("./api/config", {
         method : "PUT",
@@ -34,22 +36,42 @@
 {#if configuration}
   {#each Object.keys(configuration.views) as id }
     <div class="container col-sm-10 col-md-6 pr-4 pl-4">
-      <a href="/edit/{id}">
-        <h5>{configuration.views[id].name}</h5>
-        <div class="card transparent img-fluid">
-          <img class="card-img-top" src="images/{configuration.views[id].background}" alt="view background">
 
-          <div class="card-img-overlay">
-            <img src="images/{configuration.views[id].theme}.png" class="card-img-top" alt="...">
+      <div class="row m-2">
+        <div class="text-left col-6">
+          <h5>{configuration.views[id].name}</h5>
+        </div>
+        <div class="text-right col-6">
+          <label class="switch">
+            <input on:change="{ToggleEnabled(id)}" type="checkbox" checked={configuration.views[id].enabled ? "checked" : ''}>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+
+      <a href="/edit/{id}">
+
+        <div class="card transparent">
+          <img class="card-img-top" src="images/Background/{configuration.views[id].background}" alt="view background">
+
+          <div class="row card-img-overlay">
+
+            <div class="col-6 text-left">
+              <img class="image-overlay" src="images/{configuration.views[id].theme}/needle.png" alt="view needle">
+              <img class="image-overlay" src="images/{configuration.views[id].theme}/gauge.png" alt="view gauge">
+            </div>
+
+            <div class="col-6 d-flex flex-column justify-content-center">
+              {#each configuration.views[id].gauges as gauge}
+              <div class="text-center">
+                <p class="pid">{KE_PIDS[ gauge.pid ].shortName ? KE_PIDS[ gauge.pid ].shortName : KE_PIDS[ gauge.pid ].name }</p>
+              </div>
+              {/each}
+            </div>
+
           </div>
         </div>
       </a>
-      <div class="card-body text0-center">
-        <label class="switch">
-          <input on:change="{ToggleEnabled(id)}" type="checkbox" checked={configuration.views[id].enabled ? "checked" : ''}>
-          <span class="slider round"></span>
-        </label>
-      </div>
     </div>
   {/each}
 {/if}
@@ -106,11 +128,11 @@
   }
 
   input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #FF4D4D;
   }
 
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #FF4D4D;
   }
 
   input:checked + .slider:before {
@@ -126,5 +148,24 @@
 
   .slider.round:before {
     border-radius: 50%;
+  }
+
+  .pid {
+    background-color: #FF4D4D;
+    border-radius: 0.5em;
+    padding: 2px;
+    color: white;
+    font-size:calc(100% + 1.1vw);
+  }
+
+  .image-overlay {
+    width: 50%;
+    position: absolute;
+    top: 25%;
+    right: 0;
+    bottom: 25%;
+    left: 0;
+    padding: 1rem;
+    border-radius: calc(.25rem - 1px);
   }
 </style>
