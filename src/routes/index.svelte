@@ -2,7 +2,11 @@
   export async function preload(page, session) {
     const response      = await this.fetch( '/api/config' );
     const configuration = await response.json();
-    return { configuration };
+
+    const res       = await this.fetch( '/api/constants' );
+    const constants = await res.json();
+
+    return { configuration: configuration, constants: constants };
   }
 </script>
 
@@ -10,6 +14,7 @@
   import { session } from "$app/stores";
   import Notifications from '../components/Notifications.svelte';
   export let configuration;
+  export let constants;
 
   function ToggleEnabled( id ) {
     fetch("./api/config", {
