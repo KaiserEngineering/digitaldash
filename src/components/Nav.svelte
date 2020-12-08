@@ -12,8 +12,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav nav mr-auto mb-2 mb-md-0">
-            <li><a href="/">Home</a></li>
-            <li><a href="/settings">Settings</a></li>
+            <li class="nav-item">
+              <a class:active="{!segment}" class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class:active="{segment === 'settings'}" class="nav-link" href="settings">Settings</a>
+            </li>
           </ul>
         </div>
       </div>
