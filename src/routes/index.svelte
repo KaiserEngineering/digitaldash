@@ -48,3 +48,10 @@
     </div>
   {/each}
 {/if}
+
+<style>
+  a {
+    text-decoration: inherit;
+    color: inherit;
+  }
+</style>
