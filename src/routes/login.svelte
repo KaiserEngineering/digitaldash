@@ -20,10 +20,13 @@
       .then(d => d.json())
       .then(d => {
         if ( d.ret ) {
-          $session  = d;
+          $session.User  = d.user;
           goto( '/' );
         }
-        $session.actions = [ d.message, ...$session.actions ];
+        // Only add notification for failed login
+        else {
+          $session.actions = [ d.message, ...$session.actions ];
+        }
       });
   }
 </script>

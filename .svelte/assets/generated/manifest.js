@@ -4,6 +4,7 @@ export { default as ErrorComponent } from "/_app/assets/components/error.svelte"
 
 export const components = [
 	() => import("/_app/routes/index.svelte"),
+	() => import("/_app/routes/advanced.svelte"),
 	() => import("/_app/routes/settings.svelte"),
 	() => import("/_app/routes/login.svelte"),
 	() => import("/_app/routes/edit/[slug].svelte")
@@ -19,10 +20,18 @@ export const routes = (d => [
 	},
 
 	{
+		// advanced.svelte
+		pattern: /^\/advanced\/?$/,
+		parts: [
+			{ i: 1 }
+		]
+	},
+
+	{
 		// settings.svelte
 		pattern: /^\/settings\/?$/,
 		parts: [
-			{ i: 1 }
+			{ i: 2 }
 		]
 	},
 
@@ -30,7 +39,7 @@ export const routes = (d => [
 		// login.svelte
 		pattern: /^\/login\/?$/,
 		parts: [
-			{ i: 2 }
+			{ i: 3 }
 		]
 	},
 
@@ -39,7 +48,7 @@ export const routes = (d => [
 		pattern: /^\/edit\/([^/]+?)\/?$/,
 		parts: [
 			null,
-			{ i: 3, params: match => ({ slug: d(match[1]) }) }
+			{ i: 4, params: match => ({ slug: d(match[1]) }) }
 		]
 	}
 ])(decodeURIComponent);

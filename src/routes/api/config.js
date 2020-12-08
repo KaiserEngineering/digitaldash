@@ -1,18 +1,22 @@
-import fs from 'fs';
+import fs, { readFileSync, readSync } from 'fs';
 
 const config_path = process.env.KEGUIHome
 
 let configCache;
+
+// Need to add some kind of error handling here
+function readConfig() {
+  return JSON.parse( fs.readFileSync( `${config_path}/etc/config.json`, 'utf8' ) );
+}
+
 export async function get() {
-  return new Promise(function(resolve, reject){
+  return new Promise(function(resolve, reject) {
     if ( configCache ) {
       resolve({ body: configCache });
     }
     else {
-      fs.readFile( `${config_path}/etc/config.json`, 'utf8', function(err, jsonString) {
-        configCache = JSON.parse( jsonString );
-        err ? reject( err ) : resolve({ body: configCache });
-      });
+      configCache = readConfig();
+      resolve({ body: configCache });
     }
   });
 }
@@ -24,7 +28,7 @@ export async function post( request ) {
 
     fs.writeFile( `${config_path}/etc/config.json`, JSON.stringify( newConfig, null, 2 ), (err) => {
       err ? reject( err ) :
-        configCache = newConfig;
+        configCache = readConfig();
         resolve({ body: {"ret": 1, message: "Config updated" }});
     });
   });
@@ -40,7 +44,7 @@ export async function put( request ) {
 
     fs.writeFile( `${config_path}/etc/config.json`, JSON.stringify( temp, null, 2 ), (err) => {
       err ? reject( err ) :
-        configCache = temp;
+        configCache = readConfig();
         resolve({ body: {"views": configCache, message: "Config updated" }});
     });
   });

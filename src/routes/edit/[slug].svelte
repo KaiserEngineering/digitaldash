@@ -42,8 +42,8 @@
     configuration.views[id] = view;
 
     fetch("/api/config", {
-        method      : "POST",
-        body: JSON.stringify( configuration )
+        method : "POST",
+        body   : JSON.stringify( configuration )
       })
       .then(d => d.json())
       .then(d => {
