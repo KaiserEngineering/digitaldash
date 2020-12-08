@@ -57,8 +57,8 @@
           <div class="row card-img-overlay">
 
             <div class="col-6 text-left">
-              <img class="image-overlay" src="images/{configuration.views[id].theme}/needle.png" alt="view needle">
-              <img class="image-overlay" src="images/{configuration.views[id].theme}/gauge.png" alt="view gauge">
+              <img class="image-overlay" src="images/{configuration.views[id].theme}/needle.png">
+              <img class="image-overlay" src="images/{configuration.views[id].theme}/gauge.png">
             </div>
 
             <div class="col-6 d-flex flex-column justify-content-center">
@@ -77,10 +77,6 @@
 {/if}
 
 <style>
-  a {
-    text-decoration: inherit;
-    color: inherit;
-  }
   img {
     border-radius: 25px;
   }
