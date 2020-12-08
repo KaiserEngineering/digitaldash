@@ -16,5 +16,8 @@ export async function get() {
         }
       });
     }
+    else {
+      resolve({ body: constantsCache });
+    }
   });
 }
