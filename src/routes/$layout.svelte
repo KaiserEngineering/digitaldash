@@ -15,12 +15,10 @@
   export let segment;
 </script>
 
-<div>
-  {#if !segment || segment != 'login'}
-    <Nav segment={segment}/>
-  {/if}
+{#if !segment || segment != 'login'}
+  <Nav segment={segment}/>
+{/if}
 
-  <Notifications />
+<Notifications />
 
-  <slot></slot>
-</div>
+<slot></slot>
