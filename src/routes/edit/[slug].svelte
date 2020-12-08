@@ -61,7 +61,7 @@
   }
 </script>
 
-<div class="col-sm-12 col-md-6">
+<div class="col-sm-12 col-md-6 pb-4">
   {#if view}
   <div id="edit-container" class="container">
     <div class="col-md-12 order-md-1">
