@@ -14,7 +14,6 @@
 
 <script>
   import { session } from "$app/stores";
-  import Notifications from '../../components/Notifications.svelte';
 
   export let id;
   export let configuration;

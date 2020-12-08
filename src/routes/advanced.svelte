@@ -24,7 +24,7 @@
 
 <div class="advanced">
   <textarea>
-
+    {configuration}
   </textarea>
   <button type="submit" on:click="{submit}">Save</button>
 </div>
