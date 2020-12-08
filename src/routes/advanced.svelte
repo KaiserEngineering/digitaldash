@@ -8,30 +8,50 @@
 </script>
 
 <script>
+  import { session } from "$app/stores";
   export let configuration;
+
+  let configString = JSON.stringify( configuration, null, 2 );
 
   function submit() {
     fetch("/api/config", {
         method : "POST",
-        body   : JSON.stringify( configuration )
+        body   : configString
       })
       .then(d => d.json())
       .then(d => {
         $session.actions = [ d.message, ...$session.actions ];
       });
   }
+
+  let invalid = false;
+  $: {
+    try {
+        JSON.parse( configString );
+        invalid = false;
+    }
+    catch ( e ) {
+      console.log('here')
+        invalid = true;
+    }
+  }
 </script>
 
-<div class="advanced">
-  <textarea>
-    {configuration}
-  </textarea>
-  <button type="submit" on:click="{submit}">Save</button>
-</div>
+<div class="col-12 pr-4 pl-4 advanced">
 
+  {#if invalid}
+    <div class="alert alert-danger">
+      Invalid JSON
+    </div>
+  {/if}
+
+  <textarea class="form-control" bind:value="{configString}"></textarea>
+  <button disabled={invalid} class="mt-2 form-control" type="submit" on:click="{submit}">Save</button>
+</div>
 
 <style>
   textarea {
-
+    width: 100%;
+    height: 500px;
   }
 </style>
