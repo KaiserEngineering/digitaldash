@@ -1,12 +1,12 @@
 {#if $session.actions && $session.actions.length}
-  <div class="notifications alert alert-info" role="alert">
-    {#each $session.actions as action, i}
+  {#each $session.actions as action, i}
+    <div class="text-center float-center notification alert alert-info" role="alert">
       {action}
-      <button type="button" on:click="{() => remove(i)}" class="close">
+      <button type="button" on:click="{() => remove(i)}" class="float-right close">
         <span aria-hidden="true">&times;</span>
       </button>
-    {/each}
-  </div>
+    </div>
+  {/each}
 {/if}
 
 <script>
@@ -21,10 +21,8 @@
 </script>
 
 <style>
-  .notifications {
+  .notification {
     width: 80%;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto
+    left: 10%;
   }
 </style>
