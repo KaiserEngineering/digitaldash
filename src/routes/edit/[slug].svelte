@@ -61,8 +61,6 @@
   }
 </script>
 
-<Notifications {actions} />
-
 {#if view}
 <div id="edit-container" class="container">
   <div class="col-md-12 order-md-1">
