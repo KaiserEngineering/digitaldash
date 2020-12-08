@@ -19,6 +19,8 @@
   <Nav segment={segment}/>
 {/if}
 
-<Notifications />
+<div class="col-sm-12 col-md-6">
+  <Notifications />
+</div>
 
 <slot></slot>

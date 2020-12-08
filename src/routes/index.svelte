@@ -31,7 +31,7 @@
     <div class="container col-sm-10 col-md-6 pr-4 pl-4">
       <a href="/edit/{id}">
         <h5>{configuration.views[id].name}</h5>
-        <div class="card img-fluid">
+        <div class="card transparent img-fluid">
           <img class="card-img-top" src="images/{configuration.views[id].background}" alt="view background">
 
           <div class="card-img-overlay">
@@ -53,5 +53,73 @@
   a {
     text-decoration: inherit;
     color: inherit;
+  }
+  img {
+    border-radius: 25px;
+  }
+  .transparent {
+    border: transparent;
+    background-color: transparent;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
   }
 </style>
