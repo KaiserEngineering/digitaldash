@@ -1,7 +1,10 @@
 <div class="notifications" id="notifications">
   {#if $session.actions && $session.actions.length}
     {#each $session.actions as action, i}
-      <div class="text-center notification alert alert-info" role="alert">
+      <div
+        class="text-center notification alert alert-info"
+        role="alert"
+      >
         {action}
         <button type="button" on:click="{() => remove(i)}" class="float-right close">
           <span aria-hidden="true">&times;</span>
@@ -14,11 +17,22 @@
 <script>
   import { session } from "$app/stores";
 
-  function remove( index ) {
-    let temp = $session.actions || [];
-    temp.splice( index, 1 );
+  $: {
+    if ( $session.actions.length > 3 ) {
+      $session.actions.shift();
+    }
+  }
 
-    $session.actions = temp;
+  function remove( index ) {
+    if ( index !== 'undefined' ) {
+      let temp = $session.actions || [];
+      temp.splice( index, 1 );
+
+      $session.actions = temp;
+    }
+    else {
+      $session.actions = $session.actions.shift();
+    }
   }
 </script>
 
