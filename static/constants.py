@@ -66,19 +66,19 @@ KE_PID = {
     },
     "0x015C": {
         'name': 'ENGINE_OIL_TEMPERATURE', 'shortName' : 'Oil Temp', 'decimals' : '0',
-        'uints' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : 0, 'Max' : 150
+        'units' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : 0, 'Max' : 150
     },
     "0x016F": {
         'name': 'TURBO_INLET_PRESSURE', 'shortName' : 'Boost', 'decimals' : '0',
-        'uints' : PID_UNITS['PID_UNITS_KPA'], 'Min' : 0, 'Max' : 210
+        'units' : PID_UNITS['PID_UNITS_KPA'], 'Min' : 0, 'Max' : 210
     },
     "0x220461": {
         'name': 'CHARGE_AIR_TEMP', 'shortName' : 'CAT', 'decimals' : '1',
-        'uints' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : -40, 'Max' : 300
+        'units' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : -40, 'Max' : 300
     },
     "0x22F40F": {
         'name': 'INTAKE_AIR_TEMP', 'shortName' : 'IAT', 'decimals' : '1',
-        'uints' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : -40, 'Max' : 300
+        'units' : PID_UNITS['PID_UNITS_CELCIUS'], 'Min' : -40, 'Max' : 300
     },
 }
 
