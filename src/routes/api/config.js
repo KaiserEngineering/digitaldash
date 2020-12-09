@@ -29,7 +29,7 @@ export async function post( request ) {
     fs.writeFile( `${config_path}/etc/config.json`, JSON.stringify( newConfig, null, 2 ), (err) => {
       err ? reject( err ) :
         configCache = readConfig();
-        resolve({ body: {"ret": 1, message: "Config updated" }});
+        resolve({ body: {"ret": 1, message: "Config updated", config: configCache }});
     });
   });
 }

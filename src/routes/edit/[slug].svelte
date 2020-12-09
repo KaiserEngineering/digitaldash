@@ -1,14 +1,7 @@
 <script context="module">
   export async function preload({ params, query }) {
     const id = params.slug;
-
-    const response      = await this.fetch( '/api/config' );
-    const configuration = await response.json();
-
-    const res       = await this.fetch( '/api/constants' );
-    const constants = await res.json();
-
-    return { id: id, configuration: configuration, constants: constants };
+    return { id: params.slug };
   }
 </script>
 
@@ -16,12 +9,11 @@
   import { session } from "$app/stores";
 
   export let id;
-  export let configuration;
-  export let constants;
+  let configuration = $session.configuration;
 
   let actions = [];
-  let view    = configuration ? configuration.views[id] : false;
-  let KE_PID  = constants.KE_PID;
+  let view    = configuration.views[id];
+  let KE_PID  = $session.constants.KE_PID;
   let pids    = Object.keys( KE_PID );
   view.id     = id;
 
@@ -46,7 +38,8 @@
       })
       .then(d => d.json())
       .then(d => {
-        $session.actions = [ d.message, ...$session.actions ];
+        $session.configuration = d.config;
+        $session.actions       = [ d.message, ...$session.actions ];
       });
   }
 

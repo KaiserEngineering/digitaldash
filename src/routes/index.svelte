@@ -1,21 +1,7 @@
-<script context="module">
-  export async function preload(page, session) {
-    const response      = await this.fetch( '/api/config' );
-    const configuration = await response.json();
-
-    const res       = await this.fetch( '/api/constants' );
-    const constants = await res.json();
-
-    return { configuration: configuration, constants: constants };
-  }
-</script>
-
 <script>
   import { session } from "$app/stores";
-  export let configuration;
-  export let constants;
 
-  let KE_PIDS = constants.KE_PID;
+  let KE_PIDS = $session.constants.KE_PID;
 
   function ToggleEnabled( id ) {
     fetch("./api/config", {
@@ -26,23 +12,23 @@
         body   : JSON.stringify({id: id})
     }).then(d => d.json())
     .then(d => {
-      configuration    = d.views;
-      $session.actions = [ d.message, ...$session.actions ];
+      $session.configuration = d.views;
+      $session.actions       = [ d.message, ...$session.actions ];
     });
   }
 </script>
 
-{#if configuration}
-  {#each Object.keys(configuration.views) as id }
+{#if $session.configuration}
+  {#each Object.keys($session.configuration.views) as id }
     <div class="container col-sm-10 col-md-6 pr-4 pl-4">
 
       <div class="row m-2">
         <div class="text-left col-6">
-          <h5>{configuration.views[id].name}</h5>
+          <h5>{$session.configuration.views[id].name}</h5>
         </div>
         <div class="text-right col-6">
           <label class="switch">
-            <input on:change="{ToggleEnabled(id)}" type="checkbox" checked={configuration.views[id].enabled ? "checked" : ''}>
+            <input on:change="{ToggleEnabled(id)}" type="checkbox" checked={$session.configuration.views[id].enabled ? "checked" : ''}>
             <span class="slider round"></span>
           </label>
         </div>
@@ -51,17 +37,17 @@
       <a href="/edit/{id}">
 
         <div class="card transparent">
-          <img class="card-img-top" src="images/Background/{configuration.views[id].background}" alt="view background">
+          <img class="card-img-top" src="images/Background/{$session.configuration.views[id].background}" alt="view background">
 
           <div class="row card-img-overlay">
 
             <div class="col-6 text-left">
-              <img class="image-overlay" src="images/{configuration.views[id].theme}/needle.png">
-              <img class="image-overlay" src="images/{configuration.views[id].theme}/gauge.png">
+              <img class="image-overlay" src="images/{$session.configuration.views[id].theme}/needle.png">
+              <img class="image-overlay" src="images/{$session.configuration.views[id].theme}/gauge.png">
             </div>
 
             <div class="col-6 d-flex flex-column justify-content-center">
-              {#each configuration.views[id].gauges as gauge}
+              {#each $session.configuration.views[id].gauges as gauge}
               <div class="text-center">
                 <p class="pid">{KE_PIDS[ gauge.pid ].shortName ? KE_PIDS[ gauge.pid ].shortName : KE_PIDS[ gauge.pid ].name }</p>
               </div>

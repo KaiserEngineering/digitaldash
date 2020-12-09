@@ -1,5 +1,7 @@
 import * as cookie from 'cookie';
 import { get_user } from './db.js';
+import { get } from '../routes/api/config';
+import { getConstants } from './db.js';
 
 export async function prepare( headers ) {
   let cookies;
@@ -9,7 +11,9 @@ export async function prepare( headers ) {
 
   return {
     context: {
-      user: headers.cookie ? await get_user( cookies['ke_web_app'] ) : undefined
+      user: headers.cookie ? await get_user( cookies['ke_web_app'] ) : undefined,
+      configuration: await get(),
+      constants    : await getConstants()
     },
   }
 }
@@ -22,6 +26,8 @@ export function getSession( context ) {
     user: context.user && context.user && {
       username: context.user.Username
     },
-    actions: []
+    actions       : [],
+    configuration : context.configuration.body,
+    constants     : context.constants.body
   }
 }

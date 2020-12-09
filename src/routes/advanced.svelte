@@ -11,7 +11,7 @@
   import { session } from "$app/stores";
   export let configuration;
 
-  let configString = JSON.stringify( configuration, null, 2 );
+  let configString = JSON.stringify( $session.configuration, null, 2 );
 
   function submit() {
     fetch("/api/config", {
@@ -20,6 +20,7 @@
       })
       .then(d => d.json())
       .then(d => {
+        $session.configuration = d.config;
         $session.actions = [ d.message, ...$session.actions ];
       });
   }
@@ -31,7 +32,6 @@
         invalid = false;
     }
     catch ( e ) {
-      console.log('here')
         invalid = true;
     }
   }
