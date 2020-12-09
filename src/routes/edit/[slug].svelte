@@ -20,13 +20,13 @@
   function handleSubmit(event) {
     // Here we need to sanitize our input :/
     let gauges = [];
-    view.gauges.forEach( pid => {
+    view.gauges.forEach( gauge => {
       gauges.push({
         "module"      : "Radial",
         "themeConfig" : "120",
-        "unit"        : "PID_UNITS_RPM",
+        "unit"        : gauge.unit,
         "path"        : "/"+view.theme+"/",
-        "pid"         : pid.pid
+        "pid"         : gauge.pid
       });
     });
     view.gauges             = gauges;
@@ -115,6 +115,15 @@
                         {#each pids as pid}
                           <option value={pid}>
                             {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
+                          </option>
+                        {/each}
+                      </select>
+
+                      <!-- Units for PID -->
+                      <select bind:value={view.gauges[i].unit} class="form-control">
+                        {#each KE_PID[view.gauges[i].pid].units as unit}
+                          <option value={unit}>
+                            {unit}
                           </option>
                         {/each}
                       </select>
