@@ -50,7 +50,7 @@ KE_PID = {
     },
     "0x010F": {
         'name': 'INTAKE_AIR_TEMPERATURE', 'shortName' : 'IAT', 'decimals' : '2',
-        'units' : [ 'PID_UNITS_CELCIUS' ], 'Min' : 0, 'Max' : 215
+        'units' : [ 'PID_UNITS_FAHRENHEIT', 'PID_UNITS_CELCIUS' ], 'Min' : 0, 'Max' : 215
     },
     "0x010B": {
         'name': 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE', 'shortName' : 'MAP',
