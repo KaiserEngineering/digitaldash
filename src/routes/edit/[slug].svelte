@@ -29,7 +29,7 @@
         "pid"         : pid.pid
       });
     });
-    view.gauges  = gauges;
+    view.gauges             = gauges;
     configuration.views[id] = view;
 
     fetch("/api/config", {
@@ -110,7 +110,7 @@
                 {#each Array(3) as _, i}
                   <div class="col-4">
                     <div class="input-group">
-                      <select value={view.gauges[i].pid} name="pid{id}" class="form-control" id="pid{id}">
+                      <select bind:value={view.gauges[i].pid} name="pid{id}" class="form-control" id="pid{id}">
                         <option value="">-</option>
                         {#each pids as pid}
                           <option value={pid}>
