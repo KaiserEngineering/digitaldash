@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { updateSessionCache } from '../../setup/db';
 
 let credentialsCache;
 export async function get() {
@@ -38,6 +39,7 @@ export async function post( request ) {
           'Set-Cookie' : "ke_web_app="+res.username+"; Path=/; SameSite=Strict; Expires='';"
         };
         updateSession( credentials );
+        updateSessionCache( credentials );
       }
 
       err ? reject( err ) : resolve({

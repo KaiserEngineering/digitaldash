@@ -1,20 +1,26 @@
 import fs from 'fs';
 import { exec } from 'child_process';
 
+let sessionCache;
 export async function get_user( sid ) {
   return new Promise(function(resolve, reject){
-    fs.readFile('auth.json', 'utf8', function(err, jsonString) {
-      authObj = JSON.parse( jsonString );
+    if ( sessionCache ) {
+      resolve( sessionCache );
+    }
+    else {
+      fs.readFile('auth.json', 'utf8', function(err, jsonString) {
+        authObj = JSON.parse( jsonString );
 
-      if ( !authObj || !authObj.Session ) {
-        console.log( "No session found on file." );
-        resolve( undefined );
-      }
-      else {
-        err ? reject( err ) :
-        authObj.Session.token == sid ? resolve( authObj.User ) : resolve( undefined );
-      }
-    });
+        if ( !authObj || !authObj.Session ) {
+          console.log( "No session found on file." );
+          resolve( undefined );
+        }
+        else {
+          err ? reject( err ) :
+          authObj.Session.token == sid ? resolve( authObj.User ) : resolve( undefined );
+        }
+      });
+    }
   });
 }
 
@@ -38,4 +44,16 @@ export async function getConstants() {
       });
     }
   });
+}
+
+export function updateSessionCache( credentials ) {
+  sessionCache = {
+    User: {
+      "Username": credentials.Username,
+      "Password": credentials.Password,
+    },
+    "Session" : {
+      "token" : credentials.Username
+    }
+  };
 }
