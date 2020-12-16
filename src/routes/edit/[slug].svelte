@@ -11,20 +11,37 @@
   export let id;
   let configuration = $session.configuration;
 
-  let actions = [];
-  let view    = configuration.views[id];
-  let KE_PID  = $session.constants.KE_PID;
-  let pids    = Object.keys( KE_PID );
-  view.id     = id;
+  let actions  = [];
+  let view     = configuration.views[id];
+  const KE_PID = $session.constants.KE_PID;
+  const pids   = Object.keys( KE_PID );
+  view.id      = id;
+
+  let unitsChosen = [];
+  for (let step = 0; step < 3; step++) {
+    if ( view.gauges[step] ) {
+      unitsChosen.push( view.gauges[step].unit );
+    }
+    else {
+      unitsChosen.push( undefined );
+    }
+  }
+
+  $: {
+    unitsChosen = view.gauges.map((gauge) => {
+      return KE_PID[gauge.pid].units[0];
+    });
+  }
+  // $: console.log(unitsChosen)
 
   function handleSubmit(event) {
     // Here we need to sanitize our input :/
     let gauges = [];
-    view.gauges.forEach( gauge => {
+    view.gauges.forEach( (gauge, i) => {
       gauges.push({
         "module"      : "Radial",
         "themeConfig" : "120",
-        "unit"        : gauge.unit,
+        "unit"        : unitsChosen[i],
         "path"        : "/"+view.theme+"/",
         "pid"         : gauge.pid
       });
