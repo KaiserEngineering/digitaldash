@@ -11,22 +11,39 @@
   export let id;
   let configuration = $session.configuration;
 
-  let actions = [];
-  let view    = configuration.views[id];
-  let KE_PID  = $session.constants.KE_PID;
-  let pids    = Object.keys( KE_PID );
-  view.id     = id;
+  let actions  = [];
+  let view     = configuration.views[id];
+  const KE_PID = $session.constants.KE_PID;
+  const pids   = Object.keys( KE_PID );
+  view.id      = id;
+
+  let unitsChosen = [];
+  for (let step = 0; step < 3; step++) {
+    if ( view.gauges[step] ) {
+      unitsChosen.push( view.gauges[step].unit );
+    }
+    else {
+      unitsChosen.push( undefined );
+    }
+  }
+
+  $: {
+    unitsChosen = view.gauges.map((gauge) => {
+      return KE_PID[gauge.pid].units[0];
+    });
+  }
+  // $: console.log(unitsChosen)
 
   function handleSubmit(event) {
     // Here we need to sanitize our input :/
     let gauges = [];
-    view.gauges.forEach( pid => {
+    view.gauges.forEach( (gauge, i) => {
       gauges.push({
         "module"      : "Radial",
         "themeConfig" : "120",
-        "unit"        : "PID_UNITS_RPM",
+        "unit"        : unitsChosen[i],
         "path"        : "/"+view.theme+"/",
-        "pid"         : pid.pid
+        "pid"         : gauge.pid
       });
     });
     view.gauges             = gauges;
@@ -115,6 +132,15 @@
                         {#each pids as pid}
                           <option value={pid}>
                             {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
+                          </option>
+                        {/each}
+                      </select>
+
+                      <!-- Units for PID -->
+                      <select bind:value={view.gauges[i].unit} class="form-control">
+                        {#each KE_PID[view.gauges[i].pid].units as unit}
+                          <option value={unit}>
+                            {unit}
                           </option>
                         {/each}
                       </select>
