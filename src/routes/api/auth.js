@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import fs from 'fs';
 import { updateSessionCache } from '../../setup/db';
 
@@ -35,11 +36,14 @@ export async function post( request ) {
         res.message  = "Success";
         res.username = attempt.Username;
 
+        // Can we make our seed actually useful?
+        let token = jwt.sign(credentials, 'ke-webapp');
         headers = {
-          'Set-Cookie' : "ke_web_app="+res.username+"; Path=/; SameSite=Strict; Expires='';"
+          'Set-Cookie' : "ke_web_app="+token+"; Path=/; SameSite=Strict; Expires='';"
         };
-        updateSession( credentials );
-        updateSessionCache( credentials );
+
+        updateSession({...credentials, token: token });
+        updateSessionCache({...credentials, token: token });
       }
 
       err ? reject( err ) : resolve({
@@ -72,7 +76,7 @@ function updateSession ( credentials ) {
       "Password": credentials.Password,
     },
     "Session" : {
-      "token" : credentials.Username
+      "token" : credentials.token
     }
   };
 
