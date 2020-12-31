@@ -14,6 +14,7 @@
 	"dependencies": {
 		"@sveltejs/kit": "^0.0.27",
 		"cookie": "^0.4.1",
-		"fs": "0.0.1-security"
+		"fs": "0.0.1-security",
+		"jsonwebtoken": "^8.5.1"
 	}
 }
