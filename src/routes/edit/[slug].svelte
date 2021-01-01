@@ -44,6 +44,7 @@
         "pid"         : gauge.pid
       });
     });
+    delete ( view.id )
     view.gauges             = gauges;
     configuration.views[id] = view;
 
