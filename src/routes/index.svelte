@@ -4,7 +4,7 @@
 
   let KE_PIDS = $session.constants.KE_PID;
 
-  let views = $session.configuration.views;
+  $: views = $session.configuration.views;
 
   function ToggleEnabled( id ) {
     fetch("./api/config", {
@@ -17,6 +17,7 @@
     .then(d => {
       if ( !_.isEqual( views, d.views )) {
         views = d.views.views;
+        $session.configuration.views = d.views.views;
       }
       $session.actions = [ d.message, ...$session.actions ];
     });
