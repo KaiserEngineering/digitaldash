@@ -30,7 +30,6 @@
       <div class="row m-2">
         <div class="text-left col-6">
           <h5>{views[id].name}</h5>
-          {views[id].enabled}
         </div>
         <div class="text-right col-6">
           <label class="switch">
