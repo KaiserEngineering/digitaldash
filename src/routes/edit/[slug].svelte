@@ -1,6 +1,5 @@
 <script context="module">
   export async function preload({ params, query }) {
-    const id = params.slug;
     return { id: params.slug };
   }
 </script>
@@ -32,7 +31,6 @@
       return KE_PID[gauge.pid].units[0];
     });
   }
-  // $: console.log(unitsChosen)
 
   function handleSubmit(event) {
     // Here we need to sanitize our input :/
@@ -137,13 +135,15 @@
                       </select>
 
                       <!-- Units for PID -->
-                      <select bind:value={view.gauges[i].unit} class="form-control">
-                        {#each KE_PID[view.gauges[i].pid].units as unit}
-                          <option value={unit}>
-                            {unit}
-                          </option>
-                        {/each}
-                      </select>
+                      {#if view.gauges[i] && view.gauges[i].pid && KE_PID[view.gauges[i].pid].units}
+                        <select bind:value={view.gauges[i].unit} class="form-control">
+                          {#each KE_PID[view.gauges[i].pid].units as unit}
+                            <option value={unit}>
+                              {unit}
+                            </option>
+                          {/each}
+                        </select>
+                      {/if}
                     </div>
                   </div>
                 {/each}
