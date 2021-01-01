@@ -50,35 +50,35 @@ def validateConfig(config):
 
     required_values = {
         "top" : {
-                "name": str,
-                "enabled" : int,
-                "theme" : str,
+                "name"      : str,
+                "enabled"   : bool,
+                "theme"     : str,
                 "background": str,
-                "dynamic": dict,
-                "alerts": list,
-                "gauges": list
+                "dynamic"   : dict,
+                "alerts"    : list,
+                "gauges"    : list
         },
         "alerts" : {
-            "pid": str,
-            "op": str,
-            "value": int,
-            "unit" : str,
-            "priority": int,
-            "message" : str
+            "pid"      : str,
+            "op"       : str,
+            "value"    : int,
+            "unit"     : str,
+            "priority" : int,
+            "message"  : str
         },
-        "gauges" : {
+        "gauges"          : {
             "themeConfig" : str,
-            "pid" : str,
-            "unit" : str,
-            "module" : str,
-            "path" : str
+            "pid"         : str,
+            "unit"        : str,
+            "module"      : str,
+            "path"        : str
         },
         "dynamic" : {
-            "pid" : str,
-            "op" : str,
+            "pid"      : str,
+            "op"       : str,
             "priority" : int,
-            "value" : int,
-            "unit" : str
+            "value"    : int,
+            "unit"     : str
         },
     }
 

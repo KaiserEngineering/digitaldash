@@ -3,7 +3,7 @@
       "0" : {
         "name":"single config",
         "theme": "Dirt",
-        "enabled" : 1,
+        "enabled" : true,
         "default" : 1,
         "background":"bg.jpg",
         "dynamic": {},

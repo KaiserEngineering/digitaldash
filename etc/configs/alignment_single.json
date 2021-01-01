@@ -2,7 +2,7 @@
   "views" : {
     "0": {
       "name":"single config",
-      "enabled" : 1,
+      "enabled" : true,
       "default" : 1,
       "theme" : "Stock",
       "background":"alignment.png",
@@ -20,7 +20,7 @@
     },
     "1": {
         "name":"Don't see me",
-        "enabled" : 0,
+        "enabled" : false,
         "theme" : "Glow",
         "background":"bg.jpg",
         "dynamic": {

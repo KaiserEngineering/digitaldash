@@ -2,7 +2,7 @@
     "views" : {
       "0" : {
         "name":"alerts config",
-        "enabled" : 1,
+        "enabled" : true,
         "default" : 1,
         "theme" : "Stock",
         "background":"bg.jpg",
@@ -37,7 +37,7 @@
       },
     "1" : {
       "name":"alerts config two",
-      "enabled" : 1,
+      "enabled" : true,
       "default" : 0,
       "theme" : "Stock",
       "background":"bg.jpg",

@@ -2,7 +2,7 @@
     "views" : {
       "0": {
         "theme" : "Stock",
-        "enabled" : 1,
+        "enabled" : true,
         "default" : 1,
         "name":"rpm to linear config",
         "background":"bg.jpg",
@@ -40,7 +40,7 @@
         },
         "1" : {
           "theme" : "Linear",
-          "enabled" : 1,
+          "enabled" : true,
           "name": "linear",
           "background":"banner1.jpg",
           "dynamic": {
