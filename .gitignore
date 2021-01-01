@@ -54,3 +54,6 @@ build/
 dist/
 libdigitaldash_rust.egg-info/
 libdigitaldash/target/
+
+
+etc/config.json
