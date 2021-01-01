@@ -31,7 +31,7 @@ export async function post( request ) {
       };
 
       let headers = {};
-      if ( credentials.Username.toLowerCase() == attempt.Username.toLowerCase() && credentials.Password.toLowerCase() == attempt.Password.toLowerCase() ) {
+      if ( credentials.Username.toLowerCase() == attempt.Username.toLowerCase() && credentials.Password == attempt.Password ) {
         res.ret      = 1;
         res.message  = "Success";
         res.username = attempt.Username;
