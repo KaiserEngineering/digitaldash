@@ -15,6 +15,7 @@
 		"@sveltejs/kit": "^0.0.27",
 		"cookie": "^0.4.1",
 		"fs": "0.0.1-security",
-		"jsonwebtoken": "^8.5.1"
+		"jsonwebtoken": "^8.5.1",
+		"lodash": "^4.17.20"
 	}
 }

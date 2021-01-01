@@ -1,4 +1,5 @@
 import fs, { readFileSync, readSync } from 'fs';
+import { config } from 'process';
 
 const config_path = process.env.KEGUIHome
 
@@ -42,10 +43,26 @@ export async function put( request ) {
     let temp = configCache;
     temp.views[id].enabled = temp.views[id].enabled ? false : true;
 
-    fs.writeFile( `${config_path}/etc/config.json`, JSON.stringify( temp, null, 2 ), (err) => {
-      err ? reject( err ) :
-        configCache = readConfig();
-        resolve({ body: {"views": configCache, message: "Config updated" }});
-    });
+    let count = 0;
+    for ( key in temp.views ) {
+      if ( temp.views[key].enabled ) {
+        count = 1;
+        break;
+      }
+    }
+
+    if ( count === 0 ) {
+      // Why do I need this? We obviously have some kind of object reference
+      // need to look into how JS does refs.
+      temp.views[id].enabled = temp.views[id].enabled ? false : true;
+      resolve({ body: { "views": configCache, message: "Need at least one enabled view" } });
+    }
+    else {
+      fs.writeFile( `${config_path}/etc/config.json`, JSON.stringify( temp, null, 2 ), (err) => {
+        err ? reject( err ) :
+          configCache = readConfig();
+          resolve({ body: { "views": configCache, message: "Config updated" }});
+      });
+    }
   });
 }
