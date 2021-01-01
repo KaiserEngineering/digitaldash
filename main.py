@@ -69,10 +69,9 @@ def setup(Layouts):
     values for views. Then it will build the views and return them.
     """
 
-    callbacks = {}
-    views = []
+    callbacks  = {}
+    views      = []
     containers = []
-
     view_count = 0
 
     # Sort based on default value
@@ -174,31 +173,7 @@ def setup(Layouts):
         views.append({'app': Background(), 'background': background, 'alerts': FloatLayout(),
                       'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids, 'pid_byte_code': pid_byte_code})
         view_count += 1
-
     return (views, containers, callbacks)
-
-def on_config_change(self) -> NoReturn:
-    """
-    Method for reloading config data.
-    """
-    global ConfigFile
-
-    self.app.clear_widgets()
-    self.alerts.clear_widgets()
-    (self.views, self.containers, self.callbacks) = setup(config.views(ConfigFile))
-
-    (self.background, self.background_source,
-     self.alerts, self.ObjectsToUpdate, self.pids, self.pid_byte_code) = self.views[0].values()
-
-    self.app.add_widget(self.background)
-    self.background.add_widget(self.containers[0])
-    self.background.add_widget(self.alerts)
-
-    # Sort our dynamic and alerts callbacks by priority
-    self.dynamic_callbacks = sorted(self.callbacks['dynamic'],
-                                    key=lambda x: x.priority, reverse=True)
-    self.alert_callbacks = sorted(self.callbacks[self.current],
-                                  key=lambda x: x.priority, reverse=True)
 
 def build_from_config(self) -> NoReturn:
     self.current = 0
@@ -210,7 +185,8 @@ def build_from_config(self) -> NoReturn:
     # Sort our dynamic and alerts callbacks by priority
     self.dynamic_callbacks = sorted(self.callbacks['dynamic'],
                                     key=lambda x: x.priority, reverse=True)
-    self.alert_callbacks = sorted(self.callbacks[self.current],
+    # Since we are building for the first time we can default to index 0
+    self.alert_callbacks = sorted(self.callbacks[0],
                                   key=lambda x: x.priority, reverse=True)
 
     (self.background, self.background_source, self.alerts,
@@ -240,7 +216,9 @@ def build_from_config(self) -> NoReturn:
     self.background.add_widget(self.containers[0])
     self.background.add_widget(self.alerts)
 
-    if self.data_source: Clock.schedule_interval(self.loop, 0)
+    # Unschedule our previous clock event
+    if hasattr(self, 'clock_event'): self.clock_event.cancel()
+    if self.data_source: self.clock_event = Clock.schedule_interval(self.loop, 0)
 
     observer = Observer()
     observer.schedule(MyHandler(self), WORKING_PATH+'/etc/', recursive=True)
