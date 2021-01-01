@@ -183,10 +183,9 @@ def on_config_change(self) -> NoReturn:
     """
     global ConfigFile
 
-    (self.views, self.containers, self.callbacks) = setup(config.views(ConfigFile))
-
     self.app.clear_widgets()
     self.alerts.clear_widgets()
+    (self.views, self.containers, self.callbacks) = setup(config.views(ConfigFile))
 
     (self.background, self.background_source,
      self.alerts, self.ObjectsToUpdate, self.pids, self.pid_byte_code) = self.views[0].values()
