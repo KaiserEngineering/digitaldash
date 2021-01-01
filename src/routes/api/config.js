@@ -40,7 +40,7 @@ export async function put( request ) {
     const id = request.body.id;
 
     let temp = configCache;
-    temp.views[id].enabled = !temp.views[id].enabled;
+    temp.views[id].enabled = temp.views[id].enabled ? false : true;
 
     fs.writeFile( `${config_path}/etc/config.json`, JSON.stringify( temp, null, 2 ), (err) => {
       err ? reject( err ) :
