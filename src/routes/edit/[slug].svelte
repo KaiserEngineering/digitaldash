@@ -76,6 +76,10 @@
 
     view.alerts = tempArr;
   }
+
+  function toggleDynamic() {
+    view.dynamic.enabled = view.dynamic.enabled ? false : true;
+  }
 </script>
 
 <div class="col-sm-12 col-md-8 pb-4">
@@ -138,7 +142,7 @@
 
                       <!-- Units for PID -->
                       {#if view.gauges[i] && view.gauges[i].pid && KE_PID[view.gauges[i].pid].units}
-                        <select bind:value={view.gauges[i].unit} class="form-control">
+                        <select bind:value={view.gauges[i].unit} class="form-control ml-1">
                           {#each KE_PID[view.gauges[i].pid].units as unit}
                             <option value={unit}>
                               {unit}
@@ -226,11 +230,14 @@
 
         <div class="dynamicContainer">
           <div class="row">
+            <Slider callback={toggleDynamic} callbackArgs={null} checked={view.dynamic.enabled} />
+          </div>
+          <div class="row">
 
             <div class="col-md-3 col-12">
               <label for="dynamicPID">PID</label>
 
-              <select bind:value={view.dynamic.pid} name="pid{id}" class="form-control" id="dynamicPID" required>
+              <select bind:value={view.dynamic.pid} disabled={!view.dynamic.enabled} name="pid{id}" class="form-control" id="dynamicPID" required>
                 <option value="">-</option>
                 {#each pids as pid}
                   <option value={pid}>
@@ -242,12 +249,12 @@
 
             <div class="col-md-3 col-12">
               <label for="dynamicValue">Value</label>
-              <input required bind:value={view.dynamic.value} class="form-control" type="text" name="dynamicValue"/>
+              <input bind:value={view.dynamic.value} disabled={!view.dynamic.enabled} class="form-control" type="text" name="dynamicValue"/>
             </div>
 
             <div class="col-md-3 col-12">
               <label for="dynamicOP">OP</label>
-              <select required bind:value={view.dynamic.op} name="dynamicOP" class="form-control">
+              <select bind:value={view.dynamic.op} name="dynamicOP" disabled={!view.dynamic.enabled} class="form-control">
                 <option value="">-</option>
                 {#each ['=', '>', '<', '>=', '<='] as op}
                   <option value={op}>
@@ -259,12 +266,12 @@
 
             <div class="col-md-3 col-12">
               <label for="dynamicPriority">Priority</label>
-              <input required bind:value={view.dynamic.priority} class="form-control" type="number" name="dynamicPriority"/>
+              <input bind:value={view.dynamic.priority} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicPriority"/>
             </div>
 
             <div class="col-md-3 col-12">
               <label for="dynamicUnit">Unit</label>
-              <input required bind:value={view.dynamic.unit} class="form-control" type="text" name="dynamicUnit"/>
+              <input bind:value={view.dynamic.unit} disabled={!view.dynamic.enabled} class="form-control" type="text" name="dynamicUnit"/>
             </div>
           </div>
         </div>

@@ -1,5 +1,4 @@
 import fs, { readFileSync, readSync } from 'fs';
-import { config } from 'process';
 
 const config_path = process.env.KEGUIHome
 
