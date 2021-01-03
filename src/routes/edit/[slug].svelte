@@ -6,6 +6,7 @@
 
 <script>
   import { session } from "$app/stores";
+  import Slider from "../../components/Slider";
 
   export let id;
   let configuration = $session.configuration;
