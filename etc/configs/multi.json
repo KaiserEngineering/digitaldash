@@ -10,7 +10,7 @@
                 {
                     "pid": "0x010C",
                     "op": ">",
-                    "value": -4000,
+                    "value": "-4000",
                     "priority": 1,
                     "message" : "Danger to Manifold",
                     "unit" : "PID_UNITS_RPM"

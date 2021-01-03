@@ -10,78 +10,80 @@
         {
           "pid": "0x010C",
           "op": ">",
-          "value": 4000,
+          "value": "4000",
           "unit": "PID_UNITS_RPM",
           "priority": 1,
           "message": "Danger to Manifold"
         }
       ],
       "dynamic": {
-        "pid": "0x010C",
+        "enabled": true,
+        "pid": "0x220461",
         "op": "<",
         "priority": 1,
-        "value": 4000,
+        "value": "4000",
         "unit": "PID_UNITS_RPM"
       },
       "gauges": [
         {
-          "themeConfig": "120",
-          "pid": "0x010F",
-          "unit": "PID_UNITS_FAHRENHEIT",
           "module": "Radial",
-          "path": "/Stock/"
+          "themeConfig": "120",
+          "unit": "PID_UNITS_KPA",
+          "path": "/Stock/",
+          "pid": "0x010B"
         },
         {
-          "themeConfig": "120",
-          "pid": "0x016F",
-          "unit": "PID_UNITS_PSI",
           "module": "Radial",
-          "path": "/Stock/"
+          "themeConfig": "120",
+          "unit": "PID_UNITS_KPA",
+          "path": "/Stock/",
+          "pid": "0x016F"
         },
         {
-          "themeConfig": "120",
-          "pid": "0x015C",
-          "unit": "PID_UNITS_FAHRENHEIT",
           "module": "Radial",
-          "path": "/Stock/"
+          "themeConfig": "120",
+          "unit": "PID_UNITS_CELCIUS",
+          "path": "/Stock/",
+          "pid": "0x015C"
         }
       ]
     },
     "1": {
-      "name": "Second view",
+      "name": "Second views",
       "enabled": true,
       "default": 0,
-      "background": "banner1.jpg",
-      "theme": "Glow",
+      "background": "BlackBackground.png",
+      "theme": "Stock",
       "alerts": [],
       "dynamic": {
+        "enabled": true,
         "pid": "0x010C",
         "op": ">=",
         "priority": 2,
-        "value": 5000,
+        "value": "5000",
         "unit": "PID_UNITS_RPM"
       },
       "gauges": [
         {
+          "module": "Radial",
           "themeConfig": "120",
-          "pid": "0x010C",
           "unit": "PID_UNITS_RPM",
-          "module": "Radial",
-          "path": "/Glow/"
+          "path": "/Stock/",
+          "pid": "0x010C"
         },
         {
+          "module": "Radial",
           "themeConfig": "120",
-          "pid": "0x010F",
           "unit": "PID_UNITS_FAHRENHEIT",
-          "module": "Radial",
-          "path": "/Glow/"
+          "path": "/Stock/",
+          "pid": "0x010F"
         },
         {
-          "themeConfig": "120",
-          "pid": "0x010B",
-          "unit": "PID_UNITS_PSI",
           "module": "Radial",
-          "path": "/Glow/"
+          "themeConfig": "120",
+          "unit": "PID_UNITS_KPA",
+          "path": "/Stock/",
+          "pid": "0x010B"
         }
       ]
     }

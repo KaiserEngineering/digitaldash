@@ -87,7 +87,7 @@ def setup(Layouts):
           pids_dict[gauge['pid']] = 1
         for alert in view['alerts']:
           pids_dict[alert['pid']] = 1
-        if view['dynamic']:
+        if view['dynamic'] and view['dynamic']['enabled']:
           pids_dict[view['dynamic']['pid']] = 1
         pids = list(pids_dict.keys())
 
@@ -97,7 +97,7 @@ def setup(Layouts):
           units[gauge['pid']] = gauge['unit']
         for alert in view['alerts']:
           units[alert['pid']] = alert['unit']
-        if view['dynamic']:
+        if view['dynamic'] and view['dynamic']['enabled']:
           units[view['dynamic']['pid']] = view['dynamic']['unit']
 
         background = view['background']
