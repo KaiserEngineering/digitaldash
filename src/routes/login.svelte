@@ -25,7 +25,11 @@
         }
         // Only add notification for failed login
         else {
-          $session.actions = [ d.message, ...$session.actions ];
+          $session.actions = [{
+            id    : $session.count,
+            msg   : d.message,
+            theme : 'alert-danger',
+          }, ...$session.actions];
         }
       });
   }

@@ -21,7 +21,11 @@
       .then(d => d.json())
       .then(d => {
         $session.configuration = d.config;
-        $session.actions = [ d.message, ...$session.actions ];
+        $session.actions = [{
+          id    : $session.count,
+          msg   : d.message,
+          theme : d.ret ? 'alert-info' : 'alert-danger',
+        }, ...$session.actions];
       });
   }
 

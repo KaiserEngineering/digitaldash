@@ -4,7 +4,6 @@
   import Slider from "../components/Slider";
 
   let KE_PIDS = $session.constants.KE_PID;
-
   $: views = $session.configuration.views;
 
   function toggleEnabled( id ) {
@@ -20,7 +19,11 @@
         views = d.views.views;
         $session.configuration.views = d.views.views;
       }
-      $session.actions = [ d.message, ...$session.actions ];
+      $session.actions = [{
+        id    : $session.count,
+        msg   : d.message,
+        theme : d.ret ? 'alert-info' : 'alert-warning',
+      }, ...$session.actions];
     });
   }
 </script>

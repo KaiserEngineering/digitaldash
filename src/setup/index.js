@@ -28,6 +28,7 @@ export function getSession( context ) {
     },
     actions       : [],
     configuration : context.configuration.body,
-    constants     : context.constants.body
+    constants     : context.constants.body,
+    count         : 0
   }
 }

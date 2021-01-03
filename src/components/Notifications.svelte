@@ -1,38 +1,33 @@
-<div class="notifications" id="notifications">
-  {#if $session.actions && $session.actions.length}
-    {#each $session.actions as action, i}
+{#if $session.actions && $session.actions.length}
+  <div class="notifications" id="notifications">
+    {#each $session.actions as action(action.id)}
       <div
-        class="text-center notification alert alert-info"
+        class="text-center notification alert {action.theme}"
         role="alert"
+        out:fade
+        animate:flip={{ duration: 200 }}
       >
-        {action}
-        <button type="button" on:click="{() => remove(i)}" class="float-right close">
+        {action.msg}
+
+        <button type="button" on:click="{() => remove(action.id)}" class="float-right close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
     {/each}
+  </div>
 {/if}
-</div>
 
 <script>
   import { session } from "$app/stores";
+  import { flip } from 'svelte/animate';
+  import { fade, fly } from 'svelte/transition';
 
   $: {
-    if ( $session.actions.length > 3 ) {
-      $session.actions.shift();
-    }
+    $session.count = $session.count + 1;
   }
 
-  function remove( index ) {
-    if ( index !== 'undefined' ) {
-      let temp = $session.actions || [];
-      temp.splice( index, 1 );
-
-      $session.actions = temp;
-    }
-    else {
-      $session.actions = $session.actions.shift();
-    }
+  function remove( id ) {
+    $session.actions = $session.actions.filter(action => action.id != id);
   }
 </script>
 
