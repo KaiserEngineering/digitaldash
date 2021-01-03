@@ -15,7 +15,6 @@
   let view     = configuration.views[id];
   const KE_PID = $session.constants.KE_PID;
   const pids   = Object.keys( KE_PID );
-  view.id      = id;
 
   let unitsChosen = [];
   for (let step = 0; step < 3; step++) {
@@ -45,7 +44,7 @@
         "pid"         : gauge.pid
       });
     });
-    delete ( view.id )
+
     view.gauges             = gauges;
     configuration.views[id] = view;
 
@@ -230,7 +229,9 @@
 
         <div class="dynamicContainer">
           <div class="row">
-            <Slider callback={toggleDynamic} callbackArgs={null} checked={view.dynamic.enabled} />
+            <div class="col-md-3 col-12">
+              <Slider callback={toggleDynamic} callbackArgs={null} checked={view.dynamic.enabled} />
+            </div>
           </div>
           <div class="row">
 
@@ -271,7 +272,15 @@
 
             <div class="col-md-3 col-12">
               <label for="dynamicUnit">Unit</label>
-              <input bind:value={view.dynamic.unit} disabled={!view.dynamic.enabled} class="form-control" type="text" name="dynamicUnit"/>
+              {#if view.dynamic && view.dynamic.pid && KE_PID[view.dynamic.pid].units}
+                <select bind:value={view.dynamic.unit}  disabled={!view.dynamic.enabled} name="dynamicUnit" class="form-control ml-1">
+                  {#each KE_PID[view.dynamic.pid].units as unit}
+                    <option value={unit}>
+                      {unit}
+                    </option>
+                  {/each}
+                </select>
+              {/if}
             </div>
           </div>
         </div>

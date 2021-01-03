@@ -49,6 +49,7 @@ export async function put( request ) {
         break;
       }
     }
+    delete(view.id);
 
     if ( count === 0 ) {
       // Why do I need this? We obviously have some kind of object reference
