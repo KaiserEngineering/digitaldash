@@ -50,18 +50,18 @@ def validateConfig(config):
 
     required_values = {
         "top" : {
-                "name"      : str,
-                "enabled"   : bool,
-                "theme"     : str,
-                "background": str,
-                "dynamic"   : dict,
-                "alerts"    : list,
-                "gauges"    : list
+            "name"      : str,
+            "enabled"   : bool,
+            "theme"     : str,
+            "background": str,
+            "dynamic"   : dict,
+            "alerts"    : list,
+            "gauges"    : list
         },
         "alerts" : {
             "pid"      : str,
             "op"       : str,
-            "value"    : int,
+            "value"    : str,
             "unit"     : str,
             "priority" : int,
             "message"  : str
@@ -74,10 +74,11 @@ def validateConfig(config):
             "path"        : str
         },
         "dynamic" : {
+            "enabled"  : bool,
             "pid"      : str,
             "op"       : str,
             "priority" : int,
-            "value"    : int,
+            "value"    : str,
             "unit"     : str
         },
     }
@@ -106,13 +107,13 @@ def validateConfig(config):
 
                         if ( type( view[key] ) == dict ):
                             if ( not type( view[key][item] ) == required_values[key][item] ):
-                                Logger.error( item + " for " + key + " must be of type " + str(required_values[key][item]) )
+                                Logger.error( item + " for " + str(view[key][item]) + " must be of type " + str(required_values[key][item]) )
                                 return False
                             continue
                         else:
                             for hash in view[key]:
                                 if ( not type( hash[item] ) == required_values[key][item] ):
-                                    Logger.error( item + " for " + key + " must be of type " + str(required_values[key][item]) )
+                                    Logger.error( item + " for " + str(hash[item]) + " must be of type " + str(required_values[key][item]) )
                                     return False
                                 continue
     if ( not saw_default ):
