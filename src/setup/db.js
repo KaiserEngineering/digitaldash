@@ -17,7 +17,7 @@ export async function get_user( sid ) {
         }
         else {
           err ? reject( err ) :
-          authObj.Session.token == sid ? resolve( authObj.User ) : resolve( undefined );
+          authObj.Session.token && authObj.Session.token == sid ? resolve( authObj.User ) : resolve( undefined );
         }
       });
     }
