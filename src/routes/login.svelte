@@ -35,7 +35,7 @@
   }
 </script>
 
-<div class="col-sm-12 col-md-6">
+<div class="col-sm-12 col-md-6 justify-content-center d-flex">
   <form on:submit|preventDefault="{handleSubmit}" class="form-signin">
     <div class="text-center container">
       <img src="images/logo.png" alt="" width="72" height="72">
