@@ -43,42 +43,56 @@ PID_UNITS = {
     'PID_UNITS_DEGREES'          : 0x0A
 }
 
+PID_UNIT_LABEL = {
+    'PID_UNITS_RESERVED'         : '',
+    'PID_UNITS_PERCENT'          : '%',
+    'PID_UNITS_CELCIUS'          : u'\u00b0C',
+    'PID_UNITS_FAHRENHEIT'       : u'\u00b0F',
+    'PID_UNITS_KPA'              : 'kPa',
+    'PID_UNITS_PSI'              : 'psi',
+    'PID_UNITS_RPM'              : '',
+    'PID_UNITS_KMH'              : 'kmh',
+    'PID_UNITS_MPH'              : 'mph',
+    'PID_UNITS_GRAMSEC'          : 'g/s',
+    'PID_UNITS_DEGREES'          : u'\u00b0'
+}
+
 KE_PID = {
     "0x010C": {
         'name': 'ENGINE_RPM', 'shortName' : 'RPM', 'decimals' : '0',
-        'units' : [ 'PID_UNITS_RPM' ], 'unitString' : ''  , 'Min' : 0, 'Max' : 8000
+        'units' : [ 'PID_UNITS_RPM' ], 'Min' : 0, 'Max' : 8000
     },
     "0x010F": {
         'name': 'INTAKE_AIR_TEMPERATURE', 'shortName' : 'IAT', 'decimals' : '2',
-        'units' : [ 'PID_UNITS_FAHRENHEIT', 'PID_UNITS_CELCIUS' ], 'unitString' : u'\u00b0C', 'Min' : 0, 'Max' : 215
+        'units' : [ 'PID_UNITS_FAHRENHEIT', 'PID_UNITS_CELCIUS' ], 'Min' : 0, 'Max' : 215
     },
     "0x010B": {
         'name': 'INTAKE_MANIFOLD_ABSOLUTE_PRESSURE', 'shortName' : 'MAP',
-        'decimals' : '0', 'units' : [ 'PID_UNITS_KPA' ], 'unitString' : 'kPa' , 'Min' : 0, 'Max' : 255
+        'decimals' : '0', 'units' : [ 'PID_UNITS_KPA' ], 'Min' : 0, 'Max' : 255
     },
     "0x0105": {
         'name': 'ENGINE_COOLANT_TEMPERATURE', 'shortName' : 'ECT', 'decimals' : '1',
-        'units' : [ 'PID_UNITS_CELCIUS' ], 'unitString' : u'\u00b0C', 'Min' : 0, 'Max' : 150
+        'units' : [ 'PID_UNITS_CELCIUS' ], 'Min' : 0, 'Max' : 150
     },
     "0x0104": {
         'name': 'CALCULATED_ENGINE_LOAD', 'shortName' : 'LOAD', 'decimals' : '1',
-        'units' : [ 'PID_UNITS_PERCENT' ], 'unitString' : '%', 'Min' : 0, 'Max' : 150
+        'units' : [ 'PID_UNITS_PERCENT' ], 'Min' : 0, 'Max' : 150
     },
     "0x015C": {
         'name': 'ENGINE_OIL_TEMPERATURE', 'shortName' : 'Oil Temp', 'decimals' : '0',
-        'units' : [ 'PID_UNITS_CELCIUS' ], 'unitString' : u'\u00b0C', 'Min' : 0, 'Max' : 150
+        'units' : [ 'PID_UNITS_CELCIUS' ], 'Min' : 0, 'Max' : 150
     },
     "0x016F": {
         'name': 'TURBO_INLET_PRESSURE', 'shortName' : 'Boost', 'decimals' : '0',
-        'units' : [ 'PID_UNITS_KPA' ], 'unitString' : 'kPa', 'Min' : 0, 'Max' : 210
+        'units' : [ 'PID_UNITS_KPA' ], 'Min' : 0, 'Max' : 210
     },
     "0x220461": {
         'name': 'CHARGE_AIR_TEMP', 'shortName' : 'CAT', 'decimals' : '1',
-        'units' : [ 'PID_UNITS_CELCIUS' ], 'unitString' : u'\u00b0C', 'Min' : -40, 'Max' : 300
+        'units' : [ 'PID_UNITS_CELCIUS' ], 'Min' : -40, 'Max' : 300
     },
     "0x22F40F": {
         'name': 'INTAKE_AIR_TEMP', 'shortName' : 'IAT', 'decimals' : '1',
-        'units' : [ 'PID_UNITS_CELCIUS' ], 'unitString' : u'\u00b0C'  , 'Min' : -40, 'Max' : 300
+        'units' : [ 'PID_UNITS_CELCIUS' ], 'Min' : -40, 'Max' : 300
     },
 }
 
