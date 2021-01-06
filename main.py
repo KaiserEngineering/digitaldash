@@ -232,20 +232,8 @@ class MyHandler(PatternMatchingEventHandler):
 
     patterns = ["*.json"]
 
-    def process(self, event):
-        """
-        event.event_type
-            'modified' | 'created' | 'moved' | 'deleted'
-        event.is_directory
-            True | False
-        event.src_path
-            path/to/observed/file
-        """
-        # the file will be processed there
-        build_from_config(self.DigitalDash)
-
     def on_modified(self, event):
-        self.process(event)
+        build_from_config(self.DigitalDash)
 
 # Load our KV files
 for file in os.listdir(WORKING_PATH+'/digitaldash/kv/'):
