@@ -2,8 +2,6 @@
   import { goto } from "$app/navigation";
   import { session } from "$app/stores";
 
-  export let actions;
-
   let username;
   let password;
 
