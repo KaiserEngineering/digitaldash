@@ -59,8 +59,6 @@ class KELabel(Label):
         else:
             self.pos_hint = {'x':pos_hints[0] / 100, 'y':pos_hints[1] / 100}
 
-        # self.pos = (pos_hints[0], pos_hints[1])
-
     def set_data(self: KL, value='') -> NoReturn:
         """
         Send data to Label widget.
