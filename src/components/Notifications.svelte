@@ -23,7 +23,9 @@
   import { fade, fly } from 'svelte/transition';
 
   $: {
-    $session.count = $session.count + 1;
+    if ( $session.actions.length ) {
+      $session.count = $session.count + 1;
+    }
   }
 
   function remove( id ) {
