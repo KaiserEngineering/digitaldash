@@ -10,6 +10,9 @@
     size_hint: 0.4, 0.5
     pos_hint: {"center_x": 0.50, "center_y": 0.85}
     canvas.before:
+        Color:
+            hsv: self.color
+            a: 0.97
         Rectangle:
             id: 'Alert-'+str(self.message)
             size: self.size
