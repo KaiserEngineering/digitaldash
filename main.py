@@ -220,10 +220,6 @@ def build_from_config(self) -> NoReturn:
     if hasattr(self, 'clock_event'): self.clock_event.cancel()
     if self.data_source: self.clock_event = Clock.schedule_interval(self.loop, 0)
 
-    observer = Observer()
-    observer.schedule(MyHandler(self), WORKING_PATH+'/etc/', recursive=True)
-    observer.start()
-
     return self.app
 
 class MyHandler(PatternMatchingEventHandler):
@@ -292,6 +288,11 @@ class GUI(App):
 
         self.data_source = Data_Source
         self.working_path = WORKING_PATH
+
+        observer = Observer()
+        observer.schedule(MyHandler(self), WORKING_PATH+'/etc/', recursive=True)
+        observer.start()
+
         return build_from_config(self)
 
     def check_callback(self: DD, callback, data):
