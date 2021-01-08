@@ -273,7 +273,7 @@
 
             <div class="col-sm-3 col-12">
               <label class="label" for="dynamicUnit">Unit</label>
-              <select name="units" on:blur="{ e => view.dynamic.unit = e.target.value }" value={view.dynamic.unit} class="form-control value" required><option>-</option></select>
+              <select name="units" disabled={!view.dynamic.enabled} on:blur="{ e => view.dynamic.unit = e.target.value }" value={view.dynamic.unit} class="form-control value" required><option>-</option></select>
             </div>
 
             <div class="col-sm-3 col-12">
