@@ -16,20 +16,36 @@
   const KE_PID = $session.constants.KE_PID;
   const pids   = Object.keys( KE_PID );
 
-  let unitsChosen = [];
-  for (let step = 0; step < 3; step++) {
-    if ( view.gauges[step] ) {
-      unitsChosen.push( view.gauges[step].unit );
+  function pidChange( node ) {
+    function getUnits( node ) {
+      const pid = node.target.value;
+      if ( !pid ) { return }
+      // find our units for the provided pid
+      let unitsSelect = node.srcElement.parentElement.nextSibling.nextSibling.querySelectorAll('[name=units]')[0]
+      // Clear our old units from units select input
+      let i = 0;
+      for (i = 0; i < unitsSelect.options.length; i++) {
+        unitsSelect.remove(i);
+      }
+      // Add our units to our select input
+      KE_PID[pid].units.forEach((unit, i) => {
+        unitsSelect.options[i] = new Option(unit, unit, false, false);
+      });
+      // Actually set the select value to the first unit
+      unitsSelect.value = unitsSelect.options[0].value;
+      unitsSelect.focus();
+      unitsSelect.blur();
     }
-    else {
-      unitsChosen.push( undefined );
-    }
-  }
+    node.addEventListener( "change", getUnits );
+    // Set our initial values
+    var event = new Event('change');
+    node.dispatchEvent( event );
 
-  $: {
-    unitsChosen = view.gauges.map((gauge) => {
-      return KE_PID[gauge.pid].units[0];
-    });
+    return {
+      destroy() {
+        node.removeEventListener( "blur", getUnits );
+      }
+    }
   }
 
   function handleSubmit(event) {
@@ -39,7 +55,7 @@
       gauges.push({
         "module"      : "Radial",
         "themeConfig" : "120",
-        "unit"        : unitsChosen[i],
+        "unit"        : gauge.unit,
         "path"        : "/"+view.theme+"/",
         "pid"         : gauge.pid
       });
@@ -130,29 +146,25 @@
 
             <div class="col-12">
               <label for="theme">Vehicle Parameters</label>
-              <div class="input-group row">
+              <div class="input-group">
                 {#each Array(3) as _, i}
                   <div class="col-4">
-                    <div class="input-group">
-                      <select bind:value={view.gauges[i].pid} name="pid{id}" class="form-control" id="pid{id}">
-                        <option value="">-</option>
-                        {#each pids as pid}
-                          <option value={pid}>
-                            {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
-                          </option>
-                        {/each}
-                      </select>
-
-                      <!-- Units for PID -->
-                      {#if view.gauges[i] && view.gauges[i].pid && KE_PID[view.gauges[i].pid].units}
-                        <select bind:value={view.gauges[i].unit} class="form-control ml-1">
-                          {#each KE_PID[view.gauges[i].pid].units as unit}
-                            <option value={unit}>
-                              {unit}
+                    <div class="row input-group">
+                      <div class="mb-2 col-12">
+                        <select use:pidChange bind:value={view.gauges[i].pid} name="pid{id}" class="form-control" id="pid{id}">
+                          <option value="">-</option>
+                          {#each pids as pid}
+                            <option value={pid}>
+                              {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
                             </option>
                           {/each}
                         </select>
-                      {/if}
+                      </div>
+
+                      <!-- Units for PID -->
+                      <div class="col-12">
+                        <select name="units" on:blur="{ e => view.gauges[i].unit = e.target.value }" value={view.gauges[i].unit} class="form-control ml-1"></select>
+                      </div>
                     </div>
                   </div>
                 {/each}
@@ -168,28 +180,15 @@
         <div class="alertsContainer">
           {#each view.alerts as alert, i}
             <div class="alertContainer">
+
               <div class="row">
-
                 <div class="col-md-6 col-12">
-                  <label for="alertMessage">Message</label>
-                  <input required bind:value={alert.message} class="form-control" type="text" name="alertMessage"/>
-                </div>
-
-                <div class="col-md-6 col-12">
-                  <label for="alertPID">PID</label>
-
-                  <select bind:value={alert.pid} name="pid{id}" class="form-control" id="alertPID" required>
-                    <option value="">-</option>
-                    {#each pids as pid}
-                    <option value={pid}>
-                      {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
-                    </option>
-                    {/each}
-                  </select>
+                  <label class="label" for="alertMessage">Message</label>
+                  <input required bind:value={alert.message} class="value form-control" type="text" name="alertMessage"/>
                 </div>
 
                 <div class="col-md-3 col-12">
-                  <label for="alertValue">Value</label>
+                  <label class="label" for="alertValue">Value</label>
                   <input required bind:value={alert.value} class="form-control" type="text" name="alertValue"/>
                 </div>
 
@@ -205,19 +204,32 @@
                   </select>
                 </div>
 
-                <div class="col-md-3 col-12">
-                  <label for="alertPriority">Priority</label>
-                  <input required bind:value={alert.priority} class="form-control" type="number" name="alertPriority"/>
+                <div class="col-md-6 col-12">
+                  <label class="label" for="alertPID">PID</label>
+
+                  <select use:pidChange bind:value={alert.pid} name="pid{id}" class="value form-control" id="alertPID" required>
+                    <option value="">-</option>
+                    {#each pids as pid}
+                      <option value={pid}>
+                        {pid ? KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name : ''}
+                      </option>
+                    {/each}
+                  </select>
                 </div>
 
                 <div class="col-md-3 col-12">
-                  <label for="alertUnit">Unit</label>
-                  <input required bind:value={alert.unit} class="form-control" type="text" name="alertUnit"/>
+                  <label class="label" for="alertUnit">Unit</label>
+                  <select name="units" on:blur="{ e => alert.unit = e.target.value }" value={alert.unit} class="form-control value"></select>
                 </div>
 
-                <div class="mt-2 text-center">
-                  <button on:click="{() => {removeAlert( i )}}" class="form-control delete" type="button">Delete</button>
+                <div class="col-md-3 col-12">
+                  <label class="label" for="alertPriority">Priority</label>
+                  <input required bind:value={alert.priority} class="value form-control" type="number" name="alertPriority"/>
                 </div>
+              </div>
+
+              <div class="mt-2 text-center">
+                <button on:click="{() => {removeAlert( i )}}" class="form-control delete" type="button">Delete</button>
               </div>
             </div>
           {/each}
@@ -242,7 +254,7 @@
             <div class="col-md-3 col-12">
               <label for="dynamicPID">PID</label>
 
-              <select bind:value={view.dynamic.pid} disabled={!view.dynamic.enabled} name="pid{id}" class="form-control" id="dynamicPID" required>
+              <select use:pidChange bind:value={view.dynamic.pid} disabled={!view.dynamic.enabled} name="pid{id}" class="form-control" id="dynamicPID" required>
                 <option value="">-</option>
                 {#each pids as pid}
                   <option value={pid}>
@@ -250,6 +262,11 @@
                   </option>
                 {/each}
               </select>
+            </div>
+
+            <div class="col-md-3 col-12">
+              <label class="label" for="dynamicUnit">Unit</label>
+              <select name="units" on:blur="{ e => view.dynamic.unit = e.target.value }" value={view.dynamic.unit} class="form-control value"></select>
             </div>
 
             <div class="col-md-3 col-12">
@@ -274,18 +291,6 @@
               <input bind:value={view.dynamic.priority} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicPriority"/>
             </div>
 
-            <div class="col-md-3 col-12">
-              <label for="dynamicUnit">Unit</label>
-              {#if view.dynamic && view.dynamic.pid && KE_PID[view.dynamic.pid].units}
-                <select bind:value={view.dynamic.unit}  disabled={!view.dynamic.enabled} name="dynamicUnit" class="form-control ml-1">
-                  {#each KE_PID[view.dynamic.pid].units as unit}
-                    <option value={unit}>
-                      {unit}
-                    </option>
-                  {/each}
-                </select>
-              {/if}
-            </div>
           </div>
         </div>
 
