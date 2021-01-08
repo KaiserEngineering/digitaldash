@@ -16,6 +16,20 @@
   const KE_PID = $session.constants.KE_PID;
   const pids   = Object.keys( KE_PID );
 
+  function normalizeGauges() {
+    // Ensure we always have 3 entries in our array
+    while ( view.gauges.length != 3 ) {
+      view.gauges.push({
+        "module"      : "",
+        "themeConfig" : "",
+        "unit"        : "",
+        "path"        : "",
+        "pid"         : ""
+      });
+    }
+  }
+  normalizeGauges();
+
   function pidChange( node ) {
     function getUnits( node ) {
       const pid = node.target.value;
@@ -83,6 +97,8 @@
       .then(d => d.json())
       .then(d => {
         $session.configuration = d.config;
+        normalizeGauges();
+
         $session.actions = [{
           id    : $session.count,
           msg   : d.message,
