@@ -19,13 +19,18 @@
   function pidChange( node ) {
     function getUnits( node ) {
       const pid = node.target.value;
-      if ( !pid ) { return }
+
       // find our units for the provided pid
       let unitsSelect = node.srcElement.parentElement.nextSibling.nextSibling.querySelectorAll('[name=units]')[0]
       // Clear our old units from units select input
       let i = 0;
       for (i = 0; i < unitsSelect.options.length; i++) {
         unitsSelect.remove(i);
+      }
+
+      if ( !pid ) {
+        unitsSelect.options[0] = new Option('-', '', false, false);
+        return;
       }
       // Add our units to our select input
       KE_PID[pid].units.forEach((unit, i) => {
@@ -101,10 +106,10 @@
   }
 </script>
 
-<div class="col-sm-12 col-md-8 pb-4">
+<div class="col-sm-12 col-sm-8 pb-4">
   {#if view}
   <div id="edit-container" class="container">
-    <div class="col-md-12 order-md-1">
+    <div class="col-sm-12 order-sm-1">
       <h4 class="mb-3">Editing view #{id}</h4>
       <form on:submit|preventDefault="{handleSubmit}" class="needs-validation">
         <input type="hidden" value="<%$id%>" name="id"/>
@@ -115,61 +120,56 @@
         <div class="basicsContainer">
           <div class="row">
 
-            <div class="col-md-6">
+            <div class="col-12">
               <label for="name">View name</label>
               <input bind:value={view.name} name="name" type="text" class="form-control" id="name" placeholder="" required>
             </div>
 
             <div class="col-6">
               <label for="background">Background</label>
-              <div class="input-group">
-                <select bind:value={view.background} name="background" class="custom-select form-control d-block w-100" id="country" required>
-                  <option value="">-</option>
-                  {#each ['banner1.jpg', 'bg.jpg', 'BlackBackground.png', 'CarbonFiber.png'] as background}
-                  <option value={background}>{background}</option>
-                  {/each}
-                </select>
-              </div>
+              <select bind:value={view.background} name="background" class="custom-select form-control d-block w-100" id="country" required>
+                <option value="">-</option>
+                {#each ['banner1.jpg', 'bg.jpg', 'BlackBackground.png', 'CarbonFiber.png'] as background}
+                <option value={background}>{background}</option>
+                {/each}
+              </select>
             </div>
 
             <div class="col-6">
               <label for="theme">Theme</label>
-              <div class="input-group">
-                <select bind:value={view.theme} name="theme" class="form-control d-block w-100" id="theme" required>
-                  <option value="">-</option>
-                  {#each ['Stock'] as theme}
-                  <option value={theme}>{theme}</option>
-                  {/each}
-                </select>
-              </div>
+              <select bind:value={view.theme} name="theme" class="form-control d-block w-100" id="theme" required>
+                <option value="">-</option>
+                {#each ['Stock'] as theme}
+                <option value={theme}>{theme}</option>
+                {/each}
+              </select>
             </div>
 
             <div class="col-12">
               <label for="theme">Vehicle Parameters</label>
               <div class="input-group">
                 {#each Array(3) as _, i}
-                  <div class="col-4">
-                    <div class="row input-group">
-                      <div class="mb-2 col-12">
-                        <select use:pidChange bind:value={view.gauges[i].pid} name="pid{id}" class="form-control" id="pid{id}">
-                          <option value="">-</option>
-                          {#each pids as pid}
-                            <option value={pid}>
-                              {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
-                            </option>
-                          {/each}
-                        </select>
-                      </div>
+                  <div class="col-4 pl-1 pr-1">
+                    <div class="col-12">
+                      <select use:pidChange bind:value={view.gauges[i].pid} name="pid{id}" class="mb-2 form-control" id="pid{id}">
+                        <option value="">-</option>
+                        {#each pids as pid}
+                          <option value={pid}>
+                            {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
+                          </option>
+                        {/each}
+                      </select>
+                    </div>
 
-                      <!-- Units for PID -->
-                      <div class="col-12">
-                        <select name="units" on:blur="{ e => view.gauges[i].unit = e.target.value }" value={view.gauges[i].unit} class="form-control ml-1"></select>
-                      </div>
+                    <!-- Units for PID -->
+                    <div class="col-12">
+                      <select name="units" on:blur="{ e => view.gauges[i].unit = e.target.value }" value={view.gauges[i].unit} class="form-control"></select>
                     </div>
                   </div>
                 {/each}
               </div>
             </div>
+
           </div>
         </div>
         <!-- END BASICS -->
@@ -181,18 +181,18 @@
           {#each view.alerts as alert, i}
             <div class="alertContainer">
 
-              <div class="row">
-                <div class="col-md-6 col-12">
+              <div class="input-group">
+                <div class="col-sm-6 col-12 pl-1 pr-1">
                   <label class="label" for="alertMessage">Message</label>
                   <input required bind:value={alert.message} class="value form-control" type="text" name="alertMessage"/>
                 </div>
 
-                <div class="col-md-3 col-12">
+                <div class="col-sm-3 col-12 pl-1 pr-1">
                   <label class="label" for="alertValue">Value</label>
                   <input required bind:value={alert.value} class="form-control" type="text" name="alertValue"/>
                 </div>
 
-                <div class="col-md-3 col-12">
+                <div class="col-sm-3 col-12 pl-1 pr-1">
                   <label for="alertOP">OP</label>
                   <select required bind:value={alert.op} name="alertOP" class="form-control">
                     <option value="">-</option>
@@ -204,10 +204,10 @@
                   </select>
                 </div>
 
-                <div class="col-md-6 col-12">
+                <div class="col-sm-6 col-12 pl-1 pr-1">
                   <label class="label" for="alertPID">PID</label>
 
-                  <select use:pidChange bind:value={alert.pid} name="pid{id}" class="value form-control" id="alertPID" required>
+                  <select use:pidChange bind:value={alert.pid} name="pid{id}" class="value form-control pl-1 pr-1" id="alertPID" required>
                     <option value="">-</option>
                     {#each pids as pid}
                       <option value={pid}>
@@ -217,12 +217,12 @@
                   </select>
                 </div>
 
-                <div class="col-md-3 col-12">
+                <div class="col-sm-3 col-12 pl-1 pr-1">
                   <label class="label" for="alertUnit">Unit</label>
-                  <select name="units" on:blur="{ e => alert.unit = e.target.value }" value={alert.unit} class="form-control value"></select>
+                  <select name="units" on:blur="{ e => alert.unit = e.target.value }" value={alert.unit} class="form-control value" required><option>-</option></select>
                 </div>
 
-                <div class="col-md-3 col-12">
+                <div class="col-sm-3 col-12 pl-1 pr-1">
                   <label class="label" for="alertPriority">Priority</label>
                   <input required bind:value={alert.priority} class="value form-control" type="number" name="alertPriority"/>
                 </div>
@@ -234,7 +234,7 @@
             </div>
           {/each}
 
-          <div class="col-md-12 col-auto">
+          <div class="col-sm-12 col-auto">
             <button class="form-control" on:click={() => addAlert()}>New alert</button>
           </div>
         </div>
@@ -245,13 +245,13 @@
 
         <div class="dynamicContainer">
           <div class="row">
-            <div class="col-md-3 col-12">
+            <div class="col-sm-3 col-12">
               <Slider callback={toggleDynamic} callbackArgs={null} checked={view.dynamic.enabled} />
             </div>
           </div>
           <div class="row">
 
-            <div class="col-md-3 col-12">
+            <div class="col-sm-3 col-12">
               <label for="dynamicPID">PID</label>
 
               <select use:pidChange bind:value={view.dynamic.pid} disabled={!view.dynamic.enabled} name="pid{id}" class="form-control" id="dynamicPID" required>
@@ -264,17 +264,17 @@
               </select>
             </div>
 
-            <div class="col-md-3 col-12">
+            <div class="col-sm-3 col-12">
               <label class="label" for="dynamicUnit">Unit</label>
-              <select name="units" on:blur="{ e => view.dynamic.unit = e.target.value }" value={view.dynamic.unit} class="form-control value"></select>
+              <select name="units" on:blur="{ e => view.dynamic.unit = e.target.value }" value={view.dynamic.unit} class="form-control value" required><option>-</option></select>
             </div>
 
-            <div class="col-md-3 col-12">
+            <div class="col-sm-3 col-12">
               <label for="dynamicValue">Value</label>
               <input bind:value={view.dynamic.value} disabled={!view.dynamic.enabled} class="form-control" type="text" name="dynamicValue"/>
             </div>
 
-            <div class="col-md-3 col-12">
+            <div class="col-sm-3 col-12">
               <label for="dynamicOP">OP</label>
               <select bind:value={view.dynamic.op} name="dynamicOP" disabled={!view.dynamic.enabled} class="form-control">
                 <option value="">-</option>
@@ -286,7 +286,7 @@
               </select>
             </div>
 
-            <div class="col-md-3 col-12">
+            <div class="col-sm-3 col-12">
               <label for="dynamicPriority">Priority</label>
               <input bind:value={view.dynamic.priority} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicPriority"/>
             </div>
