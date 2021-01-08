@@ -55,9 +55,11 @@
 
             <div class="col-6 d-flex flex-column justify-content-center">
               {#each views[id].gauges as gauge}
-              <div class="text-center">
-                <p class="pid">{KE_PIDS[ gauge.pid ].shortName ? KE_PIDS[ gauge.pid ].shortName : KE_PIDS[ gauge.pid ].name }</p>
-              </div>
+                {#if gauge && gauge.pid}
+                  <div class="text-center">
+                    <p class="pid">{ KE_PIDS[ gauge.pid ].shortName ? KE_PIDS[ gauge.pid ].shortName : KE_PIDS[ gauge.pid ].name }</p>
+                  </div>
+                {/if}
               {/each}
             </div>
 

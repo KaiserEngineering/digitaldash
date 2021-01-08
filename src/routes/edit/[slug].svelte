@@ -57,17 +57,24 @@
     // Here we need to sanitize our input :/
     let gauges = [];
     view.gauges.forEach( (gauge, i) => {
-      gauges.push({
-        "module"      : "Radial",
-        "themeConfig" : "120",
-        "unit"        : gauge.unit,
-        "path"        : "/"+view.theme+"/",
-        "pid"         : gauge.pid
-      });
+      if ( !gauge.pid || !gauge.unit ) {
+        return;
+      }
+      else {
+        gauges.push({
+          "module"      : "Radial",
+          "themeConfig" : "120",
+          "unit"        : gauge.unit,
+          "path"        : "/"+view.theme+"/",
+          "pid"         : gauge.pid
+        });
+      }
     });
 
-    view.gauges             = gauges;
-    configuration.views[id] = view;
+    // We don't want to mutate view here as we do some gauge [] fanagling
+    let temp_view           = view;
+    temp_view.gauges        = gauges;
+    configuration.views[id] = temp_view;
 
     fetch("/api/config", {
         method : "POST",
