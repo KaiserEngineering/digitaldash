@@ -125,27 +125,30 @@ def setup(Layouts):
         else:
             callbacks.setdefault(view_count, [])
 
-        container = FloatLayout()
+        container       = FloatLayout()
         ObjectsToUpdate = []
 
         num_gauges = len(view['gauges'])
         # Get our % width that each gauge should claim
-        percent_width = (1 / num_gauges) - 0.05
+        # The 0.05 is our squish value to move gauges inwards
+        percent_width = ( 1 / num_gauges ) - 0.05
 
-        # If we have more than 1 gauge we need a negative offset since we start centered
-        multi_offset = percent_width if num_gauges > 1 else 0
+        multi_offset = 0;
+        # Only set offset if more than 1 gauge
+        if num_gauges > 1:
+            multi_offset = percent_width * ( num_gauges / 2 - 0.5 )
 
-        gauge_count = 0
-        for widget in view['gauges']:
+        for gauge_count, widget in enumerate( view['gauges'] ):
             mod = None
+
+            x_position = ( percent_width * gauge_count ) - multi_offset
 
             # This handles our gauge positions, see the following for reference:
             # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
             subcontainer = RelativeLayout(
-                pos_hint={'x': percent_width * gauge_count - multi_offset, 'top': .99},
+                pos_hint={'x': x_position, 'top': .99},
                 size_hint_max_y=200
             )
-            x_position = (percent_width * gauge_count - multi_offset)
             container.add_widget(subcontainer)
 
             mod = None
@@ -164,7 +167,6 @@ def setup(Layouts):
                     **view
                 )
             )
-            gauge_count += 1
 
         containers.append(container)
 
