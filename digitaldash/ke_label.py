@@ -2,6 +2,7 @@
 from typing import NoReturn, TypeVar
 from kivy.uix.label import Label
 from static.constants import KE_PID
+from static.constants import PID_UNIT_LABEL
 from kivy.logger import Logger
 
 KL = TypeVar('KL', bound='KELabel')
@@ -33,8 +34,11 @@ class KELabel(Label):
         self.config_font_size = args.get('font_size', 25)
         self.font_size = self.config_font_size
         self.decimals = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
+        self.units = KE_PID.get(args.get('pid', ''), {}).get('units', '')
+        self.unit_string = str(PID_UNIT_LABEL.get(self.units[0], ''))
         self.object_type = 'Label'
         self.pid = args.get('pid', None)
+        self.markup = True
 
         if self.default == '__PID__':
             if args['pid'] in KE_PID:
@@ -80,4 +84,4 @@ class KELabel(Label):
                 self.max_observed = value
                 self.text = ("{0:.%sf}"%(self.decimals)).format(value)
         else:
-            self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)
+            self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)+'[size=15]'+ ' ' + self.unit_string+'[/size]'
