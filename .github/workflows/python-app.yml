@@ -37,4 +37,4 @@ jobs:
         export DISPLAY=:99.0;
         /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1280x720x24 -ac +extension GLX
         python -m pytest tests/
-        python -m bandit *.py
+        python -m bandit *.py -r
