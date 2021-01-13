@@ -35,7 +35,8 @@ class KELabel(Label):
         self.font_size        = self.config_font_size
         self.decimals         = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
         self.units            = KE_PID.get(args.get('pid', ''), {}).get('units', '')
-        self.unit_string      = str(PID_UNIT_LABEL.get(self.units[0], ''))
+                              # Not all labels are required to have units
+        self.unit_string      = str(PID_UNIT_LABEL.get(args.get('units', [''])[0], ''))
         self.object_type      = 'Label'
         self.pid              = args.get('pid', None)
         self.markup           = True

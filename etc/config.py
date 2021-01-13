@@ -97,7 +97,7 @@ def validateConfig(config):
                 return False
             if ( key == 'top' ):
                 for key in required_values['top'].keys():
-                    if ( not type( view[key] ) == required_values['top'][key] ):
+                    if ( not type( view[key] ) == required_values['top'][key] and type( view[key] ) != 'n/a' ):
                         Logger.error( key + " must be of type " + str(required_values['top'][key]) )
                         return False
                     continue
@@ -106,13 +106,13 @@ def validateConfig(config):
                     if ( len(view[key]) ):
 
                         if ( type( view[key] ) == dict ):
-                            if ( not type( view[key][item] ) == required_values[key][item] ):
+                            if ( not type( view[key][item] ) == required_values[key][item] and type( view[key][item] ) != 'n/a' ):
                                 Logger.error( item + " for " + str(view[key][item]) + " must be of type " + str(required_values[key][item]) )
                                 return False
                             continue
                         else:
                             for hash in view[key]:
-                                if ( not type( hash[item] ) == required_values[key][item] ):
+                                if ( not type( hash.get(item) ) == required_values[key][item] and type( hash.get(item) ) != 'n/a' ):
                                     Logger.error( item + " for " + str(hash[item]) + " must be of type " + str(required_values[key][item]) )
                                     return False
                                 continue

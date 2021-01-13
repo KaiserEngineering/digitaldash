@@ -168,7 +168,10 @@ def setup(Layouts):
 
         containers.append(container)
 
-        pid_byte_code = build_update_requirements_bytearray( units, pids )
+        pid_byte_code = None
+        if ( len(units) and len(pids) ):
+            if ( list(units.keys())[0] != 'n/a' and pids[0] != 'n/a' ):
+                pid_byte_code = build_update_requirements_bytearray( units, pids )
 
         views.append({'app': Background(), 'background': background, 'alerts': FloatLayout(),
                       'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids, 'pid_byte_code': pid_byte_code})
