@@ -26,19 +26,19 @@ class KELabel(Label):
             (default is nothing)
         """
         super(KELabel, self).__init__()
-        self.min_observed = 9999
-        self.max_observed = -9999
-        self.default = args.get('default', '')
-        self.config_color = args.get('color', (1, 1, 1, 1)) # White
-        self.color = self.config_color
+        self.min_observed     = 9999
+        self.max_observed     = -9999
+        self.default          = args.get('default', '')
+        self.config_color     = args.get('color', (1, 1, 1, 1)) # White
+        self.color            = self.config_color
         self.config_font_size = args.get('font_size', 25)
-        self.font_size = self.config_font_size
-        self.decimals = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
-        self.units = KE_PID.get(args.get('pid', ''), {}).get('units', '')
-        self.unit_string = str(PID_UNIT_LABEL.get(self.units[0], ''))
-        self.object_type = 'Label'
-        self.pid = args.get('pid', None)
-        self.markup = True
+        self.font_size        = self.config_font_size
+        self.decimals         = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
+        self.units            = KE_PID.get(args.get('pid', ''), {}).get('units', '')
+        self.unit_string      = str(PID_UNIT_LABEL.get(self.units[0], ''))
+        self.object_type      = 'Label'
+        self.pid              = args.get('pid', None)
+        self.markup           = True
 
         if self.default == '__PID__':
             if args['pid'] in KE_PID:

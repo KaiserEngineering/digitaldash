@@ -16,7 +16,7 @@ class Gauge():
         """
         super(Gauge, self).__init__(**kwargs)
         self.labels = []
-        self.face = ObjectProperty(Face, ObjectType='Face')
+        self.face   = ObjectProperty(Face, ObjectType='Face')
         self.needle = ObjectProperty(None, ObjectType='Needle')
         self.build_gauge(Face=Face, Needle=Needle, **kwargs)
 
