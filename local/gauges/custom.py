@@ -43,6 +43,6 @@ class Custom():
 
         # Need to provide a pid attribute for our label to update from,
         # see static/constants.py
-        label.pid = '0x0C'
+        label.pid = '0x010C'
 
         return live_widgets

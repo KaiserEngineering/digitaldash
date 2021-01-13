@@ -14,7 +14,7 @@
                 "module": "KEClock",
                 "path": "/Clock/",
                 "themeConfig": "Clock",
-                "pid": "Clock",
+                "pid": "n/a",
                 "unit" : "PID_UNITS_RPM"
             }]
         }
