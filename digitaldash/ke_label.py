@@ -34,9 +34,12 @@ class KELabel(Label):
         self.config_font_size = args.get('font_size', 25)
         self.font_size        = self.config_font_size
         self.decimals         = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
-        self.units            = KE_PID.get(args.get('pid', ''), {}).get('units', '')
+        self.units            = KE_PID.get(args.get('pid', ''), {}).get('units')
                               # Not all labels are required to have units
-        self.unit_string      = str(PID_UNIT_LABEL.get(args.get('units', [''])[0], ''))
+        if ( args.get('units') and PID_UNIT_LABEL.get( list(args['units'])[0] ) ):
+            self.unit_string = str(PID_UNIT_LABEL.get((args['units'])[0], '')) if args.get('units') else ''
+        else:
+            self.unit_string = ''
         self.object_type      = 'Label'
         self.pid              = args.get('pid', None)
         self.markup           = True
@@ -46,7 +49,7 @@ class KELabel(Label):
                 self.default = str(KE_PID[self.pid]['shortName'])
             else:
                 self.default = KE_PID[self.pid]['name']
-                Logger.error("Could not load shortName from Static.Constants for PID: %s : %s", self.pid, str(e))
+                Logger.error("Could not load shortName from Static.Constants for PID: %s", self.pid)
         if 'data' in args and args['data']:
             self.text = self.default +' 0'
         else:
@@ -85,4 +88,6 @@ class KELabel(Label):
                 self.max_observed = value
                 self.text = ("{0:.%sf}"%(self.decimals)).format(value)
         else:
-            self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)+'[size=15]'+ ' ' + self.unit_string+'[/size]'
+            self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)
+            if self.unit_string:
+                self.text = self.text + '[size=15]'+ ' ' + self.unit_string+'[/size]'
