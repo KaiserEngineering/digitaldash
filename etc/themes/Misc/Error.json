@@ -1,4 +1,4 @@
 {
     "degrees": 0, "angle_start": 0,
-    "labels": [{ "pos": [0, 0], "font_size": 50, "default": "Invalid config!" }]
+    "labels": []
 }
