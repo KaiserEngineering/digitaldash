@@ -131,7 +131,7 @@ def setup(Layouts):
         num_gauges = len(view['gauges'])
         # Get our % width that each gauge should claim
         # The 0.05 is our squish value to move gauges inwards
-        percent_width = ( 1 / num_gauges ) - 0.05
+        percent_width = ( 1 / num_gauges if num_gauges else 1 ) - 0.05
 
         multi_offset = 0;
         # Only set offset if more than 1 gauge
