@@ -41,6 +41,7 @@ from typing import NoReturn, List, TypeVar
 # Rust import
 import libdigitaldash
 
+from _version import __version__
 from etc import config
 from digitaldash.base import Base
 from digitaldash.dynamic import Dynamic
@@ -356,6 +357,7 @@ class Background(AnchorLayout):
     """Uses Kivy language to create background."""
 
 if __name__ == '__main__':
+    Logger.info( 'GUI: Running version: %s'%__version__ )
     dd = GUI()
 
     configFile = None
