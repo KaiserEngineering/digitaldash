@@ -49,6 +49,15 @@ def test_needle_simple():
         assert needle.true_value == float(4000), print( needle.Type+" component defaults to minimum value")
         assert needle.update == smooth( Old=old_value, New=4000 * needle.step - needle.offset ), print(needle.Type+" component sets the correct rotational value with smoothing (not true value)")
 
+def test_needle_min_max():
+    # Test that Min and Max is set correctly based on constants.py
+    needle = NeedleRadial(
+        themeConfig=120, degrees=120, path='/Stock/',
+        pids=["0x010C"], pid="0x010C", unit="PID_UNITS_RPM"
+    )
+    assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Min"] == needle.min
+    assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Max"] == needle.max
+
 
 def test_label_simple():
     label = KELabel(
@@ -97,6 +106,7 @@ def test_label_simple():
         pid            = "0x010C"
     )
     assert label.text == "RPM", print("Sets PID label correctly")
+
 
 def test_alert_simple():
     alert = Alert(
