@@ -68,8 +68,8 @@ class MyHandler(PatternMatchingEventHandler):
         build_from_config(self.DigitalDash)
 
 # Load our KV files
-for file in os.listdir(WORKING_PATH+'/lib/kv/'):
-    Builder.load_file(WORKING_PATH+'/lib/kv/'+str(file))
+for file in os.listdir(WORKING_PATH+'/kv/'):
+    Builder.load_file(WORKING_PATH+'/kv/'+str(file))
 
 DD = TypeVar('DD', bound='DigitalDash')
 class GUI(App):
