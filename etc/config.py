@@ -15,12 +15,11 @@ def views(file=None):
     if file == None or file == '':
         file = working_path+'/etc/config.json'
     jsonData = {}
+
     with open(file) as data_file:
         jsonData = json.load(data_file)
 
         data_file.close()
-
-    Window._rotation = 0
 
     jsonData = jsonData if validateConfig(jsonData) else json.loads('''
         {"views": { "0": {
