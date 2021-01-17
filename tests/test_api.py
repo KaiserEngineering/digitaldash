@@ -1,5 +1,6 @@
 # """Testing basics of DigitalDash."""
 import test
+from etc import config
 from digitaldash.needles.needle import Needle
 from digitaldash.needles.radial import NeedleRadial
 from digitaldash.needles.linear import NeedleLinear
@@ -9,10 +10,11 @@ from digitaldash.alert import Alert
 from digitaldash.massager import smooth
 from static.constants import KE_PID
 import libdigitaldash
+from kivy.uix.anchorlayout import AnchorLayout
+from digitaldash.digitaldash import build_from_config
 
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
-
 
 def test_needle_simple():
     assert 1 == 1
@@ -48,7 +50,6 @@ def test_needle_simple():
 
         assert needle.true_value == float(4000), print( needle.Type+" component defaults to minimum value")
         assert needle.update == smooth( Old=old_value, New=4000 * needle.step - needle.offset ), print(needle.Type+" component sets the correct rotational value with smoothing (not true value)")
-
 
 def test_label_simple():
     label = KELabel(
@@ -110,3 +111,31 @@ def test_alert_simple():
     assert libdigitaldash.check(float(99), alert.value, alert.op) is False, print("Check fails when it should")
     assert libdigitaldash.check(float(101), alert.value, alert.op) is True, print("Check passes when it should")
     assert alert.text == 'Hello, from tests', print("Do not set alert value")
+
+class Application():
+  """Class for replacing 'self' from main.py"""
+  def __init__(self):
+    pass
+
+def test_build():
+    config.setWorkingPath(working_path)
+
+    def loop():
+      pass
+
+    self              = Application()
+    self.WORKING_PATH = working_path
+    self.loop         = loop
+    self.configFile   = None
+    self.app          = AnchorLayout()
+    self.data_source  = test.Test(file='tests/data/test.csv')
+    self.working_path = str(pathlib.Path(__file__).parent.absolute())
+
+    appObj = build_from_config(self)
+    background = appObj.children[0]
+
+    container = background.children[1].children
+    assert len(container) == 3
+
+    # for gauge in container[0].children:
+    #   print(gauge.Type)
