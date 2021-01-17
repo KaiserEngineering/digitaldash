@@ -40,7 +40,7 @@ from typing import NoReturn, List, TypeVar
 # Rust import
 import libdigitaldash
 
-from digitaldash.digitaldash import build_from_config
+from lib.digitaldash import build_from_config
 from _version import __version__
 from etc import config
 
@@ -68,8 +68,8 @@ class MyHandler(PatternMatchingEventHandler):
         build_from_config(self.DigitalDash)
 
 # Load our KV files
-for file in os.listdir(WORKING_PATH+'/digitaldash/kv/'):
-    Builder.load_file(WORKING_PATH+'/digitaldash/kv/'+str(file))
+for file in os.listdir(WORKING_PATH+'/lib/kv/'):
+    Builder.load_file(WORKING_PATH+'/lib/kv/'+str(file))
 
 DD = TypeVar('DD', bound='DigitalDash')
 class GUI(App):

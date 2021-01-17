@@ -1,11 +1,11 @@
 """Simple Clock Example"""
 
-from digitaldash.ke_label import KELabel
-from digitaldash.face import Face
+from lib.ke_label import KELabel
+from lib.face import Face
 import datetime
 from kivy.logger import Logger
 from kivy.animation import Animation
-from digitaldash.base import Base
+from lib.base import Base
 
 class Clock(Base, KELabel):
     """Clock gauge"""

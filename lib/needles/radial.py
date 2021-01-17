@@ -1,11 +1,11 @@
 from kivy.uix.widget import Widget
-from digitaldash.needles.needle import Needle
+from lib.needles.needle import Needle
 from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
 from kivy.uix.image import Image
 
 class NeedleRadial(Needle, Image):
-    """Wrapper combining digitaldash.needles.needle and kivy.uix.image."""
+    """Wrapper combining lib.needles.needle and kivy.uix.image."""
 
     update = NumericProperty()
 

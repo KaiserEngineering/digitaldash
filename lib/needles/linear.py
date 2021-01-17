@@ -1,12 +1,12 @@
 from kivy.uix.widget import Widget
-from digitaldash.needles.needle import Needle
+from lib.needles.needle import Needle
 from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
 from kivy.uix.stencilview import StencilView
 from typing import NoReturn
 
 class NeedleLinear(Needle, StencilView):
-    """Wrapper combining digitaldash.needles.needle and kivy.uix.stencilview."""
+    """Wrapper combining lib.needles.needle and kivy.uix.stencilview."""
 
     update = NumericProperty()
     source = StringProperty()
@@ -27,7 +27,7 @@ class NeedleLinear(Needle, StencilView):
         Method for setting the step size for Linear needles.
 
         Args:
-          self <digitaldash.needles.linear>
+          self <lib.needles.linear>
         """
         self.step = (self.width * 2) / (abs(self.min) + abs(self.max))
         if ( self.step == 0 ):
@@ -38,7 +38,7 @@ class NeedleLinear(Needle, StencilView):
         Set offset for negative values or 0 for strictly positive PIDs
 
         Args:
-          self <digitaldash.needles.linear>
+          self <lib.needles.linear>
         """
         if (self.min < 0):
             self.offset = self.min

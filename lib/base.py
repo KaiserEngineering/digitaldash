@@ -1,12 +1,12 @@
 """Abstract classes."""
 from kivy.properties import NumericProperty
 from kivy.logger import Logger
-from digitaldash.gauge import Gauge
-from digitaldash.needles.ellipse import NeedleEllipse as Ellipse
-from digitaldash.needles.radial import NeedleRadial as Radial
-from digitaldash.needles.linear import NeedleLinear as Linear
-from digitaldash.face import Face
-from digitaldash.ke_label import KELabel
+from lib.gauge import Gauge
+from lib.needles.ellipse import NeedleEllipse as Ellipse
+from lib.needles.radial import NeedleRadial as Radial
+from lib.needles.linear import NeedleLinear as Linear
+from lib.face import Face
+from lib.ke_label import KELabel
 from typing import List
 from etc import config
 

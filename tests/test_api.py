@@ -1,17 +1,17 @@
 # """Testing basics of DigitalDash."""
 import test
 from etc import config
-from digitaldash.needles.needle import Needle
-from digitaldash.needles.radial import NeedleRadial
-from digitaldash.needles.linear import NeedleLinear
-from digitaldash.needles.ellipse import NeedleEllipse
-from digitaldash.ke_label import KELabel
-from digitaldash.alert import Alert
-from digitaldash.massager import smooth
+from lib.needles.needle import Needle
+from lib.needles.radial import NeedleRadial
+from lib.needles.linear import NeedleLinear
+from lib.needles.ellipse import NeedleEllipse
+from lib.ke_label import KELabel
+from lib.alert import Alert
+from lib.massager import smooth
 from static.constants import KE_PID
 import libdigitaldash
 from kivy.uix.anchorlayout import AnchorLayout
-from digitaldash.digitaldash import build_from_config
+from lib.digitaldash import build_from_config
 
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())

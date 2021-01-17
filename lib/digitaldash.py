@@ -6,10 +6,10 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.clock import Clock
 
 from etc import config
-from digitaldash.base import Base
-from digitaldash.dynamic import Dynamic
-from digitaldash.alert import Alert
-from digitaldash.alerts import Alerts
+from lib.base import Base
+from lib.dynamic import Dynamic
+from lib.alert import Alert
+from lib.alerts import Alerts
 from ke_protocol import build_update_requirements_bytearray
 
 # Import custom gauges

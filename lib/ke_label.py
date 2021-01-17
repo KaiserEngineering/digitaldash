@@ -71,7 +71,7 @@ class KELabel(Label):
         Check for Min/Max key words to cache values with regex checks.
 
         Args:
-            self (<digitaldash.ke_label>): KELabel object
+            self (<lib.ke_label>): KELabel object
             value (float) : value that label is being updated to
         """
         value = float(value)
