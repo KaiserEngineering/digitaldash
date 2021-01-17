@@ -1,5 +1,4 @@
 """Testing basics of DigitalDash."""
-import unittest
 import main
 from etc import config
 import os

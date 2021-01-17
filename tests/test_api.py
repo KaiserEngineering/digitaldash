@@ -1,4 +1,4 @@
-# """Testing basics of DigitalDash."""
+"""Testing basics of DigitalDash."""
 import test
 from etc import config
 from lib.needles.needle import Needle
@@ -17,6 +17,8 @@ import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
 def test_needle_simple():
+    """Basic needle tests"""
+
     assert 1 == 1
     needles = (
         NeedleRadial(
@@ -52,6 +54,7 @@ def test_needle_simple():
         assert needle.update == smooth( Old=old_value, New=4000 * needle.step - needle.offset ), print(needle.Type+" component sets the correct rotational value with smoothing (not true value)")
 
 def test_label_simple():
+    """Basic label tests"""
     label = KELabel(
         default        = 'hello, world',
         ConfigColor    = (1, 1, 1 ,1),
@@ -100,6 +103,7 @@ def test_label_simple():
     assert label.text == "RPM", print("Sets PID label correctly")
 
 def test_alert_simple():
+    """Basic alerts tests"""
     alert = Alert(
         value     = 100,
         op        = '>',
@@ -115,9 +119,10 @@ def test_alert_simple():
 class Application():
   """Class for replacing 'self' from main.py"""
   def __init__(self):
-    pass
+    self.background_source = 'woof'
 
 def test_build():
+    """Test build process"""
     config.setWorkingPath(working_path)
 
     def loop():
@@ -128,14 +133,15 @@ def test_build():
     self.loop         = loop
     self.configFile   = None
     self.app          = AnchorLayout()
-    self.data_source  = test.Test(file='tests/data/test.csv')
+    self.data_source  = None
     self.working_path = str(pathlib.Path(__file__).parent.absolute())
 
-    appObj = build_from_config(self)
+    appObj     = build_from_config(self)
     background = appObj.children[0]
 
     container = background.children[1].children
     assert len(container) == 3
 
-    # for gauge in container[0].children:
-    #   print(gauge.Type)
+    for gauge in container[0].children:
+      # TODO Add some testing here
+      pass
