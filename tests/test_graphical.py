@@ -3,8 +3,8 @@ import unittest
 from kivy.tests.common import GraphicUnitTest
 import test
 import main
-from digitaldash.needles.needle import Needle
-from digitaldash.massager import smooth
+from lib.needles.needle import Needle
+from lib.massager import smooth
 from static.constants import KE_PID
 
 import pathlib

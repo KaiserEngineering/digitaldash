@@ -1,4 +1,4 @@
-from digitaldash.massager import smooth
+from lib.massager import smooth
 from typing import NoReturn
 from static.constants import KE_PID
 
@@ -45,7 +45,7 @@ class Needle():
         Abstract setData method most commonly used.
 
         Args:
-          self (<needle.*>) : One of the needle objects inheriting from digitaldash.needle
+          self (<needle.*>) : One of the needle objects inheriting from lib.needle
           value (float)     : Value to set the needle to
         """
         value = float(value)

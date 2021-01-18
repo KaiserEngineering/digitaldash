@@ -75,7 +75,7 @@ class Dynamic():
         app.background.clear_widgets()
         app.alerts.clear_widgets()
 
-        (app.background, app.background_source, app.alerts,
+        (app.background, app.alerts,
          app.ObjectsToUpdate, app.pids, app.pid_byte_code) = app.views[self.index].values()
 
         app.background.add_widget(app.containers[self.index])

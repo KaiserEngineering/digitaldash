@@ -1,20 +1,24 @@
-# """Testing basics of DigitalDash."""
+"""Testing basics of DigitalDash."""
 import test
-from digitaldash.needles.needle import Needle
-from digitaldash.needles.radial import NeedleRadial
-from digitaldash.needles.linear import NeedleLinear
-from digitaldash.needles.ellipse import NeedleEllipse
-from digitaldash.ke_label import KELabel
-from digitaldash.alert import Alert
-from digitaldash.massager import smooth
+from etc import config
+from lib.needles.needle import Needle
+from lib.needles.radial import NeedleRadial
+from lib.needles.linear import NeedleLinear
+from lib.needles.ellipse import NeedleEllipse
+from lib.ke_label import KELabel
+from lib.alert import Alert
+from lib.massager import smooth
 from static.constants import KE_PID
 import libdigitaldash
+from kivy.uix.anchorlayout import AnchorLayout
+from lib.digitaldash import build_from_config
 
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
-
 def test_needle_simple():
+    """Basic needle tests"""
+
     assert 1 == 1
     needles = (
         NeedleRadial(
@@ -49,8 +53,8 @@ def test_needle_simple():
         assert needle.true_value == float(4000), print( needle.Type+" component defaults to minimum value")
         assert needle.update == smooth( Old=old_value, New=4000 * needle.step - needle.offset ), print(needle.Type+" component sets the correct rotational value with smoothing (not true value)")
 
-
 def test_label_simple():
+    """Basic label tests"""
     label = KELabel(
         default        = 'hello, world',
         ConfigColor    = (1, 1, 1 ,1),
@@ -99,6 +103,7 @@ def test_label_simple():
     assert label.text == "RPM", print("Sets PID label correctly")
 
 def test_alert_simple():
+    """Basic alerts tests"""
     alert = Alert(
         value     = 100,
         op        = '>',
@@ -110,3 +115,33 @@ def test_alert_simple():
     assert libdigitaldash.check(float(99), alert.value, alert.op) is False, print("Check fails when it should")
     assert libdigitaldash.check(float(101), alert.value, alert.op) is True, print("Check passes when it should")
     assert alert.text == 'Hello, from tests', print("Do not set alert value")
+
+class Application():
+  """Class for replacing 'self' from main.py"""
+  def __init__(self):
+    self.background_source = 'woof'
+
+def test_build():
+    """Test build process"""
+    config.setWorkingPath(working_path)
+
+    def loop():
+      pass
+
+    self              = Application()
+    self.WORKING_PATH = working_path
+    self.loop         = loop
+    self.configFile   = None
+    self.app          = AnchorLayout()
+    self.data_source  = None
+    self.working_path = str(pathlib.Path(__file__).parent.absolute())
+
+    appObj     = build_from_config(self)
+    background = appObj.children[0]
+
+    container = background.children[1].children
+    assert len(container) == 3
+
+    for gauge in container[0].children:
+      # TODO Add some testing here
+      pass

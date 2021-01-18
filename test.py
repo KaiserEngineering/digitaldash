@@ -6,7 +6,8 @@ class Test():
 
     def __init__(self, **args):
         self.iteration = 0
-        self.data = []
+        self.data      = []
+
         if ( args.get('file') ):
             self.load_csv(**args)
         self.rows = len(self.data)
@@ -33,7 +34,7 @@ class Test():
             for row in datareader:
                 self.data.append(row)
         if self.data:
-          array = self.data[0]
+          array     = self.data[0]
           self.cols = len(array)
 
     def start(self, pids=[], **args):
@@ -41,10 +42,10 @@ class Test():
         Main start method for test data.
             :param self: <DigitalDash.Test>Test instance
         """
-        data = self.data[self.iteration]
+        data    = self.data[self.iteration]
 
         key_val = {}
-        i = 0
+        i       = 0
         for pid in pids:
             if self.cols >= i:
               i = 0
