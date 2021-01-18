@@ -31,7 +31,6 @@ import kivy
 from kivy.logger import Logger
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import StringProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
@@ -83,8 +82,6 @@ class GUI(App):
     array. Only add Objects to the **widgets** array if they are
     to be updated and have the necessary methods.
     """
-
-    background_source = StringProperty()
 
     def new(self, configFile=None, data=None):
         """

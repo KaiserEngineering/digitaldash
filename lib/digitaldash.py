@@ -17,6 +17,11 @@ from local.gauges import *
 
 class Background(AnchorLayout):
     """Uses Kivy language to create background."""
+    source = StringProperty()
+    def __init__(self, BackgroundSource="", WorkingPath=""):
+      super().__init__()
+      Logger.debug( "GUI: Creating new Background obj with source: "+str(BackgroundSource) )
+      self.source = "{}{}".format(WorkingPath+"/static/imgs/Background/", BackgroundSource )
 
 def setup(self, Layouts):
     """
@@ -132,7 +137,7 @@ def setup(self, Layouts):
             if ( list(units.keys())[0] != 'n/a' and pids[0] != 'n/a' ):
                 pid_byte_code = build_update_requirements_bytearray( units, pids )
 
-        views.append({'app': Background(), 'background': background, 'alerts': FloatLayout(),
+        views.append({'app': Background(WorkingPath=self.WORKING_PATH, BackgroundSource=background), 'alerts': FloatLayout(),
                       'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids, 'pid_byte_code': pid_byte_code})
         view_count += 1
     return (views, containers, callbacks)
@@ -150,7 +155,7 @@ def build_from_config(self) -> NoReturn:
     self.alert_callbacks = sorted(self.callbacks[0],
                                   key=lambda x: x.priority, reverse=True)
 
-    (self.background, self.background_source, self.alerts,
+    (self.background, self.alerts,
      self.ObjectsToUpdate, self.pids, self.pid_byte_code) = self.views[0].values()
 
     if not self.first_iteration and Data_Source and type(Data_Source) != Test:
