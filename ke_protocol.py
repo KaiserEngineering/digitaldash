@@ -92,8 +92,8 @@ class Serial():
             data_line = data_line.decode('utf-8', 'ignore')
 
             key_val = {}
-            for val in data_line.split(';'):
-                (k, v) = val.split('=')
+            for val in data_line.split(','):
+                (k, u, v) = val.split(':')
                 key_val[str(k)] = v
             self.ser_val = key_val
             #self.ser_val[2] = self.ser.inWaiting()
