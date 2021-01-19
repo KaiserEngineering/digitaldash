@@ -34,6 +34,7 @@ class KELabel(Label):
         self.config_font_size = args.get('font_size', 25)
         self.font_size        = self.config_font_size
         self.decimals         = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
+        # Currentlty if a unit is provided we show the unit string
         self.unit_string      = PID_UNIT_LABEL.get(args.get('unit', ''), '')
         self.object_type      = 'Label'
         self.pid              = args.get('pid', None)
@@ -82,5 +83,7 @@ class KELabel(Label):
             if self.max_observed < value:
                 self.max_observed = value
                 self.text = ("{0:.%sf}"%(self.decimals)).format(value)
-        else:
+        elif self.unit_string:
             self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)+'[size=15]'+ ' ' + self.unit_string+'[/size]'
+        else:
+            self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)
