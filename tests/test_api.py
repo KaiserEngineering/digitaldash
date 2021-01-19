@@ -67,7 +67,7 @@ def test_label_simple():
     assert label.decimals == str(KE_PID["0x010C"]['decimals']), print("Decimal place set correctly for label")
 
     label.set_data(100)
-    assert label.text == "hello, world100[size=15] [/size]", print("Default text value is set correctly form set_data method")
+    assert label.text == "hello, world100", print("Default text value is set correctly form set_data method")
 
     label = KELabel(
         default        = 'Min: ',
@@ -144,4 +144,4 @@ def test_build():
 
     for gauge in container[0].children:
       # TODO Add some testing here
-      pass
+      print(gauge)
