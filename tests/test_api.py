@@ -142,6 +142,8 @@ def test_build():
     container = background.children[1].children
     assert len(container) == 3
 
-    for gauge in container[0].children:
-      # TODO Add some testing here
-      print(gauge)
+    saw_unit_string_label = False
+    for widget in container[0].children:
+      if type(widget) is KELabel and widget.unit_string:
+        saw_unit_string_label = True
+    assert saw_unit_string_label == True, print( "Set PID unit string" )
