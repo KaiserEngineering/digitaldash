@@ -27,15 +27,15 @@ class Serial():
             timeout=1
         )
         self.ser.flushInput()
-        self.ser_val = [0, 0, 0, 0, 0, 0]
-        self.systemFirmware = [0, 0, 0]
-        self.hardwareFirmware = [0, 0, 0]
-        self.firmwareVerified = False  #False to do a firmware request
-        self.requirements = []
-        self.fan_speed = 0
-        self.queued_message = None
-        self.message_pending = False
+        self.ser_val            = [0, 0, 0, 0, 0, 0]
+        self.systemFirmware     = [0, 0, 0]
+        self.hardwareFirmware   = [0, 0, 0]
+        self.firmwareVerified   = False  #False to do a firmware request
         self.data_stream_active = False
+        self.requirements       = []
+        self.fan_speed          = 0
+        self.queued_message     = None
+        self.message_pending    = False
 
 
     def start(self, **args):
