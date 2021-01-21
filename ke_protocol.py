@@ -54,7 +54,8 @@ class Serial():
 
         # There shall always be an opcode and EOL
         if ( len(data_line) < 2 ):
-            self.update_requirements( args.get('app', {}), self.requirements )
+            app = args['app']
+            self.update_requirements( app, app.pid_byte_code, app.requirements )
             Logger.info("GUI: Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
             return self.ser_val
 
