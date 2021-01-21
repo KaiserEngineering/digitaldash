@@ -33,13 +33,15 @@ class Serial():
         self.firmwareVerified = False  #False to do a firmware request
         self.requirements = []
         self.fan_speed = 0
+        self.queued_message = None
+        self.message_pending = False
 
 
     def start(self, **args):
 
         cpu = CPUTemperature()
 
-        """L1612773-4oop for checking Serial connection for data."""
+        """Loop for checking Serial connection for data."""
         # Handle grabbing data
         data_line = ''
 
@@ -85,10 +87,19 @@ class Serial():
             elif( cpu.temperature < 60 ):
                 self.fan_speed = 0x00    # Turn off the fan 
 
-            positive_ack = [UART_SOL, 0x04, KE_CP_OP_CODES['KE_ACK'], self.fan_speed ]
-            self.ser.write(positive_ack)
+            # Send the pending message OR ack if no message is pending
+            if self.message_pending == True:
+                response = self.queued_message
+                self.message_pending = False
+                Logger.info("GUI: << Pending Message Sent" + "\n")
+            else:
+                response = [UART_SOL, 0x04, KE_CP_OP_CODES['KE_ACK'], self.fan_speed ]
+                Logger.info("GUI: << ACK" + "\n")
+
+            # Send the response
+            self.ser.write(response)
+            
             Logger.info("Clipped Data: " + str(data_line))
-            Logger.info("GUI: << ACK" + "\n")
             data_line = data_line.decode('utf-8', 'ignore')
 
             key_val = {}
@@ -104,15 +115,17 @@ class Serial():
 
     def update_requirements(self, app, pid_byte_code, pids):
         global KE_CP_OP_CODES
-        Logger.info("GUI: Updating requirements: " + str(pid_byte_code))
+        msg = "GUI: Updating requirements: " + str(pid_byte_code)
+        Logger.info( msg )
 
         # Save current PID request
         app.requirements = pids
 
-        bytes_written = self.ser.write( pid_byte_code )
+        # Queue the message
+        self.queued_message = pid_byte_code
 
-        msg = "PIDs updated " + str( bytes_written ) + " written"
-        Logger.info( msg )
+        # Set the flag to transmit the queued message
+        self.message_pending = True
 
         return( 1, msg )
 
