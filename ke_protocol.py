@@ -35,6 +35,7 @@ class Serial():
         self.fan_speed = 0
         self.queued_message = None
         self.message_pending = False
+        self.data_stream_active = False
 
 
     def start(self, **args):
@@ -78,6 +79,9 @@ class Serial():
             Logger.info("GUI: >> ACK RX'd" + "\n")
 
         elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
+            # Data stream is now active
+            self.data_stream_active = True
+
             if( cpu.temperature > 80 ):
                 self.fan_speed = 0x03    # Request max fan speed
             elif( cpu.temperature > 76 ):
@@ -98,7 +102,7 @@ class Serial():
 
             # Send the response
             self.ser.write(response)
-            
+
             Logger.info("Clipped Data: " + str(data_line))
             data_line = data_line.decode('utf-8', 'ignore')
 
@@ -124,8 +128,12 @@ class Serial():
         # Queue the message
         self.queued_message = pid_byte_code
 
-        # Set the flag to transmit the queued message
-        self.message_pending = True
+        if self.data_stream_active == True:
+            # Set the flag to transmit the queued message
+            self.message_pending = True
+        else:
+            # No communication is in progress, asynchronously send the message
+            self.ser.write( self.queued_message )
 
         return( 1, msg )
 
