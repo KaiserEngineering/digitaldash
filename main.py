@@ -64,7 +64,7 @@ class MyHandler(PatternMatchingEventHandler):
     patterns = ["*.json"]
 
     def on_modified(self, event):
-        build_from_config(self.DigitalDash)
+        build_from_config(self.DigitalDash, Data_Source)
 
 # Load our KV files
 for file in os.listdir(WORKING_PATH+'/kv/'):
@@ -108,7 +108,7 @@ class GUI(App):
         observer.schedule(MyHandler(self), WORKING_PATH+'/etc/', recursive=True)
         observer.start()
 
-        return build_from_config(self)
+        return build_from_config(self, Data_Source)
 
     def check_callback(self: DD, callback, data):
         ret = False

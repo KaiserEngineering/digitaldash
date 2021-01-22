@@ -90,7 +90,7 @@ def setup(self, Layouts):
         container       = FloatLayout()
         ObjectsToUpdate = []
 
-        num_gauges = len(view['gauges'])
+        num_gauges = len(view['gauges']) or 1
         # Get our % width that each gauge should claim
         # The 0.05 is our squish value to move gauges inwards
         percent_width = ( 1 / num_gauges ) - 0.05
@@ -142,7 +142,7 @@ def setup(self, Layouts):
         view_count += 1
     return (views, containers, callbacks)
 
-def build_from_config(self) -> NoReturn:
+def build_from_config(self, Data_Source=None) -> NoReturn:
     self.current = 0
     self.first_iteration = False if hasattr(self, 'first_iteration') else True
 
