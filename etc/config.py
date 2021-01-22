@@ -15,19 +15,32 @@ def views(file=None):
     if file == None or file == '':
         file = working_path+'/etc/config.json'
     jsonData = {}
+    errorConfig = ('''
+    {"views": { "0": {
+              "alerts": [{
+          "pid": "n/a",
+          "op": ">",
+          "value": "-9999",
+          "unit": "n/a",
+          "priority": 1,
+          "message": "Config file isn't valid!"
+        }], "default": 1, "theme": "Error", "background": "bg.jpg",
+              "dynamic": {},"gauges": [], "name": "Error", "enabled": 1}}}
+          ''')
+    try:
+      with open(file) as data_file:
+          jsonData = json.load(data_file)
 
-    with open(file) as data_file:
-        jsonData = json.load(data_file)
-
-        data_file.close()
-
-    jsonData = jsonData if validateConfig(jsonData) else json.loads('''
-        {"views": { "0": {
-            "alerts": [], "default": 1, "theme": "Error", "background": "bg.jpg",
-            "dynamic": {},"gauges": [{"themeConfig": "Error","pid": "","module": "Misc",
-            "path": "Alerts/"}], "name": "Error", "enabled": 1}}}
-        ''')
-
+          data_file.close()
+      Window._rotation = 0
+      jsonData = jsonData if validateConfig(jsonData) else json.loads( errorConfig )
+    except Exception as e:
+      # We can shorten the error message by removing the trace/line the
+      # error happened on.
+      errorString = (str(e).split( ':' ))[0]
+      errorConfig = errorConfig.replace( "Config file isn't valid!", errorString )
+      Logger.error( "GUI: Invalid config provided, falling back to default" )
+      jsonData = json.loads( errorConfig )
     return jsonData
 
 def getThemeConfig(theme):

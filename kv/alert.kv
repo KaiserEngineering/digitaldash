@@ -1,13 +1,13 @@
 #:kivy 1.0
 
 <Alert>:
-    ellipsis_options: {'color':(1,0.5,0.5,1),'underline':True}
-    shorten: True
     markup: True
     shorten_from: 'right'
     halign: 'center'
     valign: 'middle'
-    size_hint: 0.4, 0.5
+    size_hint: 0.5, 0.5
+    # This limits text to fit within our alert
+    text_size: root.width, None
     pos_hint: {"center_x": 0.50, "center_y": 0.85}
     canvas.before:
         Color:
