@@ -33,9 +33,19 @@ class KELabel(Label):
         self.color            = self.config_color
         self.config_font_size = args.get('font_size', 25)
         self.font_size        = self.config_font_size
-        self.decimals         = str(KE_PID.get(args.get('pid', ''), {}).get('decimals', 2))
-        # Currentlty if a unit is provided we show the unit string
-        self.unit_string      = PID_UNIT_LABEL.get(args.get('unit', ''), '')
+        self.units            = KE_PID.get(args.get('pid', ''), {}).get('units')
+        self.decimals         = '2' # Default to 2 and update later if a value is provided
+        self.unit             = args.get('unit', '')
+        self.unit_string      = ''
+
+        if ( args.get('unit') ):
+            if ( PID_UNIT_LABEL.get( self.unit, None) != None ):
+              self.unit_string = str(PID_UNIT_LABEL.get( self.unit, ''))
+            else:
+                Logger.error( "GUI: Found unit: %s but no PID_UNIT_LABEL value found", self.unit )
+            if ( self.units.get( self.unit, None ) != None ):
+                self.decimals = self.units.get( self.unit, '' ).get('decimals', '2')
+
         self.object_type      = 'Label'
         self.pid              = args.get('pid', None)
         self.markup           = True
@@ -45,7 +55,7 @@ class KELabel(Label):
                 self.default = str(KE_PID[self.pid]['shortName'])
             else:
                 self.default = KE_PID[self.pid]['name']
-                Logger.error("Could not load shortName from Static.Constants for PID: %s : %s", self.pid, str(e))
+                Logger.error("Could not load shortName from Static.Constants for PID: %s", self.pid)
         if 'data' in args and args['data']:
             self.text = self.default +' 0'
         else:
@@ -83,7 +93,7 @@ class KELabel(Label):
             if self.max_observed < value:
                 self.max_observed = value
                 self.text = ("{0:.%sf}"%(self.decimals)).format(value)
-        elif self.unit_string:
-            self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)+'[size=15]'+ ' ' + self.unit_string+'[/size]'
         else:
             self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)
+            if self.unit_string:
+                self.text = self.text + '[size=15]'+ ' ' + self.unit_string+'[/size]'

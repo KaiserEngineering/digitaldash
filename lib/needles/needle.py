@@ -1,6 +1,7 @@
 from lib.massager import smooth
 from typing import NoReturn
 from static.constants import KE_PID
+from static.constants import KE_PID
 
 class Needle():
     """
@@ -32,11 +33,17 @@ class Needle():
 
         working_path = args.get( 'working_path', '' )
 
-        (self.source, self.degrees, self.min, self.max) = (
+        units = None
+        if ( args.get('pid', '') and KE_PID.get(args.get('pid', False)) ):
+            units = KE_PID.get(args.get('pid', '')).get('units').get(args['unit'])
+
+        units = KE_PID.get(args.get('pid', '')).get('units').get(args['unit'])
+        (self.source, self.degrees, self.unit, self.min, self.max) = (
             working_path+"/static/imgs"+args['path'] + 'needle.png',
             float(args.get('degrees', 0)),
-            KE_PID[args['pid']]['Min'],
-            KE_PID[args['pid']]['Max']
+            args['unit'],
+            units['Min'],
+            units['Max'],
         )
         self.set_step()
 
@@ -45,7 +52,7 @@ class Needle():
         Abstract setData method most commonly used.
 
         Args:
-          self (<needle.*>) : One of the needle objects inheriting from lib.needle
+          self (<needle.*>) : One of the needle objects inheriting from digitaldash.needle
           value (float)     : Value to set the needle to
         """
         value = float(value)

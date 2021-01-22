@@ -23,15 +23,15 @@ def test_needle_simple():
     needles = (
         NeedleRadial(
             themeConfig=120, degrees=120, path='/Stock/',
-            pids=["0x010C"], pid="0x010C"
+            pids=["0x010C"], pid="0x010C", unit="PID_UNITS_RPM"
         ),
         NeedleEllipse(
             themeConfig=120, degrees=120, path='/Dirt/',
-            pids=["0x010C"], pid="0x010C"
+            pids=["0x010C"], pid="0x010C", unit="PID_UNITS_RPM"
         ),
         NeedleLinear(
             themeConfig=120, degrees=120, path='/Linear/',
-            pids=["0x010C"], pid="0x010C"
+            pids=["0x010C"], pid="0x010C", unit="PID_UNITS_RPM"
         ),
     )
 
@@ -53,6 +53,16 @@ def test_needle_simple():
         assert needle.true_value == float(4000), print( needle.Type+" component defaults to minimum value")
         assert needle.update == smooth( Old=old_value, New=4000 * needle.step - needle.offset ), print(needle.Type+" component sets the correct rotational value with smoothing (not true value)")
 
+def test_needle_min_max():
+    # Test that Min and Max is set correctly based on constants.py
+    needle = NeedleRadial(
+        themeConfig=120, degrees=120, path='/Stock/',
+        pids=["0x010C"], pid="0x010C", unit="PID_UNITS_RPM"
+    )
+    assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Min"] == needle.min
+    assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Max"] == needle.max
+
+
 def test_label_simple():
     """Basic label tests"""
     label = KELabel(
@@ -64,23 +74,39 @@ def test_label_simple():
         **KE_PID["0x010C"]
     )
     assert label.text == "hello, world", print("Default text value is set correctly")
-    assert label.decimals == str(KE_PID["0x010C"]['decimals']), print("Decimal place set correctly for label")
-
-    label.set_data(100)
-    assert label.text == "hello, world100", print("Default text value is set correctly form set_data method")
+    assert label.decimals == "2", print("Default decimal place set correctly for label when no unit provided")
 
     label = KELabel(
-        default        = 'Min: ',
-        data           = 1,
-        pid            = "0x010B"
+        default        = 'hello, world ',
+        ConfigColor    = (1, 1, 1 ,1),
+        ConfigFontSize = 25,
+        data           = 0,
+        pid            = "0x010C",
+        **KE_PID["0x010C"]
     )
-    label.set_data(0)
-    assert label.text == "0", print("Default text value is set correctly")
-    label.set_data(-100)
-    assert label.text == "-100", print("Min value sets correctly")
+    assert label.decimals == "2", print("Decimal place set correctly for label when unit is provided")
 
     label.set_data(100)
-    assert label.text == "-100", print("Min value stays minimum seen")
+    assert label.text == "hello, world 100.00", print("Default text value is set correctly form set_data method")
+
+    # Setting decimals to 0
+    label = KELabel(
+        default        = 'hello, world ',
+        ConfigColor    = (1, 1, 1 ,1),
+        ConfigFontSize = 25,
+        data           = 0,
+        pid            = "0x010C",
+        unit           = "PID_UNITS_RPM",
+        **KE_PID["0x010C"]
+    )
+
+    label.set_data(0)
+    assert label.text == "hello, world 0", print("Default text value is set correctly")
+    label.set_data(-100)
+    assert label.text == "hello, world -100", print("Min value sets correctly")
+
+    label.set_data(100)
+    assert label.text == "hello, world 100", print("Min value stays minimum seen")
 
     label = KELabel(
         default        = 'Max: ',
@@ -88,12 +114,12 @@ def test_label_simple():
         pid            = "0x010B"
     )
     label.set_data(0)
-    assert label.text == "0", print("Default text value is set correctly")
+    assert label.text == "0.00", print("Default text value is set correctly")
     label.set_data(100)
-    assert label.text == "100", print("Max value sets correctly")
+    assert label.text == "100.00", print("Max value sets correctly")
 
     label.set_data(10)
-    assert label.text == "100", print("Max value stays max seen")
+    assert label.text == "100.00", print("Max value stays max seen")
 
     # Test PID labels
     label = KELabel(
@@ -101,6 +127,7 @@ def test_label_simple():
         pid            = "0x010C"
     )
     assert label.text == "RPM", print("Sets PID label correctly")
+
 
 def test_alert_simple():
     """Basic alerts tests"""
