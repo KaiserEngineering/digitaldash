@@ -242,4 +242,5 @@ def build_update_requirements_bytearray(units, requirements):
         byte_count += 5
 
     pid_byte_code = [ UART_SOL , byte_count, KE_CP_OP_CODES['KE_PID_STREAM_NEW'] ] + pid_byte_code
+    Logger.info( "KE Protocol: Byte code: " + str(pid_byte_code) )
     return pid_byte_code
