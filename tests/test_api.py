@@ -163,8 +163,8 @@ def test_build():
     self.data_source  = None
     self.working_path = str(pathlib.Path(__file__).parent.absolute())
 
-    appObj     = build_from_config(self)
-    background = appObj.children[0]
+    anchorLayout = build_from_config(self)
+    background   = anchorLayout.children[0]
 
     container = background.children[1].children
     assert len(container) == 3
