@@ -53,7 +53,7 @@ class Dynamic():
             operator = bytearray( operator.encode() )
             self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
 
-        self.index = int(args.get('index'))
+        self.index    = int(args.get('index'))
         self.priority = int(args.get('priority'))
         self.pid = args.get('pid', '')
 

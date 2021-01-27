@@ -95,7 +95,7 @@ def setup(self, Layouts):
         # The 0.05 is our squish value to move gauges inwards
         percent_width = ( 1 / num_gauges ) - 0.05
 
-        multi_offset = 0;
+        multi_offset = 0
         # Only set offset if more than 1 gauge
         if num_gauges > 1:
             multi_offset = percent_width * ( num_gauges / 2 - 0.5 )

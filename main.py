@@ -116,8 +116,8 @@ class GUI(App):
           # Check if any dynamic changes need to be made
           if libdigitaldash.check(float(data[callback.pid]), callback.value, callback.op):
               ret = callback
-        except:
-          Logger.error( "GUI: Firmware did not provide data value for key: %s", callback.pid )
+        except Exception as e:
+          Logger.error( "GUI: Firmware did not provide data value for key: %s, %s", callback.pid, str(e) )
         return ret
 
     def change(self: DD, app, my_callback) -> NoReturn:
@@ -152,14 +152,15 @@ class GUI(App):
         dynamic_change = False
         # Check dynamic gauges before any alerts in case we make a change
         for dynamic in self.dynamic_callbacks:
-            if self.current == dynamic.index:
-                continue
+            print(dynamic.priority)
             my_callback = self.check_callback(dynamic, data)
 
             if my_callback:
-                self.change(self, my_callback)
-                dynamic_change = True
+              if self.current == dynamic.index:
                 break
+              self.change(self, my_callback)
+              dynamic_change = True
+              break
 
         # Check our alerts if no dynamic changes have occured
         if not dynamic_change:
