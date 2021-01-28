@@ -107,13 +107,18 @@ class Serial():
             Logger.info("Clipped Data: " + str(data_line))
             data_line = data_line.decode('utf-8', 'ignore')
 
-            key_val = {}
-            for val in data_line.split(','):
-                (k, u, v) = val.split(':')
-                key_val[str(k)] = v
-            self.ser_val = key_val
-            #self.ser_val[2] = self.ser.inWaiting()
-            #self.ser.flushInput()
+            if len(data_line) > 3:
+                try:
+                    key_val = {}
+                    for val in data_line.split(','):
+                        (k, u, v) = val.split(':')
+                        key_val[str(k)] = v
+                    self.ser_val = key_val
+                    #self.ser_val[2] = self.ser.inWaiting()
+                    #self.ser.flushInput()
+                except:
+                    Logger.error("KE Protocol: No Data")
+
             return self.ser_val
 
         return self.ser_val
