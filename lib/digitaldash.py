@@ -23,6 +23,28 @@ class Background(AnchorLayout):
       Logger.debug( "GUI: Creating new Background obj with source: "+str(BackgroundSource) )
       self.source = "{}{}".format(WorkingPath+"/static/imgs/Background/", BackgroundSource )
 
+def findPids( view ):
+    """Find all PIDs in a view"""
+    pids_dict = {}
+    for gauge in view['gauges']:
+        pids_dict[gauge['pid']] = 1
+    for alert in view['alerts']:
+        pids_dict[alert['pid']] = 1
+    if view['dynamic'] and view['dynamic']['enabled']:
+        pids_dict[view['dynamic']['pid']] = 1
+    return list(pids_dict.keys())
+
+def findUnits( view ):
+    """Create a dictionary of PIDs and their corresponding unit"""
+    units = {}
+    for gauge in view['gauges']:
+      units[gauge['pid']] = gauge['unit']
+    for alert in view['alerts']:
+      units[alert['pid']] = alert['unit']
+    if view['dynamic'] and view['dynamic']['enabled']:
+      units[view['dynamic']['pid']] = view['dynamic']['unit']
+    return units
+
 def setup(self, Layouts):
     """
     Build all widgets for DigitalDash.
@@ -46,23 +68,8 @@ def setup(self, Layouts):
         # Skip disabled views
         if not view['enabled']: continue
 
-        # Get our PIDs list from the gauges, alerts and dynamic config
-        pids_dict = {}
-        for gauge in view['gauges']:
-          pids_dict[gauge['pid']] = 1
-        for alert in view['alerts']:
-          pids_dict[alert['pid']] = 1
-        if view['dynamic'] and view['dynamic']['enabled']:
-          pids_dict[view['dynamic']['pid']] = 1
-        pids = list(pids_dict.keys())
-
-        # Get our units dict from the gauges, alerts and dynamic config
-        for gauge in view['gauges']:
-          units[gauge['pid']] = gauge['unit']
-        for alert in view['alerts']:
-          units[alert['pid']] = alert['unit']
-        if view['dynamic'] and view['dynamic']['enabled']:
-          units[view['dynamic']['pid']] = view['dynamic']['unit']
+        pids  = findPids( view )
+        units = { **units, **findUnits( view ) }
 
         background = view['background']
 
