@@ -151,8 +151,6 @@ def setup(self, Layouts):
       if ( len(units) and len(view['pids']) ):
           if ( list(units.keys())[0] != 'n/a' and view['pids'][0] != 'n/a' ):
               views[i]['pid_byte_code'] = build_update_requirements_bytearray( units, views[i]['pids'] )
-    print(views[1]['pids'])
-    print(views[1]['pid_byte_code'])
     return (views, containers, callbacks)
 
 def build_from_config(self, Data_Source=None) -> NoReturn:
