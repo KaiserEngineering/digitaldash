@@ -16,11 +16,11 @@
 </script>
 
 {#if !segment || segment != 'login'}
-  <Nav segment={segment}/>
+  <svelte:component this={Nav} segment={segment} />
 {/if}
 
 <div class="col-sm-12 col-md-6">
-  <Notifications />
+  <svelte:component this={Notifications} />
 </div>
 
 <slot></slot>

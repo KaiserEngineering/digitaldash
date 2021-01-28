@@ -1,54 +1,56 @@
-import * as layout from "/_app/routes/$layout.svelte";
-export { layout };
-export { default as ErrorComponent } from "/_app/assets/components/error.svelte";
+import * as layout from "/_app/routes/$layout.svelte.js";
 
-export const components = [
-	() => import("/_app/routes/index.svelte"),
-	() => import("/_app/routes/advanced.svelte"),
-	() => import("/_app/routes/settings.svelte"),
-	() => import("/_app/routes/login.svelte"),
-	() => import("/_app/routes/edit/[slug].svelte")
+const components = [
+	() => import("/_app/routes/index.svelte.js"),
+	() => import("/_app/routes/advanced.svelte.js"),
+	() => import("/_app/routes/settings.svelte.js"),
+	() => import("/_app/routes/login.svelte.js"),
+	() => import("/_app/routes/edit/[slug].svelte.js")
 ];
 
-export const routes = (d => [
+const d = decodeURIComponent;
+const empty = () => ({});
+
+export const pages = [
 	{
 		// index.svelte
 		pattern: /^\/$/,
-		parts: [
-			{ i: 0 }
-		]
+		params: empty,
+		parts: [components[0]]
 	},
 
 	{
 		// advanced.svelte
 		pattern: /^\/advanced\/?$/,
-		parts: [
-			{ i: 1 }
-		]
+		params: empty,
+		parts: [components[1]]
 	},
 
 	{
 		// settings.svelte
 		pattern: /^\/settings\/?$/,
-		parts: [
-			{ i: 2 }
-		]
+		params: empty,
+		parts: [components[2]]
 	},
 
 	{
 		// login.svelte
 		pattern: /^\/login\/?$/,
-		parts: [
-			{ i: 3 }
-		]
+		params: empty,
+		parts: [components[3]]
 	},
 
 	{
 		// edit/[slug].svelte
 		pattern: /^\/edit\/([^/]+?)\/?$/,
-		parts: [
-			null,
-			{ i: 4, params: match => ({ slug: d(match[1]) }) }
-		]
+		params: (m) => ({ slug: d(m[1])}),
+		parts: [components[4]]
 	}
-])(decodeURIComponent);
+];
+
+export const ignore = [
+	/^\/api\/config\/?$/,
+	/^\/api\/auth\/?$/
+];
+
+export { layout };

@@ -1,15 +1,18 @@
 <script context="module">
   export async function preload({ params, query }) {
+    console.log("params"+query)
     return { id: params.slug };
   }
 </script>
 
 <script>
   import { session } from "$app/stores";
-  import Slider from "../../components/Slider";
+  import Slider from "../../components/Slider.svelte";
 
   export let id;
   let configuration = $session.configuration;
+  console.log(configuration)
+  console.log(id)
 
   let actions  = [];
   let view     = configuration.views[id];
@@ -269,7 +272,7 @@
         <div class="dynamicContainer">
           <div class="row">
             <div class="col-sm-3 col-12">
-              <Slider callback={toggleDynamic} callbackArgs={null} checked={view.dynamic.enabled} />
+              <svelte:component this={Slider} callback={toggleDynamic} callbackArgs={null} checked={view.dynamic.enabled} />
             </div>
           </div>
           <div class="row">

@@ -27,8 +27,8 @@ export function getSession( context ) {
       username: context.user.Username
     },
     actions       : [],
-    configuration : context.configuration.body,
-    constants     : context.constants.body,
+    configuration : context.configuration,
+    constants     : context.constants,
     count         : 0
   }
 }

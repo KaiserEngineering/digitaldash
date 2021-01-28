@@ -3,7 +3,35 @@ import { getContext } from 'svelte';
 // const ssr = (import.meta as any).env.SSR;
 const ssr = typeof window === 'undefined'; // TODO why doesn't previous line work in build?
 
-const getStores = () => getContext('__svelte__');
+// TODO remove this (for 1.0? after 1.0?)
+let warned = false;
+function stores() {
+	if (!warned) {
+		console.error('stores() is deprecated; use getStores() instead');
+		warned = true;
+	}
+	return getStores();
+}
+
+const getStores = () => {
+	const stores = getContext('__svelte__');
+
+	return {
+		page: {
+			subscribe: stores.page.subscribe
+		},
+		navigating: {
+			subscribe: stores.navigating.subscribe
+		},
+		get preloading() {
+			console.error('stores.preloading is deprecated; use stores.navigating instead');
+			return {
+				subscribe: stores.navigating.subscribe
+			};
+		},
+		session: stores.session
+	};
+};
 
 const page = {
 	subscribe(fn) {
@@ -12,9 +40,9 @@ const page = {
 	}
 };
 
-const preloading = {
+const navigating = {
 	subscribe(fn) {
-		const store = getStores().preloading;
+		const store = getStores().navigating;
 		return store.subscribe(fn);
 	}
 };
@@ -46,5 +74,5 @@ const session = {
 	}
 };
 
-export { getStores, page, preloading, session };
+export { getStores, navigating, page, session, stores };
 //# sourceMappingURL=stores.js.map

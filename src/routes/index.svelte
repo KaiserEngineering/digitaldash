@@ -1,7 +1,7 @@
 <script>
   import { session } from "$app/stores";
   import { _ } from "lodash";
-  import Slider from "../components/Slider";
+  import Slider from "../components/Slider.svelte";
 
   let KE_PIDS = $session.constants.KE_PID;
   $: views = $session.configuration.views;
@@ -37,7 +37,7 @@
           <h5>{views[id].name}</h5>
         </div>
         <div class="text-right col-6">
-          <Slider callback={toggleEnabled} callbackArgs={id} checked={views[id].enabled} />
+          <svelte:component this={Slider} callback={toggleEnabled} callbackArgs={id} checked={views[id].enabled} />
         </div>
       </div>
 
