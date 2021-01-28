@@ -1,12 +1,16 @@
-import fs, { readFileSync, readSync } from 'fs';
+import { writeFile, readFile } from 'fs/promises';
+import fs from 'fs';
 
 const config_path = process.env.KEGUIHome
 
 let configCache;
-
 // Need to add some kind of error handling here
 function readConfig() {
-  return JSON.parse( fs.readFileSync( `${config_path}/etc/config.json`, 'utf8' ) );
+  return JSON.parse( fs.readFileSync( `${config_path}/etc/config.json`, function(err, data) {
+    if ( err ) {
+      console.log('Failed to read config file')
+    }
+  }));
 }
 
 export async function get() {
@@ -14,8 +18,15 @@ export async function get() {
     return configCache;
   }
   else {
-    configCache = readConfig();
-    return configCache;
+    return res = await readFile(`${config_path}/etc/config.json`, 'utf8')
+      .then((result) => {
+        configCache = JSON.parse( result );
+        return configCache;
+      })
+      .catch(function(error) {
+        console.error( error )
+        return {};
+      });
   }
 }
 
@@ -23,14 +34,13 @@ export async function get() {
 export async function post( request ) {
   const newConfig = JSON.parse( request.body );
 
-  fs.writeFile( `${config_path}/etc/config.json`, JSON.stringify( newConfig, null, 2 ), (err) => {
-    if ( err ) {
-      return { "ret": 0, message: "Couldn't read config.json", config: {} };
-    }
-    else {
-      configCache = readConfig();
-      return { "ret": 1, message: "Config updated", config: configCache };
-    }
+  return res = await writeFile( `${config_path}/etc/config.json`, JSON.stringify( newConfig, null, 2 ))
+  .then(() => {
+    configCache = readConfig();
+    return { "body" : { "ret": 1, message: "Config updated", config: configCache } };
+  })
+  .catch(function(error) {
+    return { "body" : { "ret": 0, message: "Config failed to update: "+error, config: configCache } };
   });
 }
 
@@ -53,17 +63,16 @@ export async function put( request ) {
     // Why do I need this? We obviously have some kind of object reference
     // need to look into how JS does refs.
     temp.views[id].enabled = temp.views[id].enabled ? false : true;
-    return { "ret": 0, "views": configCache, message: "Need at least one enabled view" };
+    return { "body": { "ret": 0, "views": configCache, message: "Need at least one enabled view" } };
   }
   else {
-    fs.writeFile( `${config_path}/etc/config.json`, JSON.stringify( temp, null, 2 ), (err) => {
-      if ( err ) {
-        return { "ret": 0, message: "Couldn't read config.json to PUT", config: {} };
-      }
-      else {
-        configCache = readConfig();
-        return { "ret": 1, "views": configCache, message: "Config updated" };
-      }
+    return res = await writeFile( `${config_path}/etc/config.json`, JSON.stringify( temp, null, 2 ))
+    .then(() => {
+      configCache = readConfig();
+      return { "body": { "ret": 1, "views": configCache, message: "Config updated" } };
+    })
+    .catch(function(error) {
+      return { "body" : { "ret": 0, message: "Config failed to update", config: configCache } };
     });
   }
 }

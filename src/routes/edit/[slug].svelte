@@ -1,7 +1,6 @@
 <script context="module">
-  export async function preload({ params, query }) {
-    console.log("params"+query)
-    return { id: params.slug };
+  export async function load({ page, context }) {
+    return { info: 'some info', context: { info: 'some info', id: page.params.slug } };
   }
 </script>
 
@@ -10,25 +9,26 @@
   import Slider from "../../components/Slider.svelte";
 
   export let id;
-  let configuration = $session.configuration;
-  console.log(configuration)
-  console.log(id)
+  export let info;
 
-  let actions  = [];
+  let configuration = $session.configuration;
+
   let view     = configuration.views[id];
   const KE_PID = $session.constants.KE_PID;
   const pids   = Object.keys( KE_PID );
 
   function normalizeGauges() {
-    // Ensure we always have 3 entries in our array
-    while ( view.gauges.length != 3 ) {
-      view.gauges.push({
-        "module"      : "",
-        "themeConfig" : "",
-        "unit"        : "",
-        "path"        : "",
-        "pid"         : ""
-      });
+    if ( view ) {
+      // Ensure we always have 3 entries in our array
+      while ( view.gauges.length != 3 ) {
+        view.gauges.push({
+          "module"      : "",
+          "themeConfig" : "",
+          "unit"        : "",
+          "path"        : "",
+          "pid"         : ""
+        });
+      }
     }
   }
   normalizeGauges();

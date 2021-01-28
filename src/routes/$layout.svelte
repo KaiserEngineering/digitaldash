@@ -1,5 +1,8 @@
 <script context="module">
-  export async function preload(page, session) {
+  export async function preload(page, context, session, fetch) {
+    console.log(session)
+    console.log(context)
+    console.log(page)
     const { user } = session;
 
     if ( !user && page.path != '/login' ) {
@@ -12,7 +15,7 @@
   import Nav from "../components/Nav.svelte";
   import Notifications from '../components/Notifications.svelte';
 
-  export let segment;
+  export let segment = undefined;
 </script>
 
 {#if !segment || segment != 'login'}
