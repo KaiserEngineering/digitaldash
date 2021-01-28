@@ -152,7 +152,6 @@ class GUI(App):
         dynamic_change = False
         # Check dynamic gauges before any alerts in case we make a change
         for dynamic in self.dynamic_callbacks:
-            print(dynamic.priority)
             my_callback = self.check_callback(dynamic, data)
 
             if my_callback:

@@ -31,10 +31,13 @@ def setup(self, Layouts):
     values for views. Then it will build the views and return them.
     """
 
-    callbacks  = {}
-    views      = []
-    containers = []
-    view_count = 0
+    callbacks    = {}
+    views        = []
+    containers   = []
+    view_count   = 0
+    dynamic_pids = []
+    # Currently we only allow one type of units per PID
+    units        = {}
 
     # Sort based on default value
     for id in sorted(Layouts['views'],
@@ -54,7 +57,6 @@ def setup(self, Layouts):
         pids = list(pids_dict.keys())
 
         # Get our units dict from the gauges, alerts and dynamic config
-        units = {}
         for gauge in view['gauges']:
           units[gauge['pid']] = gauge['unit']
         for alert in view['alerts']:
@@ -68,6 +70,9 @@ def setup(self, Layouts):
         if view['dynamic'].keys():
             dynamic = view['dynamic']
             dynamic['index'] = view_count
+
+            # Keep track of our dynamic PIDs
+            dynamic_pids.append( dynamic['pid'] )
 
             dynamic_obj = Dynamic()
             (ret, msg) = dynamic_obj.new(**dynamic)
@@ -132,14 +137,22 @@ def setup(self, Layouts):
 
         containers.append(container)
 
-        pid_byte_code = None
-        if ( len(units) and len(pids) ):
-            if ( list(units.keys())[0] != 'n/a' and pids[0] != 'n/a' ):
-                pid_byte_code = build_update_requirements_bytearray( units, pids )
-
         views.append({'app': Background(WorkingPath=self.WORKING_PATH, BackgroundSource=background), 'alerts': FloatLayout(),
-                      'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids, 'pid_byte_code': pid_byte_code})
+                      'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
         view_count += 1
+
+    # We need to retro-actively add our dynamic PIDs into the PIDs array per view
+    for i, view in enumerate(views):
+      for pid in dynamic_pids:
+        if pid not in view['pids']:
+          views[i]['pids'].append( pid )
+
+      # Now we can generate a complete byte array for the PIDs
+      if ( len(units) and len(view['pids']) ):
+          if ( list(units.keys())[0] != 'n/a' and view['pids'][0] != 'n/a' ):
+              views[i]['pid_byte_code'] = build_update_requirements_bytearray( units, views[i]['pids'] )
+    print(views[1]['pids'])
+    print(views[1]['pid_byte_code'])
     return (views, containers, callbacks)
 
 def build_from_config(self, Data_Source=None) -> NoReturn:
