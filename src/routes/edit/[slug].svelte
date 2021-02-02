@@ -1,6 +1,6 @@
 <script context="module">
   export async function load({ page, context }) {
-    return { info: 'some info', context: { info: 'some info', id: page.params.slug } };
+    return { props: { id: page.params.slug } };
   }
 </script>
 
@@ -9,7 +9,6 @@
   import Slider from "../../components/Slider.svelte";
 
   export let id;
-  export let info;
 
   let configuration = $session.configuration;
 
@@ -50,7 +49,7 @@
         return;
       }
       // Add our units to our select input
-      KE_PID[pid].units.forEach((unit, i) => {
+      Object.keys(KE_PID[pid].units).forEach((unit, i) => {
         unitsSelect.options[i] = new Option(unit, unit, false, false);
       });
       // Actually set the select value to the first unit

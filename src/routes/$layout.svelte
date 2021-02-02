@@ -1,13 +1,11 @@
 <script context="module">
-  export async function preload(page, context, session, fetch) {
-    console.log(session)
-    console.log(context)
-    console.log(page)
+  export async function load({page, context, session, fetch}) {
     const { user } = session;
 
     if ( !user && page.path != '/login' ) {
-      return this.redirect( 302, `http://${page.host}/login` );
+      return { props: { segment: page.path }, redirect: { status: 301, to: `/login` } };
     }
+    return { props: { segment: page.path } };
   }
 </script>
 
@@ -18,7 +16,7 @@
   export let segment = undefined;
 </script>
 
-{#if !segment || segment != 'login'}
+{#if !segment || segment != '/login'}
   <svelte:component this={Nav} segment={segment} />
 {/if}
 
