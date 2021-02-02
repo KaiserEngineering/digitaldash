@@ -8,7 +8,10 @@ import {
 import Nav from "../../_components/Nav.svelte.js";
 import Notifications from "../../_components/Notifications.svelte.js";
 
-async function preload(page, session) {
+async function preload(page, context, session, fetch) {
+	console.log(session);
+	console.log(context);
+	console.log(page);
 	const { user } = session;
 
 	if (!user && page.path != "/login") {
@@ -17,7 +20,7 @@ async function preload(page, session) {
 }
 
 const $layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-	let { segment } = $$props;
+	let { segment = undefined } = $$props;
 	if ($$props.segment === void 0 && $$bindings.segment && segment !== void 0) $$bindings.segment(segment);
 
 	return `${!segment || segment != "login"

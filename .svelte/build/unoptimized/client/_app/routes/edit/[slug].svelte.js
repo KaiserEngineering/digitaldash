@@ -721,7 +721,7 @@ function create_if_block(ctx) {
 			attr(select0, "class", "custom-select form-control d-block w-100");
 			attr(select0, "id", "country");
 			select0.required = true;
-			if (/*view*/ ctx[1].background === void 0) add_render_callback(() => /*select0_change_handler*/ ctx[10].call(select0));
+			if (/*view*/ ctx[1].background === void 0) add_render_callback(() => /*select0_change_handler*/ ctx[11].call(select0));
 			attr(div1, "class", "col-6");
 			attr(label2, "for", "theme");
 			option1.__value = "";
@@ -730,7 +730,7 @@ function create_if_block(ctx) {
 			attr(select1, "class", "form-control d-block w-100");
 			attr(select1, "id", "theme");
 			select1.required = true;
-			if (/*view*/ ctx[1].theme === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[11].call(select1));
+			if (/*view*/ ctx[1].theme === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[12].call(select1));
 			attr(div2, "class", "col-6");
 			attr(label3, "for", "theme");
 			attr(div3, "class", "input-group");
@@ -750,7 +750,7 @@ function create_if_block(ctx) {
 			attr(select2, "class", "form-control");
 			attr(select2, "id", "dynamicPID");
 			select2.required = true;
-			if (/*view*/ ctx[1].dynamic.pid === void 0) add_render_callback(() => /*select2_change_handler*/ ctx[22].call(select2));
+			if (/*view*/ ctx[1].dynamic.pid === void 0) add_render_callback(() => /*select2_change_handler*/ ctx[23].call(select2));
 			attr(div11, "class", "col-sm-3 col-12");
 			attr(label5, "class", "label");
 			attr(label5, "for", "dynamicUnit");
@@ -773,7 +773,7 @@ function create_if_block(ctx) {
 			attr(select4, "name", "dynamicOP");
 			select4.disabled = select4_disabled_value = !/*view*/ ctx[1].dynamic.enabled;
 			attr(select4, "class", "form-control");
-			if (/*view*/ ctx[1].dynamic.op === void 0) add_render_callback(() => /*select4_change_handler*/ ctx[25].call(select4));
+			if (/*view*/ ctx[1].dynamic.op === void 0) add_render_callback(() => /*select4_change_handler*/ ctx[26].call(select4));
 			attr(div14, "class", "col-sm-3 col-12");
 			attr(label8, "for", "dynamicPriority");
 			input3.disabled = input3_disabled_value = !/*view*/ ctx[1].dynamic.enabled;
@@ -944,16 +944,16 @@ function create_if_block(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen(input1, "input", /*input1_input_handler*/ ctx[9]),
-					listen(select0, "change", /*select0_change_handler*/ ctx[10]),
-					listen(select1, "change", /*select1_change_handler*/ ctx[11]),
-					listen(button0, "click", /*click_handler_1*/ ctx[21]),
+					listen(input1, "input", /*input1_input_handler*/ ctx[10]),
+					listen(select0, "change", /*select0_change_handler*/ ctx[11]),
+					listen(select1, "change", /*select1_change_handler*/ ctx[12]),
+					listen(button0, "click", /*click_handler_1*/ ctx[22]),
 					action_destroyer(pidChange_action = /*pidChange*/ ctx[4].call(null, select2)),
-					listen(select2, "change", /*select2_change_handler*/ ctx[22]),
-					listen(select3, "blur", /*blur_handler_2*/ ctx[23]),
-					listen(input2, "input", /*input2_input_handler_1*/ ctx[24]),
-					listen(select4, "change", /*select4_change_handler*/ ctx[25]),
-					listen(input3, "input", /*input3_input_handler*/ ctx[26]),
+					listen(select2, "change", /*select2_change_handler*/ ctx[23]),
+					listen(select3, "blur", /*blur_handler_2*/ ctx[24]),
+					listen(input2, "input", /*input2_input_handler_1*/ ctx[25]),
+					listen(select4, "change", /*select4_change_handler*/ ctx[26]),
+					listen(input3, "input", /*input3_input_handler*/ ctx[27]),
 					listen(form, "submit", prevent_default(/*handleSubmit*/ ctx[5]))
 				];
 
@@ -1275,11 +1275,11 @@ function create_each_block_5(ctx) {
 	}
 
 	function select0_change_handler_1() {
-		/*select0_change_handler_1*/ ctx[12].call(select0, /*i*/ ctx[39]);
+		/*select0_change_handler_1*/ ctx[13].call(select0, /*i*/ ctx[39]);
 	}
 
 	function blur_handler(...args) {
-		return /*blur_handler*/ ctx[13](/*i*/ ctx[39], ...args);
+		return /*blur_handler*/ ctx[14](/*i*/ ctx[39], ...args);
 	}
 
 	return {
@@ -1559,11 +1559,11 @@ function create_each_block_2(ctx) {
 	let dispose;
 
 	function input0_input_handler() {
-		/*input0_input_handler*/ ctx[14].call(input0, /*each_value_2*/ ctx[38], /*i*/ ctx[39]);
+		/*input0_input_handler*/ ctx[15].call(input0, /*each_value_2*/ ctx[38], /*i*/ ctx[39]);
 	}
 
 	function input1_input_handler_1() {
-		/*input1_input_handler_1*/ ctx[15].call(input1, /*each_value_2*/ ctx[38], /*i*/ ctx[39]);
+		/*input1_input_handler_1*/ ctx[16].call(input1, /*each_value_2*/ ctx[38], /*i*/ ctx[39]);
 	}
 
 	let each_value_4 = ["=", ">", "<", ">=", "<="];
@@ -1574,7 +1574,7 @@ function create_each_block_2(ctx) {
 	}
 
 	function select0_change_handler_2() {
-		/*select0_change_handler_2*/ ctx[16].call(select0, /*each_value_2*/ ctx[38], /*i*/ ctx[39]);
+		/*select0_change_handler_2*/ ctx[17].call(select0, /*each_value_2*/ ctx[38], /*i*/ ctx[39]);
 	}
 
 	let each_value_3 = /*pids*/ ctx[3];
@@ -1585,19 +1585,19 @@ function create_each_block_2(ctx) {
 	}
 
 	function select1_change_handler_1() {
-		/*select1_change_handler_1*/ ctx[17].call(select1, /*each_value_2*/ ctx[38], /*i*/ ctx[39]);
+		/*select1_change_handler_1*/ ctx[18].call(select1, /*each_value_2*/ ctx[38], /*i*/ ctx[39]);
 	}
 
 	function blur_handler_1(...args) {
-		return /*blur_handler_1*/ ctx[18](/*alert*/ ctx[37], /*each_value_2*/ ctx[38], /*i*/ ctx[39], ...args);
+		return /*blur_handler_1*/ ctx[19](/*alert*/ ctx[37], /*each_value_2*/ ctx[38], /*i*/ ctx[39], ...args);
 	}
 
 	function input2_input_handler() {
-		/*input2_input_handler*/ ctx[19].call(input2, /*each_value_2*/ ctx[38], /*i*/ ctx[39]);
+		/*input2_input_handler*/ ctx[20].call(input2, /*each_value_2*/ ctx[38], /*i*/ ctx[39]);
 	}
 
 	function click_handler() {
-		return /*click_handler*/ ctx[20](/*i*/ ctx[39]);
+		return /*click_handler*/ ctx[21](/*i*/ ctx[39]);
 	}
 
 	return {
@@ -2145,33 +2145,35 @@ function create_fragment(ctx) {
 	};
 }
 
-async function preload({ params, query }) {
-	console.log("params" + query);
-	return { id: params.slug };
+async function load({ page, context }) {
+	return {
+		info: "some info",
+		context: { info: "some info", id: page.params.slug }
+	};
 }
 
 function instance($$self, $$props, $$invalidate) {
 	let $session;
-	component_subscribe($$self, session, $$value => $$invalidate(28, $session = $$value));
+	component_subscribe($$self, session, $$value => $$invalidate(29, $session = $$value));
 	let { id } = $$props;
+	let { info } = $$props;
 	let configuration = $session.configuration;
-	console.log(configuration);
-	console.log(id);
-	let actions = [];
 	let view = configuration.views[id];
 	const KE_PID = $session.constants.KE_PID;
 	const pids = Object.keys(KE_PID);
 
 	function normalizeGauges() {
-		// Ensure we always have 3 entries in our array
-		while (view.gauges.length != 3) {
-			view.gauges.push({
-				"module": "",
-				"themeConfig": "",
-				"unit": "",
-				"path": "",
-				"pid": ""
-			});
+		if (view) {
+			// Ensure we always have 3 entries in our array
+			while (view.gauges.length != 3) {
+				view.gauges.push({
+					"module": "",
+					"themeConfig": "",
+					"unit": "",
+					"path": "",
+					"pid": ""
+				});
+			}
 		}
 	}
 
@@ -2374,6 +2376,7 @@ function instance($$self, $$props, $$invalidate) {
 
 	$$self.$$set = $$props => {
 		if ("id" in $$props) $$invalidate(0, id = $$props.id);
+		if ("info" in $$props) $$invalidate(9, info = $$props.info);
 	};
 
 	return [
@@ -2386,6 +2389,7 @@ function instance($$self, $$props, $$invalidate) {
 		addAlert,
 		removeAlert,
 		toggleDynamic,
+		info,
 		input1_input_handler,
 		select0_change_handler,
 		select1_change_handler,
@@ -2410,10 +2414,10 @@ function instance($$self, $$props, $$invalidate) {
 class U5Bslugu5D extends SvelteComponent {
 	constructor(options) {
 		super();
-		init(this, options, instance, create_fragment, safe_not_equal, { id: 0 }, [-1, -1]);
+		init(this, options, instance, create_fragment, safe_not_equal, { id: 0, info: 9 }, [-1, -1]);
 	}
 }
 
 export default U5Bslugu5D;
-export { preload };
+export { load };
 //# sourceMappingURL=[slug].svelte.js.map

@@ -1,5 +1,7 @@
 import fs from 'fs';
 import { exec } from 'child_process';
+import util from 'util';
+const execute = util.promisify(exec);
 
 let sessionCache;
 export async function get_user( sid ) {
@@ -29,15 +31,15 @@ export async function getConstants() {
       return constantsCache;
     }
     else {
-      exec( `python3 ${constants_path}/static/constants.py`, (error, stdout, stderr) => {
-        if ( error ) {
-          return( err );
-        }
-        else {
-          constantsCache = JSON.parse( stdout );
-          return constantsCache;
-        }
-      });
+      const { stdout, stderr } = await execute( `python3 ${constants_path}/static/constants.py`);
+      if ( stderr ) {
+        console.error( "Could not read constants.py" );
+        return {};
+      }
+      else {
+        constantsCache = JSON.parse( stdout );
+        return constantsCache;
+      }
     }
 }
 

@@ -241,7 +241,10 @@ function create_fragment(ctx) {
 	};
 }
 
-async function preload(page, session) {
+async function preload(page, context, session, fetch) {
+	console.log(session);
+	console.log(context);
+	console.log(page);
 	const { user } = session;
 
 	if (!user && page.path != "/login") {
@@ -251,7 +254,7 @@ async function preload(page, session) {
 
 function instance($$self, $$props, $$invalidate) {
 	let { $$slots: slots = {}, $$scope } = $$props;
-	let { segment } = $$props;
+	let { segment = undefined } = $$props;
 
 	$$self.$$set = $$props => {
 		if ("segment" in $$props) $$invalidate(0, segment = $$props.segment);

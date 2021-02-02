@@ -15,7 +15,6 @@
         body   : JSON.stringify({id: id})
     }).then(d => d.json())
     .then(d => {
-      console.log(d)
       if ( !_.isEqual( views, d.views )) {
         views = d.views.views;
         $session.configuration.views = d.views.views;

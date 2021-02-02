@@ -46,7 +46,7 @@ function get_each_context_1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (31:0) {#if views}
+// (32:0) {#if views}
 function create_if_block(ctx) {
 	let each_1_anchor;
 	let current;
@@ -85,7 +85,7 @@ function create_if_block(ctx) {
 			current = true;
 		},
 		p(ctx, dirty) {
-			if (dirty & /*Object, views, KE_PIDS, toggleEnabled*/ 7) {
+			if (dirty & /*Object, views, KE_PIDS, Slider, toggleEnabled*/ 7) {
 				each_value = Object.keys(/*views*/ ctx[0]);
 				let i;
 
@@ -137,7 +137,7 @@ function create_if_block(ctx) {
 	};
 }
 
-// (58:16) {#if gauge && gauge.pid}
+// (59:16) {#if gauge && gauge.pid}
 function create_if_block_1(ctx) {
 	let div;
 	let p;
@@ -189,7 +189,7 @@ function create_if_block_1(ctx) {
 	};
 }
 
-// (57:14) {#each views[id].gauges as gauge}
+// (58:14) {#each views[id].gauges as gauge}
 function create_each_block_1(ctx) {
 	let if_block_anchor;
 	let if_block = /*gauge*/ ctx[7] && /*gauge*/ ctx[7].pid && create_if_block_1(ctx);
@@ -228,7 +228,7 @@ function create_each_block_1(ctx) {
 	};
 }
 
-// (32:2) {#each Object.keys(views) as id }
+// (33:2) {#each Object.keys(views) as id }
 function create_each_block(ctx) {
 	let div7;
 	let div2;
@@ -238,7 +238,7 @@ function create_each_block(ctx) {
 	let t0;
 	let t1;
 	let div1;
-	let slider;
+	let switch_instance;
 	let t2;
 	let a;
 	let div6;
@@ -257,14 +257,21 @@ function create_each_block(ctx) {
 	let a_href_value;
 	let t6;
 	let current;
+	var switch_value = Slider;
 
-	slider = new Slider({
+	function switch_props(ctx) {
+		return {
 			props: {
 				callback: /*toggleEnabled*/ ctx[2],
 				callbackArgs: /*id*/ ctx[4],
 				checked: /*views*/ ctx[0][/*id*/ ctx[4]].enabled
 			}
-		});
+		};
+	}
+
+	if (switch_value) {
+		switch_instance = new switch_value(switch_props(ctx));
+	}
 
 	let each_value_1 = /*views*/ ctx[0][/*id*/ ctx[4]].gauges;
 	let each_blocks = [];
@@ -282,7 +289,7 @@ function create_each_block(ctx) {
 			t0 = text(t0_value);
 			t1 = space();
 			div1 = element("div");
-			create_component(slider.$$.fragment);
+			if (switch_instance) create_component(switch_instance.$$.fragment);
 			t2 = space();
 			a = element("a");
 			div6 = element("div");
@@ -318,7 +325,7 @@ function create_each_block(ctx) {
 			t1 = claim_space(div2_nodes);
 			div1 = claim_element(div2_nodes, "DIV", { class: true });
 			var div1_nodes = children(div1);
-			claim_component(slider.$$.fragment, div1_nodes);
+			if (switch_instance) claim_component(switch_instance.$$.fragment, div1_nodes);
 			div1_nodes.forEach(detach);
 			div2_nodes.forEach(detach);
 			t2 = claim_space(div7_nodes);
@@ -378,7 +385,11 @@ function create_each_block(ctx) {
 			append(h5, t0);
 			append(div2, t1);
 			append(div2, div1);
-			mount_component(slider, div1, null);
+
+			if (switch_instance) {
+				mount_component(switch_instance, div1, null);
+			}
+
 			append(div7, t2);
 			append(div7, a);
 			append(a, div6);
@@ -401,10 +412,33 @@ function create_each_block(ctx) {
 		},
 		p(ctx, dirty) {
 			if ((!current || dirty & /*views*/ 1) && t0_value !== (t0_value = /*views*/ ctx[0][/*id*/ ctx[4]].name + "")) set_data(t0, t0_value);
-			const slider_changes = {};
-			if (dirty & /*views*/ 1) slider_changes.callbackArgs = /*id*/ ctx[4];
-			if (dirty & /*views*/ 1) slider_changes.checked = /*views*/ ctx[0][/*id*/ ctx[4]].enabled;
-			slider.$set(slider_changes);
+			const switch_instance_changes = {};
+			if (dirty & /*views*/ 1) switch_instance_changes.callbackArgs = /*id*/ ctx[4];
+			if (dirty & /*views*/ 1) switch_instance_changes.checked = /*views*/ ctx[0][/*id*/ ctx[4]].enabled;
+
+			if (switch_value !== (switch_value = Slider)) {
+				if (switch_instance) {
+					group_outros();
+					const old_component = switch_instance;
+
+					transition_out(old_component.$$.fragment, 1, 0, () => {
+						destroy_component(old_component, 1);
+					});
+
+					check_outros();
+				}
+
+				if (switch_value) {
+					switch_instance = new switch_value(switch_props(ctx));
+					create_component(switch_instance.$$.fragment);
+					transition_in(switch_instance.$$.fragment, 1);
+					mount_component(switch_instance, div1, null);
+				} else {
+					switch_instance = null;
+				}
+			} else if (switch_value) {
+				switch_instance.$set(switch_instance_changes);
+			}
 
 			if (!current || dirty & /*views*/ 1 && img0.src !== (img0_src_value = "images/Background/" + /*views*/ ctx[0][/*id*/ ctx[4]].background)) {
 				attr(img0, "src", img0_src_value);
@@ -447,16 +481,16 @@ function create_each_block(ctx) {
 		},
 		i(local) {
 			if (current) return;
-			transition_in(slider.$$.fragment, local);
+			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
 			current = true;
 		},
 		o(local) {
-			transition_out(slider.$$.fragment, local);
+			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
 			current = false;
 		},
 		d(detaching) {
 			if (detaching) detach(div7);
-			destroy_component(slider);
+			if (switch_instance) destroy_component(switch_instance);
 			destroy_each(each_blocks, detaching);
 		}
 	};
@@ -533,6 +567,8 @@ function instance($$self, $$props, $$invalidate) {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ id })
 		}).then(d => d.json()).then(d => {
+			console.log(d);
+
 			if (!_.isEqual(views, d.views)) {
 				$$invalidate(0, views = d.views.views);
 				set_store_value(session, $session.configuration.views = d.views.views, $session);

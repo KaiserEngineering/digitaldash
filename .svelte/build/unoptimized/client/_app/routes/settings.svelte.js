@@ -7,6 +7,7 @@ import {
 	claim_element,
 	claim_space,
 	claim_text,
+	component_subscribe,
 	detach,
 	element,
 	init,
@@ -17,9 +18,12 @@ import {
 	run_all,
 	safe_not_equal,
 	set_input_value,
+	set_store_value,
 	space,
 	text
 } from "../../_snowpack/pkg/svelte/internal.js";
+
+import { session } from "../assets/runtime/app/stores.js";
 
 function create_fragment(ctx) {
 	let form;
@@ -184,8 +188,8 @@ function create_fragment(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen(input0, "input", /*input0_input_handler*/ ctx[4]),
-					listen(input1, "input", /*input1_input_handler*/ ctx[5]),
+					listen(input0, "input", /*input0_input_handler*/ ctx[3]),
+					listen(input1, "input", /*input1_input_handler*/ ctx[4]),
 					listen(form, "submit", prevent_default(/*handleSubmit*/ ctx[2]))
 				];
 
@@ -212,15 +216,29 @@ function create_fragment(ctx) {
 }
 
 function instance($$self, $$props, $$invalidate) {
-	let { actions = [] } = $$props;
+	let $session;
+	component_subscribe($$self, session, $$value => $$invalidate(5, $session = $$value));
 	let username;
 	let password;
 
 	function handleSubmit(event) {
-		fetch("/api/settings", {
-			method: "POST",
+		fetch("/api/auth", {
+			method: "PUT",
 			body: JSON.stringify({ username, password })
-		}).then(d => d.json()).then(d => $$invalidate(3, actions = [d.message]));
+		}).then(d => d.json()).then(d => {
+			set_store_value(
+				session,
+				$session.actions = [
+					{
+						id: $session.count,
+						msg: d.message,
+						theme: d.ret ? "alert-info" : "alert-warning"
+					},
+					...$session.actions
+				],
+				$session
+			);
+		});
 	}
 
 	function input0_input_handler() {
@@ -233,24 +251,13 @@ function instance($$self, $$props, $$invalidate) {
 		$$invalidate(1, password);
 	}
 
-	$$self.$$set = $$props => {
-		if ("actions" in $$props) $$invalidate(3, actions = $$props.actions);
-	};
-
-	return [
-		username,
-		password,
-		handleSubmit,
-		actions,
-		input0_input_handler,
-		input1_input_handler
-	];
+	return [username, password, handleSubmit, input0_input_handler, input1_input_handler];
 }
 
 class Settings extends SvelteComponent {
 	constructor(options) {
 		super();
-		init(this, options, instance, create_fragment, safe_not_equal, { actions: 3 });
+		init(this, options, instance, create_fragment, safe_not_equal, {});
 	}
 }
 

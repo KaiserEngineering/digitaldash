@@ -111,7 +111,7 @@ function create_fragment(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen(textarea, "input", /*textarea_input_handler*/ ctx[4]),
+					listen(textarea, "input", /*textarea_input_handler*/ ctx[3]),
 					listen(button, "click", /*submit*/ ctx[2])
 				];
 
@@ -151,16 +151,9 @@ function create_fragment(ctx) {
 	};
 }
 
-async function preload(page, session) {
-	const response = await this.fetch("/api/config");
-	const configuration = await response.json();
-	return { configuration };
-}
-
 function instance($$self, $$props, $$invalidate) {
 	let $session;
-	component_subscribe($$self, session, $$value => $$invalidate(5, $session = $$value));
-	let { configuration } = $$props;
+	component_subscribe($$self, session, $$value => $$invalidate(4, $session = $$value));
 	let configString = JSON.stringify($session.configuration, null, 2);
 
 	function submit() {
@@ -189,10 +182,6 @@ function instance($$self, $$props, $$invalidate) {
 		$$invalidate(0, configString);
 	}
 
-	$$self.$$set = $$props => {
-		if ("configuration" in $$props) $$invalidate(3, configuration = $$props.configuration);
-	};
-
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty & /*configString*/ 1) {
 			$: {
@@ -206,16 +195,15 @@ function instance($$self, $$props, $$invalidate) {
 		}
 	};
 
-	return [configString, invalid, submit, configuration, textarea_input_handler];
+	return [configString, invalid, submit, textarea_input_handler];
 }
 
 class Advanced extends SvelteComponent {
 	constructor(options) {
 		super();
-		init(this, options, instance, create_fragment, safe_not_equal, { configuration: 3 });
+		init(this, options, instance, create_fragment, safe_not_equal, {});
 	}
 }
 
 export default Advanced;
-export { preload };
 //# sourceMappingURL=advanced.svelte.js.map
