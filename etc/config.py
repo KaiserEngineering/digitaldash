@@ -1,7 +1,6 @@
 """Mehtods for getting Config data."""
 import json
 from kivy.logger import Logger
-from kivy.core.window import Window
 
 working_path = ''
 
@@ -32,7 +31,7 @@ def views(file=None):
           jsonData = json.load(data_file)
 
           data_file.close()
-      Window._rotation = 0
+
       jsonData = jsonData if validateConfig(jsonData) else json.loads( errorConfig )
     except Exception as e:
       # We can shorten the error message by removing the trace/line the
