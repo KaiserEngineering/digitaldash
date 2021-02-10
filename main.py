@@ -175,7 +175,7 @@ class GUI(App):
             self.update_values(data)
 
 if __name__ == '__main__':
-    Logger.info( 'GUI: Running version: %s'%__version__ )
+    Logger.info( f'GUI: Running version: {__version__}' )
     dd = GUI()
 
     dd.new(configFile=ConfigFile, data=Data_Source)

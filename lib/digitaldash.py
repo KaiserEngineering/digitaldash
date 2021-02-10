@@ -22,7 +22,7 @@ class Background(AnchorLayout):
     def __init__(self, BackgroundSource="", WorkingPath=""):
       super().__init__()
       Logger.debug( "GUI: Creating new Background obj with source: "+str(BackgroundSource) )
-      self.source = "{}{}".format(WorkingPath+"/static/imgs/Background/", BackgroundSource )
+      self.source = f"{WorkingPath + '/static/imgs/Background/'}{BackgroundSource}"
 
 def findPids( view ):
     """Find all PIDs in a view"""
