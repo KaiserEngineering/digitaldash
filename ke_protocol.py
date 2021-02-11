@@ -76,102 +76,103 @@ class Serial():
 
     def start(self, **args):
 
-        byte = self.ser.read()
+        while( self.ser.inWaiting() ):
+            byte = self.ser.read()
 
-        if( len(byte) > 0 ):
-            byte = ord( byte )
+            if( len(byte) > 0 ):
+                byte = ord( byte )
 
-            # Look for a start of line byte
-            if( byte == UART_SOL ):
-                # Check if a current RX is in progress
-                if ( self.KE_RX_IN_PROGRESS == False ):
-                    # Increment the number of aborted RX messages
-                    self.rx_abort_count += 1
+                # Look for a start of line byte
+                if( byte == UART_SOL ):
+                    # Check if a current RX is in progress
+                    if ( self.KE_RX_IN_PROGRESS == False ):
+                        # Increment the number of aborted RX messages
+                        self.rx_abort_count += 1
 
-                    # Log the error
-                    Logger.error( "[KE] SOL Received before message completion")
+                        # Log the error
+                        Logger.error( "[KE] SOL Received before message completion")
 
-                # Start of a new message, reset the buffer
-                self.rx_buffer = [0] * KE_MAX_PAYLOAD
-
-                # Reset the byte count
-                self.rx_byte_count = 0
-
-                # Add the byte to the buffer
-                self.rx_buffer[self.rx_byte_count] = byte
-
-                # Increment the byte count
-                self.rx_byte_count += 1
-
-                # Indicate an RX is in progress
-                self.KE_RX_IN_PROGRESS = True
-
-                Logger.info( "[KE] SOL Received")
-
-            # A Message is in progress
-            elif ( self.KE_RX_IN_PROGRESS == True ):
-                # Verify the UART buffer has room */
-                if( self.rx_byte_count >= KE_MAX_PAYLOAD ):
-                    # Increment the number of aborted RX messages
-                    self.rx_abort_count += 1
-
-                    # Log the error
-                    Logger.Error( "[KE] Maximum payload reached")
-
-                    # Indicate an RX has ended
-                    self.KE_RX_IN_PROGRESS == False
-
-                    # Reset the UART buffer, something has gone horribly wrong
+                    # Start of a new message, reset the buffer
                     self.rx_buffer = [0] * KE_MAX_PAYLOAD
 
                     # Reset the byte count
                     self.rx_byte_count = 0
 
-                    #return KE_BUFFER_FULL;
+                    # Add the byte to the buffer
+                    self.rx_buffer[self.rx_byte_count] = byte
 
-                # Add the byte to the buffer
-                self.rx_buffer[self.rx_byte_count] = byte
+                    # Increment the byte count
+                    self.rx_byte_count += 1
 
-                # Increment the byte count
-                self.rx_byte_count += 1
+                    # Indicate an RX is in progress
+                    self.KE_RX_IN_PROGRESS = True
 
-                # See if the message is complete
-                if( self.rx_byte_count == self.rx_buffer[ KE_PCKT_LEN_POS ] ):
-                    # Indicate an RX has ended
-                    self.KE_RX_IN_PROGRESS == False
+                    Logger.info( "[KE] SOL Received")
 
-                    # Increment the number of received RX messages
-                    self.rx_count += 1
+                # A Message is in progress
+                elif ( self.KE_RX_IN_PROGRESS == True ):
+                    # Verify the UART buffer has room */
+                    if( self.rx_byte_count >= KE_MAX_PAYLOAD ):
+                        # Increment the number of aborted RX messages
+                        self.rx_abort_count += 1
 
-                    # Set the Message complete flag
-                    self.KE_PCKT_CMPLT = True;
+                        # Log the error
+                        Logger.Error( "[KE] Maximum payload reached")
 
-                    packet = self.rx_buffer[0:self.rx_byte_count]
+                        # Indicate an RX has ended
+                        self.KE_RX_IN_PROGRESS == False
 
-                    # Log the complete message
-                    Logger.info( "[KE] Packet Received" )
+                        # Reset the UART buffer, something has gone horribly wrong
+                        self.rx_buffer = [0] * KE_MAX_PAYLOAD
 
-                    self.KE_Process_Packet()
+                        # Reset the byte count
+                        self.rx_byte_count = 0
 
-                    #return KE_PACKET_COMPLETE;
+                        #return KE_BUFFER_FULL;
 
-                # This should not have happened, abort!
-                elif ( self.rx_byte_count > self.rx_buffer[ KE_PCKT_LEN_POS ] ):
-                    # Increment the number of aborted RX messages
-                    self.rx_abort_count += 1
+                    # Add the byte to the buffer
+                    self.rx_buffer[self.rx_byte_count] = byte
 
-                    # Log the error
-                    Logger.Error( "[KE] Payload greater than expected")
+                    # Increment the byte count
+                    self.rx_byte_count += 1
 
-                    # Indicate an RX has ended
-                    self.KE_RX_IN_PROGRESS == False
+                    # See if the message is complete
+                    if( self.rx_byte_count == self.rx_buffer[ KE_PCKT_LEN_POS ] ):
+                        # Indicate an RX has ended
+                        self.KE_RX_IN_PROGRESS == False
 
-                    # Reset the UART buffer, something has gone horribly wrong
-                    self.rx_buffer = [0] * KE_MAX_PAYLOAD
+                        # Increment the number of received RX messages
+                        self.rx_count += 1
 
-                    # Reset the byte count
-                    self.rx_byte_count = 0
-                #return KE_OK;
+                        # Set the Message complete flag
+                        self.KE_PCKT_CMPLT = True;
+
+                        packet = self.rx_buffer[0:self.rx_byte_count]
+
+                        # Log the complete message
+                        Logger.info( "[KE] Packet Received" )
+
+                        self.KE_Process_Packet()
+
+                        #return KE_PACKET_COMPLETE;
+
+                    # This should not have happened, abort!
+                    elif ( self.rx_byte_count > self.rx_buffer[ KE_PCKT_LEN_POS ] ):
+                        # Increment the number of aborted RX messages
+                        self.rx_abort_count += 1
+
+                        # Log the error
+                        Logger.Error( "[KE] Payload greater than expected")
+
+                        # Indicate an RX has ended
+                        self.KE_RX_IN_PROGRESS == False
+
+                        # Reset the UART buffer, something has gone horribly wrong
+                        self.rx_buffer = [0] * KE_MAX_PAYLOAD
+
+                        # Reset the byte count
+                        self.rx_byte_count = 0
+                    #return KE_OK;
         return self.ser_val
 
     def update_requirements(self, app, pid_byte_code, pids):
