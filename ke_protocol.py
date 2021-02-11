@@ -64,12 +64,16 @@ class Serial():
 
             key_val = {}
 
-            # Parameters are comma deliminated
-            for val in serial_data.split(','):
-                # Parameters are colon deliminated
-                (pid, units, value) = val.split(':')
-                # Link the data to the PID
-                key_val[str(pid)] = value
+            try:
+                # Parameters are comma deliminated
+                for val in serial_data.split(','):
+                    # Parameters are colon deliminated
+                    (pid, units, value) = val.split(':')
+                    # Link the data to the PID
+                    key_val[str(pid)] = value
+            except:
+                Logger.error("KE_PID_STREAM_REPORT missing data")
+
             self.ser_val = key_val
 
             return self.ser_val
