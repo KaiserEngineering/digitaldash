@@ -9,8 +9,9 @@ import os
 import fnmatch
 from gpiozero import CPUTemperature
 
-UART_SOL                 = 0xFF
-UART_PCKT_SOL_POS        = 0x00
+KE_SOL                   = 0xFF
+KE_EOL                   = 0x0A
+KE_PCKT_SOL_POS          = 0x00
 KE_PCKT_LEN_POS          = 0x01
 KE_PCKT_CMD_POS          = 0x02
 KE_PCKT_DATA_START_POS   = 0x03
@@ -43,7 +44,40 @@ class Serial():
         self.rx_abort_count     = 0
         self.rx_count           = 0
         self.rx_buffer          = [0] * KE_MAX_PAYLOAD
+        self.tx_buffer          = [0] * KE_MAX_PAYLOAD
         self.rx_byte_count      = 0
+        self.tx_byte_count      = 0
+
+    def Generate_TX_Message( self, cmd ):
+        # Clear the buffer
+        self.tx_buffer = [0] * KE_MAX_PAYLOAD
+
+        # Populate the Start of Line byte
+        self.tx_buffer[KE_PCKT_SOL_POS] = KE_SOL
+
+        # Command
+        self.tx_buffer[KE_PCKT_CMD_POS] = cmd
+
+        # Align the buffer to start of the data bytes
+        self.tx_byte_count = KE_PCKT_DATA_START_POS
+
+        if( cmd == KE_CP_OP_CODES['KE_ACK'] ):
+            # Include Fan Speed
+            self.tx_buffer[ self.tx_byte_count ] = self.fan_speed
+            self.tx_byte_count += 1
+
+        # Packet is complete
+        self.tx_buffer[ self.tx_byte_count ] = KE_EOL
+
+        # Byte has been added, increment the byte count
+        self.tx_byte_count += 1
+
+        # Populate the length
+        self.tx_buffer[KE_PCKT_LEN_POS] = self.tx_byte_count
+
+        # Send the packet
+        packet = self.tx_buffer[0:self.tx_byte_count]
+        self.ser.write( packet )
 
     def KE_Process_Packet( self ):
         # Get the payload
@@ -52,11 +86,7 @@ class Serial():
         if( self.rx_buffer[KE_PCKT_CMD_POS] == KE_CP_OP_CODES['KE_PID_STREAM_REPORT'] ):
 
             # Todo generate the code
-            response = [UART_SOL, 0x04, KE_CP_OP_CODES['KE_ACK'], self.fan_speed ]
-            Logger.info("GUI: << ACK" + "\n")
-
-            # Send the response
-            self.ser.write(response)
+            self.Generate_TX_Message( KE_CP_OP_CODES['KE_ACK'] )
 
             # Payload is ASCII data
             serial_data = "".join(map(chr, serial_data ))
@@ -87,7 +117,7 @@ class Serial():
                 byte = ord( byte )
 
                 # Look for a start of line byte
-                if( byte == UART_SOL ):
+                if( byte == KE_SOL ):
                     # Check if a current RX is in progress
                     if ( self.KE_RX_IN_PROGRESS == False ):
                         # Increment the number of aborted RX messages
@@ -111,7 +141,7 @@ class Serial():
                     # Indicate an RX is in progress
                     self.KE_RX_IN_PROGRESS = True
 
-                    Logger.info( "[KE] SOL Received")
+                    #Logger.info( "[KE] SOL Received")
 
                 # A Message is in progress
                 elif ( self.KE_RX_IN_PROGRESS == True ):
@@ -154,7 +184,7 @@ class Serial():
                         packet = self.rx_buffer[0:self.rx_byte_count]
 
                         # Log the complete message
-                        Logger.info( "[KE] Packet Received" )
+                        # Logger.info( "[KE] Packet Received" )
 
                         self.KE_Process_Packet()
 
@@ -209,7 +239,7 @@ class Serial():
 
         while self.firmwareVerified != True:
             Logger.info("GUI: Requesting Firmware Version..")
-            firmware_request = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_FIRMWARE_REQ']]
+            firmware_request = [KE_SOL, 0x03, KE_CP_OP_CODES['KE_FIRMWARE_REQ']]
             self.ser.write(firmware_request)
 
             # Wait for the MCU to receive the request and respond
@@ -272,7 +302,7 @@ class Serial():
            Reboot the Raspberry Pi
         """
         global KE_CP_OP_CODES
-        ke_power_cycle = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_POWER_CYCLE']]
+        ke_power_cycle = [KE_SOL, 0x03, KE_CP_OP_CODES['KE_POWER_CYCLE']]
         ret = self.ser.write(ke_power_cycle)
 
         msg = "Wrote : " + str(ret) + " bytes for power cycle"
@@ -302,6 +332,6 @@ def build_update_requirements_bytearray(units, requirements):
         index += 1
         byte_count += 5
 
-    pid_byte_code = [ UART_SOL , byte_count, KE_CP_OP_CODES['KE_PID_STREAM_NEW'] ] + pid_byte_code
+    pid_byte_code = [ KE_SOL , byte_count, KE_CP_OP_CODES['KE_PID_STREAM_NEW'] ] + pid_byte_code
     Logger.info( "KE Protocol: Byte code: " + str(pid_byte_code) )
     return pid_byte_code
