@@ -11,9 +11,10 @@ from gpiozero import CPUTemperature
 
 UART_SOL                 = 0xFF
 UART_PCKT_SOL_POS        = 0x00
-UART_PCKT_LEN_POS        = 0x01
-UART_PCKT_CMD_POS        = 0x02
-UART_PCKT_DATA_START_POS = 0x03
+KE_PCKT_LEN_POS          = 0x01
+KE_PCKT_CMD_POS          = 0x02
+KE_PCKT_DATA_START_POS   = 0x03
+KE_MAX_PAYLOAD           = 0x64
 
 class Serial():
     def __init__(self):
@@ -36,91 +37,141 @@ class Serial():
         self.fan_speed          = 0
         self.queued_message     = None
         self.message_pending    = False
+        self.byte               = 0
+        self.KE_RX_IN_PROGRESS  = False
+        self.KE_PCKT_CMPLT      = True
+        self.rx_abort_count     = 0
+        self.rx_count           = 0
+        self.rx_buffer          = [0] * KE_MAX_PAYLOAD
+        self.rx_byte_count      = 0
 
+    def KE_Process_Packet( self ):
+        # Get the payload
+        serial_data = self.rx_buffer[KE_PCKT_DATA_START_POS : self.rx_byte_count - 4]
 
-    def start(self, **args):
+        if( self.rx_buffer[KE_PCKT_CMD_POS] == KE_CP_OP_CODES['KE_PID_STREAM_REPORT'] ):
 
-        cpu = CPUTemperature()
-
-        """Loop for checking Serial connection for data."""
-        # Handle grabbing data
-        data_line = ''
-
-        try:
-            data_line = self.ser.readline()
-
-        except Exception as e:
-            Logger.error("Error occured when reading serial data: " + str(e))
-
-        # There shall always be an opcode and EOL
-        if ( len(data_line) < 2 ):
-            app = args['app']
-            self.update_requirements( app, app.pid_byte_code, app.requirements )
-            Logger.info("GUI: Data packet of length: " + str(len(data_line)) + " received: " + str(data_line))
-            return self.ser_val
-
-        #Logger.info("RAW DATA: " +  str(data_line) )
-
-        # Get the command (Always the 1st byte)
-        cmd = data_line[ UART_PCKT_CMD_POS ]
-
-        # Remove the command byte from the payload
-        data_line = data_line[ UART_PCKT_DATA_START_POS :len(data_line) - 1 ]
-
-        if cmd == KE_CP_OP_CODES['KE_FIRMWARE_REPORT']:
-            Logger.info("GUI: >> [FIRMWARE VERSION] "  + data_line.decode() + "\n")
-
-        elif cmd == KE_CP_OP_CODES['KE_POWER_DISABLE']:
-            Logger.info("SYS: Shutdown received")
-            positive_ack = [UART_SOL, 0x03, KE_CP_OP_CODES['KE_ACK']]
-            self.ser.write(positive_ack)
-            call("sudo nohup shutdown -h now", shell=True) # nosec
-
-        elif cmd == KE_CP_OP_CODES['KE_ACK']:
-            Logger.info("GUI: >> ACK RX'd" + "\n")
-
-        elif cmd == KE_CP_OP_CODES['KE_PID_STREAM_REPORT']:
-            # Data stream is now active
-            self.data_stream_active = True
-
-            if( cpu.temperature > 80 ):
-                self.fan_speed = 0x03    # Request max fan speed
-            elif( cpu.temperature > 76 ):
-                self.fan_speed = 0x02    # Request med fan speed
-            elif( cpu.temperature > 72 ):
-                self.fan_speed = 0x01    # Request min fan speed
-            elif( cpu.temperature < 60 ):
-                self.fan_speed = 0x00    # Turn off the fan 
-
-            # Send the pending message OR ack if no message is pending
-            if self.message_pending == True:
-                response = self.queued_message
-                self.message_pending = False
-                Logger.info("GUI: << Pending Message Sent" + "\n")
-            else:
-                response = [UART_SOL, 0x04, KE_CP_OP_CODES['KE_ACK'], self.fan_speed ]
-                Logger.info("GUI: << ACK" + "\n")
+            # Todo generate the code
+            response = [UART_SOL, 0x04, KE_CP_OP_CODES['KE_ACK'], self.fan_speed ]
+            Logger.info("GUI: << ACK" + "\n")
 
             # Send the response
             self.ser.write(response)
 
-            Logger.info("Clipped Data: " + str(data_line))
-            data_line = data_line.decode('utf-8', 'ignore')
+            # Payload is ASCII data
+            serial_data = "".join(map(chr, serial_data ))
+            Logger.info("DATA RX'd: " + serial_data)
 
-            if len(data_line) > 3:
-                try:
-                    key_val = {}
-                    for val in data_line.split(','):
-                        (k, u, v) = val.split(':')
-                        key_val[str(k)] = v
-                    self.ser_val = key_val
-                    #self.ser_val[2] = self.ser.inWaiting()
-                    #self.ser.flushInput()
-                except:
-                    Logger.error("KE Protocol: No Data")
+            key_val = {}
+
+            # Parameters are comma deliminated
+            for val in serial_data.split(','):
+                # Parameters are colon deliminated
+                (pid, units, value) = val.split(':')
+                # Link the data to the PID
+                key_val[str(pid)] = value
+            self.ser_val = key_val
 
             return self.ser_val
 
+    def start(self, **args):
+
+        byte = self.ser.read()
+
+        if( len(byte) > 0 ):
+            byte = ord( byte )
+
+            # Look for a start of line byte
+            if( byte == UART_SOL ):
+                # Check if a current RX is in progress
+                if ( self.KE_RX_IN_PROGRESS == False ):
+                    # Increment the number of aborted RX messages
+                    self.rx_abort_count += 1
+
+                    # Log the error
+                    Logger.error( "[KE] SOL Received before message completion")
+
+                # Start of a new message, reset the buffer
+                self.rx_buffer = [0] * KE_MAX_PAYLOAD
+
+                # Reset the byte count
+                self.rx_byte_count = 0
+
+                # Add the byte to the buffer
+                self.rx_buffer[self.rx_byte_count] = byte
+
+                # Increment the byte count
+                self.rx_byte_count += 1
+
+                # Indicate an RX is in progress
+                self.KE_RX_IN_PROGRESS = True
+
+                Logger.info( "[KE] SOL Received")
+
+            # A Message is in progress
+            elif ( self.KE_RX_IN_PROGRESS == True ):
+                # Verify the UART buffer has room */
+                if( self.rx_byte_count >= KE_MAX_PAYLOAD ):
+                    # Increment the number of aborted RX messages
+                    self.rx_abort_count += 1
+
+                    # Log the error
+                    Logger.Error( "[KE] Maximum payload reached")
+
+                    # Indicate an RX has ended
+                    self.KE_RX_IN_PROGRESS == False
+
+                    # Reset the UART buffer, something has gone horribly wrong
+                    self.rx_buffer = [0] * KE_MAX_PAYLOAD
+
+                    # Reset the byte count
+                    self.rx_byte_count = 0
+
+                    #return KE_BUFFER_FULL;
+
+                # Add the byte to the buffer
+                self.rx_buffer[self.rx_byte_count] = byte
+
+                # Increment the byte count
+                self.rx_byte_count += 1
+
+                # See if the message is complete
+                if( self.rx_byte_count == self.rx_buffer[ KE_PCKT_LEN_POS ] ):
+                    # Indicate an RX has ended
+                    self.KE_RX_IN_PROGRESS == False
+
+                    # Increment the number of received RX messages
+                    self.rx_count += 1
+
+                    # Set the Message complete flag
+                    self.KE_PCKT_CMPLT = True;
+
+                    packet = self.rx_buffer[0:self.rx_byte_count]
+
+                    # Log the complete message
+                    Logger.info( "[KE] Packet Received" )
+
+                    self.KE_Process_Packet()
+
+                    #return KE_PACKET_COMPLETE;
+
+                # This should not have happened, abort!
+                elif ( self.rx_byte_count > self.rx_buffer[ KE_PCKT_LEN_POS ] ):
+                    # Increment the number of aborted RX messages
+                    self.rx_abort_count += 1
+
+                    # Log the error
+                    Logger.Error( "[KE] Payload greater than expected")
+
+                    # Indicate an RX has ended
+                    self.KE_RX_IN_PROGRESS == False
+
+                    # Reset the UART buffer, something has gone horribly wrong
+                    self.rx_buffer = [0] * KE_MAX_PAYLOAD
+
+                    # Reset the byte count
+                    self.rx_byte_count = 0
+                #return KE_OK;
         return self.ser_val
 
     def update_requirements(self, app, pid_byte_code, pids):
