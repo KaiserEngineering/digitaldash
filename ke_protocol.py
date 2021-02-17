@@ -85,8 +85,13 @@ class Serial():
 
         if( self.rx_buffer[KE_PCKT_CMD_POS] == KE_CP_OP_CODES['KE_PID_STREAM_REPORT'] ):
 
-            # Todo generate the code
-            self.Generate_TX_Message( KE_CP_OP_CODES['KE_ACK'] )
+            self.data_stream_active = True
+
+            if self.queued_message != None:
+                self.ser.write( self.queued_message )
+                self.queued_message = None
+            else:
+                self.Generate_TX_Message( KE_CP_OP_CODES['KE_ACK'] )
 
             # Payload is ASCII data
             serial_data = "".join(map(chr, serial_data ))
