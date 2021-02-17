@@ -37,9 +37,9 @@ class Test():
           array     = self.data[0]
           self.cols = len(array)
 
-    def start(self, pids=[], **args):
+    def service(self, pids=[], **args):
         """
-        Main start method for test data.
+        Main service method for test data.
             :param self: <DigitalDash.Test>Test instance
         """
         data    = self.data[self.iteration]
