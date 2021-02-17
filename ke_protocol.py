@@ -108,7 +108,7 @@ class Serial():
 
             return self.ser_val
 
-    def start(self, **args):
+    def service(self, **args):
 
         while( self.ser.inWaiting() ):
             byte = self.ser.read()
