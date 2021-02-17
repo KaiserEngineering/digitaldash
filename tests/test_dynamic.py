@@ -37,5 +37,3 @@ def test_pid_byte_code_caching():
       dynamic.change(self)
       break
     assert oldByteCode != self.pid_byte_code
-    print(oldByteCode)
-    print(self.pid_byte_code)

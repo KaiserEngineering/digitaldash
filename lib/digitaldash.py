@@ -4,6 +4,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import StringProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.clock import Clock
+from kivy.core.window import Window
 
 from etc import config
 from lib.base import Base
@@ -21,7 +22,7 @@ class Background(AnchorLayout):
     def __init__(self, BackgroundSource="", WorkingPath=""):
       super().__init__()
       Logger.debug( "GUI: Creating new Background obj with source: "+str(BackgroundSource) )
-      self.source = "{}{}".format(WorkingPath+"/static/imgs/Background/", BackgroundSource )
+      self.source = f"{WorkingPath + '/static/imgs/Background/'}{BackgroundSource}"
 
 def findPids( view ):
     """Find all PIDs in a view"""
@@ -107,21 +108,17 @@ def setup(self, Layouts):
         # The 0.05 is our squish value to move gauges inwards
         percent_width = ( 1 / num_gauges ) - 0.05
 
-        multi_offset = 0
-        # Only set offset if more than 1 gauge
-        if num_gauges > 1:
-            multi_offset = percent_width * ( num_gauges / 2 - 0.5 )
-
         for gauge_count, widget in enumerate( view['gauges'] ):
             mod = None
 
-            x_position = ( percent_width * gauge_count ) - multi_offset
+            x_position = ( percent_width * gauge_count )
 
             # This handles our gauge positions, see the following for reference:
             # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
             subcontainer = RelativeLayout(
                 pos_hint={'x': x_position, 'top': .99},
-                size_hint_max_y=200
+                size_hint_max_y=200,
+                size_hint_max_x=(Window.width - 100 ) / num_gauges
             )
             container.add_widget(subcontainer)
 
