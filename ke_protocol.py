@@ -196,7 +196,7 @@ class Serial():
                         self.rx_abort_count += 1
 
                         # Log the error
-                        Logger.Error( "[KE] Payload greater than expected")
+                        Logger.error( "[KE] Payload greater than expected")
 
                         # Indicate an RX has ended
                         self.KE_RX_IN_PROGRESS == False
