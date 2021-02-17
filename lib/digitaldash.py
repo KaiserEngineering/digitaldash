@@ -23,6 +23,28 @@ class Background(AnchorLayout):
       Logger.debug( "GUI: Creating new Background obj with source: "+str(BackgroundSource) )
       self.source = "{}{}".format(WorkingPath+"/static/imgs/Background/", BackgroundSource )
 
+def findPids( view ):
+    """Find all PIDs in a view"""
+    pids_dict = {}
+    for gauge in view['gauges']:
+        pids_dict[gauge['pid']] = 1
+    for alert in view['alerts']:
+        pids_dict[alert['pid']] = 1
+    if view['dynamic'] and view['dynamic']['enabled']:
+        pids_dict[view['dynamic']['pid']] = 1
+    return list(pids_dict.keys())
+
+def findUnits( view ):
+    """Create a dictionary of PIDs and their corresponding unit"""
+    units = {}
+    for gauge in view['gauges']:
+      units[gauge['pid']] = gauge['unit']
+    for alert in view['alerts']:
+      units[alert['pid']] = alert['unit']
+    if view['dynamic'] and view['dynamic']['enabled']:
+      units[view['dynamic']['pid']] = view['dynamic']['unit']
+    return units
+
 def setup(self, Layouts):
     """
     Build all widgets for DigitalDash.
@@ -31,10 +53,13 @@ def setup(self, Layouts):
     values for views. Then it will build the views and return them.
     """
 
-    callbacks  = {}
-    views      = []
-    containers = []
-    view_count = 0
+    callbacks    = {}
+    views        = []
+    containers   = []
+    view_count   = 0
+    dynamic_pids = []
+    # Currently we only allow one type of units per PID
+    units        = {}
 
     # Sort based on default value
     for id in sorted(Layouts['views'],
@@ -43,24 +68,8 @@ def setup(self, Layouts):
         # Skip disabled views
         if not view['enabled']: continue
 
-        # Get our PIDs list from the gauges, alerts and dynamic config
-        pids_dict = {}
-        for gauge in view['gauges']:
-          pids_dict[gauge['pid']] = 1
-        for alert in view['alerts']:
-          pids_dict[alert['pid']] = 1
-        if view['dynamic'] and view['dynamic']['enabled']:
-          pids_dict[view['dynamic']['pid']] = 1
-        pids = list(pids_dict.keys())
-
-        # Get our units dict from the gauges, alerts and dynamic config
-        units = {}
-        for gauge in view['gauges']:
-          units[gauge['pid']] = gauge['unit']
-        for alert in view['alerts']:
-          units[alert['pid']] = alert['unit']
-        if view['dynamic'] and view['dynamic']['enabled']:
-          units[view['dynamic']['pid']] = view['dynamic']['unit']
+        pids  = findPids( view )
+        units = { **units, **findUnits( view ) }
 
         background = view['background']
 
@@ -68,6 +77,9 @@ def setup(self, Layouts):
         if view['dynamic'].keys():
             dynamic = view['dynamic']
             dynamic['index'] = view_count
+
+            # Keep track of our dynamic PIDs
+            dynamic_pids.append( dynamic['pid'] )
 
             dynamic_obj = Dynamic()
             (ret, msg) = dynamic_obj.new(**dynamic)
@@ -95,7 +107,7 @@ def setup(self, Layouts):
         # The 0.05 is our squish value to move gauges inwards
         percent_width = ( 1 / num_gauges ) - 0.05
 
-        multi_offset = 0;
+        multi_offset = 0
         # Only set offset if more than 1 gauge
         if num_gauges > 1:
             multi_offset = percent_width * ( num_gauges / 2 - 0.5 )
@@ -132,14 +144,20 @@ def setup(self, Layouts):
 
         containers.append(container)
 
-        pid_byte_code = None
-        if ( len(units) and len(pids) ):
-            if ( list(units.keys())[0] != 'n/a' and pids[0] != 'n/a' ):
-                pid_byte_code = build_update_requirements_bytearray( units, pids )
-
         views.append({'app': Background(WorkingPath=self.WORKING_PATH, BackgroundSource=background), 'alerts': FloatLayout(),
-                      'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids, 'pid_byte_code': pid_byte_code})
+                      'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
         view_count += 1
+
+    # We need to retro-actively add our dynamic PIDs into the PIDs array per view
+    for i, view in enumerate(views):
+      for pid in dynamic_pids:
+        if pid not in view['pids']:
+          views[i]['pids'].append( pid )
+
+      # Now we can generate a complete byte array for the PIDs
+      if ( len(units) and len(view['pids']) ):
+          if ( list(units.keys())[0] != 'n/a' and view['pids'][0] != 'n/a' ):
+              views[i]['pid_byte_code'] = build_update_requirements_bytearray( units, views[i]['pids'] )
     return (views, containers, callbacks)
 
 def build_from_config(self, Data_Source=None) -> NoReturn:

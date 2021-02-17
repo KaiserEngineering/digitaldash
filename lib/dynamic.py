@@ -53,7 +53,7 @@ class Dynamic():
             operator = bytearray( operator.encode() )
             self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
 
-        self.index = int(args.get('index'))
+        self.index    = int(args.get('index'))
         self.priority = int(args.get('priority'))
         self.pid = args.get('pid', '')
 
@@ -67,10 +67,6 @@ class Dynamic():
           self (<digitaldash.dynamic>) : The current Dynamic object
           app (<GUI>) : The main application object
         """
-        (ret, msg) = app.data_source.update_requirements(app, app.pid_byte_code, app.pids)
-        if not ret:
-            Logger.error("Could not update requirements from dynamic: %s", msg)
-
         app.app.clear_widgets()
         app.background.clear_widgets()
         app.alerts.clear_widgets()
@@ -88,5 +84,9 @@ class Dynamic():
                                      key=lambda x: x.priority, reverse=True)
 
         app.app.add_widget(app.background)
+
+        (ret, msg) = app.data_source.update_requirements(app, app.pid_byte_code, app.pids)
+        if not ret:
+            Logger.error("Could not update requirements from dynamic: %s", msg)
 
         return True
