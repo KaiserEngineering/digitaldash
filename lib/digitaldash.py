@@ -11,6 +11,7 @@ from lib.base import Base
 from lib.dynamic import Dynamic
 from lib.alert import Alert
 from lib.alerts import Alerts
+from lib.pid import PID
 from ke_protocol import build_update_requirements_bytearray
 
 # Import custom gauges
@@ -28,12 +29,17 @@ def findPids( view ):
     """Find all PIDs in a view"""
     pids_dict = {}
     for gauge in view['gauges']:
-        pids_dict[gauge['pid']] = 1
+        if gauge['pid'] in pids_dict:
+          continue
+        pids_dict[gauge['pid']] = PID( **gauge )
     for alert in view['alerts']:
-        pids_dict[alert['pid']] = 1
+        if alert['pid'] in pids_dict:
+          continue
+        pids_dict[alert['pid']] = PID( **alert )
     if view['dynamic'] and view['dynamic']['enabled']:
-        pids_dict[view['dynamic']['pid']] = 1
-    return list(pids_dict.keys())
+        if not view['dynamic']['pid'] in pids_dict:
+          pids_dict[view['dynamic']['pid']] = PID( **view['dynamic'] )
+    return list(pids_dict.values())
 
 def findUnits( view ):
     """Create a dictionary of PIDs and their corresponding unit"""
