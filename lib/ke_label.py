@@ -33,7 +33,7 @@ class KELabel(Label):
         self.color            = self.config_color
         self.config_font_size = args.get('font_size', 25)
         self.font_size        = self.config_font_size
-        self.units            = KE_PID.get(args.get('pid', ''), {}).get('units')
+        self.pid              = args.get( 'pid', None )
         self.decimals         = '2' # Default to 2 and update later if a value is provided
         self.unit             = args.get('unit', '')
         self.unit_string      = ''
@@ -43,18 +43,17 @@ class KELabel(Label):
               self.unit_string = str(PID_UNIT_LABEL.get( self.unit, ''))
             else:
                 Logger.error( "GUI: Found unit: %s but no PID_UNIT_LABEL value found", self.unit )
-            if ( self.units.get( self.unit, None ) != None ):
-                self.decimals = self.units.get( self.unit, '' ).get('decimals', '2')
+            if ( self.pid.units.get( self.unit, None ) != None ):
+                self.decimals = self.pid.units.get( self.pid.unit, '' ).get('decimals', '2')
 
         self.object_type      = 'Label'
-        self.pid              = args.get('pid', None)
         self.markup           = True
 
         if self.default == '__PID__':
-            if args['pid'] in KE_PID:
-                self.default = str(KE_PID[self.pid]['shortName'])
+            if self.pid.pid in KE_PID:
+                self.default = str(KE_PID[self.pid.pid]['shortName'])
             else:
-                self.default = KE_PID[self.pid]['name']
+                self.default = self.pid.pid
                 Logger.error("Could not load shortName from Static.Constants for PID: %s", self.pid)
         if 'data' in args and args['data']:
             self.text = self.default +' 0'

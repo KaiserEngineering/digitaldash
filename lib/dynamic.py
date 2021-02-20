@@ -3,6 +3,7 @@ from typing import Tuple
 import ast
 from functools import lru_cache
 from kivy.logger import Logger
+from lib.pid import PID
 
 class Dynamic():
     """
@@ -55,7 +56,7 @@ class Dynamic():
 
         self.index    = int(args.get('index'))
         self.priority = int(args.get('priority'))
-        self.pid = args.get('pid', '')
+        self.pid      = PID( args.get('pid', '') )
 
         return (1, "New dynamic object successfully created")
 

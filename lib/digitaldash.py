@@ -28,17 +28,23 @@ class Background(AnchorLayout):
 def findPids( view ):
     """Find all PIDs in a view"""
     pids_dict = {}
-    for gauge in view['gauges']:
+    for i, gauge in enumerate( view['gauges'] ):
         if gauge['pid'] in pids_dict:
           continue
         pids_dict[gauge['pid']] = PID( **gauge )
-    for alert in view['alerts']:
+        view['gauges'][i]['pid'] = pids_dict[gauge['pid']]
+
+    for i, alert in enumerate( view['alerts'] ):
         if alert['pid'] in pids_dict:
           continue
         pids_dict[alert['pid']] = PID( **alert )
+        view['alerts'][i]['pid'] = pids_dict[alert['pid']]
+
     if view['dynamic'] and view['dynamic']['enabled']:
         if not view['dynamic']['pid'] in pids_dict:
           pids_dict[view['dynamic']['pid']] = PID( **view['dynamic'] )
+          view['dynamic']['pid'] = pids_dict[view['dynamic']['pid']]
+
     return list(pids_dict.values())
 
 def findUnits( view ):
@@ -86,7 +92,7 @@ def setup(self, Layouts):
             dynamic['index'] = view_count
 
             # Keep track of our dynamic PIDs
-            dynamic_pids.append( dynamic['pid'] )
+            dynamic_pids.append( PID( dynamic['pid'] ) )
 
             dynamic_obj = Dynamic()
             (ret, msg) = dynamic_obj.new(**dynamic)
@@ -160,7 +166,7 @@ def setup(self, Layouts):
       # Now we can generate a complete byte array for the PIDs
       if ( len(units) and len(view['pids']) ):
           if ( list(units.keys())[0] != 'n/a' and view['pids'][0] != 'n/a' ):
-              views[i]['pid_byte_code'] = build_update_requirements_bytearray( units, views[i]['pids'] )
+              views[i]['pid_byte_code'] = build_update_requirements_bytearray( views[i]['pids'] )
     return (views, containers, callbacks)
 
 def build_from_config(self, Data_Source=None) -> NoReturn:
