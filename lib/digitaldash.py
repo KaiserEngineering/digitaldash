@@ -40,10 +40,10 @@ def findPids( view ):
         pids_dict[alert['pid']] = PID( **alert )
         view['alerts'][i]['pid'] = pids_dict[alert['pid']]
 
-    if view['dynamic'] and view['dynamic']['enabled']:
-        if not view['dynamic']['pid'] in pids_dict:
-          pids_dict[view['dynamic']['pid']] = PID( **view['dynamic'] )
-          view['dynamic']['pid'] = pids_dict[view['dynamic']['pid']]
+    # if view['dynamic'] and view['dynamic']['enabled']:
+    #     if not view['dynamic']['pid'] in pids_dict:
+    #       pids_dict[view['dynamic']['pid']] = PID( **view['dynamic'] )
+    #       view['dynamic']['pid'] = pids_dict[view['dynamic']['pid']]
 
     return list(pids_dict.values())
 
@@ -66,17 +66,19 @@ def setup(self, Layouts):
     values for views. Then it will build the views and return them.
     """
 
+    # Callbacks are things like Dynamic objects and Alerts that we need to check
     callbacks    = {}
     views        = []
     containers   = []
-    view_count   = 0
     dynamic_pids = []
     # Currently we only allow one type of units per PID
     units        = {}
 
     # Sort based on default value
-    for id in sorted(Layouts['views'],
-                     key=lambda id: Layouts['views'][id].get('default', 0), reverse=True):
+    for id in Layouts['views']:
+        # Make sure a callback key exist for each view Id
+        callbacks.setdefault( id, [] )
+
         view = Layouts['views'][id]
         # Skip disabled views
         if not view['enabled']: continue
@@ -88,14 +90,18 @@ def setup(self, Layouts):
 
         # Create our callbacks
         if view['dynamic'].keys():
-            dynamic = view['dynamic']
-            dynamic['index'] = view_count
+            dynamicConfig = view['dynamic']
+            dynamicConfig['viewId'] = id
 
             # Keep track of our dynamic PIDs
-            dynamic_pids.append( PID( dynamic['pid'] ) )
+            dynamicPID = PID( **dynamicConfig )
+            dynamic_pids.append( dynamicPID )
+
+            # Replace our string pid value with our new object
+            dynamicConfig['pid'] = dynamicPID
 
             dynamic_obj = Dynamic()
-            (ret, msg) = dynamic_obj.new(**dynamic)
+            (ret, msg) = dynamic_obj.new( **dynamicConfig )
             if ret:
                 callbacks.setdefault('dynamic', []).append(dynamic_obj)
             else:
@@ -106,11 +112,11 @@ def setup(self, Layouts):
 
         if len(view['alerts']):
             for alert in view['alerts']:
-                alert['index'] = view_count
+                alert['viewId'] = id
 
-                callbacks.setdefault(view_count, []).append(Alert(**alert))
+                callbacks.setdefault(id, []).append(Alert(**alert))
         else:
-            callbacks.setdefault(view_count, [])
+            callbacks.setdefault(id, [])
 
         container       = FloatLayout()
         ObjectsToUpdate = []
@@ -134,14 +140,14 @@ def setup(self, Layouts):
             )
             container.add_widget(subcontainer)
 
-            mod = None
+            module = None
             try:
                 # This loads any standalone modules
-                mod = globals()[widget['module']]()
+                module = globals()[widget['module']]()
             except KeyError:
-                mod = Base(gauge_count=len(view['gauges']))
+                module = Base(gauge_count=len(view['gauges']))
             ObjectsToUpdate.append(
-                mod.build_component(
+                module.build_component(
                     working_path=self.WORKING_PATH,
                     container=subcontainer,
                     view_id=int(id),
@@ -155,7 +161,6 @@ def setup(self, Layouts):
 
         views.append({'app': Background(WorkingPath=self.WORKING_PATH, BackgroundSource=background), 'alerts': FloatLayout(),
                       'ObjectsToUpdate': ObjectsToUpdate, 'pids': pids})
-        view_count += 1
 
     # We need to retro-actively add our dynamic PIDs into the PIDs array per view
     for i, view in enumerate(views):
@@ -170,6 +175,8 @@ def setup(self, Layouts):
     return (views, containers, callbacks)
 
 def build_from_config(self, Data_Source=None) -> NoReturn:
+    # Current is used to track which viewId we are currently displaying.
+    # This is important for skipping dynamic checks that we don't need to check.
     self.current = 0
     self.first_iteration = False if hasattr(self, 'first_iteration') else True
 
@@ -179,7 +186,7 @@ def build_from_config(self, Data_Source=None) -> NoReturn:
     self.dynamic_callbacks = sorted(self.callbacks['dynamic'],
                                     key=lambda x: x.priority, reverse=True)
     # Since we are building for the first time we can default to index 0
-    self.alert_callbacks = sorted(self.callbacks[0],
+    self.alert_callbacks = sorted(self.callbacks['0'],
                                   key=lambda x: x.priority, reverse=True)
 
     (self.background, self.alerts,

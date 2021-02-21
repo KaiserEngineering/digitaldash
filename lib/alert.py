@@ -15,7 +15,7 @@ class Alert(KELabel):
           self (<digitaldash.alert>)
           value (Float)  : value to compare pid value against
           op (str)       : Operator for comparison
-          index (int)    : View id that this alert is bound to
+          viewId (int)   : View id that this alert is bound to
           priority (int) : Determines which alert is shown if multiple are true at once
           pid (str)      : Byte code value of PID to check value of
           message (str)  : Message to show on label
@@ -32,7 +32,7 @@ class Alert(KELabel):
             operator = bytearray( operator.encode() )
             self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
 
-        self.index = int(args.get('index'))
+        self.viewId = int(args.get('viewId'))
         self.priority = args['priority']
         self.pid = args['pid']
         self.message = str(args['message'])

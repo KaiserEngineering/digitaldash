@@ -18,7 +18,7 @@ class Dynamic():
             :param args: {
                     value     : <Float>,
                     op        : <String>,
-                    index     : <Int>,
+                    viewId    : <Int>,
                     priority  : <Int>,
                     pid       : <Int>,
                 }
@@ -35,13 +35,13 @@ class Dynamic():
         Args:
           value (int)    : The value that we will perform our comparison against.
           op (str)       : Operator for comparison ie '<', '>', '='
-          index (int)    : The index of the view (view.id) the dynamic instance is tied to
+          viewId (int)   : The index of the view (view.id) the dynamic instance is tied to
           priority (int) : This is used to determine order of dynamic checks
           pid            : The pid to get a value to compare to the 'value' arg provided
         """
         if len(list(filter(lambda key:
                            (args.get(key, 'missing') == 'missing'),
-                           ['value', 'op', 'index', 'priority', 'pid']))) > 0:
+                           ['value', 'op', 'viewId', 'priority', 'pid']))) > 0:
             return (0, "Missing required args for new dynamic object")
 
         self.value = float(args.get('value'))
@@ -54,9 +54,9 @@ class Dynamic():
             operator = bytearray( operator.encode() )
             self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
 
-        self.index    = int(args.get('index'))
+        self.viewId   = int(args.get('viewId'))
         self.priority = int(args.get('priority'))
-        self.pid      = PID( args.get('pid', '') )
+        self.pid      = args.get('pid', '')
 
         return (1, "New dynamic object successfully created")
 
@@ -73,15 +73,15 @@ class Dynamic():
         app.alerts.clear_widgets()
 
         (app.background, app.alerts,
-         app.ObjectsToUpdate, app.pids, app.pid_byte_code) = app.views[self.index].values()
+         app.ObjectsToUpdate, app.pids, app.pid_byte_code) = app.views[self.viewId].values()
 
-        app.background.add_widget(app.containers[self.index])
+        app.background.add_widget(app.containers[self.viewId])
         app.background.add_widget(app.alerts)
 
         # Sort our dynamic and alerts callbacks by priority
         app.dynamic_callbacks = sorted(app.callbacks['dynamic'],
                                        key=lambda x: x.priority, reverse=True)
-        app.alert_callbacks = sorted(app.callbacks[app.current],
+        app.alert_callbacks = sorted(app.callbacks[str(app.current)],
                                      key=lambda x: x.priority, reverse=True)
 
         app.app.add_widget(app.background)

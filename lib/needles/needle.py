@@ -38,8 +38,8 @@ class Needle():
             working_path+"/static/imgs"+args['path'] + 'needle.png',
             float(args.get('degrees', 0)),
             pid.unit,
-            pid.units['Min'],
-            pid.units['Max'],
+            pid.range['Min'],
+            pid.range['Max'],
         )
         self.set_step()
 
