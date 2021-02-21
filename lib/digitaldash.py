@@ -40,11 +40,6 @@ def findPids( view ):
         pids_dict[alert['pid']] = PID( **alert )
         view['alerts'][i]['pid'] = pids_dict[alert['pid']]
 
-    # if view['dynamic'] and view['dynamic']['enabled']:
-    #     if not view['dynamic']['pid'] in pids_dict:
-    #       pids_dict[view['dynamic']['pid']] = PID( **view['dynamic'] )
-    #       view['dynamic']['pid'] = pids_dict[view['dynamic']['pid']]
-
     return list(pids_dict.values())
 
 def findUnits( view ):
