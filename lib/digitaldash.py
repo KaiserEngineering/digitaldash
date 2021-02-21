@@ -114,6 +114,12 @@ def setup(self, Layouts):
             for alert in view['alerts']:
                 alert['viewId'] = id
 
+                # Get our already created PID object
+                for pid in pids:
+                  if pid.value == alert['pid']:
+                    alert['pid'] = pid
+                    break
+
                 callbacks.setdefault(id, []).append(Alert(**alert))
         else:
             callbacks.setdefault(id, [])
