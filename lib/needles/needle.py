@@ -1,7 +1,6 @@
 from lib.massager import smooth
 from typing import NoReturn
 from static.constants import KE_PID
-from static.constants import KE_PID
 
 class Needle():
     """
@@ -33,17 +32,14 @@ class Needle():
 
         working_path = args.get( 'working_path', '' )
 
-        units = None
-        if ( args.get('pid', '') and KE_PID.get(args.get('pid', False)) ):
-            units = KE_PID.get(args.get('pid', '')).get('units').get(args['unit'])
 
-        units = KE_PID.get(args.get('pid', '')).get('units').get(args['unit'])
+        pid = args['pid']
         (self.source, self.degrees, self.unit, self.min, self.max) = (
             working_path+"/static/imgs"+args['path'] + 'needle.png',
             float(args.get('degrees', 0)),
-            args['unit'],
-            units['Min'],
-            units['Max'],
+            pid.unit,
+            pid.range['Min'],
+            pid.range['Max'],
         )
         self.set_step()
 

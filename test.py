@@ -49,7 +49,7 @@ class Test():
         for pid in pids:
             if self.cols >= i:
               i = 0
-            key_val[pid] = data[i]
+            key_val[pid.value] = data[i]
             i = i + 1
         self.enumerate()
         return key_val

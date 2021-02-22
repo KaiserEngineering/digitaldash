@@ -114,10 +114,10 @@ class GUI(App):
         ret = False
         try:
           # Check if any dynamic changes need to be made
-          if libdigitaldash.check(float(data[callback.pid]), callback.value, callback.op):
+          if libdigitaldash.check(float(data[callback.pid.value]), callback.value, callback.op):
               ret = callback
         except Exception as e:
-          Logger.error( "GUI: Firmware did not provide data value for key: %s, %s", callback.pid, str(e) )
+          Logger.error( "GUI: Firmware did not provide data value for key: %s", callback.pid.value )
         return ret
 
     def change(self: DD, app, my_callback) -> NoReturn:
@@ -125,7 +125,7 @@ class GUI(App):
         This method only handles dynamic changing, the alert changing is handled in
         the main application loop.
         """
-        self.current = my_callback.index
+        self.current = my_callback.viewId
         my_callback.change(self)
 
     def update_values(self: DD, data: List[float]) -> NoReturn:
@@ -133,9 +133,9 @@ class GUI(App):
             for obj in widget:
                 if obj.pid:
                     try:
-                        obj.set_data(data[obj.pid])
+                        obj.set_data(data[obj.pid.value])
                     except:
-                        Logger.error( "GUI: Firmware did not provide data value for key: %s", obj.pid )
+                        Logger.error( "GUI: Firmware did not provide data value for key: %s", obj.pid.value )
                 else:
                     # This is for widgets that subscribe to
                     # updates but don't need any pid data ( Clock ).
@@ -156,7 +156,7 @@ class GUI(App):
             my_callback = self.check_callback(dynamic, data)
 
             if my_callback:
-              if self.current == dynamic.index:
+              if self.current == dynamic.viewId:
                 break
               self.change(self, my_callback)
               dynamic_change = True
