@@ -22,6 +22,7 @@ export async function prepare( headers ) {
 // sensitive information like auth tokens. It then returns a
 // safe session object for the client.
 export function getSession( context ) {
+  console.log(context.user)
   return {
     user: context.user && context.user && {
       username: context.user.Username

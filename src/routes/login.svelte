@@ -6,7 +6,7 @@
   let password;
 
   function handleSubmit(event) {
-    fetch("/api/auth", {
+    fetch("/api/user", {
         method      : "POST",
         mode        : 'cors',
         credentials : 'same-origin',

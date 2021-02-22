@@ -1,4 +1,3 @@
-import fs from 'fs';
 import { exec } from 'child_process';
 import util from 'util';
 const execute = util.promisify(exec);
