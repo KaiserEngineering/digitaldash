@@ -1,9 +1,16 @@
 from static.constants import PID_UNITS
 from static.constants import KE_PID
+from typing import Mapping
 
 class PID():
     """Class for managing PID information."""
-    def __init__(self, **kwargs):
+
+    value     : str
+    unit      : str
+    range     : Mapping[str, str]
+    unitLabel : str
+
+    def __init__(self, **kwargs: str) -> None:
       super(PID, self).__init__()
 
       self.value      = kwargs.get( 'pid', None )
@@ -13,7 +20,7 @@ class PID():
 
       self.generateByteCode()
 
-    def generateByteCode(self):
+    def generateByteCode(self) -> None:
       self.byteCode = []
       if len(self.byteCode) == 6:
           self.byteCode = ( int(self.value, 16) >> 8 ) & 0xFF        # Mode
