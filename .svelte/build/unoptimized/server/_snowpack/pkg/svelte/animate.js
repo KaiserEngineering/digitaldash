@@ -1,7 +1,7 @@
 import { c as cubicOut } from '../common/index-78b2aaa2.js';
 import { i as is_function } from '../common/index-4559da06.js';
 
-function flip(node, animation, params) {
+function flip(node, animation, params = {}) {
     const style = getComputedStyle(node);
     const transform = style.transform === 'none' ? '' : style.transform;
     const scaleX = animation.from.width / node.clientWidth;

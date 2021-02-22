@@ -1,7 +1,7 @@
 import { c as cubicOut } from '../common/index-78b2aaa2.js';
-import { a0 as identity } from '../common/index-dfdfe0c6.js';
+import { a0 as identity } from '../common/index-d99eeaa2.js';
 
-function fade(node, { delay = 0, duration = 400, easing = identity }) {
+function fade(node, { delay = 0, duration = 400, easing = identity } = {}) {
     const o = +getComputedStyle(node).opacity;
     return {
         delay,
@@ -10,7 +10,7 @@ function fade(node, { delay = 0, duration = 400, easing = identity }) {
         css: t => `opacity: ${t * o}`
     };
 }
-function fly(node, { delay = 0, duration = 400, easing = cubicOut, x = 0, y = 0, opacity = 0 }) {
+function fly(node, { delay = 0, duration = 400, easing = cubicOut, x = 0, y = 0, opacity = 0 } = {}) {
     const style = getComputedStyle(node);
     const target_opacity = +style.opacity;
     const transform = style.transform === 'none' ? '' : style.transform;

@@ -1,5 +1,5 @@
-import { g as get_base_uri } from '../utils-85ebcc60.js';
 import { router, renderer } from '../internal/singletons.js';
+import { g as get_base_uri } from '../utils-85ebcc60.js';
 
 async function goto(href, opts) {
 	return router.goto(href, opts);

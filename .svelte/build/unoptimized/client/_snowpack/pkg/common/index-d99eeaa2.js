@@ -719,7 +719,6 @@ function make_dirty(component, i) {
 function init(component, options, instance, create_fragment, not_equal, props, dirty = [-1]) {
     const parent_component = current_component;
     set_current_component(component);
-    const prop_values = options.props || {};
     const $$ = component.$$ = {
         fragment: null,
         ctx: null,
@@ -741,7 +740,7 @@ function init(component, options, instance, create_fragment, not_equal, props, d
     };
     let ready = false;
     $$.ctx = instance
-        ? instance(component, prop_values, (i, ret, ...rest) => {
+        ? instance(component, options.props || {}, (i, ret, ...rest) => {
             const value = rest.length ? rest[0] : ret;
             if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
                 if (!$$.skip_bound && $$.bound[i])
@@ -802,4 +801,4 @@ class SvelteComponent {
 }
 
 export { to_number as $, check_outros as A, claim_component as B, create_component as C, destroy_component as D, get_spread_object as E, get_spread_update as F, group_outros as G, mount_component as H, toggle_class as I, add_transform as J, component_subscribe as K, create_animation as L, create_out_transition as M, fix_and_outro_and_destroy_block as N, fix_position as O, listen as P, set_store_value as Q, update_keyed_each as R, SvelteComponent as S, run_all as T, set_input_value as U, action_destroyer as V, add_render_callback as W, destroy_each as X, prevent_default as Y, select_option as Z, select_value as _, afterUpdate as a, identity as a0, append as b, children as c, claim_element as d, claim_space as e, claim_text as f, getContext as g, detach as h, is_function as i, element as j, empty as k, init as l, insert as m, noop as n, onMount as o, safe_not_equal as p, set_data as q, space as r, setContext as s, text as t, create_slot as u, transition_in as v, transition_out as w, update_slot as x, assign as y, attr as z };
-//# sourceMappingURL=index-dfdfe0c6.js.map
+//# sourceMappingURL=index-d99eeaa2.js.map

@@ -1,7 +1,7 @@
 import * as cookie from 'cookie';
-import { get_user } from './db.js';
+import { get_user } from '../routes/api/user';
 import { get } from '../routes/api/config';
-import { getConstants } from './db.js';
+import { getConstants } from '../routes/api/constants';
 
 export async function prepare( headers ) {
   let cookies;
