@@ -1,16 +1,32 @@
-import fs from 'fs';
 import { writeFile, readFile } from 'fs/promises';
 import jwt from "jsonwebtoken";
 
-let sessionCache;
-export async function get_user( sid ) {
+interface session {
+  User: {
+    "Username": String,
+    "Password": String,
+  },
+  "Session" : {
+    "token" : String
+  }
+};
+
+interface credentials {
+  "Username": String,
+  "Password": String
+};
+
+let sessionCache: session;
+let credentialsCache: credentials;
+
+export async function get_user( sid: String ) {
   if ( sessionCache ) {
     return sessionCache;
   }
   else {
-    return res = await readFile('auth.json', 'utf8')
+    return await readFile('auth.json', 'utf8')
     .then((result) => {
-      authObj = JSON.parse( result );
+      let authObj = JSON.parse( result );
 
       if ( !authObj || !authObj.Session ) {
         console.log( "No session found on file." );
@@ -27,13 +43,12 @@ export async function get_user( sid ) {
   }
 }
 
-let credentialsCache;
 export async function get() {
   if ( credentialsCache ) {
     return credentialsCache;
   }
   else {
-    return res = await readFile('auth.json', 'utf8')
+    return await readFile('auth.json', 'utf8')
     .then((result) => {
       credentialsCache = JSON.parse( result ).User;
       return credentialsCache;
@@ -46,8 +61,8 @@ export async function get() {
 }
 
 // Do our login
-export async function post( request ) {
-  return res = await readFile('auth.json', 'utf8')
+export async function post( request: { body: string; } ) {
+  return await readFile('auth.json', 'utf8')
   .then((result) => {
     let credentials = JSON.parse( result ).User;
     let attempt     = JSON.parse( request.body );
@@ -86,13 +101,13 @@ export async function post( request ) {
 }
 
 // Update our auth creds
-export async function put( request ) {
+export async function put( request: { body: string; } ) {
   let args = JSON.parse( request.body );
   let temp = { Session: { ...args.Session }, User: { Username: args.username, Password: args.password }};
 
-  return res = await writeFile('auth.json', JSON.stringify( temp, null, 2 ))
+  return await writeFile('auth.json', JSON.stringify( temp, null, 2 ))
   .then(() => {
-    credentialsCache = temp;
+    credentialsCache = temp.User;
     return { body: { ret: 1, message: "Login updated" } };
   })
   .catch(function(error) {
@@ -101,7 +116,7 @@ export async function put( request ) {
   });
 }
 
-function updateSession ( credentials ) {
+async function updateSession ( credentials: { Username: any; Password: any; token: any; } ) {
   let content = {
     User: {
       "Username": credentials.Username,
@@ -112,12 +127,10 @@ function updateSession ( credentials ) {
     }
   };
 
-  fs.writeFile('auth.json', JSON.stringify( content, null, 2 ), (err) => {
-    if ( err ) { console.error( err ); }
-  });
+  writeFile('auth.json', JSON.stringify( content, null, 2 ));
 }
 
-export function updateSessionCache( credentials ) {
+export function updateSessionCache( credentials: { Username: any; Password: any; } ) {
   sessionCache = {
     User: {
       "Username": credentials.Username,

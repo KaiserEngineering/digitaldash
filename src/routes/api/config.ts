@@ -3,22 +3,23 @@ import fs from 'fs';
 
 const config_path = process.env.KEGUIHome
 
-let configCache;
+let configCache: any;
 // Need to add some kind of error handling here
-function readConfig() {
-  return JSON.parse( fs.readFileSync( `${config_path}/etc/config.json`, function(err, data) {
-    if ( err ) {
-      console.log('Failed to read config file')
-    }
-  }));
-}
+function readConfig(): String {
+    let json: any = fs.readFile(`config_path/etc/config.json`, 'utf-8', (error) => {
+      if ( error ) {
+        console.log('Failed to read config file')
+      }});
+
+    return JSON.parse( json );
+};
 
 export async function get() {
   if ( configCache ) {
     return configCache;
   }
   else {
-    return res = await readFile(`${config_path}/etc/config.json`, 'utf8')
+    return await readFile(`${config_path}/etc/config.json`, 'utf8')
       .then((result) => {
         configCache = JSON.parse( result );
         return configCache;
@@ -31,10 +32,10 @@ export async function get() {
 }
 
 // Use this to update config
-export async function post( request ) {
+export async function post( request: { body: string; } ) {
   const newConfig = JSON.parse( request.body );
 
-  return res = await writeFile( `${config_path}/etc/config.json`, JSON.stringify( newConfig, null, 2 ))
+  return await writeFile( `${config_path}/etc/config.json`, JSON.stringify( newConfig, null, 2 ))
   .then(() => {
     configCache = readConfig();
     return { "body" : { "ret": 1, message: "Config updated", config: configCache } };
@@ -45,14 +46,14 @@ export async function post( request ) {
 }
 
 // Right now lets use this for toggling view
-export async function put( request ) {
+export async function put( request: { body: { id: any; }; } ) {
   const id = request.body.id;
 
   let temp = configCache;
   temp.views[id].enabled = temp.views[id].enabled ? false : true;
 
   let count = 0;
-  for ( key in temp.views ) {
+  for ( var key in temp.views ) {
     if ( temp.views[key].enabled ) {
       count = 1;
       break;
@@ -66,7 +67,7 @@ export async function put( request ) {
     return { "body": { "ret": 0, "views": configCache, message: "Need at least one enabled view" } };
   }
   else {
-    return res = await writeFile( `${config_path}/etc/config.json`, JSON.stringify( temp, null, 2 ))
+    return await writeFile( `${config_path}/etc/config.json`, JSON.stringify( temp, null, 2 ))
     .then(() => {
       configCache = readConfig();
       return { "body": { "ret": 1, "views": configCache, message: "Config updated" } };

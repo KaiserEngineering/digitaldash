@@ -8,7 +8,7 @@ export async function prepare( headers: Record<string, string> ): Promise<{
     context?: Record<string, any>;
   }> {
 
-  let cookies;
+  let cookies: { [x: string]: String; };
   if ( headers.cookie ) {
     cookies = cookie.parse( headers.cookie );
   }
@@ -25,13 +25,7 @@ export async function prepare( headers: Record<string, string> ): Promise<{
 // This function takes context objects which could contain
 // sensitive information like auth tokens. It then returns a
 // safe session object for the client.
-export async function getSession(
-  // Passed from prepare above
-    context: Record<string, any>
-  ): Promise<
-    // Arbitrary session object, passed down to routes
-    Record<string, any>
-  > {
+export async function getSession( context: Record<string, any> ): Promise<Record<string, any>> {
 
   return {
     user: context.user && context.user && {
