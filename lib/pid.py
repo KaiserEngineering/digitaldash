@@ -1,7 +1,7 @@
 from static.constants import PID_UNITS
 from static.constants import KE_PID
 
-class PID(object):
+class PID():
     """Class for managing PID information."""
     def __init__(self, **kwargs):
       super(PID, self).__init__()
