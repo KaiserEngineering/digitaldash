@@ -3,7 +3,11 @@ import { get_user } from '../routes/api/user';
 import { get } from '../routes/api/config';
 import { getConstants } from '../routes/api/constants';
 
-export async function prepare( headers ) {
+export async function prepare( headers: Record<string, string> ): Promise<{
+    headers?: Record<string, string>;
+    context?: Record<string, any>;
+  }> {
+
   let cookies;
   if ( headers.cookie ) {
     cookies = cookie.parse( headers.cookie );
@@ -16,13 +20,19 @@ export async function prepare( headers ) {
       constants    : await getConstants()
     },
   }
-}
+};
 
 // This function takes context objects which could contain
 // sensitive information like auth tokens. It then returns a
 // safe session object for the client.
-export function getSession( context ) {
-  console.log(context.user)
+export async function getSession(
+  // Passed from prepare above
+    context: Record<string, any>
+  ): Promise<
+    // Arbitrary session object, passed down to routes
+    Record<string, any>
+  > {
+
   return {
     user: context.user && context.user && {
       username: context.user.Username
@@ -32,4 +42,4 @@ export function getSession( context ) {
     constants     : context.constants,
     count         : 0
   }
-}
+};

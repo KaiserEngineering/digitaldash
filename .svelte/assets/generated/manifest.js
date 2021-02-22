@@ -51,7 +51,6 @@ export const pages = [
 export const ignore = [
 	/^\/api\/constants\/?$/,
 	/^\/api\/config\/?$/,
-	/^\/api\/auth\/?$/,
 	/^\/api\/user\/?$/
 ];
 
