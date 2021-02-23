@@ -173,15 +173,19 @@ def setup(self, Layouts):
       if ( len(units) and len(view['pids']) ):
           if ( list(units.keys())[0] != 'n/a' and view['pids'][0] != 'n/a' ):
               views[i]['pid_byte_code'] = build_update_requirements_bytearray( views[i]['pids'] )
-    return (views, containers, callbacks)
+    return ([views, containers, callbacks], 'Successful setup')
 
-def build_from_config(self, Data_Source=None) -> NoReturn:
+def build_from_config(self, Data_Source=None) -> [int, AnchorLayout, str]:
     # Current is used to track which viewId we are currently displaying.
     # This is important for skipping dynamic checks that we don't need to check.
     self.current = 0
     self.first_iteration = False if hasattr(self, 'first_iteration') else True
 
-    (self.views, self.containers, self.callbacks) = setup(self, config.views(file=self.configFile))
+    (ret, msg) = setup(self, config.views(file=self.configFile))
+    if ( ret ):
+      self.views, self.containers, self.callbacks = ret
+    else:
+      return (ret, msg)
 
     # Sort our dynamic and alerts callbacks by priority
     self.dynamic_callbacks = sorted(self.callbacks['dynamic'],
@@ -221,4 +225,4 @@ def build_from_config(self, Data_Source=None) -> NoReturn:
     if hasattr(self, 'clock_event'): self.clock_event.cancel()
     if self.data_source: self.clock_event = Clock.schedule_interval(self.loop, 0)
 
-    return self.app
+    return (1, 'Successful build')

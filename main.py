@@ -33,6 +33,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.anchorlayout import AnchorLayout
 from watchdog.observers import Observer
+from kivy.uix.label import Label
 from watchdog.events import PatternMatchingEventHandler
 from typing import NoReturn, List, TypeVar
 
@@ -101,14 +102,18 @@ class GUI(App):
         # Our main application object
         self.app = AnchorLayout()
 
-        self.data_source = Data_Source
+        self.data_source  = Data_Source
         self.working_path = WORKING_PATH
 
         observer = Observer()
         observer.schedule(MyHandler(self), WORKING_PATH+'/etc/', recursive=True)
         observer.start()
 
-        return build_from_config(self, Data_Source)
+        (ret, msg) = build_from_config(self, Data_Source)
+        # If something went wrong in build return a label with the error message:
+        if ( not ret ):
+          return Label( text=msg )
+        return self.app
 
     def check_callback(self: DD, callback, data):
         ret = False
