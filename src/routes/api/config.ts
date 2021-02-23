@@ -3,9 +3,42 @@ import fs from 'fs';
 
 const config_path = process.env.KEGUIHome
 
-let configCache: any;
+export interface Config {
+  views: { [key: string]: View };
+}
+
+export interface View {
+  name:       string;
+  enabled:    boolean;
+  default:    number;
+  background: string;
+  theme:      string;
+  alerts:     any[];
+  dynamic:    Dynamic;
+  gauges:     Gauge[];
+}
+
+export interface Dynamic {
+  enabled:  boolean;
+  pid:      string;
+  op:       string;
+  priority: number;
+  value:    string;
+  unit:     string;
+}
+
+export interface Gauge {
+  module:      string;
+  themeConfig: string;
+  unit:        string;
+  path:        string;
+  pid:         string;
+}
+
+
+let configCache: Config;
 // Need to add some kind of error handling here
-function readConfig(): String {
+function readConfig(): Config {
     let json: any = fs.readFile(`config_path/etc/config.json`, 'utf-8', (error) => {
       if ( error ) {
         console.log('Failed to read config file')
