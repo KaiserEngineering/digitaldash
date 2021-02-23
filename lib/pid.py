@@ -15,8 +15,8 @@ class PID():
 
       self.value      = kwargs.get( 'pid', None )
       self.unit       = PID_UNITS[kwargs.get( 'unit', '' )]
-      self.range      = KE_PID.get(kwargs.get('pid', '')).get('units').get(kwargs['unit'])
       self.unitLabel  = kwargs.get( 'unit', '' )
+      self.range      = KE_PID.get(self.value).get('units').get(self.unitLabel)
 
       self.generateByteCode()
 

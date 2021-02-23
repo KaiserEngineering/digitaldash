@@ -31,7 +31,7 @@ def findPids( view ):
     for i, gauge in enumerate( view['gauges'] ):
         if gauge['pid'] in pids_dict:
           continue
-        pids_dict[gauge['pid']] = PID( **gauge )
+        pids_dict[gauge['pid']]  = PID( **gauge )
         view['gauges'][i]['pid'] = pids_dict[gauge['pid']]
 
     for i, alert in enumerate( view['alerts'] ):
@@ -225,4 +225,4 @@ def build_from_config(self, Data_Source=None) -> [int, AnchorLayout, str]:
     if hasattr(self, 'clock_event'): self.clock_event.cancel()
     if self.data_source: self.clock_event = Clock.schedule_interval(self.loop, 0)
 
-    return (1, 'Successful build')
+    return (self.app, 'Successful build')

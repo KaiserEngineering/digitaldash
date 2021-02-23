@@ -31,7 +31,7 @@ class Alert(KELabel):
             operator = " "+str(args.get('op'))
             operator = bytearray( operator.encode() )
             self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
-
+        print(args.get('viewId'))
         self.viewId = int(args.get('viewId'))
         self.priority = args['priority']
         self.pid = args['pid']

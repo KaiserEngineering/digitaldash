@@ -25,15 +25,15 @@ def test_needle_simple():
     needles = (
         NeedleRadial(
             themeConfig=120, degrees=120, path='/Stock/',
-            pids=["0x010C"], pid=pid, working_path=working_path
+            pid=pid, working_path=working_path
         ),
         NeedleEllipse(
             themeConfig=120, degrees=120, path='/Dirt/',
-            pids=["0x010C"], pid=pid, working_path=working_path
+            pid=pid, working_path=working_path
         ),
         NeedleLinear(
             themeConfig=120, degrees=120, path='/Linear/',
-            pids=["0x010C"], pid=pid, working_path=working_path
+            pid=pid, working_path=working_path
         ),
     )
 
@@ -59,7 +59,7 @@ def test_needle_min_max():
     # Test that Min and Max is set correctly based on constants.py
     needle = NeedleRadial(
         themeConfig=120, degrees=120, path='/Stock/',
-        pids=["0x010C"], pid=pid, working_path=working_path
+        pid=pid, working_path=working_path
     )
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Min"] == needle.min
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Max"] == needle.max
@@ -75,7 +75,7 @@ def test_label_simple():
         pid            = pid,
     )
     assert label.text == "hello, world", print("Default text value is set correctly")
-    assert label.decimals == "2", print("Default decimal place set correctly for label when no unit provided")
+    assert label.decimals == "0", print("Default decimal place set correctly for label when no unit provided")
 
     label = KELabel(
         default        = 'hello, world ',
@@ -83,12 +83,11 @@ def test_label_simple():
         ConfigFontSize = 25,
         data           = 0,
         pid            = pid,
-        **KE_PID["0x010C"]
     )
-    assert label.decimals == "2", print("Decimal place set correctly for label when unit is provided")
+    assert label.decimals == "0", print("Decimal place set correctly for label when unit is provided")
 
     label.set_data(100)
-    assert label.text == "hello, world 100.00", print("Default text value is set correctly form set_data method")
+    assert label.text == "hello, world 100", print("Default text value is set correctly form set_data method")
 
     # Setting decimals to 0
     label = KELabel(
@@ -97,80 +96,80 @@ def test_label_simple():
         ConfigFontSize = 25,
         data           = 0,
         pid            = pid,
-        **KE_PID["0x010C"]
     )
 
-#     label.set_data(0)
-#     assert label.text == "hello, world 0", print("Default text value is set correctly")
-#     label.set_data(-100)
-#     assert label.text == "hello, world -100", print("Min value sets correctly")
+    label.set_data(0)
+    assert label.text == "hello, world 0", print("Default text value is set correctly")
+    label.set_data(-100)
+    assert label.text == "hello, world -100", print("Min value sets correctly")
 
-#     label.set_data(100)
-#     assert label.text == "hello, world 100", print("Min value stays minimum seen")
+    label.set_data(100)
+    assert label.text == "hello, world 100", print("Min value stays minimum seen")
 
-#     label = KELabel(
-#         default        = 'Max: ',
-#         data           = 1,
-#         pid            = "0x010B"
-#     )
-#     label.set_data(0)
-#     assert label.text == "0.00", print("Default text value is set correctly")
-#     label.set_data(100)
-#     assert label.text == "100.00", print("Max value sets correctly")
+    label = KELabel(
+        default        = 'Max: ',
+        data           = 1,
+        pid            = pid
+    )
+    label.set_data(0)
+    assert label.text == "0", print("Default text value is set correctly")
+    label.set_data(100)
+    assert label.text == "100", print("Max value sets correctly")
 
-#     label.set_data(10)
-#     assert label.text == "100.00", print("Max value stays max seen")
+    label.set_data(10)
+    assert label.text == "100", print("Max value stays max seen")
 
-#     # Test PID labels
-#     label = KELabel(
-#         default        = '__PID__',
-#         pid            = "0x010C"
-#     )
-#     assert label.text == "RPM", print("Sets PID label correctly")
+    # Test PID labels
+    label = KELabel(
+        default        = '__PID__',
+        pid            = pid
+    )
+    assert label.text == "RPM", print("Sets PID label correctly")
 
 
-# def test_alert_simple():
-#     """Basic alerts tests"""
-#     alert = Alert(
-#         value     = 100,
-#         op        = '>',
-#         index     = 0,
-#         priority  = 0,
-#         message   = 'Hello, from tests',
-#         pid       = "0x010B"
-#     )
-#     assert libdigitaldash.check(float(99), alert.value, alert.op) is False, print("Check fails when it should")
-#     assert libdigitaldash.check(float(101), alert.value, alert.op) is True, print("Check passes when it should")
-#     assert alert.text == 'Hello, from tests', print("Do not set alert value")
+pid2 = PID( pid="0x010B", unit="PID_UNITS_KPA" )
+def test_alert_simple():
+    """Basic alerts tests"""
+    alert = Alert(
+        value      = 100,
+        op         = '>',
+        viewId     = 0,
+        priority   = 0,
+        message    = 'Hello, from tests',
+        pid        = pid2
+    )
+    assert libdigitaldash.check(float(99), alert.value, alert.op) is False, print("Check fails when it should")
+    assert libdigitaldash.check(float(101), alert.value, alert.op) is True, print("Check passes when it should")
+    assert alert.text == 'Hello, from tests', print("Do not set alert value")
 
-# class Application():
-#   """Class for replacing 'self' from main.py"""
-#   def __init__(self):
-#     self.background_source = 'woof'
+class Application():
+  """Class for replacing 'self' from main.py"""
+  def __init__(self):
+    self.background_source = 'woof'
 
-# def test_build():
-#     """Test build process"""
-#     config.setWorkingPath(working_path)
+def test_build():
+    """Test build process"""
+    config.setWorkingPath(working_path)
 
-#     def loop():
-#       pass
+    def loop():
+      pass
 
-#     self              = Application()
-#     self.WORKING_PATH = working_path
-#     self.loop         = loop
-#     self.configFile   = None
-#     self.app          = AnchorLayout()
-#     self.data_source  = None
-#     self.working_path = str(pathlib.Path(__file__).parent.absolute())
+    self              = Application()
+    self.WORKING_PATH = working_path
+    self.loop         = loop
+    self.configFile   = None
+    self.app          = AnchorLayout()
+    self.data_source  = None
+    self.working_path = str(pathlib.Path(__file__).parent.absolute())
 
-#     anchorLayout = build_from_config(self)
-#     background   = anchorLayout.children[0]
+    (anchorLayout, msg) = build_from_config(self)
+    background   = anchorLayout.children[0]
 
-#     container = background.children[1].children
-#     assert len(container) == 3
+    container = background.children[1].children
+    assert len(container) == 3
 
-#     saw_unit_string_label = False
-#     for widget in container[0].children:
-#       if type(widget) is KELabel and widget.unit_string:
-#         saw_unit_string_label = True
-#     assert saw_unit_string_label == True, print( "Set PID unit string" )
+    saw_unit_string_label = False
+    for widget in container[0].children:
+      if type(widget) is KELabel and widget.unit_string:
+        saw_unit_string_label = True
+    assert saw_unit_string_label == True, print( "Set PID unit string" )

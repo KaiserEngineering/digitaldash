@@ -44,8 +44,8 @@ class KELabel(Label):
               self.unit_string = str(PID_UNIT_LABEL.get( self.unit, '' ))
             else:
                 Logger.error( "GUI: Found unit: %s but no PID_UNIT_LABEL value found", self.unit )
-            if ( self.pid.range.get( self.unit, None ) != None ):
-                self.decimals = self.range.get( self.unit, '' ).get('decimals', '2')
+            if (  self.pid.range and self.pid.range.get('decimals', None ) != None ):
+                self.decimals = self.pid.range['decimals']
 
         self.object_type      = 'Label'
         self.markup           = True
