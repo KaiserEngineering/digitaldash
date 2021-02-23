@@ -1,4 +1,4 @@
-from lib.massager import smooth
+from digitaldash.massager import smooth
 from typing import NoReturn
 from static.constants import KE_PID
 

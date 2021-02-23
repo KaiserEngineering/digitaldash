@@ -7,12 +7,12 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 
 from etc import config
-from lib.base import Base
-from lib.dynamic import Dynamic
-from lib.alert import Alert
-from lib.alerts import Alerts
-from lib.pid import PID
-from ke_protocol import build_update_requirements_bytearray
+from digitaldash.base import Base
+from digitaldash.dynamic import Dynamic
+from digitaldash.alert import Alert
+from digitaldash.alerts import Alerts
+from digitaldash.pid import PID
+from digitaldash.ke_protocol import build_update_requirements_bytearray
 
 # Import custom gauges
 from local.gauges import *

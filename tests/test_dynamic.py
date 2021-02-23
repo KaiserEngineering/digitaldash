@@ -1,6 +1,6 @@
 """Testing basics of DigitalDash."""
-import test
-from lib.digitaldash import build_from_config
+import digitaldash.test as KETester
+from digitaldash.digitaldash import build_from_config
 from etc import config
 from kivy.uix.anchorlayout import AnchorLayout
 
@@ -18,7 +18,7 @@ def loopy(self):
 def test_pid_byte_code_caching():
     """Ensure our byte code string is always updated on dynamic change"""
 
-    t = test.Test()
+    t = KETester.Test()
     config.setWorkingPath(working_path)
 
     self              = Application()

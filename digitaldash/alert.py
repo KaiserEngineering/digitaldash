@@ -1,7 +1,7 @@
 """Monitour a datapoint and create a alert if triggered."""
 from functools import lru_cache
 import ast
-from lib.ke_label import KELabel
+from digitaldash.ke_label import KELabel
 
 class Alert(KELabel):
     """

@@ -1,23 +1,14 @@
 {
   "views": {
     "0": {
-      "name": "First view",
+      "name": "Some view",
       "enabled": true,
       "default": 1,
-      "background": "bg.jpg",
+      "background": "banner1.jpg",
       "theme": "Stock",
-      "alerts": [
-        {
-          "pid": "0x010C",
-          "op": ">",
-          "value": "4000",
-          "unit": "PID_UNITS_RPM",
-          "priority": 1,
-          "message": "Danger to Manifold"
-        }
-      ],
+      "alerts": [],
       "dynamic": {
-        "enabled": true,
+        "enabled": false,
         "pid": "0x220461",
         "op": "<",
         "priority": 1,
@@ -28,16 +19,16 @@
         {
           "module": "Radial",
           "themeConfig": "120",
-          "unit": "PID_UNITS_KPA",
+          "unit": "PID_UNITS_CELCIUS",
           "path": "/Stock/",
-          "pid": "0x010B"
+          "pid": "0x0105"
         },
         {
           "module": "Radial",
           "themeConfig": "120",
-          "unit": "PID_UNITS_KPA",
+          "unit": "PID_UNITS_CELCIUS",
           "path": "/Stock/",
-          "pid": "0x016F"
+          "pid": "0x010F"
         },
         {
           "module": "Radial",
@@ -50,7 +41,7 @@
     },
     "1": {
       "name": "Second views",
-      "enabled": true,
+      "enabled": false,
       "default": 0,
       "background": "BlackBackground.png",
       "theme": "Stock",

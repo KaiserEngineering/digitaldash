@@ -1,4 +1,4 @@
-import test
+import digitaldash.test as KETester
 from static.constants import KE_CP_OP_CODES
 
 def test_constants_types():

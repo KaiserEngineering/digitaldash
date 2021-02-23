@@ -1,5 +1,5 @@
 from kivy.uix.widget import Widget
-from lib.needles.needle import Needle
+from digitaldash.needles.needle import Needle
 from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
 from typing import NoReturn

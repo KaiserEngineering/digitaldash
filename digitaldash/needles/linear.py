@@ -1,5 +1,5 @@
 from kivy.uix.widget import Widget
-from lib.needles.needle import Needle
+from digitaldash.needles.needle import Needle
 from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
 from kivy.uix.stencilview import StencilView
@@ -7,7 +7,7 @@ from typing import NoReturn
 from kivy.core.window import Window
 
 class NeedleLinear(Needle, StencilView):
-    """Wrapper combining lib.needles.needle and kivy.uix.stencilview."""
+    """Wrapper combining digitaldash.needles.needle and kivy.uix.stencilview."""
 
     update  = NumericProperty()
     source  = StringProperty()

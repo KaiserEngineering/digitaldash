@@ -1,16 +1,15 @@
 """Testing basics of DigitalDash."""
 import unittest
 from kivy.tests.common import GraphicUnitTest
-import test
-import main
-from lib.needles.needle import Needle
-from lib.massager import smooth
+import digitaldash.test as KETester
+from digitaldash.needles.needle import Needle
+from digitaldash.massager import smooth
 from static.constants import KE_PID
 
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
-t = test.Test()
+t = KETester.Test()
 class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):

@@ -3,7 +3,7 @@ from typing import Tuple
 import ast
 from functools import lru_cache
 from kivy.logger import Logger
-from lib.pid import PID
+from digitaldash.pid import PID
 
 class Dynamic():
     """

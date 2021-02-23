@@ -3,7 +3,7 @@
 # Dependent modules and packages
 import getopt
 import sys
-from test import Test
+from digitaldash.test import Test
 import os
 import pathlib
 
@@ -40,7 +40,7 @@ from typing import NoReturn, List, TypeVar
 # Rust import
 import libdigitaldash
 
-from lib.digitaldash import build_from_config
+from digitaldash.digitaldash import build_from_config
 from _version import __version__
 from etc import config
 
@@ -48,7 +48,7 @@ config.setWorkingPath(WORKING_PATH)
 
 if not Data_Source:
     try:
-        from ke_protocol import Serial
+        from digitaldash.ke_protocol import Serial
         Data_Source = Serial()
         Logger.info("Using serial data source" + str(Data_Source))
     except Exception as e:
@@ -68,8 +68,8 @@ class MyHandler(PatternMatchingEventHandler):
         build_from_config(self.DigitalDash, Data_Source)
 
 # Load our KV files
-for file in os.listdir(WORKING_PATH+'/kv/'):
-    Builder.load_file(WORKING_PATH+'/kv/'+str(file))
+for file in os.listdir(WORKING_PATH+'/digitaldash/kv/'):
+    Builder.load_file(WORKING_PATH+'/digitaldash/kv/'+str(file))
 
 DD = TypeVar('DD', bound='DigitalDash')
 class GUI(App):
