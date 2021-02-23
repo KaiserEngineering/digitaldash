@@ -24,16 +24,19 @@ def test_pid_byte_code_caching():
     self              = Application()
     self.WORKING_PATH = working_path
     self.loop         = loopy
-    self.configFile   = None
+    self.configFile   = 'etc/configs/dynamic.json'
     self.app          = AnchorLayout()
     self.data_source  = t
     self.working_path = str(pathlib.Path(__file__).parent.absolute())
 
-    anchorLayout = build_from_config(self)
+    (anchorLayout, msg) = build_from_config(self)
     background   = anchorLayout.children[0]
 
     oldByteCode = self.pid_byte_code
     for dynamic in self.dynamic_callbacks:
-      dynamic.change(self)
-      break
+      if dynamic.viewId == self.current:
+        continue
+      else:
+        dynamic.change(self)
+        break
     assert oldByteCode != self.pid_byte_code

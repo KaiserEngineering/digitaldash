@@ -14,7 +14,10 @@ def test_config_file_from_cli():
     dd.new(configFile=working_path+'/etc/configs/single.json')
     assert dd.configFile == working_path+"/etc/configs/single.json", print("Can set config file on DD instantiation")
 
-    (views, containers, callbacks) = digitaldash.setup(dd, config.views(working_path+'/etc/configs/single.json'))
+    (views, containers, callbacks) = (None, None, None)
+    (ret, msg) = digitaldash.setup(dd, config.views(working_path+'/etc/configs/single.json'))
+    if ( ret ):
+      (views, containers, callbacks) = ret
     assert len(views) == 1, print("Only include the enabled views")
 
     path = working_path+"/etc/configs"
