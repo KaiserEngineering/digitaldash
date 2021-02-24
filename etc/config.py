@@ -5,7 +5,7 @@ from kivy.logger import Logger
 WORKINGPATH = ''
 
 
-def setWORKINGPATH(path):
+def setWorkingPath(path):
     """Simple setter"""
     global WORKINGPATH
     WORKINGPATH = path
