@@ -97,6 +97,8 @@ def setup(self, layouts):
 
             # Keep track of our dynamic PIDs
             dynamicPID = PID(**dynamicConfig)
+            if not dynamicPID.value:
+                return(0, "Couldn't set dynamic PID")
             dynamicPids.append(dynamicPID)
 
             # Replace our string pid value with our new object

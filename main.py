@@ -113,6 +113,7 @@ class GUI(App):
         # If something went wrong in build return a label with the error message:
         if ( not ret ):
           return Label( text=msg )
+        Logger.info("GUI: %s", msg)
         return self.app
 
     def check_callback(self: DD, callback, data):
