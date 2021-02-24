@@ -18,16 +18,3 @@ class PID():
         self.unit = PID_UNITS[kwargs.get('unit', '')]
         self.unitLabel = kwargs.get('unit', '')
         self.range = KE_PID.get(self.value).get('units').get(self.unitLabel)
-
-        self.generateByteCode()
-
-    def generateByteCode(self) -> None:
-        """Deprecated"""
-        self.byteCode = []
-        if len(self.byteCode) == 6:
-            self.byteCode = (int(self.value, 16) >> 8) & 0xFF        # Mode
-            self.byteCode.append(0x00)                               # PID byte 0
-        else:
-            self.byteCode.append((int(self.value, 16) >> 16) & 0xFF) # Mode
-            self.byteCode.append((int(self.value, 16) >> 8) & 0xFF)  # PID byte 0
-        self.byteCode.append((int(self.value, 16)) & 0xFF)           # PID byte 1
