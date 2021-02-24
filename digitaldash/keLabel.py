@@ -4,6 +4,7 @@ from kivy.logger import Logger
 from static.constants import KE_PID
 from static.constants import PID_UNIT_LABEL
 
+
 class KELabel(Label):
     """
     Simple wrapper around Kivy.uix.label.

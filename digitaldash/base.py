@@ -9,6 +9,7 @@ from digitaldash.needles.ellipse import NeedleEllipse as Ellipse
 from digitaldash.needles.radial import NeedleRadial as Radial
 from digitaldash.needles.linear import NeedleLinear as Linear
 
+
 class Base():
     """Base class used to provide helper method for creating a gauge."""
 

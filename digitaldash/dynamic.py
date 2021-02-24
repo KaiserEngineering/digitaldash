@@ -3,6 +3,7 @@ from typing import Tuple
 from kivy.logger import Logger
 from digitaldash.pid import PID
 
+
 class Dynamic():
     """
     The dynamic class is applied on per view, where the dynamic object has
@@ -55,7 +56,7 @@ class Dynamic():
             operator = bytearray(args.get('op').encode())
             self.op = (operator[0] << 8) | (operator[1] & 0xFF)
         else:
-            operator = " "+str(args.get('op'))
+            operator = " " + str(args.get('op'))
             operator = bytearray(operator.encode())
             self.op = (operator[0] << 8) | (operator[1] & 0xFF)
 

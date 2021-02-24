@@ -1,6 +1,7 @@
 """Class to hold gauges face and needle"""
 from kivy.properties import ObjectProperty
 
+
 class Gauge():
     """
     Class for coupling Needle and Face instances.

@@ -1,6 +1,7 @@
 """Massages values being passed to gauges to smooth them."""
 from kivy.logger import Logger
 
+
 def smooth(old, new) -> float:
     """
     Smoothing transitions between data points

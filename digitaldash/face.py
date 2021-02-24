@@ -1,6 +1,7 @@
 """Wrapper around kivy.uix.image for gauge face"""
 from kivy.uix.image import Image
 
+
 class Face(Image):
     "Wrapper around Kivy.uix.image."
 
@@ -12,6 +13,6 @@ class Face(Image):
         super(Face, self).__init__()
         workingPath = kwargs.get('workingPath', '')
 
-        self.source = workingPath+"/static/imgs"+kwargs.get('path', '') + 'gauge.png'
+        self.source = workingPath + "/static/imgs" + kwargs.get('path', '') + 'gauge.png'
         for key in kwargs:
             setattr(self, key, kwargs[key])

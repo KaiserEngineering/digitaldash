@@ -1,6 +1,7 @@
 """Monitour a datapoint and create a alert if triggered."""
 from digitaldash.keLabel import KELabel
 
+
 class Alert(KELabel):
     """
     Wrapper on digitaldash.ke_label that adds method for checking
@@ -27,7 +28,7 @@ class Alert(KELabel):
             operator = bytearray(args.get('op').encode())
             self.op = (operator[0] << 8) | (operator[1] & 0xFF)
         else:
-            operator = " "+str(args.get('op'))
+            operator = " " + str(args.get('op'))
             operator = bytearray(operator.encode())
             self.op = (operator[0] << 8) | (operator[1] & 0xFF)
         print(args.get('viewId'))

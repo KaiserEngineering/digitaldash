@@ -3,6 +3,7 @@ from kivy.properties import NumericProperty
 from kivy.uix.image import Image
 from digitaldash.needles.needle import Needle
 
+
 class NeedleRadial(Needle, Image):
     """Wrapper combining digitaldash.needles.needle and kivy.uix.image."""
 

@@ -5,6 +5,7 @@ from kivy.uix.stencilview import StencilView
 from kivy.core.window import Window
 from digitaldash.needles.needle import Needle
 
+
 class NeedleLinear(Needle, StencilView):
     """Wrapper combining digitaldash.needles.needle and kivy.uix.stencilview."""
 
@@ -30,7 +31,6 @@ class NeedleLinear(Needle, StencilView):
             self.setStep()
 
         self.bind(width=myWidthCallback)
-
 
     def setStep(self) -> None:
         """

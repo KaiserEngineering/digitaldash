@@ -3,6 +3,7 @@ from digitaldash.needles.needle import Needle
 from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
 
+
 class NeedleEllipse(Needle, Widget):
     """
     Create Ellipse widget.

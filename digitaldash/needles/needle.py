@@ -1,6 +1,7 @@
 """Main needle base class"""
 from digitaldash.massager import smooth
 
+
 class Needle():
     """
     Base class for Needle classes to inherit from.
@@ -45,7 +46,7 @@ class Needle():
 
         pid = args['pid']
         (self.source, self.degrees, self.unit, self.minValue, self.maxValue) = (
-            workingPath+"/static/imgs"+args['path'] + 'needle.png',
+            workingPath + "/static/imgs" + args['path'] + 'needle.png',
             float(args.get('degrees', 0)),
             pid.unit,
             pid.range['Min'],

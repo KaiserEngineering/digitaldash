@@ -22,6 +22,7 @@ from digitaldash.keProtocol import buildUpdateRequirementsBytearray
 # Import custom gauges
 from local.gauges import *
 
+
 class Background(AnchorLayout):
     """Uses Kivy language to create background."""
     source = StringProperty()

@@ -2,6 +2,7 @@
 # pylint: disable=import-outside-toplevel
 import csv
 
+
 class Test():
     """Test instance."""
     app: any
