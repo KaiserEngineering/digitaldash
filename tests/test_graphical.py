@@ -1,4 +1,6 @@
 """Testing basics of DigitalDash."""
+# pylint: skip-file
+
 import unittest
 from kivy.tests.common import GraphicUnitTest
 import digitaldash.test as KETester

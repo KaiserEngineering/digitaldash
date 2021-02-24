@@ -31,7 +31,7 @@ class Alert(KELabel):
             operator = " " + str(args.get('op'))
             operator = bytearray(operator.encode())
             self.op = (operator[0] << 8) | (operator[1] & 0xFF)
-        print(args.get('viewId'))
+
         self.viewId = int(args.get('viewId'))
         self.priority = args['priority']
         self.pid = args['pid']
@@ -39,5 +39,5 @@ class Alert(KELabel):
         self.text = self.message
         self.buffer = 0
 
-    def set_pos(self, **args):
+    def setPos(self, **args):
         self.pos = (self.center_x + self.width / 4, self.center_y + self.height / 1.5)

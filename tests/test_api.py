@@ -1,4 +1,6 @@
 """Testing basics of DigitalDash."""
+# pylint: skip-file
+
 import libdigitaldash
 from etc import config
 from digitaldash.needles.needle import Needle

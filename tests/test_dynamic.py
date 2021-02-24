@@ -1,4 +1,6 @@
 """Testing basics of DigitalDash."""
+# pylint: skip-file
+
 from kivy.uix.anchorlayout import AnchorLayout
 import digitaldash.test as KETester
 from digitaldash.digitaldash import buildFromConfig

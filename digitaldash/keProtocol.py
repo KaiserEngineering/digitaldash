@@ -1,4 +1,5 @@
 """Serial handler class."""
+# pylint: skip-file
 import serial
 import time
 from kivy.logger import Logger

@@ -1,4 +1,6 @@
 """Place for storing useful constants"""
+# pylint: skip-file
+
 import json
 
 KE_CP_OP_CODES = {

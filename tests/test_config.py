@@ -1,4 +1,6 @@
 """Testing basics of DigitalDash."""
+# pylint: skip-file
+
 import main
 from etc import config
 import os
