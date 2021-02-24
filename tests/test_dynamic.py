@@ -1,8 +1,8 @@
 """Testing basics of DigitalDash."""
-import digitaldash.test as KETester
-from digitaldash.digitaldash import build_from_config
-from etc import config
 from kivy.uix.anchorlayout import AnchorLayout
+import digitaldash.test as KETester
+from digitaldash.digitaldash import buildFromConfig
+from etc import config
 
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
@@ -29,7 +29,7 @@ def test_pid_byte_code_caching():
     self.data_source  = t
     self.working_path = str(pathlib.Path(__file__).parent.absolute())
 
-    (anchorLayout, msg) = build_from_config(self)
+    (anchorLayout, msg) = buildFromConfig(self)
     background   = anchorLayout.children[0]
 
     oldByteCode = self.pid_byte_code

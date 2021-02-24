@@ -1,29 +1,32 @@
 """Test harness for GUI that runs on file data."""
+# pylint: disable=import-outside-toplevel
 import csv
 
 class Test():
     """Test instance."""
+    app: any
 
     def __init__(self, **args):
+        """Test method"""
         self.iteration = 0
-        self.data      = []
+        self.data = []
 
-        if ( args.get('file') ):
-            self.load_csv(**args)
+        if args.get('file'):
+            self.loadCSV(**args)
         self.rows = len(self.data)
 
         if self.data:
-          array = self.data[0]
-          self.cols = len(array)
+            array = self.data[0]
+            self.cols = len(array)
 
-    def set_data(self, data):
-      '''Set testing data source.'''
-      self.data = data
-      if self.data:
-          array = self.data[0]
-          self.cols = len(array)
+    def setData(self, data):
+        """Set testing data source."""
+        self.data = data
+        if self.data:
+            array = self.data[0]
+            self.cols = len(array)
 
-    def load_csv(self, file, **args):
+    def loadCSV(self, file):
         """
         Load data from file.
             :param self: <DigitalDash.Test>Test instance
@@ -34,25 +37,25 @@ class Test():
             for row in datareader:
                 self.data.append(row)
         if self.data:
-          array     = self.data[0]
-          self.cols = len(array)
+            array = self.data[0]
+            self.cols = len(array)
 
-    def service(self, pids=[], **args):
+    def service(self, pids=None, app=None):
         """
         Main service method for test data.
             :param self: <DigitalDash.Test>Test instance
         """
-        data    = self.data[self.iteration]
+        data = self.data[self.iteration]
 
-        key_val = {}
-        i       = 0
+        keyVal = {}
+        i = 0
         for pid in pids:
             if self.cols >= i:
-              i = 0
-            key_val[pid.value] = data[i]
+                i = 0
+            keyVal[pid.value] = data[i]
             i = i + 1
         self.enumerate()
-        return key_val
+        return keyVal
 
     def enumerate(self):
         """
@@ -60,36 +63,30 @@ class Test():
             :param self: <DigitalDash.Test>Test instance
         """
         self.iteration += 1
-        if (self.iteration >= self.rows):
+        if self.iteration >= self.rows:
             self.iteration = 0
         # Skip headers
-        if (self.iteration == 0):
+        if self.iteration == 0:
             self.iteration = 1
 
         return self.iteration
 
-    def update_requirements(self, app, pid_byte_code, pids):
-        print("Updating requirements: " + str(pid_byte_code))
+    @staticmethod
+    def updateRequirements(app, pidByteCode, pids):
+        """Test method"""
+        print("Updating requirements: %s", str(pidByteCode))
         app.pids = pids
         return (1, "PIDs updated")
 
-    def initialize_hardware( self ):
-        return ( 1, "Hardware initialized" )
-
-    def reset_hardware( self ):
-        return ( 1, "Reset hardware" )
-
-    def power_cycle( self ):
-        return ( 1, 'Power cycle' )
-
-    def new( self, Config=None, Data=None, CSV=None ):
+    def new(self, config=None, data=None, csvFile=None):
+        """Test method"""
         from main import GUI
 
-        if (CSV):
-            self.load_csv(CSV)
-        elif (Data):
-            self.set_data(Data)
+        if csvFile:
+            self.loadCSV(csvFile)
+        elif data:
+            self.setData(data)
 
         self.app = GUI()
-        self.app.new(configFile=Config, data=self)
+        self.app.new(configFile=config, data=self)
         self.app.run()

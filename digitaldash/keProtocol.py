@@ -213,7 +213,7 @@ class Serial():
                     #return KE_OK;
         return self.ser_val
 
-    def update_requirements(self, app, pid_byte_code, pids):
+    def updateRequirements(self, app, pid_byte_code, pids):
         global KE_CP_OP_CODES
         msg = "GUI: Updating requirements: " + str(pid_byte_code)
         Logger.info( msg )
@@ -315,7 +315,7 @@ class Serial():
         return ( ret, msg )
 
 
-def build_update_requirements_bytearray(requirements):
+def buildUpdateRequirementsBytearray(requirements):
     '''Function to build bytearray that is passed to micro on view change.'''
     global KE_CP_OP_CODES
 

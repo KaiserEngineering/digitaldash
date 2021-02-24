@@ -1,49 +1,59 @@
+"""Main needle base class"""
 from digitaldash.massager import smooth
-from typing import NoReturn
-from static.constants import KE_PID
 
 class Needle():
     """
     Base class for Needle classes to inherit from.
     """
-    def set_up(self, **kwargs):
-        self.set_attrs(**kwargs)
-        self.set_offset()
+    degrees: float
+    source: str
+    trueValue: float
+    offset: float
+    step: float
+    degrees: int
+    unit: int
+    minValue: float
+    maxValue: float
 
-        self.update = self.min * self.step - self.offset
-        self.true_value = self.min
+    def setUp(self, **kwargs):
+        """Call all our methods"""
+        self.setAttrs(**kwargs)
+        self.setOffset()
 
-    def set_offset(self) -> NoReturn:
-        if (self.min < 0):
-            self.offset = self.degrees / 2 - ( abs(self.min) * self.step )
+        self.update = self.minValue * self.step - self.offset
+        self.trueValue = self.minValue
+
+    def setOffset(self) -> None:
+        """Figure offset"""
+        if self.minValue < 0:
+            self.offset = self.degrees / 2 - (abs(self.minValue) * self.step)
         else:
             self.offset = self.degrees / 2
 
-    def set_step(self) -> NoReturn:
+    def setStep(self) -> None:
         """Method for setting the step size for rotation/moving widgets."""
-        self.step = self.degrees / (abs(self.min) + abs(self.max))
-        if ( self.step == 0 ):
+        self.step = self.degrees / (abs(self.minValue) + abs(self.maxValue))
+        if self.step == 0:
             self.step = 1
 
-    def set_attrs(self, **args) -> NoReturn:
+    def setAttrs(self, **args) -> None:
         """Set basic attributes for widget."""
         for key in args:
             setattr(self, key, args[key])
 
-        working_path = args.get( 'working_path', '' )
-
+        workingPath = args.get('workingPath', '')
 
         pid = args['pid']
-        (self.source, self.degrees, self.unit, self.min, self.max) = (
-            working_path+"/static/imgs"+args['path'] + 'needle.png',
+        (self.source, self.degrees, self.unit, self.minValue, self.maxValue) = (
+            workingPath+"/static/imgs"+args['path'] + 'needle.png',
             float(args.get('degrees', 0)),
             pid.unit,
             pid.range['Min'],
             pid.range['Max'],
         )
-        self.set_step()
+        self.setStep()
 
-    def set_data(self, value=0) -> NoReturn:
+    def setData(self, value=0) -> None:
         """
         Abstract setData method most commonly used.
 
@@ -52,12 +62,12 @@ class Needle():
           value (float)     : Value to set the needle to
         """
         value = float(value)
-        self.true_value = value
+        self.trueValue = value
 
         current = self.update
 
-        if value > self.max:
-            value = self.max
-        elif value < self.min:
-            value = self.min
-        self.update = smooth( Old=current, New=value * self.step - self.offset )
+        if value > self.maxValue:
+            value = self.maxValue
+        elif value < self.minValue:
+            value = self.minValue
+        self.update = smooth(old=current, new=value * self.step - self.offset)

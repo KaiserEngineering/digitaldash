@@ -13,7 +13,7 @@ t = KETester.Test()
 class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.new( Config='etc/configs/single.json', Data=[[50, 100]] )
+        t.new(config='etc/configs/single.json', data=[[50, 100]])
         t.app.update_values(data={"0x010C": 50})
         t.app.working_path = working_path
 
@@ -29,7 +29,7 @@ class Config_TestCase(GraphicUnitTest):
 class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.new( Config='etc/configs/alerts.json', CSV='tests/data/test.csv' )
+        t.new(config='etc/configs/alerts.json', csvFile='tests/data/test.csv')
         t.app.working_path = working_path
 
         for value, text in zip([50, 4001], ["Hello, world", "Alert two"]):

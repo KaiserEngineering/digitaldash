@@ -24,7 +24,7 @@ class Custom():
         super(Custom, self).__init__()
         Logger.info("Instantiate new custom gauge")
 
-    def build_component(self, **ARGS) -> []:
+    def buildComponent(self, **ARGS) -> []:
         """Function that is called when gauge is created"""
         self.container = ARGS['container']
         live_widgets = []

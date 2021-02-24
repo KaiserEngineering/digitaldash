@@ -1,7 +1,5 @@
 """Dynamic class used for changing views"""
 from typing import Tuple
-import ast
-from functools import lru_cache
 from kivy.logger import Logger
 from digitaldash.pid import PID
 
@@ -10,6 +8,12 @@ class Dynamic():
     The dynamic class is applied on per view, where the dynamic object has
     the ability to change the current active view to the linked view.
     """
+
+    value: float
+    op: str
+    viewId: int
+    priority: int
+    pid: PID
 
     def __init__(self):
         """
@@ -23,6 +27,7 @@ class Dynamic():
                     pid       : <Int>,
                 }
         """
+
         super(Dynamic, self).__init__()
         self.buffer = 0
 
@@ -46,17 +51,17 @@ class Dynamic():
 
         self.value = float(args.get('value'))
 
-        if ( len(args.get('op')) == 2 ):
-            operator = bytearray( args.get('op').encode() )
+        if len(args.get('op')) == 2:
+            operator = bytearray(args.get('op').encode())
             self.op = (operator[0] << 8) | (operator[1] & 0xFF)
         else:
             operator = " "+str(args.get('op'))
-            operator = bytearray( operator.encode() )
-            self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
+            operator = bytearray(operator.encode())
+            self.op = (operator[0] << 8) | (operator[1] & 0xFF)
 
-        self.viewId   = int(args.get('viewId'))
+        self.viewId = int(args.get('viewId'))
         self.priority = int(args.get('priority'))
-        self.pid      = args.get('pid', '')
+        self.pid = args.get('pid', '')
 
         return (1, "New dynamic object successfully created")
 
@@ -86,7 +91,7 @@ class Dynamic():
 
         app.app.add_widget(app.background)
 
-        (ret, msg) = app.data_source.update_requirements(app, app.pid_byte_code, app.pids)
+        (ret, msg) = app.data_source.updateRequirements(app, app.pid_byte_code, app.pids)
         if not ret:
             Logger.error("Could not update requirements from dynamic: %s", msg)
 
