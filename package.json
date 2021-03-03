@@ -1,6 +1,7 @@
 {
 	"name": "dd",
 	"version": "0.0.1",
+  "type": "module",
 	"scripts": {
 		"dev": "not-svelte-kit dev",
 		"build": "not-svelte-kit build",
