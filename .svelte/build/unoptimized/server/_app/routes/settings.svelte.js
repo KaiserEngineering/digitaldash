@@ -15,7 +15,7 @@ const Settings = create_ssr_component(($$result, $$props, $$bindings, slots) => 
 	let password;
 
 	function handleSubmit(event) {
-		fetch("/api/auth", {
+		fetch("/api/user", {
 			method: "PUT",
 			body: JSON.stringify({ username, password })
 		}).then(d => d.json()).then(d => {

@@ -5,7 +5,7 @@ import * as setup from './_app/setup/index.js';
 
 const template = ({ head, body }) => "<!DOCTYPE html>\n<html lang=\"en\" class=\"h-100\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <link rel=\"icon\" href=\"/favicon.ico\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    " + head + "\n\n    <link rel='stylesheet' href='/css/bootstrap.min.css'>\n    <link rel='stylesheet' href='/css/floating-labels.css'>\n\n  </head>\n  <body id=\"svelte\" class=\"d-flex flex-column\">\n    " + body + "\n  </body>\n  <script defer src='/js/bootstrap.min.js'></script>\n</html>\n";
 
-const entry = "entry-c8f50789.js";
+const entry = "entry-fb0d55be.js";
 
 set_paths({"base":"","assets":"/."});
 
@@ -38,41 +38,42 @@ const manifest = {
 					pattern: /^\/$/,
 					params: empty,
 					parts: [components[0]],
-					css: ["/_app/start-1646ff03.css", "/_app/Slider.svelte-34365e6b.css", "/_app/index.svelte-da4ffcfc.css"],
-					js: ["/_app/index.svelte-722d305b.js", "/_app/start-fa4db3b4.js", "/_app/inject_styles-0e3d93cc.js", "/_app/stores-543d5c2a.js", "/_app/Slider.svelte-4447f5c9.js"]
+					css: ["/_app/start-7f960bf4.css", "/_app/Slider.svelte-34365e6b.css", "/_app/index.svelte-da4ffcfc.css"],
+					js: ["/_app/index.svelte-74a07a15.js", "/_app/start-436e7286.js", "/_app/inject_styles-0e3d93cc.js", "/_app/Slider.svelte-9c03d412.js"]
 				},
 		{
 					pattern: /^\/advanced\/?$/,
 					params: empty,
 					parts: [components[1]],
-					css: ["/_app/start-1646ff03.css", "/_app/advanced.svelte-85c94d04.css"],
-					js: ["/_app/advanced.svelte-6274d254.js", "/_app/start-fa4db3b4.js", "/_app/inject_styles-0e3d93cc.js", "/_app/stores-543d5c2a.js"]
+					css: ["/_app/start-7f960bf4.css", "/_app/advanced.svelte-85c94d04.css"],
+					js: ["/_app/advanced.svelte-581fc537.js", "/_app/start-436e7286.js", "/_app/inject_styles-0e3d93cc.js"]
 				},
 		{
 					pattern: /^\/settings\/?$/,
 					params: empty,
 					parts: [components[2]],
-					css: ["/_app/start-1646ff03.css"],
-					js: ["/_app/settings.svelte-3c06eab1.js", "/_app/start-fa4db3b4.js", "/_app/inject_styles-0e3d93cc.js", "/_app/stores-543d5c2a.js"]
+					css: ["/_app/start-7f960bf4.css"],
+					js: ["/_app/settings.svelte-e49e518f.js", "/_app/start-436e7286.js", "/_app/inject_styles-0e3d93cc.js"]
 				},
 		{
 					pattern: /^\/login\/?$/,
 					params: empty,
 					parts: [components[3]],
-					css: ["/_app/start-1646ff03.css"],
-					js: ["/_app/login.svelte-2b8dd038.js", "/_app/start-fa4db3b4.js", "/_app/inject_styles-0e3d93cc.js"]
+					css: ["/_app/start-7f960bf4.css"],
+					js: ["/_app/login.svelte-82f7f74c.js", "/_app/start-436e7286.js", "/_app/inject_styles-0e3d93cc.js"]
 				},
 		{
 					pattern: /^\/edit\/([^/]+?)\/?$/,
 					params: (m) => ({ slug: d(m[1])}),
 					parts: [components[4]],
-					css: ["/_app/start-1646ff03.css", "/_app/Slider.svelte-34365e6b.css", "/_app/[slug].svelte-b13f2ddb.css"],
-					js: ["/_app/[slug].svelte-44f11ab5.js", "/_app/start-fa4db3b4.js", "/_app/inject_styles-0e3d93cc.js", "/_app/stores-543d5c2a.js", "/_app/Slider.svelte-4447f5c9.js"]
+					css: ["/_app/start-7f960bf4.css", "/_app/Slider.svelte-34365e6b.css", "/_app/[slug].svelte-b13f2ddb.css"],
+					js: ["/_app/[slug].svelte-8b3257b9.js", "/_app/start-436e7286.js", "/_app/inject_styles-0e3d93cc.js", "/_app/Slider.svelte-9c03d412.js"]
 				}
 	],
 	endpoints: [
+		{ pattern: /^\/api\/constants\/?$/, params: empty, load: () => import("./_app/routes/api/constants.js") },
 		{ pattern: /^\/api\/config\/?$/, params: empty, load: () => import("./_app/routes/api/config.js") },
-		{ pattern: /^\/api\/auth\/?$/, params: empty, load: () => import("./_app/routes/api/auth.js") }
+		{ pattern: /^\/api\/user\/?$/, params: empty, load: () => import("./_app/routes/api/user.js") }
 	]
 };
 

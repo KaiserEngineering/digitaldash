@@ -1,3 +1,3 @@
 export const browser = typeof window !== "undefined";
-export const dev = true;
+export const dev = false;
 export const amp = false;
