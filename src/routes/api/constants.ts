@@ -2,8 +2,9 @@ import { exec } from 'child_process';
 import util from 'util';
 const execute = util.promisify(exec);
 
-const constants_path = process.env.KEGUIHome
-let constantsCache;
+const env = process.env;
+const constants_path: String = env.KEGUIHome;
+let constantsCache: any;
 
 export async function getConstants() {
     if ( constantsCache ) {

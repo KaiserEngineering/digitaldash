@@ -1,11 +1,11 @@
 {
 	"name": "dd",
 	"version": "0.0.1",
-  "type": "module",
+	"type": "module",
 	"scripts": {
-		"dev": "not-svelte-kit dev",
-		"build": "not-svelte-kit build",
-		"start": "not-svelte-kit start"
+		"dev": "svelte-kit dev",
+		"build": "svelte-kit build",
+		"start": "svelte-kit start"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "next",
@@ -15,7 +15,6 @@
 		"fs": "0.0.1-security",
 		"jsonwebtoken": "^8.5.1",
 		"lodash": "^4.17.20",
-		"not-svelte-kit": "^0.0.7-next.34",
 		"svelte": "^3.29.0"
 	},
 	"dependencies": {

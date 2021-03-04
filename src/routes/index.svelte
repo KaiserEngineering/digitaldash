@@ -1,7 +1,9 @@
 <script>
   import { session } from "$app/stores";
-  import { _ } from "lodash";
+  import pkg from 'lodash';
   import Slider from "../components/Slider.svelte";
+
+  const {_} = pkg;
 
   let KE_PIDS = $session.constants.KE_PID;
   $: views = $session.configuration.views;

@@ -1,7 +1,8 @@
 import { writeFile, readFile } from 'fs/promises';
-import fs from 'fs';
+import fs, { constants } from 'fs';
 
-const config_path = process.env.KEGUIHome
+const env = process.env;
+const config_path: String = env.KEGUIHome
 
 export interface Config {
   views: { [key: string]: View };
