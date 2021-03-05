@@ -14,7 +14,12 @@
   import Notifications from '../components/Notifications.svelte';
 
   export let segment = undefined;
+  export let title   = "KE!"
 </script>
+
+<svelte:head>
+  <title>{title}</title>
+</svelte:head>
 
 {#if !segment || segment != '/login'}
   <svelte:component this={Nav} segment={segment} />
