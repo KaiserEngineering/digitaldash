@@ -15,7 +15,7 @@ pip3 install -r requirements.txt
 ## Running the DD
 
 ```sh
-python3 main.py -d --file tests/data/rpm_increasing.csv -c etc/configs/single.json
+make run
 ```
 
 ## Testing
