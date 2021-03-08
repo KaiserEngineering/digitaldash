@@ -26,7 +26,7 @@ class KELabel(Label):
           pid (str)         : Byte code value of PID to get data from
             (default is nothing)
         """
-        super(KELabel, self).__init__()
+        super().__init__()
         self.minObserved = 9999
         self.maxObserved = -9999
         self.default = args.get("default", "")

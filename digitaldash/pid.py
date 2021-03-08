@@ -15,7 +15,7 @@ class PID:
     unitLabel: str
 
     def __init__(self, **kwargs: str) -> None:
-        super(PID, self).__init__()
+        super().__init__()
 
         self.value = kwargs.get("pid", None)
         self.unit = PID_UNITS[kwargs.get("unit", "")]

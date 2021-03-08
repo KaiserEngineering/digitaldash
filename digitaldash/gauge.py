@@ -15,7 +15,7 @@ class Gauge:
           Face (<digitaldash.face>)             : Gauge face object
           Needle (<digital.dash.needles.needle) : Needle object for gauge
         """
-        super(Gauge, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.labels = []
         self.face = ObjectProperty(Face, ObjectType="Face")
         self.needle = ObjectProperty(None, ObjectType="Needle")

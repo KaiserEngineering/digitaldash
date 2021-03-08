@@ -30,7 +30,7 @@ class Dynamic:
                 }
         """
 
-        super(Dynamic, self).__init__()
+        super().__init__()
         self.buffer = 0
 
     def new(self, **args) -> Tuple:

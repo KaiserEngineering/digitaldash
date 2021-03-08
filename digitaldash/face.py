@@ -10,7 +10,7 @@ class Face(Image):
         Args:
           path (str): Path to png image for gauge face
         """
-        super(Face, self).__init__()
+        super().__init__()
         workingPath = kwargs.get("workingPath", "")
 
         self.source = (

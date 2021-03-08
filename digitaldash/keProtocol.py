@@ -20,7 +20,7 @@ KE_MAX_PAYLOAD = 0x64
 
 class Serial:
     def __init__(self):
-        super(Serial, self).__init__()
+        super().__init__()
         self.ser = serial.Serial(
             port="/dev/ttyAMA0",
             baudrate=57600,

@@ -22,7 +22,7 @@ class Alert(KELabel):
           pid (str)      : Byte code value of PID to check value of
           message (str)  : Message to show on label
         """
-        super(Alert, self).__init__(**args)
+        super().__init__(**args)
 
         self.value = float(args["value"])
 

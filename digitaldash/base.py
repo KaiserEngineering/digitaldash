@@ -18,7 +18,7 @@ class Base:
     """Base class used to provide helper method for creating a gauge."""
 
     def __init__(self):
-        super(Base, self).__init__()
+        super().__init__()
         # Optional values
         self.liveWidgets = []
         self.container = None
