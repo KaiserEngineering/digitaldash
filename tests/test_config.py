@@ -1,9 +1,11 @@
 """Testing basics of DigitalDash."""
+# pylint: skip-file
+
 import main
 from etc import config
 import os
 
-from lib import digitaldash
+from digitaldash import digitaldash
 
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())

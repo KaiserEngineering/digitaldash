@@ -7,7 +7,7 @@
         Ellipse:
             size: (min(self.size), min(self.size))
             pos: (self.width / 2 - min(self.width, self.height) / 2, 0)
-            angle_start: self.angle_start
+            angle_start: self.angleStart
             angle_end: self.update
         StencilUse
 
@@ -16,7 +16,7 @@
             size: (min(self.size), min(self.size))
             pos: (self.width / 2 - min(self.width, self.height) / 2, 0)
             source: self.source
-            angle_start: self.angle_start
+            angle_start: self.angleStart
             angle_end: self.update
         StencilUnUse
 
@@ -24,6 +24,6 @@
         Ellipse:
             pos: (self.width / 2 - min(self.width, self.height) / 2, 0)
             pos: (self.width / 2, self.center_y)
-            angle_start: self.angle_start
+            angle_start: self.angleStart
             angle_end: self.update
         StencilPop

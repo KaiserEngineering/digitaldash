@@ -1,13 +1,13 @@
 """Monitour a datapoint and create a alert if triggered."""
-from functools import lru_cache
-import ast
-from lib.ke_label import KELabel
+from digitaldash.keLabel import KELabel
+
 
 class Alert(KELabel):
     """
     Wrapper on digitaldash.ke_label that adds method for checking
     when the label should be displayed.
     """
+    # pylint: disable=too-many-instance-attributes
 
     def __init__(self, **args):
         """
@@ -24,14 +24,14 @@ class Alert(KELabel):
 
         self.value = float(args['value'])
 
-        if ( len(args.get('op')) == 2 ):
-            operator = bytearray( args.get('op').encode() )
-            self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
+        if len(args.get('op')) == 2:
+            operator = bytearray(args.get('op').encode())
+            self.op = (operator[0] << 8) | (operator[1] & 0xFF)
         else:
-            operator = " "+str(args.get('op'))
-            operator = bytearray( operator.encode() )
-            self.op  = (operator[0] << 8) | (operator[1] & 0xFF)
-        print(args.get('viewId'))
+            operator = " " + str(args.get('op'))
+            operator = bytearray(operator.encode())
+            self.op = (operator[0] << 8) | (operator[1] & 0xFF)
+
         self.viewId = int(args.get('viewId'))
         self.priority = args['priority']
         self.pid = args['pid']
@@ -39,5 +39,5 @@ class Alert(KELabel):
         self.text = self.message
         self.buffer = 0
 
-    def set_pos(self, **args):
-      self.pos = (self.center_x + self.width / 4, self.center_y + self.height / 1.5)
+    def setPos(self, **args):
+        self.pos = (self.center_x + self.width / 4, self.center_y + self.height / 1.5)

@@ -1,20 +1,21 @@
 """Testing basics of DigitalDash."""
+# pylint: skip-file
+
 import unittest
 from kivy.tests.common import GraphicUnitTest
-import test
-import main
-from lib.needles.needle import Needle
-from lib.massager import smooth
+import digitaldash.test as KETester
+from digitaldash.needles.needle import Needle
+from digitaldash.massager import smooth
 from static.constants import KE_PID
 
 import pathlib
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
-t = test.Test()
+t = KETester.Test()
 class Config_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.new( Config='etc/configs/single.json', Data=[[50, 100]] )
+        t.new(config='etc/configs/single.json', data=[[50, 100]])
         t.app.update_values(data={"0x010C": 50})
         t.app.working_path = working_path
 
@@ -30,7 +31,7 @@ class Config_TestCase(GraphicUnitTest):
 class Alerts_TestCase(GraphicUnitTest):
 
     def test_Single(self):
-        t.new( Config='etc/configs/alerts.json', CSV='tests/data/test.csv' )
+        t.new(config='etc/configs/alerts.json', csvFile='tests/data/test.csv')
         t.app.working_path = working_path
 
         for value, text in zip([50, 4001], ["Hello, world", "Alert two"]):

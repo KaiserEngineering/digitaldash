@@ -1,4 +1,5 @@
 """Serial handler class."""
+# pylint: skip-file
 import serial
 import time
 from kivy.logger import Logger
@@ -15,6 +16,7 @@ KE_PCKT_LEN_POS          = 0x01
 KE_PCKT_CMD_POS          = 0x02
 KE_PCKT_DATA_START_POS   = 0x03
 KE_MAX_PAYLOAD           = 0x64
+
 
 class Serial():
     def __init__(self):
@@ -47,7 +49,7 @@ class Serial():
         self.rx_byte_count      = 0
         self.tx_byte_count      = 0
 
-    def Generate_TX_Message( self, cmd ):
+    def generateTXMessage( self, cmd ):
         # Clear the buffer
         self.tx_buffer = [0] * KE_MAX_PAYLOAD
 
@@ -90,7 +92,7 @@ class Serial():
                 self.ser.write( self.queued_message )
                 self.queued_message = None
             else:
-                self.Generate_TX_Message( KE_CP_OP_CODES['KE_ACK'] )
+                self.generateTXMessage( KE_CP_OP_CODES['KE_ACK'] )
 
             # Payload is ASCII data
             serial_data = "".join(map(chr, serial_data ))
@@ -213,7 +215,7 @@ class Serial():
                     #return KE_OK;
         return self.ser_val
 
-    def update_requirements(self, app, pid_byte_code, pids):
+    def updateRequirements(self, app, pid_byte_code, pids):
         global KE_CP_OP_CODES
         msg = "GUI: Updating requirements: " + str(pid_byte_code)
         Logger.info( msg )
@@ -315,7 +317,7 @@ class Serial():
         return ( ret, msg )
 
 
-def build_update_requirements_bytearray(requirements):
+def buildUpdateRequirementsBytearray(requirements):
     '''Function to build bytearray that is passed to micro on view change.'''
     global KE_CP_OP_CODES
 

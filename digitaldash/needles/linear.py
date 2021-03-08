@@ -1,17 +1,17 @@
-from kivy.uix.widget import Widget
-from lib.needles.needle import Needle
+"""Linear!"""
 from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
 from kivy.uix.stencilview import StencilView
-from typing import NoReturn
 from kivy.core.window import Window
+from digitaldash.needles.needle import Needle
+
 
 class NeedleLinear(Needle, StencilView):
-    """Wrapper combining lib.needles.needle and kivy.uix.stencilview."""
+    """Wrapper combining digitaldash.needles.needle and kivy.uix.stencilview."""
 
-    update  = NumericProperty()
-    source  = StringProperty()
-    step    = NumericProperty()
+    update = NumericProperty()
+    source = StringProperty()
+    step = NumericProperty()
     xOffset = NumericProperty()
     r = NumericProperty()
     g = NumericProperty()
@@ -20,41 +20,40 @@ class NeedleLinear(Needle, StencilView):
 
     def __init__(self, **kwargs):
         super(NeedleLinear, self).__init__()
-        self.set_up(**kwargs)
+        self.setUp(**kwargs)
         (self.r, self.g, self.b, self.a) = (1, 0, 0, 0.7)
-        self.Type    = 'Linear'
+        self.type = 'Linear'
         self.xOffset = 0
 
         # We need to bind here so that when the Linear gauge is added
         # to the parent layout and width value changes we update our step.
-        def my_width_callback(obj, value):
-            self.set_step()
+        def myWidthCallback():
+            self.setStep()
 
-        self.bind(width=my_width_callback)
+        self.bind(width=myWidthCallback)
 
-
-    def set_step(self) -> NoReturn:
+    def setStep(self) -> None:
         """
         Method for setting the step size for Linear needles.
 
         Args:
-          self <lib.needles.linear>
+          self <digitaldash.needles.linear>
         """
-        self.step = self.width / (abs(self.min) + abs(self.max))
-        if ( self.step == 0 ):
+        self.step = self.width / (abs(self.minValue) + abs(self.maxValue))
+        if self.step == 0:
             self.step = 1.
-            
-        if ( self.width == ( Window.width - 100 ) ):
+
+        if self.width == (Window.width - 100):
             self.xOffset = 100
 
-    def set_offset(self) -> NoReturn:
+    def setOffset(self) -> None:
         """
         Set offset for negative values or 0 for strictly positive PIDs
 
         Args:
-          self <lib.needles.linear>
+          self <digitaldash.needles.linear>
         """
-        if (self.min < 0):
-            self.offset = self.min
+        if self.minValue < 0:
+            self.offset = self.minValue
         else:
             self.offset = 0

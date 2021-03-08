@@ -3,14 +3,14 @@
 # Dependent modules and packages
 import getopt
 import sys
-from test import Test
+from digitaldash.test import Test
 import os
 import pathlib
 
 WORKING_PATH = str(pathlib.Path(__file__).parent.absolute())
 os.environ["KIVY_HOME"] = WORKING_PATH + "/etc/kivy/"
 
-(Data_Source, TESTING, ConfigFile) = (False, False, None)
+(dataSource, TESTING, ConfigFile) = (False, False, None)
 
 opts, args = getopt.getopt(sys.argv[1:], "tdf:c:", ["test", "development", "file=", "config="])
 
@@ -20,7 +20,7 @@ for o, arg in opts:
     if o in ("-d", "--development"):
         sys.argv = ['main.py -m console']
     elif o in ("-f", "--file"):
-        Data_Source = Test(file=arg)
+        dataSource = Test(file=arg)
     elif o in ("-t", "--test"):
         TESTING = True
     elif o in ("-c", "--config"):
@@ -40,17 +40,17 @@ from typing import NoReturn, List, TypeVar
 # Rust import
 import libdigitaldash
 
-from lib.digitaldash import build_from_config
+from digitaldash.digitaldash import buildFromConfig
 from _version import __version__
 from etc import config
 
 config.setWorkingPath(WORKING_PATH)
 
-if not Data_Source:
+if not dataSource:
     try:
-        from ke_protocol import Serial
-        Data_Source = Serial()
-        Logger.info("Using serial data source" + str(Data_Source))
+        from digitaldash.keProtocol import Serial
+        dataSource = Serial()
+        Logger.info("Using serial data source" + str(dataSource))
     except Exception as e:
         Logger.info("Running without serial data: " + str(e))
 
@@ -65,11 +65,11 @@ class MyHandler(PatternMatchingEventHandler):
     patterns = ["*.json"]
 
     def on_modified(self, event):
-        build_from_config(self.DigitalDash, Data_Source)
+        buildFromConfig(self.DigitalDash, dataSource)
 
 # Load our KV files
-for file in os.listdir(WORKING_PATH+'/kv/'):
-    Builder.load_file(WORKING_PATH+'/kv/'+str(file))
+for file in os.listdir(WORKING_PATH+'/digitaldash/kv/'):
+    Builder.load_file(WORKING_PATH+'/digitaldash/kv/'+str(file))
 
 DD = TypeVar('DD', bound='DigitalDash')
 class GUI(App):
@@ -93,8 +93,8 @@ class GUI(App):
         self.WORKING_PATH = WORKING_PATH
 
         if data:
-            global Data_Source
-            Data_Source = data
+            global dataSource
+            dataSource = data
 
     def build(self):
         """Called at start of application"""
@@ -102,17 +102,18 @@ class GUI(App):
         # Our main application object
         self.app = AnchorLayout()
 
-        self.data_source  = Data_Source
+        self.data_source  = dataSource
         self.working_path = WORKING_PATH
 
         observer = Observer()
         observer.schedule(MyHandler(self), WORKING_PATH+'/etc/', recursive=True)
         observer.start()
 
-        (ret, msg) = build_from_config(self, Data_Source)
+        (ret, msg) = buildFromConfig(self, dataSource)
         # If something went wrong in build return a label with the error message:
         if ( not ret ):
           return Label( text=msg )
+        Logger.info("GUI: %s", msg)
         return self.app
 
     def check_callback(self: DD, callback, data):
@@ -134,11 +135,11 @@ class GUI(App):
         my_callback.change(self)
 
     def update_values(self: DD, data: List[float]) -> NoReturn:
-        for widget in self.ObjectsToUpdate:
+        for widget in self.objectsToUpdate:
             for obj in widget:
                 if obj.pid:
                     try:
-                        obj.set_data(data[obj.pid.value])
+                        obj.setData(data[obj.pid.value])
                     except:
                         Logger.error( "GUI: Firmware did not provide data value for key: %s", obj.pid.value )
                 else:
@@ -148,12 +149,12 @@ class GUI(App):
 
     def loop(self, dt):
         if self.first_iteration:
-            (ret, msg) = Data_Source.update_requirements(self, self.pid_byte_code, self.pids)
+            (ret, msg) = dataSource.updateRequirements(self, self.pid_byte_code, self.pids)
             if not ret:
                 Logger.error(msg)
             self.first_iteration = False
 
-        (my_callback, priority, data) = (None, 0, Data_Source.service(app=self, pids=self.pids))
+        (my_callback, priority, data) = (None, 0, dataSource.service(app=self, pids=self.pids))
 
         dynamic_change = False
         # Check dynamic gauges before any alerts in case we make a change
@@ -184,6 +185,6 @@ if __name__ == '__main__':
     Logger.info( f'GUI: Running version: {__version__}' )
     dd = GUI()
 
-    dd.new(configFile=ConfigFile, data=Data_Source)
+    dd.new(configFile=ConfigFile, data=dataSource)
 
     dd.run()

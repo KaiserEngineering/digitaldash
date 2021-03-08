@@ -1,31 +1,35 @@
 """Abstract classes."""
-from kivy.properties import NumericProperty
-from kivy.logger import Logger
-from lib.gauge import Gauge
-from lib.needles.ellipse import NeedleEllipse as Ellipse
-from lib.needles.radial import NeedleRadial as Radial
-from lib.needles.linear import NeedleLinear as Linear
-from lib.face import Face
-from lib.ke_label import KELabel
 from typing import List
 from etc import config
+from digitaldash.gauge import Gauge
+from digitaldash.face import Face
+from digitaldash.keLabel import KELabel
+# pylint: disable=unused-import
+from digitaldash.needles.ellipse import NeedleEllipse as Ellipse
+from digitaldash.needles.radial import NeedleRadial as Radial
+from digitaldash.needles.linear import NeedleLinear as Linear
+
 
 class Base():
     """Base class used to provide helper method for creating a gauge."""
 
-    def __init__(self, **kwargs):
+    def __init__(self):
         super(Base, self).__init__()
         # Optional values
         self.liveWidgets = []
+        self.container = None
+        self.needle = None
+        self.face = None
+        self.gauge = None
 
-    def build_component(self, container, **ARGS) -> List:
+    def buildComponent(self, container, **ARGS) -> List:
         """
         Create widgets for Dial.
             :param **ARGS:
         """
         self.container = container
         args = {}
-        not_error = ARGS['theme'] != 'Error'
+        notError = ARGS['theme'] != 'Error'
 
         args['path'] = ARGS['path']
 
@@ -34,13 +38,13 @@ class Base():
         args['themeConfig'] = {**ARGS, **themeConfig}
 
         self.needle = None
-        if ( not_error ):
+        if notError:
             self.needle = globals()[ARGS['module']](**ARGS, **themeConfig)
             (self.needle.sizex, self.needle.sizey) = (512, 512)
             self.needle.pid = ARGS['pid']
             # Adding widgets that get updated with data
             self.liveWidgets.append(self.needle)
-        self.face = Face(**args, working_path=ARGS.get('working_path', ''))
+        self.face = Face(**args, workingPath=ARGS.get('workingPath', ''))
 
         self.gauge = Gauge(Face=self.face, Needle=self.needle)
         self.container.add_widget(self.face)
@@ -56,11 +60,11 @@ class Base():
             labelConfig = {**ARGS, **labelConfig}
 
             # Create Label widget
-            label = KELabel(**labelConfig, gauge=self.gauge, min=self.needle.min if self.needle else 0)
+            label = KELabel(**labelConfig, gauge=self.gauge, min=self.needle.minValue if self.needle else 0)
             self.gauge.labels.append(label)
 
             # Add to data recieving widgets
-            if ('data' in labelConfig):
+            if 'data' in labelConfig:
                 self.liveWidgets.append(label)
             self.container.add_widget(label)
 

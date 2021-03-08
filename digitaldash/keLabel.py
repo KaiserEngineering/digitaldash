@@ -1,11 +1,10 @@
 """Wrapper around kivy.uix.label"""
-from typing import NoReturn, TypeVar
 from kivy.uix.label import Label
+from kivy.logger import Logger
 from static.constants import KE_PID
 from static.constants import PID_UNIT_LABEL
-from kivy.logger import Logger
 
-KL = TypeVar('KL', bound='KELabel')
+
 class KELabel(Label):
     """
     Simple wrapper around Kivy.uix.label.
@@ -26,29 +25,29 @@ class KELabel(Label):
             (default is nothing)
         """
         super(KELabel, self).__init__()
-        self.min_observed     = 9999
-        self.max_observed     = -9999
-        self.default          = args.get('default', '')
-        self.config_color     = args.get('color', (1, 1, 1, 1)) # White
-        self.color            = self.config_color
-        self.config_font_size = args.get('font_size', 25)
-        self.font_size        = self.config_font_size
-        self.pid              = args.get( 'pid', None )
-        self.decimals         = '2' # Default to 2 and update later if a value is provided
-        self.unit_string      = ''
+        self.minObserved = 9999
+        self.maxObserved = -9999
+        self.default = args.get('default', '')
+        self.configColor = args.get('color', (1, 1, 1, 1)) # White
+        self.color = self.configColor
+        self.configFontSize = args.get('font_size', 25)
+        self.fontSize = self.configFontSize
+        self.pid = args.get('pid', None)
+        self.decimals = '2' # Default to 2 and update later if a value is provided
+        self.unitString = ''
 
-        if ( self.pid ):
+        if self.pid:
             self.unit = self.pid.unitLabel
 
-            if ( PID_UNIT_LABEL.get( self.unit, None) != None ):
-              self.unit_string = str(PID_UNIT_LABEL.get( self.unit, '' ))
+            if PID_UNIT_LABEL.get(self.unit, None) is not None:
+                self.unitString = str(PID_UNIT_LABEL.get(self.unit, ''))
             else:
-                Logger.error( "GUI: Found unit: %s but no PID_UNIT_LABEL value found", self.unit )
-            if (  self.pid.range and self.pid.range.get('decimals', None ) != None ):
+                Logger.error("GUI: Found unit: %s but no PID_UNIT_LABEL value found", self.unit)
+            if self.pid.range and self.pid.range.get('decimals', None) is not None:
                 self.decimals = self.pid.range['decimals']
 
-        self.object_type      = 'Label'
-        self.markup           = True
+        self.objectType = 'Label'
+        self.markup = True
 
         if self.default == '__PID__':
             if self.pid.value in KE_PID:
@@ -61,39 +60,39 @@ class KELabel(Label):
         else:
             self.text = self.default
 
-        self.set_pos(**args)
+        self.setPos(**args)
 
-    def set_pos(self: KL, **args):
+    def setPos(self, **args):
         """This allows the position code to be overwritten, we use this
         for alerts."""
-        pos_hints = args.get('pos', (0, 0))
+        posHints = args.get('pos', (0, 0))
 
         if args.get('gauge'):
-            self.pos = (args.get('x_position') + pos_hints[0], self.pos[1] + pos_hints[1])
+            self.pos = (args.get('xPosition') + posHints[0], self.pos[1] + posHints[1])
         else:
-            self.pos_hint = {'x':pos_hints[0] / 100, 'y':pos_hints[1] / 100}
+            self.pos_hint = {'x':posHints[0] / 100, 'y':posHints[1] / 100}
 
-    def set_data(self: KL, value='') -> NoReturn:
+    def setData(self, value='') -> None:
         """
         Send data to Label widget.
 
         Check for Min/Max key words to cache values with regex checks.
 
         Args:
-            self (<lib.ke_label>): KELabel object
+            self (<lib.keLabel>): KELabel object
             value (float) : value that label is being updated to
         """
         value = float(value)
 
         if self.default == 'Min: ':
-            if self.min_observed > value:
-                self.min_observed = value
+            if self.minObserved > value:
+                self.minObserved = value
                 self.text = ("{0:.%sf}"%(self.decimals)).format(value)
         elif self.default == 'Max: ':
-            if self.max_observed < value:
-                self.max_observed = value
+            if self.maxObserved < value:
+                self.maxObserved = value
                 self.text = ("{0:.%sf}"%(self.decimals)).format(value)
         else:
             self.text = self.default + ("{0:.%sf}"%(self.decimals)).format(value)
-            if self.unit_string:
-                self.text = self.text + '[size=15]'+ ' ' + self.unit_string+'[/size]'
+            if self.unitString:
+                self.text = self.text + '[size=15]'+ ' ' + self.unitString+'[/size]'

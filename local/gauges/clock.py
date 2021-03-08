@@ -1,11 +1,10 @@
 """Simple Clock Example"""
-
-from lib.ke_label import KELabel
-from lib.face import Face
 import datetime
 from kivy.logger import Logger
 from kivy.animation import Animation
-from lib.base import Base
+from digitaldash.base import Base
+from digitaldash.keLabel import KELabel
+from digitaldash.face import Face
 
 class Clock(Base, KELabel):
     """Clock gauge"""
@@ -19,7 +18,7 @@ class Clock(Base, KELabel):
         self.color = (0, 0, 0, 1)
         self.font_size = 45
 
-    def build_component(self, **ARGS) -> []:
+    def buildComponent(self, **ARGS) -> []:
         self.container = ARGS['container']
 
         face = Face(path='/Clock/', working_path=ARGS.get('working_path', ''))

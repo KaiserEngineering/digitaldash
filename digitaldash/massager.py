@@ -1,8 +1,8 @@
 """Massages values being passed to gauges to smooth them."""
 from kivy.logger import Logger
-from math import *
 
-def smooth(Old, New, **args) -> float:
+
+def smooth(old, new) -> float:
     """
     Smoothing transitions between data points
         :param self: <DigitalDash.Massage>
@@ -10,11 +10,11 @@ def smooth(Old, New, **args) -> float:
         :param 'New' : Value,
     """
 
-    if Old is None:
-        return New
-    if New is None:
-        Logger.error( "Cannot set smoothing value without New value" )
+    if old is None:
+        return new
+    if new is None:
+        Logger.error("Cannot set smoothing value without New value")
         return 0
-    delta = abs(New - Old)
+    delta = abs(new - old)
 
-    return New - ( delta * 0.75 )
+    return new - (delta * 0.75)
