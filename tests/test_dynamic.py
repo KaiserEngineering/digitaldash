@@ -7,15 +7,20 @@ from digitaldash.digitaldash import buildFromConfig
 from etc import config
 
 import pathlib
+
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
-class Application():
-  """Class for replacing 'self' from main.py"""
-  def __init__(self):
-    pass
+
+class Application:
+    """Class for replacing 'self' from main.py"""
+
+    def __init__(self):
+        pass
+
 
 def loopy(self):
-      pass
+    pass
+
 
 def test_pid_byte_code_caching():
     """Ensure our byte code string is always updated on dynamic change"""
@@ -23,22 +28,22 @@ def test_pid_byte_code_caching():
     t = KETester.Test()
     config.setWorkingPath(working_path)
 
-    self              = Application()
+    self = Application()
     self.WORKING_PATH = working_path
-    self.loop         = loopy
-    self.configFile   = 'etc/configs/dynamic.json'
-    self.app          = AnchorLayout()
-    self.data_source  = t
+    self.loop = loopy
+    self.configFile = "etc/configs/dynamic.json"
+    self.app = AnchorLayout()
+    self.data_source = t
     self.working_path = str(pathlib.Path(__file__).parent.absolute())
 
     (anchorLayout, msg) = buildFromConfig(self)
-    background   = anchorLayout.children[0]
+    background = anchorLayout.children[0]
 
     oldByteCode = self.pid_byte_code
     for dynamic in self.dynamic_callbacks:
-      if dynamic.viewId == self.current:
-        continue
-      else:
-        dynamic.change(self)
-        break
+        if dynamic.viewId == self.current:
+            continue
+        else:
+            dynamic.change(self)
+            break
     assert oldByteCode != self.pid_byte_code

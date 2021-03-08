@@ -2,10 +2,11 @@
 from digitaldash.massager import smooth
 
 
-class Needle():
+class Needle:
     """
     Base class for Needle classes to inherit from.
     """
+
     degrees: float
     source: str
     trueValue: float
@@ -42,15 +43,15 @@ class Needle():
         for key in args:
             setattr(self, key, args[key])
 
-        workingPath = args.get('workingPath', '')
+        workingPath = args.get("workingPath", "")
 
-        pid = args['pid']
+        pid = args["pid"]
         (self.source, self.degrees, self.unit, self.minValue, self.maxValue) = (
-            workingPath + "/static/imgs" + args['path'] + 'needle.png',
-            float(args.get('degrees', 0)),
+            workingPath + "/static/imgs" + args["path"] + "needle.png",
+            float(args.get("degrees", 0)),
             pid.unit,
-            pid.range['Min'],
-            pid.range['Max'],
+            pid.range["Min"],
+            pid.range["Max"],
         )
         self.setStep()
 

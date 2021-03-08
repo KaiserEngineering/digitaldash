@@ -1,10 +1,12 @@
 """Test harness for GUI that runs on file data."""
 # pylint: disable=import-outside-toplevel
+# pylint: disable=unused-argument
 import csv
 
 
-class Test():
+class Test:
     """Test instance."""
+
     app: any
 
     def __init__(self, **args):
@@ -12,7 +14,7 @@ class Test():
         self.iteration = 0
         self.data = []
 
-        if args.get('file'):
+        if args.get("file"):
             self.loadCSV(**args)
         self.rows = len(self.data)
 
@@ -33,8 +35,8 @@ class Test():
             :param self: <DigitalDash.Test>Test instance
             :param file: <String>File path
         """
-        with open(file, 'r') as csvfile:
-            datareader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        with open(file, "r") as csvfile:
+            datareader = csv.reader(csvfile, delimiter=",", quotechar="|")
             for row in datareader:
                 self.data.append(row)
         if self.data:
@@ -75,7 +77,7 @@ class Test():
     @staticmethod
     def updateRequirements(app, pidByteCode, pids):
         """Test method"""
-        print("Updating requirements: %s", str(pidByteCode))
+        print(f"Test: Updating requirements: {pidByteCode}")
         app.pids = pids
         return (1, "PIDs updated")
 

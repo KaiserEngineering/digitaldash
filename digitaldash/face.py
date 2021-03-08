@@ -11,8 +11,10 @@ class Face(Image):
           path (str): Path to png image for gauge face
         """
         super(Face, self).__init__()
-        workingPath = kwargs.get('workingPath', '')
+        workingPath = kwargs.get("workingPath", "")
 
-        self.source = workingPath + "/static/imgs" + kwargs.get('path', '') + 'gauge.png'
+        self.source = (
+            workingPath + "/static/imgs" + kwargs.get("path", "") + "gauge.png"
+        )
         for key in kwargs:
             setattr(self, key, kwargs[key])

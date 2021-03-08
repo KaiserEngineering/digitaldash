@@ -1,5 +1,6 @@
 """Monitour a datapoint and create a alert if triggered."""
 from digitaldash.keLabel import KELabel
+from digitaldash.base import convertOpToBytes
 
 
 class Alert(KELabel):
@@ -7,6 +8,7 @@ class Alert(KELabel):
     Wrapper on digitaldash.ke_label that adds method for checking
     when the label should be displayed.
     """
+
     # pylint: disable=too-many-instance-attributes
 
     def __init__(self, **args):
@@ -22,20 +24,14 @@ class Alert(KELabel):
         """
         super(Alert, self).__init__(**args)
 
-        self.value = float(args['value'])
+        self.value = float(args["value"])
 
-        if len(args.get('op')) == 2:
-            operator = bytearray(args.get('op').encode())
-            self.op = (operator[0] << 8) | (operator[1] & 0xFF)
-        else:
-            operator = " " + str(args.get('op'))
-            operator = bytearray(operator.encode())
-            self.op = (operator[0] << 8) | (operator[1] & 0xFF)
+        convertOpToBytes(self, args)
 
-        self.viewId = int(args.get('viewId'))
-        self.priority = args['priority']
-        self.pid = args['pid']
-        self.message = str(args['message'])
+        self.viewId = int(args.get("viewId"))
+        self.priority = args["priority"]
+        self.pid = args["pid"]
+        self.message = str(args["message"])
         self.text = self.message
         self.buffer = 0
 

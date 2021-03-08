@@ -12,13 +12,15 @@ os.environ["KIVY_HOME"] = WORKING_PATH + "/etc/kivy/"
 
 (dataSource, TESTING, ConfigFile) = (False, False, None)
 
-opts, args = getopt.getopt(sys.argv[1:], "tdf:c:", ["test", "development", "file=", "config="])
+opts, args = getopt.getopt(
+    sys.argv[1:], "tdf:c:", ["test", "development", "file=", "config="]
+)
 
-sys.argv = ['main.py']
+sys.argv = ["main.py"]
 for o, arg in opts:
     # Development mode runs with debug console - ctr + e to open it in GUI
     if o in ("-d", "--development"):
-        sys.argv = ['main.py -m console']
+        sys.argv = ["main.py -m console"]
     elif o in ("-f", "--file"):
         dataSource = Test(file=arg)
     elif o in ("-t", "--test"):
@@ -49,15 +51,18 @@ config.setWorkingPath(WORKING_PATH)
 if not dataSource:
     try:
         from digitaldash.keProtocol import Serial
+
         dataSource = Serial()
         Logger.info("Using serial data source" + str(dataSource))
     except Exception as e:
         Logger.info("Running without serial data: " + str(e))
 
+
 class MyHandler(PatternMatchingEventHandler):
     """
     Class that handles file watchdog duties.
     """
+
     def __init__(self, DigitalDash):
         super(MyHandler, self).__init__()
         self.DigitalDash = DigitalDash
@@ -67,11 +72,14 @@ class MyHandler(PatternMatchingEventHandler):
     def on_modified(self, event):
         buildFromConfig(self.DigitalDash, dataSource)
 
-# Load our KV files
-for file in os.listdir(WORKING_PATH+'/digitaldash/kv/'):
-    Builder.load_file(WORKING_PATH+'/digitaldash/kv/'+str(file))
 
-DD = TypeVar('DD', bound='DigitalDash')
+# Load our KV files
+for file in os.listdir(WORKING_PATH + "/digitaldash/kv/"):
+    Builder.load_file(WORKING_PATH + "/digitaldash/kv/" + str(file))
+
+DD = TypeVar("DD", bound="DigitalDash")
+
+
 class GUI(App):
     """
     Main class that initiates kivy app.
@@ -89,7 +97,7 @@ class GUI(App):
         This method can be used to set any values before the app starts, this is useful for
         testing.
         """
-        self.configFile   = configFile
+        self.configFile = configFile
         self.WORKING_PATH = WORKING_PATH
 
         if data:
@@ -102,28 +110,33 @@ class GUI(App):
         # Our main application object
         self.app = AnchorLayout()
 
-        self.data_source  = dataSource
+        self.data_source = dataSource
         self.working_path = WORKING_PATH
 
         observer = Observer()
-        observer.schedule(MyHandler(self), WORKING_PATH+'/etc/', recursive=True)
+        observer.schedule(MyHandler(self), WORKING_PATH + "/etc/", recursive=True)
         observer.start()
 
         (ret, msg) = buildFromConfig(self, dataSource)
         # If something went wrong in build return a label with the error message:
-        if ( not ret ):
-          return Label( text=msg )
+        if not ret:
+            return Label(text=msg)
         Logger.info("GUI: %s", msg)
         return self.app
 
     def check_callback(self: DD, callback, data):
         ret = False
         try:
-          # Check if any dynamic changes need to be made
-          if libdigitaldash.check(float(data[callback.pid.value]), callback.value, callback.op):
-              ret = callback
+            # Check if any dynamic changes need to be made
+            if libdigitaldash.check(
+                float(data[callback.pid.value]), callback.value, callback.op
+            ):
+                ret = callback
         except Exception as e:
-          Logger.error( "GUI: Firmware did not provide data value for key: %s", callback.pid.value )
+            Logger.error(
+                "GUI: Firmware did not provide data value for key: %s",
+                callback.pid.value,
+            )
         return ret
 
     def change(self: DD, app, my_callback) -> NoReturn:
@@ -141,7 +154,10 @@ class GUI(App):
                     try:
                         obj.setData(data[obj.pid.value])
                     except:
-                        Logger.error( "GUI: Firmware did not provide data value for key: %s", obj.pid.value )
+                        Logger.error(
+                            "GUI: Firmware did not provide data value for key: %s",
+                            obj.pid.value,
+                        )
                 else:
                     # This is for widgets that subscribe to
                     # updates but don't need any pid data ( Clock ).
@@ -149,12 +165,18 @@ class GUI(App):
 
     def loop(self, dt):
         if self.first_iteration:
-            (ret, msg) = dataSource.updateRequirements(self, self.pid_byte_code, self.pids)
+            (ret, msg) = dataSource.updateRequirements(
+                self, self.pid_byte_code, self.pids
+            )
             if not ret:
                 Logger.error(msg)
             self.first_iteration = False
 
-        (my_callback, priority, data) = (None, 0, dataSource.service(app=self, pids=self.pids))
+        (my_callback, priority, data) = (
+            None,
+            0,
+            dataSource.service(app=self, pids=self.pids),
+        )
 
         dynamic_change = False
         # Check dynamic gauges before any alerts in case we make a change
@@ -162,11 +184,11 @@ class GUI(App):
             my_callback = self.check_callback(dynamic, data)
 
             if my_callback:
-              if self.current == dynamic.viewId:
+                if self.current == dynamic.viewId:
+                    break
+                self.change(self, my_callback)
+                dynamic_change = True
                 break
-              self.change(self, my_callback)
-              dynamic_change = True
-              break
 
         # Check our alerts if no dynamic changes have occured
         if not dynamic_change:
@@ -181,8 +203,9 @@ class GUI(App):
 
             self.update_values(data)
 
-if __name__ == '__main__':
-    Logger.info( f'GUI: Running version: {__version__}' )
+
+if __name__ == "__main__":
+    Logger.info(f"GUI: Running version: {__version__}")
     dd = GUI()
 
     dd.new(configFile=ConfigFile, data=dataSource)

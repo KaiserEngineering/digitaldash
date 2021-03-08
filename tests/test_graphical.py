@@ -9,13 +9,15 @@ from digitaldash.massager import smooth
 from static.constants import KE_PID
 
 import pathlib
+
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
 t = KETester.Test()
-class Config_TestCase(GraphicUnitTest):
 
+
+class Config_TestCase(GraphicUnitTest):
     def test_Single(self):
-        t.new(config='etc/configs/single.json', data=[[50, 100]])
+        t.new(config="etc/configs/single.json", data=[[50, 100]])
         t.app.update_values(data={"0x010C": 50})
         t.app.working_path = working_path
 
@@ -24,14 +26,22 @@ class Config_TestCase(GraphicUnitTest):
                 gauge = child.children
 
                 for widget in gauge:
-                    if ( issubclass(Needle, type(widget)) ):
-                        self.assertEqual(widget.true_value, 50.0, "true value for needle is updated correctly")
-                        self.assertEqual(widget.update, smooth(Old=-60, New=50 * widget.step - widget.offset), "Calculated update value is set correctly")
+                    if issubclass(Needle, type(widget)):
+                        self.assertEqual(
+                            widget.true_value,
+                            50.0,
+                            "true value for needle is updated correctly",
+                        )
+                        self.assertEqual(
+                            widget.update,
+                            smooth(Old=-60, New=50 * widget.step - widget.offset),
+                            "Calculated update value is set correctly",
+                        )
+
 
 class Alerts_TestCase(GraphicUnitTest):
-
     def test_Single(self):
-        t.new(config='etc/configs/alerts.json', csvFile='tests/data/test.csv')
+        t.new(config="etc/configs/alerts.json", csvFile="tests/data/test.csv")
         t.app.working_path = working_path
 
         for value, text in zip([50, 4001], ["Hello, world", "Alert two"]):
@@ -41,7 +51,11 @@ class Alerts_TestCase(GraphicUnitTest):
 
             seen = False
             for alert in t.app.alerts.children:
-                self.assertEqual(alert.text, text, "Alert displays correctly for value set to: " + str(value))
+                self.assertEqual(
+                    alert.text,
+                    text,
+                    "Alert displays correctly for value set to: " + str(value),
+                )
                 seen = True
             self.assertTrue(seen, "Alert did show up")
 
@@ -49,5 +63,6 @@ class Alerts_TestCase(GraphicUnitTest):
                 for child in layout.children:
                     gauge = child.children
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

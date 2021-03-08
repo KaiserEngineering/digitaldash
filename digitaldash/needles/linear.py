@@ -22,7 +22,7 @@ class NeedleLinear(Needle, StencilView):
         super(NeedleLinear, self).__init__()
         self.setUp(**kwargs)
         (self.r, self.g, self.b, self.a) = (1, 0, 0, 0.7)
-        self.type = 'Linear'
+        self.type = "Linear"
         self.xOffset = 0
 
         # We need to bind here so that when the Linear gauge is added
@@ -41,7 +41,7 @@ class NeedleLinear(Needle, StencilView):
         """
         self.step = self.width / (abs(self.minValue) + abs(self.maxValue))
         if self.step == 0:
-            self.step = 1.
+            self.step = 1.0
 
         if self.width == (Window.width - 100):
             self.xOffset = 100

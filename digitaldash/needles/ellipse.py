@@ -8,6 +8,7 @@ class NeedleEllipse(Needle, Widget):
     """
     Create Ellipse widget.
     """
+
     update = NumericProperty()
     source = StringProperty()
     degrees = NumericProperty()
@@ -19,4 +20,4 @@ class NeedleEllipse(Needle, Widget):
         self.setUp(**kwargs)
         self.setOffset()
         self.angleStart = -self.offset
-        self.type = 'Ellipse'
+        self.type = "Ellipse"
