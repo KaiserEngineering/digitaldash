@@ -201,7 +201,6 @@ def test_build():
     background = anchorLayout.children[0]
 
     container = background.children[1].children
-    print(container)
     assert len(container) == 3
 
     saw_unitString_label = False
