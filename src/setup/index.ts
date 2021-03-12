@@ -3,7 +3,7 @@ import { get_user } from '../routes/api/user';
 import { get } from '../routes/api/config';
 import { getConstants } from '../routes/api/constants';
 
-export async function prepare( headers: Record<string, string> ): Promise<{
+export async function prepare({ headers }: Record<string, string> ): Promise<{
     headers?: Record<string, string>;
     context?: Record<string, any>;
   }> {

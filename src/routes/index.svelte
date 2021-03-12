@@ -21,6 +21,7 @@
         views = d.views.views;
         $session.configuration.views = d.views.views;
       }
+      console.log(d)
       $session.actions = [{
         id    : $session.count,
         msg   : d.message,

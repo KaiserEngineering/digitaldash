@@ -1,9 +1,12 @@
 <script context="module">
-  export async function load({page, context, session, fetch}) {
+  export async function load({page, session}) {
     const { user } = session;
 
     if ( !user && page.path != '/login' ) {
-      return { props: { segment: page.path }, redirect: { status: 301, to: `/login` } };
+      return {
+        redirect: '/login',
+        status  : 301
+      };
     }
     return { props: { segment: page.path } };
   }
@@ -29,4 +32,5 @@
   <svelte:component this={Notifications} />
 </div>
 
-<slot></slot>
+<slot />
+{''}

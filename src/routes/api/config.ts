@@ -36,11 +36,21 @@ export interface Gauge {
   pid:         string;
 }
 
+async function readConfigAsync(): Promise<Config> {
+  return await readFile(config_path+'/etc/config.json', 'utf8')
+    .then((result) => {
+      let json = JSON.parse( result );
+      return json;
+    })
+    .catch(function(error) {
+      return undefined;
+    });
+};
 
 let configCache: Config;
 // Need to add some kind of error handling here
 function readConfig(): Config {
-    let json: any = fs.readFile(`config_path/etc/config.json`, 'utf-8', (error) => {
+    let json: any = fs.readFile(config_path+'/etc/config.json', 'utf-8', (error) => {
       if ( error ) {
         console.log('Failed to read config file')
       }});
@@ -59,7 +69,6 @@ export async function get() {
         return configCache;
       })
       .catch(function(error) {
-        console.error( error )
         return {};
       });
   }
@@ -71,7 +80,7 @@ export async function post( request: { body: string; } ) {
 
   return await writeFile( `${config_path}/etc/config.json`, JSON.stringify( newConfig, null, 2 ))
   .then(() => {
-    configCache = readConfig();
+    configCache = readConfigAsync();
     return { "body" : { "ret": 1, message: "Config updated", config: configCache } };
   })
   .catch(function(error) {
@@ -84,6 +93,9 @@ export async function put( request: { body: { id: any; }; } ) {
   const id = request.body.id;
 
   let temp = configCache;
+  if ( !temp ) {
+      temp = await readConfigAsync();
+  }
   temp.views[id].enabled = temp.views[id].enabled ? false : true;
 
   let count = 0;
@@ -98,16 +110,16 @@ export async function put( request: { body: { id: any; }; } ) {
     // Why do I need this? We obviously have some kind of object reference
     // need to look into how JS does refs.
     temp.views[id].enabled = temp.views[id].enabled ? false : true;
-    return { "body": { "ret": 0, "views": configCache, message: "Need at least one enabled view" } };
+    return { "body": { "ret": 0, "views": temp, message: "Need at least one enabled view" } };
   }
   else {
     return await writeFile( `${config_path}/etc/config.json`, JSON.stringify( temp, null, 2 ))
     .then(() => {
-      configCache = readConfig();
-      return { "body": { "ret": 1, "views": configCache, message: "Config updated" } };
+      configCache = readConfigAsync();
+      return { "body": { "ret": 1, "views": temp, message: "Config updated" } };
     })
     .catch(function(error) {
-      return { "body" : { "ret": 0, message: "Config failed to update", config: configCache } };
+      return { "body" : { "ret": 0, message: "Config failed to update: ", error, views: temp } };
     });
   }
 }

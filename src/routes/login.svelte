@@ -2,6 +2,9 @@
   import { goto } from "$app/navigation";
   import { session } from "$app/stores";
 
+  export let title;
+  title = 'bork'
+
   let username;
   let password;
 
@@ -18,7 +21,7 @@
       .then(d => d.json())
       .then(d => {
         if ( d.ret ) {
-          $session.User  = d.user;
+          $session.User = d.user;
           goto( '/' );
         }
         // Only add notification for failed login
