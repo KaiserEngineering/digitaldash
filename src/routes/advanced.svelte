@@ -1,15 +1,5 @@
-<script context="module">
-  export async function preload(page, session) {
-    const response      = await this.fetch( '/api/config' );
-    const configuration = await response.json();
-
-    return { configuration: configuration };
-  }
-</script>
-
 <script>
   import { session } from "$app/stores";
-  export let configuration;
 
   let configString = JSON.stringify( $session.configuration, null, 2 );
 

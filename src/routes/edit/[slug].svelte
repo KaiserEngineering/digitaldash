@@ -1,31 +1,33 @@
 <script context="module">
-  export async function preload({ params, query }) {
-    return { id: params.slug };
+  export async function load({ page, context }) {
+    return { props: { id: page.params.slug } };
   }
 </script>
 
 <script>
   import { session } from "$app/stores";
-  import Slider from "../../components/Slider";
+  import Slider from "../../components/Slider.svelte";
 
   export let id;
+
   let configuration = $session.configuration;
 
-  let actions  = [];
   let view     = configuration.views[id];
   const KE_PID = $session.constants.KE_PID;
   const pids   = Object.keys( KE_PID );
 
   function normalizeGauges() {
-    // Ensure we always have 3 entries in our array
-    while ( view.gauges.length != 3 ) {
-      view.gauges.push({
-        "module"      : "",
-        "themeConfig" : "",
-        "unit"        : "",
-        "path"        : "",
-        "pid"         : ""
-      });
+    if ( view ) {
+      // Ensure we always have 3 entries in our array
+      while ( view.gauges.length != 3 ) {
+        view.gauges.push({
+          "module"      : "",
+          "themeConfig" : "",
+          "unit"        : "",
+          "path"        : "",
+          "pid"         : ""
+        });
+      }
     }
   }
   normalizeGauges();
@@ -47,7 +49,7 @@
         return;
       }
       // Add our units to our select input
-      KE_PID[pid].units.forEach((unit, i) => {
+      Object.keys(KE_PID[pid].units).forEach((unit, i) => {
         unitsSelect.options[i] = new Option(unit, unit, false, false);
       });
       // Actually set the select value to the first unit
@@ -269,7 +271,7 @@
         <div class="dynamicContainer">
           <div class="row">
             <div class="col-sm-3 col-12">
-              <Slider callback={toggleDynamic} callbackArgs={null} checked={view.dynamic.enabled} />
+              <svelte:component this={Slider} callback={toggleDynamic} callbackArgs={null} checked={view.dynamic.enabled} />
             </div>
           </div>
           <div class="row">

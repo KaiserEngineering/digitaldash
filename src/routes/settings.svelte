@@ -1,19 +1,25 @@
 <script>
-  export let actions = [];
+  import { session } from "$app/stores";
 
   let username;
   let password;
 
   function handleSubmit(event) {
-    fetch("/api/settings", {
-        method      : "POST",
+    fetch("/api/user", {
+        method      : "PUT",
         body: JSON.stringify({
           username: username,
           password: password
         })
       })
       .then(d => d.json())
-      .then(d => (actions = [d.message] ));
+      .then(d => {
+        $session.actions = [{
+          id    : $session.count,
+          msg   : d.message,
+          theme : d.ret ? 'alert-info' : 'alert-warning',
+        }, ...$session.actions];
+      });
   }
 </script>
 

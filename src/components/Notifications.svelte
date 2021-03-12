@@ -2,16 +2,12 @@
   <div class="notifications" id="notifications">
     {#each $session.actions as action(action.id)}
       <div
-        class="text-center notification alert {action.theme}"
+        class="alert-dismissible fade show alert {action.theme}"
         role="alert"
-        out:fade
-        animate:flip={{ duration: 200 }}
       >
         {action.msg}
 
-        <button type="button" on:click="{() => remove(action.id)}" class="float-right close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button  on:click="{() => remove(action.id)}" type="button" class="btn-close" aria-label="Close"></button>
       </div>
     {/each}
   </div>
@@ -19,8 +15,6 @@
 
 <script>
   import { session } from "$app/stores";
-  import { flip } from 'svelte/animate';
-  import { fade, fly } from 'svelte/transition';
 
   $: {
     if ( $session.actions.length ) {

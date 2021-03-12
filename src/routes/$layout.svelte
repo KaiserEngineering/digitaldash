@@ -1,10 +1,14 @@
 <script context="module">
-  export async function preload(page, session) {
+  export async function load({page, session}) {
     const { user } = session;
 
     if ( !user && page.path != '/login' ) {
-      return this.redirect( 302, `http://${page.host}/login` );
+      return {
+        redirect: '/login',
+        status  : 301
+      };
     }
+    return { props: { segment: page.path } };
   }
 </script>
 
@@ -12,15 +16,21 @@
   import Nav from "../components/Nav.svelte";
   import Notifications from '../components/Notifications.svelte';
 
-  export let segment;
+  export let segment = undefined;
+  export let title   = "KE!"
 </script>
 
-{#if !segment || segment != 'login'}
-  <Nav segment={segment}/>
+<svelte:head>
+  <title>{title}</title>
+</svelte:head>
+
+{#if !segment || segment != '/login'}
+  <svelte:component this={Nav} segment={segment} />
 {/if}
 
 <div class="col-sm-12 col-md-6">
-  <Notifications />
+  <svelte:component this={Notifications} />
 </div>
 
-<slot></slot>
+<slot />
+{''}
