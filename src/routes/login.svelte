@@ -2,13 +2,10 @@
   import { goto } from "$app/navigation";
   import { session } from "$app/stores";
 
-  export let title;
-  title = 'bork'
-
   let username;
   let password;
 
-  function handleSubmit(event) {
+  function handleSubmit() {
     fetch("/api/user", {
         method      : "POST",
         mode        : 'cors',
