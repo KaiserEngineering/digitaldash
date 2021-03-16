@@ -1,5 +1,21 @@
 import { writeFile, readFile } from 'fs/promises';
-import fs, { constants } from 'fs';
+import fs from 'fs';
+
+type ServerRoute = (
+  req: {
+      host: string;
+      path: string;
+      headers: Record<string, string>;
+      query: URLSearchParams;
+      body: undefined | Record<string, any>;
+      params: Record<string, unknown>;
+  },
+  context?: Record<string, any>
+) => Promise<{
+  status?: number;
+  headers?: Record<string, string>;
+  body?: Record<string, any> | Buffer;
+}>;
 
 const env = process.env;
 const config_path: String = env.KEGUIHome

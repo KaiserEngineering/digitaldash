@@ -12,10 +12,11 @@ export async function prepare({ headers }: Record<string, string> ): Promise<{
   if ( headers.cookie ) {
     cookies = cookie.parse( headers.cookie );
   }
+  const user = headers.cookie ? await get_user( cookies['ke_web_app'] ) : undefined;
 
   return {
     context: {
-      user: headers.cookie ? await get_user( cookies['ke_web_app'] ) : undefined,
+      user: user,
       configuration: await get(),
       constants    : await getConstants()
     },
@@ -26,6 +27,8 @@ export async function prepare({ headers }: Record<string, string> ): Promise<{
 // sensitive information like auth tokens. It then returns a
 // safe session object for the client.
 export async function getSession( context: Record<string, any> ): Promise<Record<string, any>> {
+  // We will fix this when svelte-kit is stable
+  context = context.context;
 
   return {
     user: context.user && context.user && {

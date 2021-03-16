@@ -1,0 +1,12 @@
+body {
+  padding-top: 10%;
+}
+
+/* Have our notifications display above stuff */
+.notification {
+  z-index: 2;
+}
+
+.position-top-center {
+  z-index: 2;
+}
