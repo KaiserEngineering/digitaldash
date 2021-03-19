@@ -27,7 +27,7 @@ class NeedleLinear(Needle, StencilView):
 
         # We need to bind here so that when the Linear gauge is added
         # to the parent layout and width value changes we update our step.
-        def myWidthCallback():
+        def myWidthCallback(self, instance):
             self.setStep()
 
         self.bind(width=myWidthCallback)
