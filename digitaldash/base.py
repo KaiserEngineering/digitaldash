@@ -74,7 +74,7 @@ class Base:
             self.gauge.labels.append(label)
 
             # Add to data recieving widgets
-            if "data" in labelConfig:
+            if "data" in labelConfig and labelConfig['data']:
                 self.liveWidgets.append(label)
             self.container.add_widget(label)
 
