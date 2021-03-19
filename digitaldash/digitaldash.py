@@ -194,7 +194,7 @@ def setup(self, layouts):
     # We need to retro-actively add our dynamic PIDs into the PIDs array per view
     for i, view in enumerate(views):
         # Check if we have any dynamic PIDs for the other views
-        for dynamicPIDKeys in dynamicPids.keys():
+        for dynamicPIDKeys in dynamicPids:
             if dynamicPIDKeys != str(i):
                 pid = dynamicPids[dynamicPIDKeys]
                 if pid not in view["pids"]:
