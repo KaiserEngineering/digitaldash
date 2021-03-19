@@ -12,7 +12,6 @@ class Needle:
     trueValue: float
     offset: float
     step: float
-    degrees: int
     unit: int
     minValue: float
     maxValue: float
