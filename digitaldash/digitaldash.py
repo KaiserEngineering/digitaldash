@@ -83,7 +83,7 @@ def setup(self, layouts):
     callbacks = {}
     views = []
     containers = []
-    dynamicPids = []
+    dynamicPids = {}
     # Currently we only allow one type of units per PID
     units = {}
 
@@ -111,7 +111,8 @@ def setup(self, layouts):
             dynamicPID = PID(**dynamicConfig)
             if not dynamicPID.value:
                 return (0, "Couldn't set dynamic PID")
-            dynamicPids.append(dynamicPID)
+            # We only will ever have one dynamic PID right?
+            dynamicPids[Id] = dynamicPID
 
             # Replace our string pid value with our new object
             dynamicConfig["pid"] = dynamicPID
@@ -192,9 +193,12 @@ def setup(self, layouts):
 
     # We need to retro-actively add our dynamic PIDs into the PIDs array per view
     for i, view in enumerate(views):
-        for pid in dynamicPids:
-            if pid not in view["pids"]:
-                views[i]["pids"].append(pid)
+        # Check if we have any dynamic PIDs for the other views
+        for dynamicPIDKeys in dynamicPids.keys():
+            if dynamicPIDKeys != str(i):
+                pid = dynamicPids[dynamicPIDKeys]
+                if pid not in view["pids"]:
+                    views[i]["pids"].append(pid)
 
         # Now we can generate a complete byte array for the PIDs
         if len(units) > 0 and len(view["pids"]) > 0:
