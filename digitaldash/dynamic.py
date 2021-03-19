@@ -84,7 +84,7 @@ class Dynamic:
         (
             app.background,
             app.alerts,
-            app.ObjectsToUpdate,
+            app.objectsToUpdate,
             app.pids,
             app.pid_byte_code,
         ) = app.views[self.viewId].values()
