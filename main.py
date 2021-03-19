@@ -181,11 +181,11 @@ class GUI(App):
         dynamic_change = False
         # Check dynamic gauges before any alerts in case we make a change
         for dynamic in self.dynamic_callbacks:
+            if self.current == dynamic.viewId:
+                break
             my_callback = self.check_callback(dynamic, data)
 
             if my_callback:
-                if self.current == dynamic.viewId:
-                    break
                 self.change(self, my_callback)
                 dynamic_change = True
                 break
