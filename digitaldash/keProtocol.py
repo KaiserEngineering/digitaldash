@@ -82,7 +82,7 @@ class Serial:
 
     def KE_Process_Packet(self):
         # Get the payload
-        serial_data = self.rx_buffer[KE_PCKT_DATA_START_POS : self.rx_byte_count - 4]
+        serial_data = self.rx_buffer[KE_PCKT_DATA_START_POS : self.rx_byte_count - 1]
 
         if self.rx_buffer[KE_PCKT_CMD_POS] == KE_CP_OP_CODES["KE_PID_STREAM_REPORT"]:
 

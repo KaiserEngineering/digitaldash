@@ -157,7 +157,7 @@ def setup(self, layouts):
             subcontainer = RelativeLayout(
                 pos_hint={"x": xPosition, "top": 0.99},
                 size_hint_max_y=200,
-                size_hint_max_x=(Window.width - 100) / numGauges,
+                size_hint_max_x=(Window.width+250) / numGauges,
             )
             container.add_widget(subcontainer)
 
