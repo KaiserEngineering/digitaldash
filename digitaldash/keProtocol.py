@@ -116,6 +116,17 @@ class Serial:
 
     def service(self, **args):
 
+        cpu = CPUTemperature()
+
+        if( cpu.temperature > 80 ):
+            self.fan_speed = 0x03    # Request max fan speed
+        elif( cpu.temperature > 76 ):
+            self.fan_speed = 0x02    # Request med fan speed
+        elif( cpu.temperature > 72 ):
+            self.fan_speed = 0x01    # Request min fan speed
+        elif( cpu.temperature < 60 ):
+            self.fan_speed = 0x00    # Turn off the fan 
+
         while self.ser.inWaiting():
             byte = self.ser.read()
 
