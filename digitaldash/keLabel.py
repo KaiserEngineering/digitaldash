@@ -33,7 +33,7 @@ class KELabel(Label):
         self.configColor = args.get("color", (1, 1, 1, 1))  # White
         self.color = self.configColor
         self.configFontSize = args.get("font_size", 25)
-        self.fontSize = self.configFontSize
+        self.font_size = self.configFontSize
         self.pid = args.get("pid", None)
         self.decimals = "2"  # Default to 2 and update later if a value is provided
         self.unitString = ""
