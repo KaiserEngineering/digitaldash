@@ -6,7 +6,7 @@
 
 <script>
   import { session } from "$app/stores";
-  import Slider from "../../components/Slider.svelte";
+  import Slider from "$lib/Slider.svelte";
 
   export let id;
 

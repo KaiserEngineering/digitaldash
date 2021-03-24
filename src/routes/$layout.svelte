@@ -13,8 +13,8 @@
 </script>
 
 <script>
-  import Nav from "../components/Nav.svelte";
-  import Notifications from '../components/Notifications.svelte';
+  import Nav from "$lib/Nav.svelte";
+  import Notifications from '$lib/Notifications.svelte';
 
   export let segment = undefined;
   export let title   = "KE!"
