@@ -3,16 +3,13 @@ import { get_user } from '../routes/api/user';
 import { get } from '../routes/api/config';
 import { getConstants } from '../routes/api/constants';
 
-export async function prepare({ headers }: Record<string, string> ): Promise<{
+export async function prepare(incoming: { headers: { cookie: any; }; }): Promise<{
     headers?: Record<string, string>;
     context?: Record<string, any>;
   }> {
 
-  let cookies: { [x: string]: String; };
-  if ( headers.cookie ) {
-    cookies = cookie.parse( headers.cookie );
-  }
-  const user = headers.cookie ? await get_user( cookies['ke_web_app'] ) : undefined;
+  const cookies = cookie.parse(incoming.headers.cookie || '');
+  const user = await get_user( cookies['ke_web_app'] );
 
   return {
     context: {
