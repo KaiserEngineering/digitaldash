@@ -1,14 +1,9 @@
 import Root from '../../generated/root.svelte';
-import { pages, ignore, layout } from '../../generated/manifest.js';
+import { routes, layout } from '../../generated/manifest.js';
 import { f as find_anchor, g as get_base_uri } from '../chunks/utils.js';
 import { writable } from 'svelte/store';
 import { init } from './singletons.js';
 import { set_paths } from '../paths.js';
-
-/** @param {MouseEvent} event */
-function which(event) {
-	return event.which === null ? event.button : event.which;
-}
 
 function scroll_state() {
 	return {
@@ -20,15 +15,11 @@ function scroll_state() {
 class Router {
 	/** @param {{
 	 *    base: string;
-	 *    host: string;
-	 *    pages: import('../../types').Page[];
-	 *    ignore: RegExp[];
+	 *    routes: import('types.internal').CSRRoute[];
 	 * }} opts */
-	constructor({ base, host, pages, ignore }) {
+	constructor({ base, routes }) {
 		this.base = base;
-		this.host = host;
-		this.pages = pages;
-		this.ignore = ignore;
+		this.routes = routes;
 
 		this.history = window.history || {
 			pushState: () => {},
@@ -82,7 +73,7 @@ class Router {
 		addEventListener('click', (event) => {
 			// Adapted from https://github.com/visionmedia/page.js
 			// MIT license https://github.com/visionmedia/page.js#license
-			if (which(event) !== 1) return;
+			if (event.button || event.which !== 1) return;
 			if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 			if (event.defaultPrevented) return;
 
@@ -114,12 +105,11 @@ class Router {
 			// Don't handle hash changes
 			if (url.pathname === location.pathname && url.search === location.search) return;
 
-			const selected = this.select(url);
-			if (selected) {
+			const info = this.parse(url);
+			if (info) {
 				const noscroll = a.hasAttribute('sveltekit:noscroll');
-				this.renderer.notify(selected);
 				this.history.pushState({}, '', url.href);
-				this.navigate(selected, noscroll ? scroll_state() : null, [], url.hash);
+				this._navigate(info, noscroll ? scroll_state() : null, [], url.hash);
 				event.preventDefault();
 			}
 		});
@@ -127,9 +117,9 @@ class Router {
 		addEventListener('popstate', (event) => {
 			if (event.state) {
 				const url = new URL(location.href);
-				const selected = this.select(url);
-				if (selected) {
-					this.navigate(selected, event.state['sveltekit:scroll'], []);
+				const info = this.parse(url);
+				if (info) {
+					this._navigate(info, event.state['sveltekit:scroll'], []);
 				} else {
 					// eslint-disable-next-line
 					location.href = location.href; // nosonar
@@ -140,41 +130,28 @@ class Router {
 		// make it possible to reset focus
 		document.body.setAttribute('tabindex', '-1');
 
-		// load current page
+		// create initial history entry, so we can return here
 		this.history.replaceState({}, '', location.href);
-
-		const selected = this.select(new URL(location.href));
-		if (selected) return this.renderer.start(selected);
 	}
 
 	/**
 	 * @param {URL} url
-	 * @returns {import('./types').NavigationTarget}
+	 * @returns {import('./types').NavigationInfo}
 	 */
-	select(url) {
+	parse(url) {
 		if (url.origin !== location.origin) return null;
 		if (!url.pathname.startsWith(this.base)) return null;
 
-		let path = url.pathname.slice(this.base.length);
+		const path = url.pathname.slice(this.base.length) || '/';
 
-		if (path === '') {
-			path = '/';
-		}
+		const routes = this.routes.filter(([pattern]) => pattern.test(path));
 
-		// avoid accidental clashes between server routes and page routes
-		if (this.ignore.some((pattern) => pattern.test(path))) return;
-
-		for (const route of this.pages) {
-			const match = route.pattern.exec(path);
-
-			if (match) {
-				const query = new URLSearchParams(url.search);
-				const params = route.params(match);
-
-				const page = { host: this.host, path, query, params };
-
-				return { href: url.href, route, match, page };
-			}
+		if (routes.length > 0) {
+			return {
+				routes,
+				path,
+				query: new URLSearchParams(url.search)
+			};
 		}
 	}
 
@@ -185,14 +162,12 @@ class Router {
 	 */
 	async goto(href, { noscroll = false, replaceState = false } = {}, chain) {
 		const url = new URL(href, get_base_uri(document));
-		const selected = this.select(url);
+		const info = this.parse(url);
 
-		if (selected) {
-			this.renderer.notify(selected);
-
+		if (info) {
 			// TODO shouldn't need to pass the hash here
 			this.history[replaceState ? 'replaceState' : 'pushState']({}, '', href);
-			return this.navigate(selected, noscroll ? scroll_state() : null, chain, url.hash);
+			return this._navigate(info, noscroll ? scroll_state() : null, chain, url.hash);
 		}
 
 		location.href = href;
@@ -202,18 +177,23 @@ class Router {
 	}
 
 	/**
-	 * @param {*} selected
+	 * @param {import('./types').NavigationInfo} info
 	 * @param {{ x: number, y: number }} scroll
 	 * @param {string[]} chain
 	 * @param {string} [hash]
 	 */
-	async navigate(selected, scroll, chain, hash) {
+	async _navigate(info, scroll, chain, hash) {
+		this.renderer.notify({
+			path: info.path,
+			query: info.query
+		});
+
 		// remove trailing slashes
 		if (location.pathname.endsWith('/') && location.pathname !== '/') {
 			history.replaceState({}, '', `${location.pathname.slice(0, -1)}${location.search}`);
 		}
 
-		await this.renderer.render(selected, chain);
+		await this.renderer.update(info, chain);
 
 		document.body.focus();
 
@@ -230,8 +210,8 @@ class Router {
 }
 
 /**
- * @param {import('../types').LoadResult} loaded
- * @returns {import('../types').LoadResult}
+ * @param {import('../../types.internal').LoadOutput} loaded
+ * @returns {import('../../types.internal').LoadOutput}
  */
 function normalize(loaded) {
 	// TODO should this behaviour be dev-only?
@@ -310,17 +290,16 @@ function page_store(value) {
 
 class Renderer {
 	/** @param {{
-	 *   Root: import('../../types').CSRComponent;
-	 *   layout: import('../../types').CSRComponent;
+	 *   Root: import('types.internal').CSRComponent;
+	 *   layout: import('types.internal').CSRComponent;
 	 *   target: Node;
-	 *   error: Error;
-	 *   status: number;
 	 *   session: any;
+	 *   host: string;
 	 * }} opts */
-	constructor({ Root, layout, target, error, status, session }) {
+	constructor({ Root, layout, target, session, host }) {
 		this.Root = Root;
 		this.layout = layout;
-		this.layout_loader = () => layout;
+		this.host = host;
 
 		/** @type {import('./router').Router} */
 		this.router = null;
@@ -328,11 +307,9 @@ class Renderer {
 		// TODO ideally we wouldn't need to store these...
 		this.target = target;
 
-		this.initial = {
-			error,
-			status
-		};
+		this.started = false;
 
+		/** @type {import('./types').NavigationState} */
 		this.current = {
 			page: null,
 			query: null,
@@ -387,26 +364,30 @@ class Renderer {
 			if (!ready) return;
 			this.current.session_changed = true;
 
-			const selected = this.router.select(new URL(location.href));
-			this.render(selected);
+			const info = this.router.parse(new URL(location.href));
+			this.update(info, []);
 		});
 		ready = true;
 	}
 
-	/** @param {import('./types').NavigationTarget} selected */
-	async start(selected) {
+	/**
+	 * @param {import('./types').NavigationCandidate} selected
+	 * @param {number} status
+	 * @param {Error} error
+	 */
+	async start(selected, status, error) {
 		/** @type {Record<string, any>} */
 		const props = {
 			stores: this.stores,
-			error: this.initial.error,
-			status: this.initial.status,
+			error,
+			status,
 			page: selected.page
 		};
 
-		if (this.initial.error) {
+		if (error) {
 			props.components = [this.layout.default];
 		} else {
-			const hydrated = await this.hydrate(selected);
+			const hydrated = await this._hydrate(selected);
 
 			if (hydrated.redirect) {
 				throw new Error('TODO client-side redirects');
@@ -431,51 +412,139 @@ class Renderer {
 			hydrate: true
 		});
 
-		this.initial = null;
+		this.started = true;
 	}
 
-	/** @param {import('./types').NavigationTarget} selected */
-	notify(selected) {
+	/** @param {{ path: string, query: URLSearchParams }} destination */
+	notify({ path, query }) {
+		dispatchEvent(new CustomEvent('sveltekit:navigation-start'));
+
 		this.stores.navigating.set({
-			from: this.current.page,
-			to: selected.page
+			from: {
+				path: this.current.page.path,
+				query: this.current.page.query
+			},
+			to: {
+				path,
+				query
+			}
 		});
 	}
 
 	/**
-	 * @param {import('./types').NavigationTarget} selected
+	 * @param {import('./types').NavigationInfo} info
 	 * @param {string[]} chain
 	 */
-	async render(selected, chain) {
+	async update(info, chain) {
 		const token = (this.token = {});
+		const navigation_result = await this._get_navigation_result(info);
 
-		const hydrated = await this.hydrate(selected);
+		// abort if user navigated during update
+		if (token !== this.token) return;
 
-		if (this.token === token) {
-			if (hydrated.redirect) {
-				if (chain.length > 10 || chain.includes(this.current.page.path)) {
-					hydrated.props.status = 500;
-					hydrated.props.error = new Error('Redirect loop');
-				} else {
-					this.router.goto(hydrated.redirect, { replaceState: true }, [
-						...chain,
-						this.current.page.path
-					]);
+		if (navigation_result.reload) {
+			location.reload();
+		} else if (navigation_result.redirect) {
+			if (chain.length > 10 || chain.includes(this.current.page.path)) {
+				this.root.$set({
+					status: 500,
+					error: new Error('Redirect loop')
+				});
+			} else {
+				this.router.goto(navigation_result.redirect, { replaceState: true }, [
+					...chain,
+					this.current.page.path
+				]);
 
-					return;
-				}
+				return;
+			}
+		} else {
+			this.current = navigation_result.state;
+
+			this.root.$set(navigation_result.props);
+			this.stores.navigating.set(null);
+
+			await 0;
+		}
+
+		dispatchEvent(new CustomEvent('sveltekit:navigation-end'));
+	}
+
+	/**
+	 * @param {URL} url
+	 * @returns {Promise<import('./types').NavigationResult>}
+	 */
+	async prefetch(url) {
+		const info = this.router.parse(url);
+		if (info) {
+			if (url.href !== this.prefetching.href) {
+				this.prefetching = {
+					href: url.href,
+					promise: this._get_navigation_result(info)
+				};
 			}
 
-			// check render wasn't aborted
-			this.current = hydrated.state;
-
-			this.root.$set(hydrated.props);
-			this.stores.navigating.set(null);
+			return this.prefetching.promise;
+		} else {
+			throw new Error(`Could not prefetch ${url.href}`);
 		}
 	}
 
-	/** @param {import('./types').NavigationTarget} selected */
-	async hydrate({ route, page }) {
+	/**
+	 * @param {import('./types').NavigationInfo} info
+	 * @returns {Promise<import('./types').NavigationResult>}
+	 */
+	async _get_navigation_result(info) {
+		for (let i = 0; i < info.routes.length; i += 1) {
+			const route = info.routes[i];
+			const [pattern, parts, params] = route;
+
+			if (route.length === 1) {
+				return { reload: true };
+			}
+
+			// load code for subsequent routes immediately, if they are as
+			// likely to match the current path/query as the current one
+			let j = i + 1;
+			while (j < info.routes.length) {
+				const next = info.routes[j];
+				if (next[0].toString() === pattern.toString()) {
+					if (next.length !== 1) next[1].forEach((loader) => loader());
+					j += 1;
+				} else {
+					break;
+				}
+			}
+
+			const nodes = parts.map((loader) => loader());
+			const page = {
+				host: this.host,
+				path: info.path,
+				params: params ? params(route[0].exec(info.path)) : {},
+				query: info.query
+			};
+
+			const hydrated = await this._hydrate({ nodes, page });
+			if (hydrated) return hydrated;
+		}
+
+		return {
+			state: {
+				page: null,
+				query: null,
+				session_changed: false,
+				contexts: [],
+				nodes: []
+			},
+			props: {
+				status: 404,
+				error: new Error(`Not found: ${info.path}`)
+			}
+		};
+	}
+
+	/** @param {import('./types').NavigationCandidate} selected */
+	async _hydrate({ nodes, page }) {
 		/** @type {Record<string, any>} */
 		const props = {
 			status: 200,
@@ -483,16 +552,17 @@ class Renderer {
 			/** @type {Error} */
 			error: null,
 
-			/** @type {import('../../types').CSRComponent[]} */
+			/** @type {import('types.internal').CSRComponent[]} */
 			components: []
 		};
 
 		/**
-		 * @param {string} url
+		 * @param {RequestInfo} resource
 		 * @param {RequestInit} opts
 		 */
-		const fetcher = (url, opts) => {
-			if (this.initial) {
+		const fetcher = (resource, opts) => {
+			if (!this.started) {
+				const url = typeof resource === 'string' ? resource : resource.url;
 				const script = document.querySelector(`script[type="svelte-data"][url="${url}"]`);
 				if (script) {
 					const { body, ...init } = JSON.parse(script.textContent);
@@ -500,33 +570,21 @@ class Renderer {
 				}
 			}
 
-			return fetch(url, opts);
+			return fetch(resource, opts);
 		};
 
 		const query = page.query.toString();
 
-		// TODO come up with a better name
-		/** @typedef {{
-		 *   component: import('../../types').CSRComponent;
-		 *   uses: {
-		 *     params: Set<string>;
-		 *     query: boolean;
-		 *     session: boolean;
-		 *     context: boolean;
-		 *   }
-		 * }} Branch */
-
+		/** @type {import('./types').NavigationState} */
 		const state = {
 			page,
 			query,
 			session_changed: false,
-			/** @type {Branch[]} */
 			nodes: [],
-			/** @type {Record<string, any>[]} */
 			contexts: []
 		};
 
-		const component_promises = [this.layout_loader(), ...route.parts.map((loader) => loader())];
+		const component_promises = [this.layout, ...nodes];
 		const props_promises = [];
 
 		/** @type {Record<string, any>} */
@@ -571,10 +629,10 @@ class Renderer {
 					const cache = this.caches.get(component);
 					const cached = cache && cache.get(hash);
 
-					/** @type {Branch} */
+					/** @type {import('./types').PageNode} */
 					let node;
 
-					/** @type {import('../../types').LoadResult} */
+					/** @type {import('types.internal').LoadOutput} */
 					let loaded;
 
 					if (cached && (!changed.context || !cached.node.uses.context)) {
@@ -603,9 +661,8 @@ class Renderer {
 
 						const session = this.$session;
 
-						loaded =
-							load &&
-							(await load.call(null, {
+						if (load) {
+							loaded = await load.call(null, {
 								page: {
 									host: page.host,
 									path: page.path,
@@ -624,16 +681,20 @@ class Renderer {
 									return { ...context };
 								},
 								fetch: fetcher
-							}));
+							});
+
+							if (!loaded) return;
+						}
 					}
 
 					if (loaded) {
 						loaded = normalize(loaded);
 
 						if (loaded.error) {
-							// TODO sticking the status on the error object is kinda hacky
-							loaded.error.status = loaded.status;
-							throw loaded.error;
+							props.error = loaded.error;
+							props.status = loaded.status || 500;
+							state.nodes = [];
+							return { redirect, props, state };
 						}
 
 						if (loaded.redirect) {
@@ -702,31 +763,16 @@ class Renderer {
 				}
 			});
 
-			if (!this.current.page || page.path !== this.current.page.path) {
+			if (!this.current.page || page.path !== this.current.page.path || changed.query) {
 				props.page = page;
 			}
 		} catch (error) {
 			props.error = error;
-			props.status = error.status || 500;
+			props.status = 500;
 			state.nodes = [];
 		}
 
 		return { redirect, props, state };
-	}
-
-	/** @param {URL} url */
-	async prefetch(url) {
-		const page = this.router.select(url);
-
-		if (page) {
-			if (url.href !== this.prefetching.href) {
-				this.prefetching = { href: url.href, promise: this.hydrate(page) };
-			}
-
-			return this.prefetching.promise;
-		} else {
-			throw new Error(`Could not prefetch ${url.href}`);
-		}
 	}
 }
 
@@ -738,32 +784,33 @@ class Renderer {
  *     base: string;
  *   },
  *   target: Node;
- *   host: string;
  *   session: any;
  *   error: Error;
  *   status: number;
+ *   nodes: import('./types').NavigationCandidate["nodes"];
+ *   page: import('./types').NavigationCandidate["page"];
  * }} opts */
-async function start({ paths, target, host, session, error, status }) {
+async function start({ paths, target, session, error, status, nodes, page }) {
 	const router = new Router({
 		base: paths.base,
-		host,
-		pages,
-		ignore
+		routes
 	});
 
 	const renderer = new Renderer({
 		Root,
 		layout,
 		target,
-		error,
-		status,
-		session
+		session,
+		host: page.host
 	});
 
 	init({ router, renderer });
 	set_paths(paths);
 
-	await router.init(renderer);
+	router.init(renderer);
+	await renderer.start({ nodes, page }, status, error);
+
+	dispatchEvent(new CustomEvent('sveltekit:start'));
 }
 
 if (import.meta.env.VITE_SVELTEKIT_SERVICE_WORKER) {
