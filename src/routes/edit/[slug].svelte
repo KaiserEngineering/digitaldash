@@ -12,9 +12,10 @@
 
   let configuration = $session.configuration;
 
-  let view     = configuration.views[id];
-  const KE_PID = $session.constants.KE_PID;
-  const pids   = Object.keys( KE_PID );
+  let view         = configuration.views[id];
+  const KE_PID     = $session.constants.KE_PID;
+  const UNIT_LABEL = $session.constants.PID_UNIT_LABEL;
+  const pids       = Object.keys( KE_PID );
 
   function normalizeGauges() {
     if ( view ) {
@@ -50,7 +51,9 @@
       }
       // Add our units to our select input
       Object.keys(KE_PID[pid].units).forEach((unit, i) => {
-        unitsSelect.options[i] = new Option(unit, unit, false, false);
+        let label = UNIT_LABEL[unit];
+
+        unitsSelect.options[i] = new Option(label, unit, false, false);
       });
       // Actually set the select value to the first unit
       unitsSelect.value = unitsSelect.options[0].value;
