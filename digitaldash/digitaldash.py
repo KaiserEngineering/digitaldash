@@ -45,8 +45,6 @@ def findPids(view):
     """Find all PIDs in a view"""
     pidsDict = {}
     for i, gauge in enumerate(view["gauges"]):
-        if gauge["pid"] in pidsDict:
-            continue
         pidsDict[gauge["pid"]] = PID(**gauge)
         view["gauges"][i]["pid"] = pidsDict[gauge["pid"]]
 
@@ -242,7 +240,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         self.pid_byte_code,
     ) = self.views[0].values()
 
-    if not self.first_iteration and dataSource and not isinstance(Test):
+    if not self.first_iteration and dataSource and dataSource is not Test:
         # Initialize our hardware set-up and verify everything is peachy
         (ret, msg) = dataSource.initialize_hardware()
 
