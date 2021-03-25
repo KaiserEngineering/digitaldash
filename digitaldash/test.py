@@ -1,6 +1,8 @@
 """Test harness for GUI that runs on file data."""
 # pylint: disable=import-outside-toplevel
 # pylint: disable=unused-argument
+# pylint: disable=no-self-use
+# pylint: disable=invalid-name
 import csv
 
 
