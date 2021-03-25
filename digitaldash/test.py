@@ -93,3 +93,7 @@ class Test:
         self.app = GUI()
         self.app.new(configFile=config, data=self)
         self.app.run()
+
+    def initialize_hardware(self):
+        """Test initialize_hardware method"""
+        return (True, "Hardware: Successfully initiated hardware")
