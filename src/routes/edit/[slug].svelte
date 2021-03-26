@@ -36,6 +36,21 @@
   function pidChange( node ) {
     function getUnits( node ) {
       const pid = node.target.value;
+      let pidRegex = /(gauge|dynamic|alert)-(\d+)/;
+      let matches = pidRegex.exec(node.target.name);
+
+      let type = matches[1],
+        index = matches[2];
+
+      if ( type == 'gauge' ) {
+        view.gauges[index].pid = pid;
+      }
+      else if ( type == 'alert' ) {
+        view.alerts[index].pid = pid;
+      }
+      else if ( type == 'dynamic' ) {
+        view.dynamic.pid = pid;
+      }
 
       // find our units for the provided pid
       let unitsSelect = node.srcElement.parentElement.nextSibling.nextSibling.querySelectorAll('[name=units]')[0]
@@ -67,7 +82,7 @@
 
     return {
       destroy() {
-        node.removeEventListener( "blur", getUnits );
+        node.removeEventListener( "change", getUnits );
       }
     }
   }
@@ -179,7 +194,7 @@
                 {#each Array(3) as _, i}
                   <div class="col-4 pl-1 pr-1">
                     <div class="col-12">
-                      <select use:pidChange bind:value={view.gauges[i].pid} name="pid{id}" class="mb-2 form-control" id="pid{id}">
+                      <select use:pidChange name="gauge-{i}" value="{view.gauges[i].pid}" class="mb-2 form-control" id="pid-{id}">
                         <option value="">-</option>
                         {#each pids as pid}
                           <option value={pid}>
@@ -235,7 +250,7 @@
                 <div class="col-sm-6 col-12 pl-1 pr-1">
                   <label class="label" for="alertPID">PID</label>
 
-                  <select use:pidChange bind:value={alert.pid} name="pid{id}" class="value form-control pl-1 pr-1" id="alertPID" required>
+                  <select use:pidChange value={alert.pid} name="alert-{i}" class="value form-control pl-1 pr-1" id="alertPID" required>
                     <option value="">-</option>
                     {#each pids as pid}
                       <option value={pid}>
@@ -282,7 +297,7 @@
             <div class="col-sm-3 col-12">
               <label for="dynamicPID">PID</label>
 
-              <select use:pidChange bind:value={view.dynamic.pid} disabled={!view.dynamic.enabled} name="pid{id}" class="form-control" id="dynamicPID" required>
+              <select use:pidChange value={view.dynamic.pid} disabled={!view.dynamic.enabled} name="dynamic-{0}" class="form-control" id="dynamicPID" required>
                 <option value="">-</option>
                 {#each pids as pid}
                   <option value={pid}>
