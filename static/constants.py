@@ -61,53 +61,156 @@ PID_UNIT_LABEL = {
 }
 
 KE_PID = {
-    "0x010C": {
-        "name": "ENGINE_RPM",
-        "shortName": "RPM",
-        "units": {"PID_UNITS_RPM": {"Min": 0, "Max": 8000, "decimals": "0"}},
-    },
-    "0x010F": {
-        "name": "INTAKE_AIR_TEMPERATURE",
-        "shortName": "IAT",
+    "0x0104": {
+        "name": "CALCULATED_ENGINE_LOAD",
+        "shortName": "Load",
         "units": {
-            "PID_UNITS_FAHRENHEIT": {"Min": 0, "Max": 215, "decimals": "2"},
-            "PID_UNITS_CELCIUS": {"Min": 0, "Max": 215, "decimals": "2"},
+            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "0"},
+        },
+    },
+    "0x0105": {
+        "name": "ENGINE_COOLANT_TEMPERATURE",
+        "shortName": "ECT",
+        "units": {
+            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 215, "decimals": "0"},
+            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
+    },
+    "0x010A": {
+        "name": "FUEL_PRESSURE",
+        "shortName": "ECT",
+        "units": {
+            "PID_UNITS_KPA": {"Min": 0, "Max": 765, "decimals": "0"},
+            "PID_UNITS_PSI": {"Min": 0, "Max": 110, "decimals": "1"},
         },
     },
     "0x010B": {
         "name": "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE",
         "shortName": "MAP",
-        "units": {"PID_UNITS_KPA": {"Min": 0, "Max": 255, "decimals": "0"}},
+        "units": {
+            "PID_UNITS_KPA": {"Min": 0, "Max": 255, "decimals": "0"},
+            "PID_UNITS_PSI": {"Min": 0, "Max": 36, "decimals": "1"},
+        },
     },
-    "0x0105": {
-        "name": "ENGINE_COOLANT_TEMPERATURE",
-        "shortName": "ECT",
-        "units": {"PID_UNITS_CELCIUS": {"Min": 0, "Max": 150, "decimals": "1"}},
+    "0x010C": {
+        "name": "ENGINE_SPEED",
+        "shortName": "RPM",
+        "units": {
+            "PID_UNITS_RPM": {"Min": 0, "Max": 8000, "decimals": "0"},
+        },
     },
-    "0x0104": {
-        "name": "CALCULATED_ENGINE_LOAD",
-        "shortName": "LOAD",
-        "units": {"PID_UNITS_PERCENT": {"Min": 0, "Max": 150, "decimals": "1"}},
+    "0x010D": {
+        "name": "VEHICLE_SPEED",
+        "shortName": "Speed",
+        "units": {
+            "PID_UNITS_KMH": {"Min": 0, "Max": 270, "decimals": "0"},
+            "PID_UNITS_MPH": {"Min": 0, "Max": 180, "decimals": "0"},
+        },
+    },
+    "0x010E": {
+        "name": "TIMING_ADVANCE",
+        "shortName": "Timing",
+        "units": {
+            "PID_UNITS_DEGREES": {"Min": -64, "Max": 63.5, "decimals": "1"},
+        },
+    },
+    "0x010F": {
+        "name": "INTAKE_AIR_TEMPERATURE",
+        "shortName": "IAT",
+        "units": {
+            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
+    },
+    "0x0133": {
+        "name": "ABSOLUTE_BAROMETRIC_PRESSURE",
+        "shortName": "Baro",
+        "units": {
+            "PID_UNITS_KPA": {"Min": 0, "Max": 255, "decimals": "0"},
+            "PID_UNITS_PSI": {"Min": 0, "Max": 36, "decimals": "1"},
+        },
+    },
+    "0x015A": {
+        "name": "RELATIVE_ACCELERATOR_PEDAL_POSITION",
+        "shortName": "APP",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "0"},
+        },
     },
     "0x015C": {
         "name": "ENGINE_OIL_TEMPERATURE",
         "shortName": "Oil Temp",
-        "units": {"PID_UNITS_CELCIUS": {"Min": 0, "Max": 150, "decimals": "0"}},
+        "units": {
+            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
     },
     "0x016F": {
-        "name": "TURBO_INLET_PRESSURE",
+        "name": "TURBOCHARGER_COMPRESSOR_INLET_PRESSURE",
         "shortName": "Boost",
-        "units": {"PID_UNITS_KPA": {"Min": 0, "Max": 210, "decimals": "0"}},
+        "units": {
+            "PID_UNITS_KPA": {"Min": 0, "Max": 255, "decimals": "0"},
+            "PID_UNITS_PSI": {"Min": 0, "Max": 36, "decimals": "1"},
+        },
     },
-    "0x220461": {
-        "name": "CHARGE_AIR_TEMP",
-        "shortName": "CAT",
-        "units": {"PID_UNITS_CELCIUS": {"Min": -40, "Max": 300, "decimals": "1"}},
+    "0x220301": {
+        "name": "MANIFOLD_ABSOLUTE_PRESSURE_SENSOR_VOLTAGE_1",
+        "shortName": "MAP",
+        "units": {
+            "PID_UNITS_VOLTS": {"Min": 0, "Max": 5, "decimals": "2"},
+        },
+    },
+    "0x220307": {
+        "name": "LOW_PRESSURE_FUEL_PUMP_COMMANDED_DUTY_CYCLE",
+        "shortName": "LPFP DC",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "0"},
+        },
+    },
+    "0x22030F": {
+        "name": "COMMANDED_LAMBDA",
+        "shortName": "Cmd Lambda",
+        "units": {
+            "PID_UNITS_RATIO": {"Min": 0, "Max": 5, "decimals": "2"},
+        },
+    },
+    "0x2203EC": {
+        "name": "IGNITION_CORRECTION_CYLINDER_1",
+        "shortName": "IGN 1",
+        "units": {
+            "PID_UNITS_DEGREES": {"Min": -16, "Max": 16, "decimals": "2"},
+        },
     },
     "0x22F40F": {
-        "name": "INTAKE_AIR_TEMP",
+        "name": "INTAKE_AIR_TEMPERATURE",
         "shortName": "IAT",
-        "units": {"PID_UNITS_CELCIUS": {"Min": -40, "Max": 300, "decimals": "1"}},
+        "units": {
+            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
+    },
+    "0x220461": {
+        "name": "CHARGE_AIR_TEMPERATURE",
+        "shortName": "CAT",
+        "units": {
+            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
+    },
+    "0x22057D": {
+        "name": "AMBIENT_AIR_TEMPERATURE",
+        "shortName": "AAT",
+        "units": {
+            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
+    },
+    "0xDE01C8": {
+        "name": "GAUGE_BRIGHTNESS",
+        "shortName": "Dim",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "0"},
+        },
     },
 }
 
