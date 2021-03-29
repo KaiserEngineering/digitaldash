@@ -1,7 +1,7 @@
 <script>
   import { session } from "$app/stores";
   import pkg from 'lodash';
-  import Slider from "$lib//Slider.svelte";
+  import Slider from "$lib/Slider.svelte";
 
   const {_} = pkg;
 

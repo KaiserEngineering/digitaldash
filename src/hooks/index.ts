@@ -2,13 +2,24 @@ import * as cookie from 'cookie';
 import { get_user } from '../routes/api/user';
 import { get } from '../routes/api/config';
 import { getConstants } from '../routes/api/constants';
+import type { ReadOnlyFormData } from '@sveltejs/kit';
 
-export async function prepare(incoming: { headers: { cookie: any; }; }): Promise<{
-    headers?: Record<string, string>;
-    context?: Record<string, any>;
-  }> {
+type Incoming = {
+  method: string;
+  host: string;
+  headers: Headers;
+  path: string;
+  query: URLSearchParams;
+  body: string | Buffer | ReadOnlyFormData;
+};
 
-  const cookies = cookie.parse(incoming.headers.cookie || '');
+type GetContext<Context = any> = {
+  (incoming: Incoming): Context;
+};
+
+/** @type {import('@sveltejs/kit').GetContext} */
+export async function getContext({ headers }) {
+  const cookies = cookie.parse(headers.cookie || '');
   const user = await get_user( cookies['ke_web_app'] );
 
   return {
@@ -20,11 +31,12 @@ export async function prepare(incoming: { headers: { cookie: any; }; }): Promise
   }
 };
 
-// This function takes context objects which could contain
-// sensitive information like auth tokens. It then returns a
-// safe session object for the client.
-export async function getSession( context: Record<string, any> ): Promise<Record<string, any>> {
-  // We will fix this when svelte-kit is stable
+type GetSession<Context = any, Session = any> = {
+  ({ context }: { context: Context }): Session | Promise<Session>;
+};
+
+/** @type {import('@sveltejs/kit').GetSession} */
+export function getSession({ context }) {
   context = context.context;
 
   return {
