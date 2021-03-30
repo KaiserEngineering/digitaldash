@@ -1,7 +1,6 @@
 <script context="module">
   export async function load({page, session}) {
     const { user } = session;
-    // console.log("Why is seesion empty?: ",session);
 
     if ( !user && page.path != '/login' ) {
       return {
