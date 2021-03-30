@@ -167,13 +167,6 @@ KE_PID = {
             "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "0"},
         },
     },
-    "0x22030F": {
-        "name": "COMMANDED_LAMBDA",
-        "shortName": "Cmd Lambda",
-        "units": {
-            "PID_UNITS_RATIO": {"Min": 0, "Max": 5, "decimals": "2"},
-        },
-    },
     "0x2203EC": {
         "name": "IGNITION_CORRECTION_CYLINDER_1",
         "shortName": "IGN 1",
