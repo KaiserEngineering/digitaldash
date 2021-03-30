@@ -13,6 +13,7 @@
 </script>
 
 <script>
+  import '../app.css';
   import Nav from "$lib/Nav.svelte";
   import Notifications from '$lib/Notifications.svelte';
 

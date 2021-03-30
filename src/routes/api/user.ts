@@ -33,7 +33,7 @@ export function post( request: { body: string; } ) {
     res.username = attempt.Username;
 
     // Can we make our seed actually useful?
-    let token = jwt.sign(user, 'ke-webapp');
+    let token = jwt.sign({username: user.username}, 'ke-webapp');
     headers = {
       'Set-Cookie' : "ke_web_app="+token+"; Path=/; SameSite=Strict; Expires='';"
     };
