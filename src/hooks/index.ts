@@ -1,12 +1,12 @@
 import * as cookie from 'cookie';
-import { get_user } from '../routes/api/user';
+import { checkToken } from '../routes/api/user';
 import { get } from '../routes/api/config';
 import { getConstants } from '../routes/api/constants';
 
 /** @type {import('@sveltejs/kit').GetContext} */
 export async function getContext({ headers }) {
   const cookies = cookie.parse(headers.cookie || '');
-  const user = await get_user( cookies['ke_web_app'] );
+  const user = await checkToken( cookies['ke_web_app'] );
 
   return {
     context: {

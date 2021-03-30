@@ -26,10 +26,10 @@
 		"svelte-preprocess": "^4.0.0",
 		"tslib": "^2.0.0",
 		"typescript": "^4.0.0",
-		"vite": "^2.1.0"
+		"vite": "^2.1.0",
+    "better-sqlite3": "^7.1.2"
 	},
 	"dependencies": {
-		"better-sqlite3": "^7.1.2",
 		"typescript": "^4.1.5",
 		"vite": "^2.1.2"
 	},
