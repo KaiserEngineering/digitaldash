@@ -1,9 +1,6 @@
 <script>
   import { session } from "$app/stores";
-  import pkg from 'lodash';
   import Slider from "$lib/Slider.svelte";
-
-  const {_} = pkg;
 
   let KE_PIDS = $session.constants.KE_PID;
   $: views = $session.configuration.views;
@@ -17,10 +14,8 @@
         body   : JSON.stringify({id: id})
     }).then(d => d.json())
     .then(d => {
-      if ( !_.isEqual( views, d.views )) {
-        views = d.views.views;
-        $session.configuration.views = d.views.views;
-      }
+      views = d.views.views;
+      $session.configuration.views = d.views.views;
       $session.actions = [{
         id    : $session.count,
         msg   : d.message,
