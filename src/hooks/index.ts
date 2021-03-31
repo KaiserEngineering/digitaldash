@@ -22,7 +22,7 @@ export function getSession({ context }) {
   context = context.context;
 
   return {
-    user: context.user && context.user && {
+    user: context.user && {
       username: context.user.Username
     },
     actions       : [],
