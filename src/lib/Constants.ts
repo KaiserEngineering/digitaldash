@@ -6,7 +6,7 @@ const env = process.env;
 const constants_path: String = env.KEGUIHome;
 let constantsCache: any;
 
-export async function getConstants() {
+export async function GetConstants() {
     if ( constantsCache ) {
       return constantsCache;
     }

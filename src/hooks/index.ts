@@ -1,7 +1,7 @@
 import * as cookie from 'cookie';
 import { checkToken } from '../routes/api/user';
-import { get } from '../routes/api/config';
-import { getConstants } from '../routes/api/constants';
+import { ReadConfig } from '$lib/Config';
+import { GetConstants } from '$lib/Constants';
 
 /** @type {import('@sveltejs/kit').GetContext} */
 export async function getContext({ headers }) {
@@ -11,8 +11,8 @@ export async function getContext({ headers }) {
   return {
     context: {
       user: user,
-      configuration: await get(),
-      constants    : await getConstants()
+      configuration: ReadConfig(),
+      constants    : await GetConstants()
     },
   }
 };

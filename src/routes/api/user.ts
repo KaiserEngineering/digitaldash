@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { HashPassword, UpdateToken, UpdateUserCredentials, User } from "$lib/user";
+import { HashPassword, UpdateToken, UpdateUserCredentials, User } from "$lib/User";
 
 export function checkToken( sid: String ) {
   let user = User();
