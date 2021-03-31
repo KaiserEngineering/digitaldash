@@ -44,6 +44,7 @@ PID_UNITS = {
     "PID_UNITS_MPH": 0x08,
     "PID_UNITS_GRAMSEC": 0x09,
     "PID_UNITS_DEGREES": 0x0A,
+    "PID_UNITS_VOLTS": 0x0B
 }
 
 PID_UNIT_LABEL = {
@@ -58,6 +59,7 @@ PID_UNIT_LABEL = {
     "PID_UNITS_MPH": "mph",
     "PID_UNITS_GRAMSEC": "g/s",
     "PID_UNITS_DEGREES": "\u00b0",
+    "PID_UNITS_VOLTS": "V"
 }
 
 KE_PID = {
