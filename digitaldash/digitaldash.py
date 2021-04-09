@@ -217,6 +217,15 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     self.current = 0
     self.first_iteration = not hasattr(self, "first_iteration")
 
+    # We need to clear the widgets before rebuilding or else we must face
+    # the segfault monster.
+    if ( hasattr(self.app, 'background') ):
+        self.app.clear_widgets()
+        self.background.clear_widgets()
+        self.alerts.clear_widgets()
+        self.alert_callbacks = []
+        self.dynamic_callbacks = []
+
     (ret, msg) = setup(self, config.views(file=self.configFile))
     if ret:
         self.views, self.containers, self.callbacks = ret
