@@ -80,7 +80,7 @@ KE_PID = {
     },
     "0x010A": {
         "name": "FUEL_PRESSURE",
-        "shortName": "ECT",
+        "shortName": "Fuel",
         "units": {
             "PID_UNITS_KPA": {"Min": 0, "Max": 765, "decimals": "0"},
             "PID_UNITS_PSI": {"Min": 0, "Max": 110, "decimals": "1"},
