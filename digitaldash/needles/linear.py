@@ -12,6 +12,7 @@ class NeedleLinear(Needle, StencilView):
     update = NumericProperty()
     source = StringProperty()
     step = NumericProperty()
+    padding = NumericProperty()
     xOffset = NumericProperty()
     r = NumericProperty()
     g = NumericProperty()
@@ -23,7 +24,8 @@ class NeedleLinear(Needle, StencilView):
         self.setUp(**kwargs)
         (self.r, self.g, self.b, self.a) = (1, 0, 0, 0.7)
         self.type = "Linear"
-        self.xOffset = 0
+        self.padding = 100
+        self.xOffset = self.padding
 
         # We need to bind here so that when the Linear gauge is added
         # to the parent layout and width value changes we update our step.
@@ -39,7 +41,7 @@ class NeedleLinear(Needle, StencilView):
         Args:
           self <digitaldash.needles.linear>
         """
-        self.step = self.width / (abs(self.minValue) + abs(self.maxValue))
+        self.step = (self.width - (self.padding*2)) / (abs(self.minValue) + abs(self.maxValue))
         if self.step == 0:
             self.step = 1.0
 
