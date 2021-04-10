@@ -5,8 +5,8 @@
         # Draw our stencil
         StencilPush
         Rectangle:
-            pos: (self.center_x - self.width / 2 + self.xOffset, self.center_y + 50)
-            size: self.update, 50
+            pos: (self.center_x - self.width / 2 + self.xOffset, self.center_y + 30)
+            size: self.update, 60
 
         StencilUse
         # Now we want to draw our gauge and have it be cropped by the stencil
@@ -19,13 +19,13 @@
         StencilUnUse
         # Redraw our stencil to remove it
         Rectangle:
-            pos: (self.center_x - self.width / 2 + self.xOffset, self.center_y + 50)
-            size: self.update, 50
+            pos: (self.center_x - self.width / 2 + self.xOffset, self.center_y + 30)
+            size: self.update, 60
 
         StencilPop
 
         Color:
             rgba: 1, 1, 1, 1
         Rectangle:
-            pos: (self.update + self.center_x - self.width / 2 + self.xOffset, self.center_y + 50)
-            size: 10, self.height
+            pos: (self.update + self.center_x - self.width / 2 + self.xOffset, self.center_y + 28)
+            size: 10, 64
