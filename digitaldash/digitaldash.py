@@ -219,7 +219,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
 
     # We need to clear the widgets before rebuilding or else we must face
     # the segfault monster.
-    if ( hasattr(self.app, 'background') ):
+    if hasattr(self.app, 'background'):
         self.app.clear_widgets()
         self.background.clear_widgets()
         self.alerts.clear_widgets()
