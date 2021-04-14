@@ -1,18 +1,18 @@
 {
     "labels":
       [{
-        "pos": [300, 18], "font_size": 25, "default": "Max: ",
+        "pos": [300, 25], "font_size": 22, "default": "Max: ",
         "data": 1
       },
       {
-        "pos": [-300, 18], "font_size": 25, "default": "Min: ",
+        "pos": [-300, 25], "font_size": 22, "default": "Min: ",
         "data": 1
       },
       {
-       "pos": [-40, 18], "font_size": 30, "data": 1, "dataIndex" : 1, "default": ""
+       "pos": [-45, 25], "font_size": 25, "data": 1, "dataIndex" : 1, "default": ""
       },
       {
-        "pos": [40, 18], "font_size": 30, "default": "__PID__"
+        "pos": [45, 25], "font_size": 25, "default": "__PID__"
       }
     ]
 }
