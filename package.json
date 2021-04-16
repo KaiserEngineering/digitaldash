@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "svelte-kit dev -p 3000 --host",
 		"build": "svelte-kit build",
-		"start": "svelte-kit start",
+		"start": "svelte-kit start --host",
 		"lint": "prettier --check . && eslint --ignore-path .gitignore .",
 		"format": "prettier --write ."
 	},
