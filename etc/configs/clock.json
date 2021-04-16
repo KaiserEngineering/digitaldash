@@ -6,14 +6,11 @@
             "enabled" : true,
             "default" : 1,
             "background":"bg.jpg",
-            "theme" : "Clock",
             "dynamic": {},
             "alerts": [],
             "gauges": [
             {
-                "module": "KEClock",
-                "path": "/Clock/",
-                "themeConfig": "Clock",
+                "theme": "Clock",
                 "pid": "n/a",
                 "unit" : "PID_UNITS_RPM"
             }]

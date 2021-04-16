@@ -4,15 +4,12 @@
       "name":"alerts config",
       "enabled" : true,
       "default" : 1,
-      "theme" : "Stock",
       "background":"bg.jpg",
       "dynamic": {},
       "alerts": [],
       "gauges": [
         {
-          "module": "Linear",
-          "path": "/Linear/",
-          "themeConfig": "Linear",
+          "theme": "Linear",
           "pid": "0x010C",
           "unit" : "PID_UNITS_RPM"
         }

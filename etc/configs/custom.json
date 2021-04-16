@@ -6,14 +6,11 @@
           "enabled" : true,
           "default" : 1,
           "background":"bg.jpg",
-          "theme" : "Custom",
           "dynamic": {},
           "alerts": [],
           "gauges": [
           {
-              "module": "Custom",
-              "path": "/Custom/",
-              "themeConfig": "Custom",
+              "theme": "Custom",
               "pid": "0x010C",
               "unit" : "PID_UNITS_RPM"
           }]

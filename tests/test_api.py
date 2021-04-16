@@ -18,32 +18,30 @@ from digitaldash.pid import PID
 import pathlib
 
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
+config.setWorkingPath(( working_path ))
 
 pid = PID(pid="0x010C", unit="PID_UNITS_RPM")
 
 
 def test_needle_simple():
     """Basic needle tests"""
-
+    print(config.getThemeConfig( 'Stock' ))
     needles = (
         NeedleRadial(
-            themeConfig=120,
-            degrees=120,
-            path="/Stock/",
+            theme='Stock',
+            **config.getThemeConfig( 'Stock' ),
             pid=pid,
             working_path=working_path,
         ),
         NeedleEllipse(
-            themeConfig=120,
-            degrees=120,
-            path="/Dirt/",
+            theme='Glow',
+            **config.getThemeConfig( 'Glow' ),
             pid=pid,
             working_path=working_path,
         ),
         NeedleLinear(
-            themeConfig=120,
-            degrees=120,
-            path="/Linear/",
+            theme='Linear',
+            **config.getThemeConfig( 'Linear' ),
             pid=pid,
             working_path=working_path,
         ),
@@ -91,7 +89,10 @@ def test_needle_simple():
 def test_needle_min_max():
     # Test that Min and Max is set correctly based on constants.py
     needle = NeedleRadial(
-        themeConfig=120, degrees=120, path="/Stock/", pid=pid, working_path=working_path
+        theme='Stock',
+        **config.getThemeConfig( 'Stock' ),
+        pid=pid,
+        working_path=working_path
     )
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Min"] == needle.minValue
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Max"] == needle.maxValue

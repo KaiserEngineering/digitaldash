@@ -2,7 +2,6 @@
     "views" : {
       "0" : {
         "name":"single config",
-        "theme": "Dirt",
         "enabled" : true,
         "default" : 1,
         "background":"bg.jpg",
@@ -10,9 +9,7 @@
         "alerts": [],
         "gauges": [
             {
-                "module": "Ellipse",
-                "path": "/Dirt/",
-                "themeConfig": "120",
+                "theme": "Glow",
                 "pid": "0x010C",
                 "unit" : "PID_UNITS_RPM"
             }

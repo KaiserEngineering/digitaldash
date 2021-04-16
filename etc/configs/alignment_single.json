@@ -10,9 +10,7 @@
       "alerts": [],
       "gauges": [
         {
-            "module": "Radial",
-            "path": "/Stock/",
-            "themeConfig": "120",
+            "theme": "Stock",
             "pid": "0x010C",
             "unit" : "PID_UNITS_RPM"
           }
@@ -21,7 +19,6 @@
     "1": {
         "name":"Don't see me",
         "enabled" : false,
-        "theme" : "Glow",
         "background":"bg.jpg",
         "dynamic": {
             "enabled": true,
@@ -34,9 +31,7 @@
         "alerts": [],
         "gauges": [
           {
-              "module": "Radial",
-              "path": "/Glow/",
-              "themeConfig": "120",
+              "theme": "Glow",
               "pid": "0x010C",
               "unit" : "PID_UNITS_RPM"
             }

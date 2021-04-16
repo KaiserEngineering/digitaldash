@@ -9,7 +9,7 @@ from etc import config
 import pathlib
 
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
-
+config.setWorkingPath(( working_path ))
 
 class Application:
     """Class for replacing 'self' from main.py"""

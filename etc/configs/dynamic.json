@@ -4,7 +4,6 @@
       "name":"dynamic view 1",
       "enabled" : true,
       "default" : 1,
-      "theme" : "Stock",
       "background":"bg.jpg",
         "dynamic": {
           "enabled": false,
@@ -18,9 +17,7 @@
         ],
       "gauges": [
           {
-              "module": "Radial",
-              "path": "/Stock/",
-              "themeConfig": "120",
+              "theme": "Stock",
               "pid": "0x010C",
               "unit" : "PID_UNITS_RPM"
           }
@@ -30,7 +27,6 @@
       "name":"dynamic view 2",
       "enabled" : true,
       "default" : 0,
-      "theme" : "Stock",
       "background":"bg.jpg",
         "dynamic": {
           "enabled": false,
@@ -44,9 +40,7 @@
         ],
       "gauges": [
           {
-              "module": "Radial",
-              "path": "/Stock/",
-              "themeConfig": "120",
+              "theme": "Stock",
               "pid": "0x220461",
               "unit" : "PID_UNITS_CELCIUS"
           }
