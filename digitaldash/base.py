@@ -35,17 +35,13 @@ class Base:
         args = {}
         notError = ARGS["theme"] != "Error"
 
-        args["path"] = ARGS["path"]
-
         # Import theme specifc Config
-        themeConfig = config.getThemeConfig(
-            ARGS["module"] + "/" + str(ARGS["themeConfig"])
-        )
+        themeConfig = config.getThemeConfig( ARGS['theme'] )
         args["themeConfig"] = {**ARGS, **themeConfig}
 
         self.needle = None
         if notError:
-            self.needle = globals()[ARGS["module"]](**ARGS, **themeConfig)
+            self.needle = globals()[themeConfig["module"]](**ARGS, **themeConfig)
             (self.needle.sizex, self.needle.sizey) = (512, 512)
             self.needle.pid = ARGS["pid"]
             # Adding widgets that get updated with data

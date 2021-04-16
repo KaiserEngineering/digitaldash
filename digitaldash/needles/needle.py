@@ -46,7 +46,7 @@ class Needle:
 
         pid = args["pid"]
         (self.source, self.degrees, self.unit, self.minValue, self.maxValue) = (
-            workingPath + "/static/imgs" + args["path"] + "needle.png",
+            workingPath + "/themes/" + args['theme'] + "/needle.png",
             float(args.get("degrees", 0)),
             pid.unit,
             pid.range["Min"],

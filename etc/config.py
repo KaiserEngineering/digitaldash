@@ -57,7 +57,7 @@ def getThemeConfig(theme):
     jsonData = {}
 
     try:
-        with open(WORKINGPATH + "/etc/themes/" + theme + ".json") as dataFile:
+        with open(WORKINGPATH + "/themes/"+theme+"/config.json") as dataFile:
             jsonData = json.load(dataFile)
 
             dataFile.close()
@@ -74,7 +74,6 @@ def validateConfig(config):
         "top": {
             "name": str,
             "enabled": bool,
-            "theme": str,
             "background": str,
             "dynamic": dict,
             "alerts": list,
@@ -89,11 +88,9 @@ def validateConfig(config):
             "message": str,
         },
         "gauges": {
-            "themeConfig": str,
+            "theme": str,
             "pid": str,
-            "unit": str,
-            "module": str,
-            "path": str,
+            "unit": str
         },
         "dynamic": {
             "enabled": bool,
