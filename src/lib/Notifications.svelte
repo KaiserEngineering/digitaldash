@@ -17,7 +17,7 @@
   import { session } from "$app/stores";
 
   $: {
-    if ( $session.actions.length ) {
+    if ( $session.actions && $session.actions.length ) {
       $session.count = $session.count + 1;
     }
   }
