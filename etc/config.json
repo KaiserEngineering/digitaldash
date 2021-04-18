@@ -4,7 +4,7 @@
       "name": "Some view",
       "enabled": true,
       "default": 1,
-      "background": "banner1.jpg",
+      "background": "bg.jpg",
       "alerts": [],
       "dynamic": {
         "enabled": false,
@@ -17,13 +17,13 @@
       "gauges": [
         {
           "theme": "Stock",
-          "unit" : "PID_UNITS_CELCIUS",
-          "pid"  : "0x0105"
+          "unit": "PID_UNITS_CELCIUS",
+          "pid": "0x0105"
         },
         {
           "theme": "Stock",
-          "unit": "PID_UNITS_CELCIUS",
-          "pid": "0x010F"
+          "unit": "PID_UNITS_KPA",
+          "pid": "0x010B"
         },
         {
           "theme": "Stock",
