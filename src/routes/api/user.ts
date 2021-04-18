@@ -23,14 +23,16 @@ export function post( request: { body: string; } ) {
   let res = {
     "message"  : "Login failed",
     "ret"      : 0,
-    "username" : ""
+    "user"     : { username: "" }
   };
 
   let headers = {};
   if ( user.username.toLowerCase() == attempt.Username.toLowerCase() && user.password == HashPassword(attempt.Password) ) {
     res.ret      = 1;
     res.message  = "Success";
-    res.username = attempt.Username;
+    res.user = {
+      username: user.Username
+    }
 
     // Can we make our seed actually useful?
     let token = jwt.sign({username: user.username}, 'ke-webapp');

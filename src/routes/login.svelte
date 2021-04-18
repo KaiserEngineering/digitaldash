@@ -18,7 +18,7 @@
       .then(d => d.json())
       .then(d => {
         if ( d.ret ) {
-          $session.User = d.user;
+          $session.user = d.user;
           goto( '/' );
         }
         // Only add notification for failed login
