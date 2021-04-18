@@ -16,17 +16,17 @@
       },
       "gauges": [
         {
-          "theme": "Stock",
+          "theme": "Stock ST",
           "unit": "PID_UNITS_CELCIUS",
           "pid": "0x0105"
         },
         {
-          "theme": "Stock",
+          "theme": "Stock ST",
           "unit": "PID_UNITS_KPA",
           "pid": "0x010B"
         },
         {
-          "theme": "Stock",
+          "theme": "Stock ST",
           "unit": "PID_UNITS_CELCIUS",
           "pid": "0x015C"
         }

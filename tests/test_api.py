@@ -25,11 +25,11 @@ pid = PID(pid="0x010C", unit="PID_UNITS_RPM")
 
 def test_needle_simple():
     """Basic needle tests"""
-    print(config.getThemeConfig( 'Stock' ))
+    print(config.getThemeConfig( 'Stock ST' ))
     needles = (
         NeedleRadial(
-            theme='Stock',
-            **config.getThemeConfig( 'Stock' ),
+            theme='Stock ST',
+            **config.getThemeConfig( 'Stock ST' ),
             pid=pid,
             working_path=working_path,
         ),
@@ -89,8 +89,8 @@ def test_needle_simple():
 def test_needle_min_max():
     # Test that Min and Max is set correctly based on constants.py
     needle = NeedleRadial(
-        theme='Stock',
-        **config.getThemeConfig( 'Stock' ),
+        theme='Stock ST',
+        **config.getThemeConfig( 'Stock ST' ),
         pid=pid,
         working_path=working_path
     )
