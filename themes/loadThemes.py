@@ -4,11 +4,13 @@ import pathlib
 
 WORKING_PATH = str(pathlib.Path(__file__).parent.absolute())
 
-themes = {}
+themes = []
 
-dirlist = [item for item in os.listdir(WORKING_PATH.rstrip()) if os.path.isdir(os.path.join(WORKING_PATH.rstrip(), item))]
-for folder in dirlist:
-    themes[folder] = WORKING_PATH.rstrip() + '\\' + folder
+for folder in os.listdir( WORKING_PATH ):
+    if os.path.isdir(os.path.join( WORKING_PATH, folder )):
+        if folder == "Error" or folder == "Clock":
+          continue
+        themes.append( folder )
 
-with open('themes.json', 'w') as outfile:
+with open(WORKING_PATH+'/themes.json', 'w') as outfile:
     json.dump(themes, outfile, indent=4)
