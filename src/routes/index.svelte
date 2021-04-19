@@ -46,8 +46,8 @@
           <div class="row card-img-overlay">
 
             <div class="col-6 text-left">
-              <img class="image-overlay" src="images/{views[id].theme}/needle.png">
-              <img class="image-overlay" src="images/{views[id].theme}/gauge.png">
+              <img class="image-overlay" src="images/{views[id].gauges[0].theme}/needle.png">
+              <img class="image-overlay" src="images/{views[id].gauges[0].theme}/gauge.png">
             </div>
 
             <div class="col-6 d-flex flex-column justify-content-center">

@@ -28,10 +28,8 @@ export interface Dynamic {
 }
 
 export interface Gauge {
-  module:      string;
-  themeConfig: string;
+  theme:       string;
   unit:        string;
-  path:        string;
   pid:         string;
 }
 

@@ -16,16 +16,16 @@
   const KE_PID     = $session.constants.KE_PID;
   const UNIT_LABEL = $session.constants.PID_UNIT_LABEL;
   const pids       = Object.keys( KE_PID );
+  const themes     = $session.constants.themes;
+  let theme        = view.gauges[0].theme;
 
   function normalizeGauges() {
     if ( view ) {
       // Ensure we always have 3 entries in our array
       while ( view.gauges.length != 3 ) {
         view.gauges.push({
-          "module"      : "",
-          "themeConfig" : "",
+          "theme"       : "",
           "unit"        : "",
-          "path"        : "",
           "pid"         : ""
         });
       }
@@ -88,27 +88,18 @@
   }
 
   function handleSubmit(event) {
-    // Here we need to sanitize our input :/
+    // We need a seperate array to account for empty gauges
     let gauges = [];
-    view.gauges.forEach( (gauge, i) => {
-      if ( !gauge.pid || !gauge.unit ) {
-        return;
-      }
-      else {
-        gauges.push({
-          "module"      : "Radial",
-          "themeConfig" : "120",
-          "unit"        : gauge.unit,
-          "path"        : "/"+view.theme+"/",
-          "pid"         : gauge.pid
-        });
+    view.gauges.forEach((gauge, i) => {
+      // Slip if we don't have a value for PID
+      if ( gauge.pid ) {
+          gauge.theme = theme;
+          gauges.push(gauge);
       }
     });
-
-    // We don't want to mutate view here as we do some gauge [] fanagling
-    let temp_view           = view;
-    temp_view.gauges        = gauges;
-    configuration.views[id] = temp_view;
+    let tempView = view;
+    tempView.gauges = gauges;
+    configuration.views[id] = tempView;
 
     fetch("/api/config", {
         method : "POST",
@@ -117,7 +108,6 @@
       .then(d => d.json())
       .then(d => {
         $session.configuration = d.config;
-        normalizeGauges();
 
         $session.actions = [{
           id    : $session.count,
@@ -180,9 +170,8 @@
 
             <div class="col-6">
               <label for="theme">Theme</label>
-              <select bind:value={view.theme} name="theme" class="form-control d-block w-100" id="theme" required>
-                <option value="">-</option>
-                {#each ['Stock'] as theme}
+              <select bind:value={theme} name="theme" class="form-control d-block w-100" id="theme" required>
+                {#each themes as theme}
                 <option value={theme}>{theme}</option>
                 {/each}
               </select>

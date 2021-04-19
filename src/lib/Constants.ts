@@ -1,10 +1,15 @@
 import { exec } from 'child_process';
 import util from 'util';
 const execute = util.promisify(exec);
+import fs from 'fs';
 
 const env = process.env;
 const constants_path: String = env.KEGUIHome;
 let constantsCache: any;
+
+function ReadThemes() {
+  return JSON.parse( fs.readFileSync(constants_path+'/themes/themes.json').toString() );
+}
 
 export async function GetConstants() {
     if ( constantsCache ) {
@@ -14,10 +19,11 @@ export async function GetConstants() {
       const { stdout, stderr } = await execute( `python3 ${constants_path}/static/constants.py`);
       if ( stderr ) {
         console.error( "Could not read constants.py" );
-        return {};
+        return {themes: ReadThemes()};
       }
       else {
         constantsCache = JSON.parse( stdout );
+        constantsCache.themes = ReadThemes();
         return constantsCache;
       }
     }
