@@ -17,7 +17,22 @@
   const UNIT_LABEL = $session.constants.PID_UNIT_LABEL;
   const pids       = Object.keys( KE_PID );
   const themes     = $session.constants.themes;
-  let theme        = view.gauges[0].theme;
+  let theme;
+  if ( view ) {
+    let theme = view.gauges[0].theme
+  }
+  // Defining a new view?
+  else {
+    view = {
+      "name": "",
+      "enabled": true,
+      "default": 0,
+      "background": "",
+      "alerts": [],
+      "dynamic": {},
+      "gauges": []
+    }
+  }
 
   function normalizeGauges() {
     if ( view ) {

@@ -5,23 +5,48 @@
   let KE_PIDS = $session.constants.KE_PID;
   $: views = $session.configuration.views;
 
+  $: {
+    if ( views && Object.keys( views ).length < 2 ) {
+      views[1] = {
+        "name": "Default",
+        "enabled": false,
+        "default": 0,
+        "background": "bg.jpg",
+        "alerts": [],
+        "dynamic": {},
+        "gauges": []
+      };
+    }
+  };
+
   function toggleEnabled( id ) {
-    fetch("./api/config", {
-        method : "PUT",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body   : JSON.stringify({id: id})
-    }).then(d => d.json())
-    .then(d => {
-      views = d.views.views;
-      $session.configuration.views = d.views.views;
+    if ( views[id].gauges[0] ) {
+      fetch("./api/config", {
+          method : "PUT",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body   : JSON.stringify({id: id})
+      }).then(d => d.json())
+      .then(d => {
+        views = d.views.views;
+        $session.configuration.views = d.views.views;
+        $session.actions = [{
+          id    : $session.count,
+          msg   : d.message,
+          theme : d.ret ? 'alert-info' : 'alert-warning',
+        }, ...$session.actions];
+      });
+      return false;
+    }
+    else {
       $session.actions = [{
         id    : $session.count,
-        msg   : d.message,
-        theme : d.ret ? 'alert-info' : 'alert-warning',
+        msg   : "Set-up this view to enable it!",
+        theme : 'alert-info',
       }, ...$session.actions];
-    });
+      return true;
+    }
   }
 </script>
 
@@ -46,8 +71,10 @@
           <div class="row card-img-overlay">
 
             <div class="col-6 text-left">
-              <img class="image-overlay" src="images/{views[id].gauges[0].theme}/needle.png">
-              <img class="image-overlay" src="images/{views[id].gauges[0].theme}/gauge.png">
+              {#if views[id].gauges[0]}
+                <img class="image-overlay" src="images/{views[id].gauges[0].theme}/needle.png">
+                <img class="image-overlay" src="images/{views[id].gauges[0].theme}/gauge.png">
+              {/if}
             </div>
 
             <div class="col-6 d-flex flex-column justify-content-center">

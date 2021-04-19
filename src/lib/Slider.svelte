@@ -5,7 +5,7 @@
 </script>
 
 <label class="switch">
-  <input on:click="{() => {callback(callbackArgs)}}" bind:checked={checked} type="checkbox">
+  <input on:click="{() => {checked=callback(callbackArgs)}}" bind:checked={checked} type="checkbox">
   <span class="slider round"></span>
 </label>
 
