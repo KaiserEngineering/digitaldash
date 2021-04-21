@@ -4,13 +4,13 @@
       "name":"single config",
       "enabled" : true,
       "default" : 1,
-      "theme" : "Stock",
+      "theme" : "Stock ST",
       "background":"alignment.png",
       "dynamic": {},
       "alerts": [],
       "gauges": [
         {
-            "theme": "Stock",
+            "theme": "Stock ST",
             "pid": "0x010C",
             "unit" : "PID_UNITS_RPM"
           }

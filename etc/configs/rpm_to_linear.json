@@ -16,17 +16,17 @@
         "alerts": [],
         "gauges" : [
             {
-                "theme": "Stock",
+                "theme": "Stock ST",
                 "pid": "0x010C",
                 "unit" : "PID_UNITS_RPM"
             },
             {
-              "theme": "Stock",
+              "theme": "Stock ST",
                 "pid": "0x010F",
                 "unit" : "PID_UNITS_FAHRENHEIT"
             },
             {
-                "theme": "Stock",
+                "theme": "Stock ST",
                 "pid": "0x010B",
                 "unit" : "PID_UNITS_PSI"
              }

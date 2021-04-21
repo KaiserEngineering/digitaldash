@@ -26,7 +26,7 @@
           ],
         "gauges": [
             {
-                "theme": "Stock",
+                "theme": "Stock ST",
                 "pid": "0x010C",
                 "unit" : "PID_UNITS_RPM"
             }
@@ -50,7 +50,7 @@
         ],
       "gauges": [
           {
-              "theme": "Stock",
+              "theme": "Stock ST",
               "pid": "0x010C",
               "unit" : "PID_UNITS_RPM"
           }
