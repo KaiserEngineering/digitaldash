@@ -14,6 +14,8 @@ from static.constants import KE_PID
 from kivy.uix.anchorlayout import AnchorLayout
 from digitaldash.digitaldash import buildFromConfig
 from digitaldash.pid import PID
+from kivy.clock import mainthread
+
 
 import pathlib
 
@@ -21,7 +23,6 @@ working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 config.setWorkingPath(( working_path ))
 
 pid = PID(pid="0x010C", unit="PID_UNITS_RPM")
-
 
 def test_needle_simple():
     """Basic needle tests"""
@@ -34,8 +35,8 @@ def test_needle_simple():
             working_path=working_path,
         ),
         NeedleEllipse(
-            theme='Glow',
-            **config.getThemeConfig( 'Glow' ),
+            theme='Dirt',
+            **config.getThemeConfig( 'Dirt' ),
             pid=pid,
             working_path=working_path,
         ),
@@ -182,7 +183,7 @@ class Application:
     def __init__(self):
         self.background_source = "woof"
 
-
+@mainthread
 def test_build():
     """Test build process"""
     config.setWorkingPath(working_path)
@@ -198,8 +199,8 @@ def test_build():
     self.data_source = None
     self.working_path = str(pathlib.Path(__file__).parent.absolute())
 
-    (anchorLayout, msg) = buildFromConfig(self)
-    background = anchorLayout.children[0]
+    buildFromConfig(self)
+    background = self.app.children[0]
 
     container = background.children[1].children
     assert len(container) == 3

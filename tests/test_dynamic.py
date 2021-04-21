@@ -5,6 +5,7 @@ from kivy.uix.anchorlayout import AnchorLayout
 import digitaldash.test as KETester
 from digitaldash.digitaldash import buildFromConfig
 from etc import config
+from kivy.clock import mainthread
 
 import pathlib
 
@@ -22,6 +23,7 @@ def loopy(self):
     pass
 
 
+@mainthread
 def test_pid_byte_code_caching():
     """Ensure our byte code string is always updated on dynamic change"""
 
@@ -36,8 +38,8 @@ def test_pid_byte_code_caching():
     self.data_source = t
     self.working_path = str(pathlib.Path(__file__).parent.absolute())
 
-    (anchorLayout, msg) = buildFromConfig(self)
-    background = anchorLayout.children[0]
+    buildFromConfig(self)
+    background = self.app.children[0]
 
     oldByteCode = self.pid_byte_code
     for dynamic in self.dynamic_callbacks:
