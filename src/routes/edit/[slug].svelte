@@ -37,7 +37,7 @@
   function normalizeGauges() {
     if ( view ) {
       // Ensure we always have 3 entries in our array
-      while ( view.gauges.length != 3 ) {
+      while ( view.gauges.length < 3 ) {
         view.gauges.push({
           "theme"       : "",
           "unit"        : "",
