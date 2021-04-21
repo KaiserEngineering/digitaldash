@@ -18,7 +18,7 @@
   const pids       = Object.keys( KE_PID );
   const themes     = $session.constants.themes;
   let theme;
-  if ( view ) {
+  if ( view && view.gauges.length > 0 ) {
     let theme = view.gauges[0].theme
   }
   // Defining a new view?
@@ -34,19 +34,22 @@
     }
   }
 
-  function normalizeGauges() {
-    if ( view ) {
+  function normalizeGauges(config=undefined) {
+    let tempView = config ? config : view;
+
+    if ( tempView ) {
       // Ensure we always have 3 entries in our array
-      while ( view.gauges.length < 3 ) {
-        view.gauges.push({
+      while ( tempView.gauges.length < 3 ) {
+        tempView.gauges.push({
           "theme"       : "",
           "unit"        : "",
           "pid"         : ""
         });
       }
     }
+    return tempView;
   }
-  normalizeGauges();
+  view = normalizeGauges();
 
   function pidChange( node ) {
     function getUnits( node ) {
@@ -112,9 +115,14 @@
           gauges.push(gauge);
       }
     });
+
     let tempView = view;
     tempView.gauges = gauges;
     configuration.views[id] = tempView;
+
+    if ( configuration.views[id].dynamic && !configuration.views[id].pid ) {
+       configuration.views[id].dynamic = {};
+    }
 
     fetch("/api/config", {
         method : "POST",
