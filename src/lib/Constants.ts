@@ -6,9 +6,15 @@ import fs from 'fs';
 const env = process.env;
 const constants_path: String = env.KEGUIHome;
 let constantsCache: any;
+let themesCache: any;
 
 function ReadThemes() {
-  return JSON.parse( fs.readFileSync(constants_path+'/themes/themes.json').toString() );
+  if ( themesCache ) {
+    return themesCache;
+  }
+  else {
+    return JSON.parse( fs.readFileSync(constants_path+'/themes/themes.json').toString() );
+  }
 }
 
 export async function GetConstants() {
@@ -28,3 +34,5 @@ export async function GetConstants() {
       }
     }
 }
+
+constantsCache = GetConstants();

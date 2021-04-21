@@ -33,11 +33,24 @@ export interface Gauge {
   pid:         string;
 }
 
-export function ReadConfig() {
-  return JSON.parse( fs.readFileSync(config_path+'/etc/config.json').toString() );
+let configCache: Config;
+
+// Force update by passing true
+export function ReadConfig(Force: boolean = false) {
+  if ( !Force && configCache ) {
+    return configCache;
+  }
+  else {
+    return JSON.parse( fs.readFileSync(config_path+'/etc/config.json').toString() );
+  }
 }
 
 export function UpdateConfig( Config: Config ): Config {
   fs.writeFileSync( `${config_path}/etc/config.json`, JSON.stringify( Config, null, 2 ) );
-  return ReadConfig();
+
+  configCache = ReadConfig(true);
+
+  return configCache;
 }
+
+configCache = ReadConfig();
