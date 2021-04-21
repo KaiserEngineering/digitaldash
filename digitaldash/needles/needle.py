@@ -1,6 +1,6 @@
 """Main needle base class"""
 from digitaldash.massager import smooth
-
+from kivy.clock import mainthread
 
 class Needle:
     """
@@ -54,6 +54,7 @@ class Needle:
         )
         self.setStep()
 
+    @mainthread
     def setData(self, value=0) -> None:
         """
         Abstract setData method most commonly used.

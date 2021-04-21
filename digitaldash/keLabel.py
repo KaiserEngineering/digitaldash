@@ -3,6 +3,7 @@ from kivy.uix.label import Label
 from kivy.logger import Logger
 from static.constants import KE_PID
 from static.constants import PID_UNIT_LABEL
+from kivy.clock import mainthread
 
 # pylint: disable=too-many-instance-attributes
 
@@ -81,6 +82,7 @@ class KELabel(Label):
         else:
             self.pos_hint = {"x": posHints[0] / 100, "y": posHints[1] / 100}
 
+    @mainthread
     def setData(self, value="") -> None:
         """
         Send data to Label widget.

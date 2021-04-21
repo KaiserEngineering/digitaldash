@@ -3,7 +3,7 @@ from typing import Tuple
 from kivy.logger import Logger
 from digitaldash.pid import PID
 from digitaldash.base import convertOpToBytes
-
+from kivy.clock import mainthread
 
 class Dynamic:
     """
@@ -69,6 +69,7 @@ class Dynamic:
 
         return (1, "New dynamic object successfully created")
 
+    @mainthread
     def change(self, app) -> bool:
         """
         Perform view change
