@@ -89,7 +89,13 @@
         unitsSelect.options[i] = new Option(label, unit, false, false);
       });
       // Actually set the select value to the first unit
-      unitsSelect.value = unitsSelect.options[0].value;
+      let currentValue = KE_PID[pid].units[ view.gauges[index].unit ];
+      if ( currentValue ) {
+        unitsSelect.value = view.gauges[index].unit;
+      }
+      else {
+        unitsSelect.value = unitsSelect.options[0].value;
+      }
       unitsSelect.focus();
       unitsSelect.blur();
     }
