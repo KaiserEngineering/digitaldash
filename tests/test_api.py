@@ -24,9 +24,9 @@ config.setWorkingPath(( working_path ))
 
 pid = PID(pid="0x010C", unit="PID_UNITS_RPM")
 
+@mainthread
 def test_needle_simple():
     """Basic needle tests"""
-    print(config.getThemeConfig( 'Stock ST' ))
     needles = (
         NeedleRadial(
             theme='Stock ST',
@@ -86,7 +86,7 @@ def test_needle_simple():
             + " component sets the correct rotational value with smoothing (not true value)"
         )
 
-
+@mainthread
 def test_needle_min_max():
     # Test that Min and Max is set correctly based on constants.py
     needle = NeedleRadial(
@@ -98,7 +98,7 @@ def test_needle_min_max():
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Min"] == needle.minValue
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Max"] == needle.maxValue
 
-
+@mainthread
 def test_label_simple():
     """Basic label tests"""
     label = KELabel(
@@ -163,6 +163,7 @@ def test_label_simple():
 pid2 = PID(pid="0x010B", unit="PID_UNITS_KPA")
 
 
+@mainthread
 def test_alert_simple():
     """Basic alerts tests"""
     alert = Alert(
