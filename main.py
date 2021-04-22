@@ -172,11 +172,6 @@ class GUI(App):
 
     def loop(self, dt):
         if self.first_iteration:
-            (ret, msg) = dataSource.updateRequirements(
-                self, self.pid_byte_code, self.pids
-            )
-            if not ret:
-                Logger.error(msg)
             self.first_iteration = False
 
         (my_callback, priority, data) = (

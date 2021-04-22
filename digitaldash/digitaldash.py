@@ -256,7 +256,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         self.pid_byte_code,
     ) = self.views[0].values()
 
-    if not self.first_iteration and dataSource and dataSource is not Test:
+    if self.first_iteration and dataSource and dataSource is not Test:
         # Initialize our hardware set-up and verify everything is peachy
         (ret, msg) = dataSource.initialize_hardware()
 
@@ -280,6 +280,11 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         else:
             Logger.info(msg)
         self.data_source = dataSource
+    elif ( dataSource ):
+        # If we have a datasource we should update PIDs
+        (ret, msg) = dataSource.updateRequirements( self, self.pid_byte_code, self.pids )
+        if not ret:
+            Logger.error(msg)
 
     self.app.add_widget(self.background)
     self.background.add_widget(self.containers[0])
