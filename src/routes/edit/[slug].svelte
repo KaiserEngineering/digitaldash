@@ -9,7 +9,6 @@
   import Slider from "$lib/Slider.svelte";
 
   export let id;
-
   let configuration = $session.configuration;
 
   let view         = configuration.views[id];
@@ -19,7 +18,7 @@
   const themes     = $session.constants.themes;
   let theme;
   if ( view && view.gauges.length > 0 ) {
-    let theme = view.gauges[0].theme
+    theme = view.gauges[0].theme
   }
   // Defining a new view?
   else {
@@ -201,7 +200,7 @@
               <label for="theme">Theme</label>
               <select bind:value={theme} name="theme" class="form-control d-block w-100" id="theme" required>
                 {#each themes as theme}
-                <option value={theme}>{theme}</option>
+                  <option value={theme}>{theme}</option>
                 {/each}
               </select>
             </div>
