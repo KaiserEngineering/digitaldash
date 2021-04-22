@@ -9,7 +9,6 @@
   import Slider from "$lib/Slider.svelte";
 
   export let id;
-
   let configuration = $session.configuration;
 
   let view         = configuration.views[id];
@@ -18,8 +17,8 @@
   const pids       = Object.keys( KE_PID );
   const themes     = $session.constants.themes;
   let theme;
-  if ( view ) {
-    let theme = view.gauges[0].theme
+  if ( view && view.gauges.length > 0 ) {
+    theme = view.gauges[0].theme
   }
   // Defining a new view?
   else {
@@ -34,19 +33,22 @@
     }
   }
 
-  function normalizeGauges() {
-    if ( view ) {
+  function normalizeGauges(config=undefined) {
+    let tempView = config ? config : view;
+
+    if ( tempView ) {
       // Ensure we always have 3 entries in our array
-      while ( view.gauges.length != 3 ) {
-        view.gauges.push({
+      while ( tempView.gauges.length < 3 ) {
+        tempView.gauges.push({
           "theme"       : "",
           "unit"        : "",
           "pid"         : ""
         });
       }
     }
+    return tempView;
   }
-  normalizeGauges();
+  view = normalizeGauges();
 
   function pidChange( node ) {
     function getUnits( node ) {
@@ -86,7 +88,13 @@
         unitsSelect.options[i] = new Option(label, unit, false, false);
       });
       // Actually set the select value to the first unit
-      unitsSelect.value = unitsSelect.options[0].value;
+      let currentValue = KE_PID[pid].units[ view.gauges[index].unit ];
+      if ( currentValue ) {
+        unitsSelect.value = view.gauges[index].unit;
+      }
+      else {
+        unitsSelect.value = unitsSelect.options[0].value;
+      }
       unitsSelect.focus();
       unitsSelect.blur();
     }
@@ -112,9 +120,14 @@
           gauges.push(gauge);
       }
     });
+
     let tempView = view;
     tempView.gauges = gauges;
     configuration.views[id] = tempView;
+
+    if ( configuration.views[id].dynamic && !configuration.views[id].pid ) {
+       configuration.views[id].dynamic = {};
+    }
 
     fetch("/api/config", {
         method : "POST",
@@ -187,7 +200,7 @@
               <label for="theme">Theme</label>
               <select bind:value={theme} name="theme" class="form-control d-block w-100" id="theme" required>
                 {#each themes as theme}
-                <option value={theme}>{theme}</option>
+                  <option value={theme}>{theme}</option>
                 {/each}
               </select>
             </div>
