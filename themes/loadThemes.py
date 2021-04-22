@@ -1,3 +1,5 @@
+"""Build our JSON file of a list of themes"""
+
 import os
 import json
 import pathlib
@@ -8,8 +10,8 @@ themes = []
 
 for folder in os.listdir( WORKING_PATH ):
     if os.path.isdir(os.path.join( WORKING_PATH, folder )):
-        if folder == "Error" or folder == "Clock":
-          continue
+        if folder in ("Error", "Clock" ):
+            continue
         themes.append( folder )
 
 with open(WORKING_PATH+'/themes.json', 'w') as outfile:

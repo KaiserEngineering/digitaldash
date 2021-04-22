@@ -1,9 +1,9 @@
 """Dynamic class used for changing views"""
 from typing import Tuple
 from kivy.logger import Logger
+from kivy.clock import mainthread
 from digitaldash.pid import PID
 from digitaldash.base import convertOpToBytes
-from kivy.clock import mainthread
 
 class Dynamic:
     """

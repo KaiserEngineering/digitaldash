@@ -1,9 +1,9 @@
 """Wrapper around kivy.uix.label"""
 from kivy.uix.label import Label
 from kivy.logger import Logger
+from kivy.clock import mainthread
 from static.constants import KE_PID
 from static.constants import PID_UNIT_LABEL
-from kivy.clock import mainthread
 
 # pylint: disable=too-many-instance-attributes
 

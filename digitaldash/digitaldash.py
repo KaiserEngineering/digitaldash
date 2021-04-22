@@ -280,9 +280,11 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         else:
             Logger.info(msg)
         self.data_source = dataSource
-    elif ( dataSource ):
+    elif dataSource:
         # If we have a datasource we should update PIDs
-        (ret, msg) = dataSource.updateRequirements( self, self.pid_byte_code, self.pids )
+        (ret, msg) = dataSource.updateRequirements(
+          self, self.pid_byte_code, self.pids
+        )
         if not ret:
             Logger.error(msg)
 
