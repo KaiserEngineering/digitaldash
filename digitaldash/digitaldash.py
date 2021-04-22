@@ -14,6 +14,7 @@ from kivy.properties import StringProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.clock import mainthread
 
 from etc import config
 from digitaldash.base import Base
@@ -209,8 +210,11 @@ def setup(self, layouts):
     return ([views, containers, callbacks], "Successful setup")
 
 
+@mainthread
 def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     """Build all our gauges and widgets from the config file provided to self"""
+    self.success = 0
+    self.status  = ""
 
     # Current is used to track which viewId we are currently displaying.
     # This is important for skipping dynamic checks that we don't need to check.
@@ -219,7 +223,8 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
 
     # We need to clear the widgets before rebuilding or else we must face
     # the segfault monster.
-    if hasattr(self.app, 'background'):
+    if not self.first_iteration:
+        Logger.info( "GUI: Clearing widgets for reload" )
         self.app.clear_widgets()
         self.background.clear_widgets()
         self.alerts.clear_widgets()
@@ -230,7 +235,9 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     if ret:
         self.views, self.containers, self.callbacks = ret
     else:
-        return (ret, msg)
+        self.success = 0
+        self.status = msg
+        return
 
     # Sort our dynamic and alerts callbacks by priority
     self.dynamic_callbacks = sorted(
@@ -249,7 +256,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         self.pid_byte_code,
     ) = self.views[0].values()
 
-    if not self.first_iteration and dataSource and dataSource is not Test:
+    if self.first_iteration and dataSource and dataSource is not Test:
         # Initialize our hardware set-up and verify everything is peachy
         (ret, msg) = dataSource.initialize_hardware()
 
@@ -273,6 +280,13 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         else:
             Logger.info(msg)
         self.data_source = dataSource
+    elif dataSource:
+        # If we have a datasource we should update PIDs
+        (ret, msg) = dataSource.updateRequirements(
+          self, self.pid_byte_code, self.pids
+        )
+        if not ret:
+            Logger.error(msg)
 
     self.app.add_widget(self.background)
     self.background.add_widget(self.containers[0])
@@ -284,4 +298,5 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     if self.data_source:
         self.clock_event = Clock.schedule_interval(self.loop, 0)
 
-    return (self.app, "Successful build")
+    self.success = 1
+    self.status = "Successful build"

@@ -5,7 +5,6 @@
             "enabled" : true,
             "default" : 1,
             "background" : "alignment.png",
-            "theme" : "Stock",
             "alerts" : [
                 {
                     "pid": "0x010C",
@@ -20,24 +19,18 @@
             },
             "gauges" : [
             {
-                "themeConfig" : "120",
+                "theme" : "Stock ST",
                 "pid" : "0x010C",
-                "module" : "Ellipse",
-                "path" : "/Dirt/",
                 "unit" : "PID_UNITS_RPM"
             },
             {
-              "themeConfig" : "120",
+              "theme" : "Stock ST",
               "pid" : "0x010C",
-              "module" : "Radial",
-              "path" : "/Stock_orange/",
               "unit" : "PID_UNITS_RPM"
           },
           {
-            "themeConfig" : "Linear",
+            "theme" : "Linear",
             "pid" : "0x010C",
-            "module" : "Linear",
-            "path" : "/Linear/",
             "unit" : "PID_UNITS_RPM"
         }
         ]}

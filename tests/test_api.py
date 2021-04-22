@@ -14,36 +14,35 @@ from static.constants import KE_PID
 from kivy.uix.anchorlayout import AnchorLayout
 from digitaldash.digitaldash import buildFromConfig
 from digitaldash.pid import PID
+from kivy.clock import mainthread
+
 
 import pathlib
 
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
+config.setWorkingPath(( working_path ))
 
 pid = PID(pid="0x010C", unit="PID_UNITS_RPM")
 
-
+@mainthread
 def test_needle_simple():
     """Basic needle tests"""
-
     needles = (
         NeedleRadial(
-            themeConfig=120,
-            degrees=120,
-            path="/Stock/",
+            theme='Stock ST',
+            **config.getThemeConfig( 'Stock ST' ),
             pid=pid,
             working_path=working_path,
         ),
         NeedleEllipse(
-            themeConfig=120,
-            degrees=120,
-            path="/Dirt/",
+            theme='Dirt',
+            **config.getThemeConfig( 'Dirt' ),
             pid=pid,
             working_path=working_path,
         ),
         NeedleLinear(
-            themeConfig=120,
-            degrees=120,
-            path="/Linear/",
+            theme='Linear',
+            **config.getThemeConfig( 'Linear' ),
             pid=pid,
             working_path=working_path,
         ),
@@ -87,16 +86,19 @@ def test_needle_simple():
             + " component sets the correct rotational value with smoothing (not true value)"
         )
 
-
+@mainthread
 def test_needle_min_max():
     # Test that Min and Max is set correctly based on constants.py
     needle = NeedleRadial(
-        themeConfig=120, degrees=120, path="/Stock/", pid=pid, working_path=working_path
+        theme='Stock ST',
+        **config.getThemeConfig( 'Stock ST' ),
+        pid=pid,
+        working_path=working_path
     )
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Min"] == needle.minValue
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Max"] == needle.maxValue
 
-
+@mainthread
 def test_label_simple():
     """Basic label tests"""
     label = KELabel(
@@ -161,6 +163,7 @@ def test_label_simple():
 pid2 = PID(pid="0x010B", unit="PID_UNITS_KPA")
 
 
+@mainthread
 def test_alert_simple():
     """Basic alerts tests"""
     alert = Alert(
@@ -181,7 +184,7 @@ class Application:
     def __init__(self):
         self.background_source = "woof"
 
-
+@mainthread
 def test_build():
     """Test build process"""
     config.setWorkingPath(working_path)
@@ -197,8 +200,8 @@ def test_build():
     self.data_source = None
     self.working_path = str(pathlib.Path(__file__).parent.absolute())
 
-    (anchorLayout, msg) = buildFromConfig(self)
-    background = anchorLayout.children[0]
+    buildFromConfig(self)
+    background = self.app.children[0]
 
     container = background.children[1].children
     assert len(container) == 3

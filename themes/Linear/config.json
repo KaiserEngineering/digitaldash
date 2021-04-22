@@ -1,4 +1,6 @@
 {
+    "degrees": 120,
+    "module" : "Linear",
     "labels":
       [{
         "pos": [300, 25], "font_size": 22, "default": "Max: ",

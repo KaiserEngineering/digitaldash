@@ -57,12 +57,15 @@ def getThemeConfig(theme):
     jsonData = {}
 
     try:
-        with open(WORKINGPATH + "/etc/themes/" + theme + ".json") as dataFile:
+        with open(WORKINGPATH + "/themes/"+theme+"/config.json") as dataFile:
             jsonData = json.load(dataFile)
 
             dataFile.close()
     except FileNotFoundError:
-        Logger.info("Config: Could not find config file: /etc/themes/%s.json", theme)
+        Logger.info(
+          "Config:\
+          Could not find config file: /%s/themes/%s/config.json", WORKINGPATH, theme
+        )
 
     return jsonData
 
@@ -74,7 +77,6 @@ def validateConfig(config):
         "top": {
             "name": str,
             "enabled": bool,
-            "theme": str,
             "background": str,
             "dynamic": dict,
             "alerts": list,
@@ -89,11 +91,9 @@ def validateConfig(config):
             "message": str,
         },
         "gauges": {
-            "themeConfig": str,
+            "theme": str,
             "pid": str,
-            "unit": str,
-            "module": str,
-            "path": str,
+            "unit": str
         },
         "dynamic": {
             "enabled": bool,

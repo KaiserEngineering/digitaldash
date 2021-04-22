@@ -4,8 +4,7 @@
       "name": "Some view",
       "enabled": true,
       "default": 1,
-      "background": "banner1.jpg",
-      "theme": "Stock",
+      "background": "bg.jpg",
       "alerts": [],
       "dynamic": {
         "enabled": false,
@@ -17,64 +16,19 @@
       },
       "gauges": [
         {
-          "module": "Radial",
-          "themeConfig": "120",
+          "theme": "Stock ST",
           "unit": "PID_UNITS_CELCIUS",
-          "path": "/Stock/",
           "pid": "0x0105"
         },
         {
-          "module": "Radial",
-          "themeConfig": "120",
-          "unit": "PID_UNITS_CELCIUS",
-          "path": "/Stock/",
-          "pid": "0x010F"
-        },
-        {
-          "module": "Radial",
-          "themeConfig": "120",
-          "unit": "PID_UNITS_CELCIUS",
-          "path": "/Stock/",
-          "pid": "0x015C"
-        }
-      ]
-    },
-    "1": {
-      "name": "Second views",
-      "enabled": false,
-      "default": 0,
-      "background": "BlackBackground.png",
-      "theme": "Stock",
-      "alerts": [],
-      "dynamic": {
-        "enabled": true,
-        "pid": "0x010C",
-        "op": ">=",
-        "priority": 2,
-        "value": "5000",
-        "unit": "PID_UNITS_RPM"
-      },
-      "gauges": [
-        {
-          "module": "Radial",
-          "themeConfig": "120",
-          "unit": "PID_UNITS_RPM",
-          "path": "/Stock/",
-          "pid": "0x010C"
-        },
-        {
-          "module": "Radial",
-          "themeConfig": "120",
-          "unit": "PID_UNITS_FAHRENHEIT",
-          "path": "/Stock/",
-          "pid": "0x010F"
-        },
-        {
-          "module": "Radial",
-          "themeConfig": "120",
+          "theme": "Stock ST",
           "unit": "PID_UNITS_KPA",
-          "path": "/Stock/",
           "pid": "0x010B"
+        },
+        {
+          "theme": "Stock ST",
+          "unit": "PID_UNITS_CELCIUS",
+          "pid": "0x015C"
         }
       ]
     }

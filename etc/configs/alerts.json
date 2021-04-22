@@ -4,7 +4,6 @@
         "name":"alerts config",
         "enabled" : true,
         "default" : 1,
-        "theme" : "Stock",
         "background":"bg.jpg",
           "dynamic": {},
           "alerts": [
@@ -27,9 +26,7 @@
           ],
         "gauges": [
             {
-                "module": "Radial",
-                "path": "/Stock/",
-                "themeConfig": "120",
+                "theme": "Stock ST",
                 "pid": "0x010C",
                 "unit" : "PID_UNITS_RPM"
             }
@@ -39,7 +36,6 @@
       "name":"alerts config two",
       "enabled" : true,
       "default" : 0,
-      "theme" : "Stock",
       "background":"bg.jpg",
         "dynamic": {},
         "alerts": [
@@ -54,9 +50,7 @@
         ],
       "gauges": [
           {
-              "module": "Radial",
-              "path": "/Stock/",
-              "themeConfig": "120",
+              "theme": "Stock ST",
               "pid": "0x010C",
               "unit" : "PID_UNITS_RPM"
           }

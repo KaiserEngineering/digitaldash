@@ -7,6 +7,7 @@ import digitaldash.test as KETester
 from digitaldash.needles.needle import Needle
 from digitaldash.massager import smooth
 from static.constants import KE_PID
+from kivy.clock import mainthread
 
 import pathlib
 
@@ -14,8 +15,8 @@ working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
 t = KETester.Test()
 
-
 class Config_TestCase(GraphicUnitTest):
+    @mainthread
     def test_Single(self):
         t.new(config="etc/configs/single.json", data=[[50, 100]])
         t.app.update_values(data={"0x010C": 50})
@@ -40,6 +41,7 @@ class Config_TestCase(GraphicUnitTest):
 
 
 class Alerts_TestCase(GraphicUnitTest):
+    @mainthread
     def test_Single(self):
         t.new(config="etc/configs/alerts.json", csvFile="tests/data/test.csv")
         t.app.working_path = working_path

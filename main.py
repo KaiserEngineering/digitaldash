@@ -38,6 +38,7 @@ from watchdog.observers import Observer
 from kivy.uix.label import Label
 from watchdog.events import PatternMatchingEventHandler
 from typing import NoReturn, List, TypeVar
+from kivy.clock import mainthread
 
 # Rust import
 import libdigitaldash
@@ -91,6 +92,8 @@ class GUI(App):
     array. Only add Objects to the **widgets** array if they are
     to be updated and have the necessary methods.
     """
+    success: str
+    status : str
 
     def new(self, configFile=None, data=None):
         """
@@ -99,6 +102,9 @@ class GUI(App):
         """
         self.configFile = configFile
         self.WORKING_PATH = WORKING_PATH
+
+        self.success = 1
+        self.status  = ''
 
         if data:
             global dataSource
@@ -117,11 +123,12 @@ class GUI(App):
         observer.schedule(MyHandler(self), WORKING_PATH + "/etc/", recursive=True)
         observer.start()
 
-        (ret, msg) = buildFromConfig(self, dataSource)
+        buildFromConfig(self, dataSource)
+
         # If something went wrong in build return a label with the error message:
-        if not ret:
-            return Label(text=msg)
-        Logger.info("GUI: %s", msg)
+        if not self.success:
+            return Label(text=self.status)
+        Logger.info("GUI: %s", self.status)
         return self.app
 
     def check_callback(self: DD, callback, data):
@@ -165,11 +172,6 @@ class GUI(App):
 
     def loop(self, dt):
         if self.first_iteration:
-            (ret, msg) = dataSource.updateRequirements(
-                self, self.pid_byte_code, self.pids
-            )
-            if not ret:
-                Logger.error(msg)
             self.first_iteration = False
 
         (my_callback, priority, data) = (
