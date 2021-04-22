@@ -253,76 +253,7 @@ class Serial:
         """
         global KE_CP_OP_CODES
         Logger.info("GUI: Initializing hardware")
-
-        while self.firmwareVerified != True:
-            Logger.info("GUI: Requesting Firmware Version..")
-            firmware_request = [KE_SOL, 0x03, KE_CP_OP_CODES["KE_FIRMWARE_REQ"]]
-            self.ser.write(firmware_request)
-
-            # Wait for the MCU to receive the request and respond
-            time.sleep(1)
-            data_line = self.ser.readline()
-
-            # Remove the command byte from the payload
-            data_line = data_line[UART_PCKT_DATA_START_POS : len(data_line) - 1]
-            Logger.info("GUI: Firmware Version Received: " + data_line.decode())
-
-            for file_name in os.listdir("../ford-focus-binary"):
-                if fnmatch.fnmatch(file_name, "*.hex"):
-                    try:
-                        # Drop the hex extension
-                        fw = file_name.split(".")
-
-                        # Get the Major, Minor, and Patch
-                        fw = fw[0].split("_")
-
-                        self.systemFirmware[0] = int(fw[0])
-                        self.systemFirmware[1] = int(fw[1])
-                        self.systemFirmware[2] = int(fw[2])
-                        Logger.info(
-                            "File firmware version: "
-                            + fw[0]
-                            + "."
-                            + fw[1]
-                            + "."
-                            + fw[2]
-                        )
-                    except:
-                        Logger.warning("Hex file misaligned")
-            try:
-                fw = data_line.decode()
-                fw = fw.split(".")
-                self.hardwareFirmware[0] = int(fw[0])
-                self.hardwareFirmware[1] = int(fw[1])
-                self.hardwareFirmware[2] = int(fw[2])
-                Logger.info(
-                    "Hardware firmware version: " + fw[0] + "." + fw[1] + "." + fw[2]
-                )
-
-                fwUpdateReq = False
-
-                if self.systemFirmware[0] > self.hardwareFirmware[0]:
-                    fwUpdateReq = True
-                else:
-                    if self.systemFirmware[1] > self.hardwareFirmware[2]:
-                        fwUpdateReq = True
-                    else:
-                        if self.systemFirmware[2] > self.hardwareFirmware[2]:
-                            fwUpdateReq = True
-
-                if fwUpdateReq == False:
-                    Logger.info("Firmware Up To Date")
-                    self.firmwareVerified = True
-                else:
-                    Logger.warning("Firmware Update Required")
-                    command = "sh ../ford-focus-binary/flash.sh"
-                    process = subprocess.Popen(  # nosec
-                        command, shell=True, stdout=subprocess.PIPE  # nosec
-                    )  # nosec
-                    process.wait()
-            except:
-                Logger.warning("Firmware decode misaligned")
-
+        
         return (True, "Hardware: Successfully initiated hardware")
 
     def power_cycle(self):
