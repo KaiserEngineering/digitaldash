@@ -286,7 +286,7 @@
                 </div>
 
                 <div class="col-sm-3 col-12 pl-1 pr-1">
-                  <label class="label" for="alertPriority">Priority <i>(The lower the number the higher the priority)</i></label>
+                  <label class="label" for="alertPriority">Priority <i>(Lower equals higher priority)</i></label>
                   <input required bind:value={alert.priority} class="value form-control" type="number" name="alertPriority"/>
                 </div>
               </div>
@@ -353,7 +353,7 @@
             </div>
 
             <div class="col-sm-3 col-12">
-              <label for="dynamicPriority">Priority <i>(The lower the number the higher the priority)</i></label>
+              <label for="dynamicPriority">Priority <i>(Lower equals higher priority)</i></label>
               <input bind:value={view.dynamic.priority} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicPriority"/>
             </div>
 
