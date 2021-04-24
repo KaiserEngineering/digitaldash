@@ -78,9 +78,37 @@ KE_PID = {
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
+    "0x0106": {
+        "name": "SHORT_TERM_FUEL_TRIM__BANK_1",
+        "shortName": "Short Fuel Trim 1",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": -100, "Max": 99.2, "decimals": "0"},
+        },
+    },
+    "0x0107": {
+        "name": "LONG_TERM_FUEL_TRIM__BANK_1",
+        "shortName": "Long Fuel Trim 1",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": -100, "Max": 99.2, "decimals": "0"},
+        },
+    },
+    "0x0108": {
+        "name": "SHORT_TERM_FUEL_TRIM__BANK_2",
+        "shortName": "Short Fuel Trim 2",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": -100, "Max": 99.2, "decimals": "0"},
+        },
+    },
+    "0x0109": {
+        "name": "LONG_TERM_FUEL_TRIM__BANK_2",
+        "shortName": "Long Fuel Trim 2",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": -100, "Max": 99.2, "decimals": "0"},
+        },
+    },
     "0x010A": {
         "name": "FUEL_PRESSURE",
-        "shortName": "Fuel",
+        "shortName": "Fuel Press",
         "units": {
             "PID_UNITS_KPA": {"Min": 0, "Max": 765, "decimals": "0"},
             "PID_UNITS_PSI": {"Min": 0, "Max": 110, "decimals": "1"},
@@ -124,6 +152,27 @@ KE_PID = {
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
+    "0x0110": {
+        "name": "MASS_AIR_FLOW_SENSOR_AIR_FLOW_RATE",
+        "shortName": "MAF",
+        "units": {
+            "PID_UNITS_GRAMSEC": {"Min": 0, "Max": 655.35, "decimals": "0"},
+        },
+    },
+    "0x0111": {
+        "name": "THROTTLE_POSITION",
+        "shortName": "Throttle",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "0"},
+        },
+    },
+    "0x0114": {
+        "name": "OXYGEN_SENSOR_1_VOLTAGE",
+        "shortName": "O2 Volts",
+        "units": {
+            "PID_UNITS_VOLTS": {"Min": 0, "Max": 1.275, "decimals": "2"},
+        },
+    },
     "0x0133": {
         "name": "ABSOLUTE_BAROMETRIC_PRESSURE",
         "shortName": "Baro",
@@ -157,7 +206,7 @@ KE_PID = {
     },
     "0x220301": {
         "name": "MANIFOLD_ABSOLUTE_PRESSURE_SENSOR_VOLTAGE_1",
-        "shortName": "MAP",
+        "shortName": "MAP(V)",
         "units": {
             "PID_UNITS_VOLTS": {"Min": 0, "Max": 5, "decimals": "2"},
         },
@@ -176,6 +225,20 @@ KE_PID = {
             "PID_UNITS_DEGREES": {"Min": -16, "Max": 16, "decimals": "2"},
         },
     },
+    "0x220316": {
+        "name": "VCT_INTAKE_CAM_SOLENOID_DUTY_CYCLE",
+        "shortName": "VCT Int DC",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "1"},
+        },
+    },
+    "0x220317": {
+        "name": "VCT_EXHAUST_CAM_SOLENOID_DUTY_CYCLE",
+        "shortName": "VCT Exh DC",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "1"},
+        },
+    },
     "0x22F40F": {
         "name": "INTAKE_AIR_TEMPERATURE",
         "shortName": "IAT",
@@ -192,12 +255,34 @@ KE_PID = {
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
+    "0x2203CA": {
+        "name": "MANIFOLD_CHARGE_TEMPERATURE",
+        "shortName": "MCT",
+        "units": {
+            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
+    },
+    "0x2203E8": {
+        "name": "OCTANE_ADJUST_RATIO",
+        "shortName": "OAR",
+        "units": {
+            "PID_UNITS_RATIO": {"Min": -1, "Max": 1, "decimals": "2"},
+        },
+    },
     "0x22057D": {
         "name": "AMBIENT_AIR_TEMPERATURE",
         "shortName": "AAT",
         "units": {
             "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
+    },
+    "0x22F404": {
+        "name": "ENGINE_LOAD_PERCENTAGE",
+        "shortName": "Load",
+        "units": {
+            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "1"},
         },
     },
     "0xDE01C8": {
