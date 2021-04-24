@@ -235,6 +235,7 @@
         <!-- END BASICS -->
 
         <h4>Alerts</h4>
+        <p>Configure custom alerts to appear when a specific parameter threshold is met.</p>
         <hr/>
 
         <div class="alertsContainer">
