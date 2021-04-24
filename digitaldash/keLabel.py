@@ -93,17 +93,20 @@ class KELabel(Label):
             self (<lib.keLabel>): KELabel object
             value (float) : value that label is being updated to
         """
-        value = float(value)
+        try:
+            value = float(value)
 
-        if self.default == "Min: ":
-            if self.minObserved > value:
-                self.minObserved = value
-                self.text = ("{0:.%sf}" % (self.decimals)).format(value)
-        elif self.default == "Max: ":
-            if self.maxObserved < value:
-                self.maxObserved = value
-                self.text = ("{0:.%sf}" % (self.decimals)).format(value)
-        else:
-            self.text = self.default + ("{0:.%sf}" % (self.decimals)).format(value)
-            if self.unitString:
-                self.text = self.text + "[size=15]" + " " + self.unitString + "[/size]"
+            if self.default == "Min: ":
+                if self.minObserved > value:
+                    self.minObserved = value
+                    self.text = ("{0:.%sf}" % (self.decimals)).format(value)
+            elif self.default == "Max: ":
+                if self.maxObserved < value:
+                    self.maxObserved = value
+                    self.text = ("{0:.%sf}" % (self.decimals)).format(value)
+            else:
+                self.text = self.default + ("{0:.%sf}" % (self.decimals)).format(value)
+                if self.unitString:
+                    self.text = self.text + "[size=15]" + " " + self.unitString + "[/size]"
+        except:
+            Logger.error("GUI: keLabel.py is not numeric")

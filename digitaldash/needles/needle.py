@@ -1,6 +1,7 @@
 """Main needle base class"""
 from digitaldash.massager import smooth
 from kivy.clock import mainthread
+from kivy.logger import Logger
 
 class Needle:
     """
@@ -63,13 +64,16 @@ class Needle:
           self (<needle.*>) : One of the needle objects inheriting from digitaldash.needle
           value (float)     : Value to set the needle to
         """
-        value = float(value)
-        self.trueValue = value
+        try:
+            value = float(value)
+            self.trueValue = value
 
-        current = self.update
+            current = self.update
 
-        if value > self.maxValue:
-            value = self.maxValue
-        elif value < self.minValue:
-            value = self.minValue
-        self.update = smooth(old=current, new=value * self.step - self.offset)
+            if value > self.maxValue:
+                value = self.maxValue
+            elif value < self.minValue:
+                value = self.minValue
+            self.update = smooth(old=current, new=value * self.step - self.offset)
+        except:
+            Logger.error("GUI: needle.py is not numeric")
