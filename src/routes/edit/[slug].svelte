@@ -234,6 +234,8 @@
         </div>
         <!-- END BASICS -->
 
+        <br>
+        <br>
         <h4>Alerts</h4>
         <p>Configure custom alerts to appear when a specific parameter threshold is met.</p>
         <hr/>
@@ -301,6 +303,8 @@
         </div>
         <!-- END ALERTS -->
 
+        <br>
+        <br>
         <h4>Dynamic</h4>
         <p>Configure when <i>this</i> view should be enabled.</p>
         <hr/>
