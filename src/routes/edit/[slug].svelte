@@ -266,7 +266,7 @@
                 </div>
 
                 <div class="col-sm-6 col-12 pl-1 pr-1">
-                  <label class="label" for="alertPID">PID</label>
+                  <label class="label" for="alertPID">Parameter</label>
 
                   <select use:pidChange value={alert.pid} name="alert-{i}" class="value form-control pl-1 pr-1" id="alertPID" required>
                     <option value="">-</option>
@@ -313,7 +313,7 @@
           <div class="row">
 
             <div class="col-sm-3 col-12">
-              <label for="dynamicPID">PID</label>
+              <label for="dynamicPID">Parameter</label>
 
               <select use:pidChange value={view.dynamic.pid} disabled={!view.dynamic.enabled} name="dynamic-{0}" class="form-control" id="dynamicPID" required>
                 <option value="">-</option>
