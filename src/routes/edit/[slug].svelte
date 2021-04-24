@@ -302,6 +302,7 @@
         <!-- END ALERTS -->
 
         <h4>Dynamic</h4>
+        <p>Configure when <i>this</i> view should be enabled.</p>
         <hr/>
 
         <div class="dynamicContainer">
