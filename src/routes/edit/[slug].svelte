@@ -361,8 +361,9 @@
         </div>
 
         <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
-
+        <button class="btn btn-primary btn-lg btn-block btn-full-width" type="submit">Update</button>
+        <br>
+        <br>
       </form>
     </div>
   </div>
@@ -403,4 +404,6 @@
   .delete {
     background-color: rgb(220, 176, 176);
   }
+
+  .btn-full-width {width: 100%;}
 </style>
