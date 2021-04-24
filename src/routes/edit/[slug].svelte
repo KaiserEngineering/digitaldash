@@ -254,7 +254,7 @@
                 </div>
 
                 <div class="col-sm-3 col-12 pl-1 pr-1">
-                  <label for="alertOP">OP</label>
+                  <label for="alertOP">Operand</label>
                   <select required bind:value={alert.op} name="alertOP" class="form-control">
                     <option value="">-</option>
                     {#each ['=', '>', '<', '>=', '<='] as op}
@@ -336,7 +336,7 @@
             </div>
 
             <div class="col-sm-3 col-12">
-              <label for="dynamicOP">OP</label>
+              <label for="dynamicOP">Operand</label>
               <select bind:value={view.dynamic.op} name="dynamicOP" disabled={!view.dynamic.enabled} class="form-control">
                 <option value="">-</option>
                 {#each ['=', '>', '<', '>=', '<='] as op}
