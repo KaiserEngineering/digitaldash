@@ -228,6 +228,13 @@ class Serial:
 
     def updateRequirements(self, app, pid_byte_code, pids):
         global KE_CP_OP_CODES
+
+        msg = "[KE] Updating requirements failed, byte code len is 0"
+
+        if len(pid_byte_code) <= 0:
+            Logger.error(msg)
+            return (0, msg)
+
         msg = "GUI: Updating requirements: " + str(pid_byte_code)
         Logger.info(msg)
 
@@ -243,6 +250,7 @@ class Serial:
         else:
             # No communication is in progress, asynchronously send the message
             self.ser.write(self.queued_message)
+            self.queued_message = None
 
         return (1, msg)
 
