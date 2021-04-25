@@ -124,7 +124,7 @@ KE_PID = {
     "0x010B": {
         "name": "INTAKE_MANIFOLD_ABSOLUTE_PRESSURE",
         "shortName": "MAP",
-        "shortDesc": "MAP",
+        "shortDesc": "Manifold Abs Press",
         "units": {
             "PID_UNITS_KPA": {"Min": 0, "Max": 255, "decimals": "0"},
             "PID_UNITS_PSI": {"Min": 0, "Max": 36, "decimals": "1"},
@@ -158,7 +158,7 @@ KE_PID = {
     "0x010F": {
         "name": "INTAKE_AIR_TEMPERATURE",
         "shortName": "IAT",
-        "shortDesc": "IAT",
+        "shortDesc": "Intake Air Temp",
         "units": {
             "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
@@ -167,7 +167,7 @@ KE_PID = {
     "0x0110": {
         "name": "MASS_AIR_FLOW_SENSOR_AIR_FLOW_RATE",
         "shortName": "MAF",
-        "shortDesc": "MAF",
+        "shortDesc": "Mass Air Flow",
         "units": {
             "PID_UNITS_GRAMSEC": {"Min": 0, "Max": 655.35, "decimals": "0"},
         },
@@ -226,7 +226,7 @@ KE_PID = {
     "0x220301": {
         "name": "MANIFOLD_ABSOLUTE_PRESSURE_SENSOR_VOLTAGE_1",
         "shortName": "MAP",
-        "shortDesc": "MAP (V)",
+        "shortDesc": "Manifold Abs Press (V)",
         "units": {
             "PID_UNITS_VOLTS": {"Min": 0, "Max": 5, "decimals": "2"},
         },
