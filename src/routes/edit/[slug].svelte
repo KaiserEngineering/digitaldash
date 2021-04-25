@@ -235,7 +235,10 @@
         </div>
         <!-- END BASICS -->
 
+        <br>
+        <br>
         <h4>Alerts</h4>
+        <p>Configure custom alerts to appear when a specific parameter threshold is met.</p>
         <hr/>
 
         <div class="alertsContainer">
@@ -254,7 +257,7 @@
                 </div>
 
                 <div class="col-sm-3 col-12 pl-1 pr-1">
-                  <label for="alertOP">OP</label>
+                  <label for="alertOP">Operand</label>
                   <select required bind:value={alert.op} name="alertOP" class="form-control">
                     <option value="">-</option>
                     {#each ['=', '>', '<', '>=', '<='] as op}
@@ -266,7 +269,7 @@
                 </div>
 
                 <div class="col-sm-6 col-12 pl-1 pr-1">
-                  <label class="label" for="alertPID">PID</label>
+                  <label class="label" for="alertPID">Parameter</label>
 
                   <select use:pidChange value={alert.pid} name="alert-{i}" class="value form-control pl-1 pr-1" id="alertPID" required>
                     <option value="">-</option>
@@ -284,7 +287,7 @@
                 </div>
 
                 <div class="col-sm-3 col-12 pl-1 pr-1">
-                  <label class="label" for="alertPriority">Priority</label>
+                  <label class="label" for="alertPriority">Priority <i>(Lower equals higher priority)</i></label>
                   <input required bind:value={alert.priority} class="value form-control" type="number" name="alertPriority"/>
                 </div>
               </div>
@@ -301,7 +304,10 @@
         </div>
         <!-- END ALERTS -->
 
+        <br>
+        <br>
         <h4>Dynamic</h4>
+        <p>Configure when <i>this</i> view should be enabled.</p>
         <hr/>
 
         <div class="dynamicContainer">
@@ -313,7 +319,7 @@
           <div class="row">
 
             <div class="col-sm-3 col-12">
-              <label for="dynamicPID">PID</label>
+              <label for="dynamicPID">Parameter</label>
 
               <select use:pidChange bind:value={view.dynamic.pid} disabled={!view.dynamic.enabled} name="dynamic-{0}" class="form-control" id="dynamicPID" required>
                 <option value="">-</option>
@@ -336,7 +342,7 @@
             </div>
 
             <div class="col-sm-3 col-12">
-              <label for="dynamicOP">OP</label>
+              <label for="dynamicOP">Operand</label>
               <select bind:value={view.dynamic.op} name="dynamicOP" disabled={!view.dynamic.enabled} class="form-control">
                 <option value="">-</option>
                 {#each ['=', '>', '<', '>=', '<='] as op}
@@ -348,7 +354,7 @@
             </div>
 
             <div class="col-sm-3 col-12">
-              <label for="dynamicPriority">Priority</label>
+              <label for="dynamicPriority">Priority <i>(Lower equals higher priority)</i></label>
               <input bind:value={view.dynamic.priority} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicPriority"/>
             </div>
 
@@ -356,8 +362,9 @@
         </div>
 
         <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
-
+        <button class="btn btn-primary btn-lg btn-block btn-full-width" type="submit">Update</button>
+        <br>
+        <br>
       </form>
     </div>
   </div>
@@ -398,4 +405,6 @@
   .delete {
     background-color: rgb(220, 176, 176);
   }
+
+  .btn-full-width {width: 100%;}
 </style>
