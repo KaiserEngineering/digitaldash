@@ -107,6 +107,6 @@ class KELabel(Label):
             else:
                 self.text = self.default + ("{0:.%sf}" % (self.decimals)).format(value)
                 if self.unitString:
-                    self.text = self.text + "[size=15]" + " " + self.unitString + "[/size]"
-        except:
-            Logger.error("GUI: keLabel.py is not numeric")
+                    self.text = self.text+"[size=15]"+" "+self.unitString+"[/size]"
+        except ValueError as e:
+            Logger.error("GUI: keLabel.py is not numeric: %s", e)
