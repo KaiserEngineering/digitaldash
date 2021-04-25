@@ -125,7 +125,7 @@
     tempView.gauges = gauges;
     configuration.views[id] = tempView;
 
-    if ( configuration.views[id].dynamic && !configuration.views[id].pid ) {
+    if ( configuration.views[id].dynamic && !configuration.views[id].dynamic.pid ) {
        configuration.views[id].dynamic = {};
     }
 
@@ -314,7 +314,7 @@
             <div class="col-sm-3 col-12">
               <label for="dynamicPID">PID</label>
 
-              <select use:pidChange value={view.dynamic.pid} disabled={!view.dynamic.enabled} name="dynamic-{0}" class="form-control" id="dynamicPID" required>
+              <select use:pidChange bind:value={view.dynamic.pid} disabled={!view.dynamic.enabled} name="dynamic-{0}" class="form-control" id="dynamicPID" required>
                 <option value="">-</option>
                 {#each pids as pid}
                   <option value={pid}>
@@ -326,7 +326,7 @@
 
             <div class="col-sm-3 col-12">
               <label class="label" for="dynamicUnit">Unit</label>
-              <select name="units" disabled={!view.dynamic.enabled} on:blur="{ e => view.dynamic.unit = e.target.value }" value={view.dynamic.unit} class="form-control value" required><option>-</option></select>
+              <select name="units" on:blur="{ e => view.dynamic.unit = e.target.value }" disabled={!view.dynamic.enabled} value={view.dynamic.unit} class="form-control value" required><option>-</option></select>
             </div>
 
             <div class="col-sm-3 col-12">
