@@ -74,12 +74,12 @@
 
             <div class="row card-img-overlay">
 
-              <div class="col-6 text-left">
-                {#if views[id].gauges[0]}
-                  <img class="image-overlay" src="images/{views[id].gauges[0].theme}/needle.png">
-                  <img class="image-overlay" src="images/{views[id].gauges[0].theme}/gauge.png">
-                {/if}
-              </div>
+            <div class="col-6 text-left">
+              {#if views[id].gauges[0]}
+                <img class="image-overlay" src="images/{views[id].gauges[0].theme}/gauge.png">
+                <img class="image-overlay" src="images/{views[id].gauges[0].theme}/needle.png">
+              {/if}
+            </div>
 
               <div class="col-6 d-flex flex-column justify-content-center">
                 {#each views[id].gauges as gauge}
