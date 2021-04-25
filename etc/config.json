@@ -4,31 +4,53 @@
       "name": "Some view",
       "enabled": true,
       "default": 1,
-      "background": "bg.jpg",
+      "background": "CarbonFiber.png",
       "alerts": [],
       "dynamic": {
-        "enabled": false,
-        "pid": "0x220461",
-        "op": "<",
-        "priority": 1,
-        "value": "4000",
-        "unit": "PID_UNITS_RPM"
+        "pid": "0x0133",
+        "op": ">=",
+        "enabled": true,
+        "priority": 4,
+        "value": "1234",
+        "unit": "PID_UNITS_KPA"
       },
       "gauges": [
         {
-          "theme": "Stock ST",
+          "theme": "Stock RS",
           "unit": "PID_UNITS_CELCIUS",
           "pid": "0x0105"
         },
         {
-          "theme": "Stock ST",
+          "theme": "Stock RS",
           "unit": "PID_UNITS_KPA",
           "pid": "0x010B"
         },
         {
-          "theme": "Stock ST",
+          "theme": "Stock RS",
           "unit": "PID_UNITS_CELCIUS",
           "pid": "0x015C"
+        }
+      ]
+    },
+    "1": {
+      "name": "Test",
+      "enabled": true,
+      "default": 0,
+      "background": "bg.jpg",
+      "alerts": [],
+      "dynamic": {
+        "pid": "0x010C",
+        "op": ">",
+        "enabled": true,
+        "unit": "PID_UNITS_RPM",
+        "value": "1",
+        "priority": 5
+      },
+      "gauges": [
+        {
+          "theme": "Stock RS",
+          "unit": "PID_UNITS_KMH",
+          "pid": "0x010D"
         }
       ]
     }
