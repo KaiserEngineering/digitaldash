@@ -72,8 +72,8 @@
 
             <div class="col-6 text-left">
               {#if views[id].gauges[0]}
-                <img class="image-overlay" src="images/{views[id].gauges[0].theme}/needle.png">
                 <img class="image-overlay" src="images/{views[id].gauges[0].theme}/gauge.png">
+                <img class="image-overlay" src="images/{views[id].gauges[0].theme}/needle.png">
               {/if}
             </div>
 
