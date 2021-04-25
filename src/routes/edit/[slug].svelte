@@ -136,6 +136,7 @@
       .then(d => d.json())
       .then(d => {
         $session.configuration = d.config;
+        view = normalizeGauges( $session.configuration.views[id] );
 
         $session.actions = [{
           id    : $session.count,
