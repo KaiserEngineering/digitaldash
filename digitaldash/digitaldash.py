@@ -241,11 +241,11 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
 
     # Sort our dynamic and alerts callbacks by priority
     self.dynamic_callbacks = sorted(
-        self.callbacks["dynamic"], key=lambda x: x.priority, reverse=True
+        self.callbacks["dynamic"], key=lambda x: x.priority
     )
     # Since we are building for the first time we can default to index 0
     self.alert_callbacks = sorted(
-        self.callbacks["0"], key=lambda x: x.priority, reverse=True
+        self.callbacks["0"], key=lambda x: x.priority
     )
 
     (
