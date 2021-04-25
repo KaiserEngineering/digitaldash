@@ -53,43 +53,44 @@
 {#if views}
   {#each Object.keys(views) as id }
     <div class="container col-sm-10 col-md-6 pr-4 pl-4">
-
-      <div class="row m-2">
-        <div class="text-left col-6">
-          <h5>{views[id].name}</h5>
-        </div>
-        <div class="text-right col-6">
-          <svelte:component this={Slider} callback={toggleEnabled} callbackArgs={id} checked={views[id].enabled} />
-        </div>
-      </div>
-
-      <a href="/edit/{id}">
-
-        <div class="card transparent">
-          <img class="card-img-top" src="images/Background/{views[id].background}" alt="view background">
-
-          <div class="row card-img-overlay">
-
-            <div class="col-6 text-left">
-              {#if views[id].gauges[0]}
-                <img class="image-overlay" src="images/{views[id].gauges[0].theme}/needle.png">
-                <img class="image-overlay" src="images/{views[id].gauges[0].theme}/gauge.png">
-              {/if}
-            </div>
-
-            <div class="col-6 d-flex flex-column justify-content-center">
-              {#each views[id].gauges as gauge}
-                {#if gauge && gauge.pid}
-                  <div class="text-center">
-                    <p class="pid">{ KE_PIDS[ gauge.pid ].shortName ? KE_PIDS[ gauge.pid ].shortName : KE_PIDS[ gauge.pid ].name }</p>
-                  </div>
-                {/if}
-              {/each}
-            </div>
-
+      <div class="card">
+        <div class="row m-2">
+          <div class="text-left col-6">
+            <h5>{views[id].name}</h5>
+          </div>
+          <div class="text-right col-6">
+            <svelte:component this={Slider} callback={toggleEnabled} callbackArgs={id} checked={views[id].enabled} />
           </div>
         </div>
-      </a>
+
+        <a href="/edit/{id}">
+
+          <div class="card transparent">
+            <img class="card-img-top" src="images/Background/{views[id].background}" alt="view background">
+
+            <div class="row card-img-overlay">
+
+              <div class="col-6 text-left">
+                {#if views[id].gauges[0]}
+                  <img class="image-overlay" src="images/{views[id].gauges[0].theme}/needle.png">
+                  <img class="image-overlay" src="images/{views[id].gauges[0].theme}/gauge.png">
+                {/if}
+              </div>
+
+              <div class="col-6 d-flex flex-column justify-content-center">
+                {#each views[id].gauges as gauge}
+                  {#if gauge && gauge.pid}
+                    <div class="text-center">
+                      <p class="pid">{ KE_PIDS[ gauge.pid ].shortName ? KE_PIDS[ gauge.pid ].shortName : KE_PIDS[ gauge.pid ].name }</p>
+                    </div>
+                  {/if}
+                {/each}
+              </div>
+
+            </div>
+          </div>
+        </a>
+      <div>
     </div>
   {/each}
 {/if}
@@ -120,5 +121,11 @@
     left: 0;
     padding: 1rem;
     border-radius: calc(.25rem - 1px);
+  }
+
+  .card {
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
   }
 </style>
