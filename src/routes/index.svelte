@@ -90,8 +90,8 @@
             </div>
           </div>
         </a>
-      <div>
     </div>
+   </div>
   {/each}
 {/if}
 
@@ -124,8 +124,8 @@
   }
 
   .card {
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
+    border-radius: 20px;
+    padding: 0.5em;
+    margin-top: 1em;
   }
 </style>
