@@ -47,7 +47,9 @@ def views(file=None):
         # error happened on.
         errorString = (str(e).split(":"))[0]
         errorConfig = errorConfig.replace("Config file isn't valid!", errorString)
-        Logger.error("GUI: Invalid config provided, falling back to default")
+        Logger.error(
+          "GUI: Invalid config provided, falling back to default: %s", errorString
+        )
         jsonData = json.loads(errorConfig)
     return jsonData
 
