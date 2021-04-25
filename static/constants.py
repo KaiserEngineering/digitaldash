@@ -191,7 +191,7 @@ KE_PID = {
     "0x0133": {
         "name": "ABSOLUTE_BAROMETRIC_PRESSURE",
         "shortName": "Baro",
-        "shortDesc": "barometric",
+        "shortDesc": "Barometric",
         "units": {
             "PID_UNITS_KPA": {"Min": 0, "Max": 255, "decimals": "0"},
             "PID_UNITS_PSI": {"Min": 0, "Max": 36, "decimals": "1"},
@@ -284,7 +284,7 @@ KE_PID = {
     "0x2203CA": {
         "name": "MANIFOLD_CHARGE_TEMPERATURE",
         "shortName": "MCT",
-        "shortDesc": "Manifold charge temp",
+        "shortDesc": "Manifold Charge Temp",
         "units": {
             "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
@@ -301,7 +301,7 @@ KE_PID = {
     "0x22057D": {
         "name": "AMBIENT_AIR_TEMPERATURE",
         "shortName": "AAT",
-        "shortDesc": "Ambient air Temp",
+        "shortDesc": "Ambient Air Temp",
         "units": {
             "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
