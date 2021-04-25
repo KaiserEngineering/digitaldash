@@ -51,6 +51,10 @@
 </script>
 
 {#if views}
+  <div class="container col-sm-10 col-md-6 pr-4 pl-4">
+    <h1>KE Digital Dash</h1>
+    <p>Select a gauge layout to edit the configuration</p>
+  </div>
   {#each Object.keys(views) as id }
     <div class="container col-sm-10 col-md-6 pr-4 pl-4">
       <div class="card">
