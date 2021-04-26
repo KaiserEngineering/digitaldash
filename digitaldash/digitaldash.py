@@ -202,6 +202,7 @@ def setup(self, layouts):
         # Now we can generate a complete byte array for the PIDs
         if len(units) > 0 and len(view["pids"]) > 0:
             if list(units.values())[0] != "n/a" and view["pids"][0] != "n/a":
+                Logger.info( "GUI: Going to build byte array for view %s", i )
                 views[i]["pid_byte_code"] = buildUpdateRequirementsBytearray(
                     views[i]["pids"]
                 )
@@ -279,17 +280,6 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
                     )
         else:
             Logger.info(msg)
-        self.data_source = dataSource
-        (ret, msg) = dataSource.updateRequirements(
-          self, self.pid_byte_code, self.pids
-        )
-        if not ret:
-            Logger.error(msg)
-    elif dataSource:
-        # If we have a datasource we should update PIDs
-        (ret, msg) = dataSource.updateRequirements(
-          self, self.pid_byte_code, self.pids
-        )
         if not ret:
             Logger.error(msg)
 
@@ -300,7 +290,14 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     # Unschedule our previous clock event
     if hasattr(self, "clock_event"):
         self.clock_event.cancel()
-    if self.data_source:
+    if dataSource:
+        # If we have a datasource we should update PIDs
+        self.data_source = dataSource
+        (ret, msg) = dataSource.updateRequirements(
+          self, self.pid_byte_code, self.pids
+        )
+        if not ret:
+            Logger.error(msg)
         self.clock_event = Clock.schedule_interval(self.loop, 0)
 
     self.success = 1

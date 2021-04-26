@@ -304,5 +304,5 @@ def buildUpdateRequirementsBytearray(requirements):
         byte_count,
         KE_CP_OP_CODES["KE_PID_STREAM_NEW"],
     ] + pid_byte_code
-    Logger.info("KE Protocol: Byte code: " + str(pid_byte_code))
+    Logger.info("KE Protocol: Built byte code: " + str(pid_byte_code))
     return pid_byte_code
