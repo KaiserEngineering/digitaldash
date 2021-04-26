@@ -216,7 +216,7 @@
                         <option value="">-</option>
                         {#each pids as pid}
                           <option value={pid}>
-                            {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
+                            {KE_PID[pid].shortDesc ? KE_PID[pid].shortDesc : KE_PID[pid].shortName}
                           </option>
                         {/each}
                       </select>
@@ -275,7 +275,7 @@
                     <option value="">-</option>
                     {#each pids as pid}
                       <option value={pid}>
-                        {pid ? KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name : ''}
+                        {pid ? KE_PID[pid].shortDesc ? KE_PID[pid].shortDesc : KE_PID[pid].shortName : ''}
                       </option>
                     {/each}
                   </select>
@@ -325,7 +325,7 @@
                 <option value="">-</option>
                 {#each pids as pid}
                   <option value={pid}>
-                    {KE_PID[pid].shortName ? KE_PID[pid].shortName : KE_PID[pid].name}
+                    {KE_PID[pid].shortDesc ? KE_PID[pid].shortDesc : KE_PID[pid].shortName}
                   </option>
                 {/each}
               </select>
