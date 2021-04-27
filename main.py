@@ -143,7 +143,6 @@ class GUI(App):
 
         return self.app
 
-    @mainthread
     def check_callback(self: DD, callback, data):
         """
         We mainthread this function so that someone with crazy toggle fingers
