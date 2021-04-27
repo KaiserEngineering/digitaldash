@@ -70,6 +70,7 @@ class MyHandler(PatternMatchingEventHandler):
 
     patterns = ["*.json"]
 
+    @mainthread
     def on_modified(self, event):
         buildFromConfig(self.DigitalDash, dataSource)
 
@@ -146,6 +147,7 @@ class GUI(App):
             )
         return ret
 
+    @mainthread
     def change(self: DD, app, my_callback) -> NoReturn:
         """
         This method only handles dynamic changing, the alert changing is handled in
@@ -170,6 +172,8 @@ class GUI(App):
                     # updates but don't need any pid data ( Clock ).
                     obj.set_data(0)
 
+    # TODO: Is there a big issue with mainthreading the whole loop?
+    @mainthread
     def loop(self, dt):
         if self.first_iteration:
             self.first_iteration = False
