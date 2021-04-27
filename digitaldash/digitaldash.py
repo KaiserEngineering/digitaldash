@@ -104,6 +104,8 @@ def setup(self, layouts):
         # Create our callbacks
         if view["dynamic"].keys():
             dynamicConfig = view["dynamic"]
+            if not dynamicConfig["enabled"]:
+                continue
             dynamicConfig["viewId"] = Id
 
             # Keep track of our dynamic PIDs
