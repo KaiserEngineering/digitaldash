@@ -38,7 +38,7 @@ from watchdog.observers import Observer
 from kivy.uix.label import Label
 from watchdog.events import PatternMatchingEventHandler
 from typing import NoReturn, List, TypeVar
-from kivy.clock import mainthread
+from kivy.clock import mainthread, Clock
 
 # Rust import
 import libdigitaldash
@@ -70,9 +70,17 @@ class MyHandler(PatternMatchingEventHandler):
 
     patterns = ["*.json"]
 
+    def rebuild(self, dt):
+      Logger.info("Rebuilding config")
+      buildFromConfig(self.DigitalDash, dataSource)
+      if self.DigitalDash.data_source:
+          self.DigitalDash.clock_event = Clock.schedule_interval(self.DigitalDash.loop, 0)
+
     @mainthread
     def on_modified(self, event):
-        buildFromConfig(self.DigitalDash, dataSource)
+      if hasattr(self.DigitalDash, "clock_event"):
+          self.DigitalDash.clock_event.cancel()
+      Clock.schedule_once(self.rebuild, 0)
 
 
 # Load our KV files
@@ -132,7 +140,12 @@ class GUI(App):
         Logger.info("GUI: %s", self.status)
         return self.app
 
+    @mainthread
     def check_callback(self: DD, callback, data):
+        """
+        We mainthread this function so that someone with crazy toggle fingers
+        doesn't beat the race condition.
+        """
         ret = False
         try:
             # Check if any dynamic changes need to be made

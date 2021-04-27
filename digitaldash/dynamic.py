@@ -94,10 +94,10 @@ class Dynamic:
 
         # Sort our dynamic and alerts callbacks by priority
         app.dynamic_callbacks = sorted(
-            app.callbacks["dynamic"], key=lambda x: x.priority, reverse=True
+            app.callbacks["dynamic"], key=lambda x: x.priority
         )
         app.alert_callbacks = sorted(
-            app.callbacks[str(app.current)], key=lambda x: x.priority, reverse=True
+            app.callbacks[str(app.current)], key=lambda x: x.priority
         )
 
         app.app.add_widget(app.background)

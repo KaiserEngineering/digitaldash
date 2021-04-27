@@ -12,7 +12,6 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import StringProperty
 from kivy.uix.anchorlayout import AnchorLayout
-from kivy.clock import Clock
 from kivy.core.window import Window
 
 from etc import config
@@ -234,6 +233,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         self.alerts.clear_widgets()
         self.alert_callbacks = []
         self.dynamic_callbacks = []
+        self.callbacks = {}
 
     (ret, msg) = setup(self, config.views(file=self.configFile))
     if ret:
@@ -301,12 +301,6 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     self.app.add_widget(self.background)
     self.background.add_widget(self.containers[next(iter(self.containers))])
     self.background.add_widget(self.alerts)
-
-    # Unschedule our previous clock event
-    if hasattr(self, "clock_event"):
-        self.clock_event.cancel()
-    if self.data_source:
-        self.clock_event = Clock.schedule_interval(self.loop, 0)
 
     self.success = 1
     self.status = "Successful build"
