@@ -138,6 +138,9 @@ class GUI(App):
         if not self.success:
             return Label(text=self.status)
         Logger.info("GUI: %s", self.status)
+
+        self.clock_event = Clock.schedule_interval(self.loop, 0)
+
         return self.app
 
     @mainthread
