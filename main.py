@@ -136,7 +136,7 @@ class GUI(App):
         ret = False
 
         self.count = self.count + 1
-        if self.count < 50:
+        if self.count < 8:
             return ret
 
         try:
