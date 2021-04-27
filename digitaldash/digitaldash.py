@@ -140,23 +140,33 @@ def setup(self, layouts):
         else:
             callbacks.setdefault(Id, [])
 
-        container = FloatLayout()
+        container = FloatLayout( pos_hint={'center_y': 0.5, 'center_x': 0.5} )
         objectsToUpdate = []
 
         numGauges = len(view["gauges"]) or 1
         # Get our % width that each gauge should claim
         # The 0.05 is our squish value to move gauges inwards
         percentWidth = (1 / numGauges) - 0.05
+        Logger.info(numGauges)
+
+        if( numGauges == 1 ):
+            xPosition = [ 0.5 ]
+        elif( numGauges == 2 ):
+            xPosition = [ 0.33, 0.66 ]
+        elif( numGauges == 3 ):
+            xPosition = [ 0.20, 0.5, 0.80 ]
 
         for count, widget in enumerate(view["gauges"]):
-            xPosition = percentWidth * count
+
+            if count > 3:
+                break
 
             # This handles our gauge positions, see the following for reference:
             # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
             subcontainer = RelativeLayout(
-                pos_hint={"x": xPosition, "top": 0.99},
+                pos_hint={'top': 0.99, 'center_x': xPosition[count]},
                 size_hint_max_y=200,
-                size_hint_max_x=(Window.width+250) / numGauges,
+                size_hint_max_x=Window.width / numGauges,
             )
             container.add_widget(subcontainer)
 
@@ -171,7 +181,7 @@ def setup(self, layouts):
                     workingPath=self.WORKING_PATH,
                     container=subcontainer,
                     view_id=int(Id),
-                    xPosition=xPosition,
+                    xPosition=xPosition[count],
                     **widget,
                     **view,
                 )
@@ -202,7 +212,6 @@ def setup(self, layouts):
         # Now we can generate a complete byte array for the PIDs
         if len(units) > 0 and len(view["pids"]) > 0:
             if list(units.values())[0] != "n/a" and view["pids"][0] != "n/a":
-                Logger.info( "GUI: Going to build byte array for view %s", i )
                 views[i]["pid_byte_code"] = buildUpdateRequirementsBytearray(
                     views[i]["pids"]
                 )
@@ -280,6 +289,17 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
                     )
         else:
             Logger.info(msg)
+        self.data_source = dataSource
+        (ret, msg) = dataSource.updateRequirements(
+          self, self.pid_byte_code, self.pids
+        )
+        if not ret:
+            Logger.error(msg)
+    elif dataSource:
+        # If we have a datasource we should update PIDs
+        (ret, msg) = dataSource.updateRequirements(
+          self, self.pid_byte_code, self.pids
+        )
         if not ret:
             Logger.error(msg)
 
@@ -290,14 +310,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     # Unschedule our previous clock event
     if hasattr(self, "clock_event"):
         self.clock_event.cancel()
-    if dataSource:
-        # If we have a datasource we should update PIDs
-        self.data_source = dataSource
-        (ret, msg) = dataSource.updateRequirements(
-          self, self.pid_byte_code, self.pids
-        )
-        if not ret:
-            Logger.error(msg)
+    if self.data_source:
         self.clock_event = Clock.schedule_interval(self.loop, 0)
 
     self.success = 1
