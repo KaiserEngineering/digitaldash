@@ -140,23 +140,33 @@ def setup(self, layouts):
         else:
             callbacks.setdefault(Id, [])
 
-        container = FloatLayout()
+        container = FloatLayout( pos_hint={'center_y': 0.5, 'center_x': 0.5} )
         objectsToUpdate = []
 
         numGauges = len(view["gauges"]) or 1
         # Get our % width that each gauge should claim
         # The 0.05 is our squish value to move gauges inwards
         percentWidth = (1 / numGauges) - 0.05
+        Logger.info(numGauges)
+
+        if( numGauges == 1 ):
+            xPosition = [ 0.5 ]
+        elif( numGauges == 2 ):
+            xPosition = [ 0.33, 0.66 ]
+        elif( numGauges == 3 ):
+            xPosition = [ 0.20, 0.5, 0.80 ]
 
         for count, widget in enumerate(view["gauges"]):
-            xPosition = percentWidth * count
+
+            if count > 3:
+                break
 
             # This handles our gauge positions, see the following for reference:
             # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
             subcontainer = RelativeLayout(
-                pos_hint={"x": xPosition, "top": 0.99},
+                pos_hint={'top': 0.99, 'center_x': xPosition[count]},
                 size_hint_max_y=200,
-                size_hint_max_x=(Window.width+250) / numGauges,
+                size_hint_max_x=Window.width / numGauges,
             )
             container.add_widget(subcontainer)
 
@@ -171,7 +181,7 @@ def setup(self, layouts):
                     workingPath=self.WORKING_PATH,
                     container=subcontainer,
                     view_id=int(Id),
-                    xPosition=xPosition,
+                    xPosition=xPosition[count],
                     **widget,
                     **view,
                 )
