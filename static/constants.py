@@ -68,7 +68,7 @@ KE_PID = {
         "shortName": "Load",
         "shortDesc": "Calc Load",
         "units": {
-            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "0"},
+            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "1"},
         },
     },
     "0x0105": {
@@ -85,7 +85,7 @@ KE_PID = {
         "shortName": "STFT1",
         "shortDesc": "Short Fuel Trim 1",
         "units": {
-            "PID_UNITS_PERCENT": {"Min": -100, "Max": 99.2, "decimals": "0"},
+            "PID_UNITS_PERCENT": {"Min": -100, "Max": 99.2, "decimals": "1"},
         },
     },
     "0x0107": {
@@ -93,32 +93,7 @@ KE_PID = {
         "shortName": "LTFT1",
         "shortDesc": "Long Fuel Trim 1",
         "units": {
-            "PID_UNITS_PERCENT": {"Min": -100, "Max": 99.2, "decimals": "0"},
-        },
-    },
-    "0x0108": {
-        "name": "SHORT_TERM_FUEL_TRIM__BANK_2",
-        "shortName": "STFT2",
-        "shortDesc": "Short Fuel Trim 2",
-        "units": {
-            "PID_UNITS_PERCENT": {"Min": -100, "Max": 99.2, "decimals": "0"},
-        },
-    },
-    "0x0109": {
-        "name": "LONG_TERM_FUEL_TRIM__BANK_2",
-        "shortName": "LTFT2",
-        "shortDesc": "Long Fuel Trim 2",
-        "units": {
-            "PID_UNITS_PERCENT": {"Min": -100, "Max": 99.2, "decimals": "0"},
-        },
-    },
-    "0x010A": {
-        "name": "FUEL_PRESSURE",
-        "shortName": "Fuel",
-        "shortDesc": "Fuel Pressure",
-        "units": {
-            "PID_UNITS_KPA": {"Min": 0, "Max": 765, "decimals": "0"},
-            "PID_UNITS_PSI": {"Min": 0, "Max": 110, "decimals": "1"},
+            "PID_UNITS_PERCENT": {"Min": -100, "Max": 99.2, "decimals": "1"},
         },
     },
     "0x010B": {
@@ -164,28 +139,12 @@ KE_PID = {
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
-    "0x0110": {
-        "name": "MASS_AIR_FLOW_SENSOR_AIR_FLOW_RATE",
-        "shortName": "MAF",
-        "shortDesc": "Mass Air Flow",
-        "units": {
-            "PID_UNITS_GRAMSEC": {"Min": 0, "Max": 655.35, "decimals": "0"},
-        },
-    },
     "0x0111": {
         "name": "THROTTLE_POSITION",
         "shortName": "Throttle",
         "shortDesc": "Throttle",
         "units": {
-            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "0"},
-        },
-    },
-    "0x0114": {
-        "name": "OXYGEN_SENSOR_1_VOLTAGE",
-        "shortName": "O2",
-        "shortDesc": "O2 Volts",
-        "units": {
-            "PID_UNITS_VOLTS": {"Min": 0, "Max": 1.275, "decimals": "2"},
+            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "1"},
         },
     },
     "0x0133": {
@@ -231,54 +190,13 @@ KE_PID = {
             "PID_UNITS_VOLTS": {"Min": 0, "Max": 5, "decimals": "2"},
         },
     },
-    "0x220307": {
-        "name": "LOW_PRESSURE_FUEL_PUMP_COMMANDED_DUTY_CYCLE",
-        "shortName": "LPFP DC",
-        "shortDesc": "LP Fuel Duty Cycle",
-        "units": {
-            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "0"},
-        },
-    },
-    "0x2203EC": {
-        "name": "IGNITION_CORRECTION_CYLINDER_1",
-        "shortName": "IGN 1",
-        "shortDesc": "Ign Cor Cyl 1",
-        "units": {
-            "PID_UNITS_DEGREES": {"Min": -16, "Max": 16, "decimals": "2"},
-        },
-    },
-    "0x220316": {
-        "name": "VCT_INTAKE_CAM_SOLENOID_DUTY_CYCLE",
-        "shortName": "VCT Int DC",
-        "shortDesc": "VCT Int DC",
-        "units": {
-            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "1"},
-        },
-    },
-    "0x220317": {
-        "name": "VCT_EXHAUST_CAM_SOLENOID_DUTY_CYCLE",
-        "shortName": "VCT Exh DC",
-        "shortDesc": "VCT Exh DC",
-        "units": {
-            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "1"},
-        },
-    },
-    "0x22F40F": {
-        "name": "INTAKE_AIR_TEMPERATURE",
-        "shortName": "IAT",
-        "shortDesc": "Intake Air Temp",
-        "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
-            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
-        },
-    },
     "0x220461": {
         "name": "CHARGE_AIR_TEMPERATURE",
         "shortName": "CAT",
         "shortDesc": "Charge Air Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
-            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "1"},
+            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "2"},
         },
     },
     "0x2203CA": {
@@ -305,22 +223,6 @@ KE_PID = {
         "units": {
             "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
-        },
-    },
-    "0x22F404": {
-        "name": "ENGINE_LOAD_PERCENTAGE",
-        "shortName": "Load",
-        "shortDesc": "Engine Load",
-        "units": {
-            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "1"},
-        },
-    },
-    "0xDE01C8": {
-        "name": "GAUGE_BRIGHTNESS",
-        "shortName": "Brightness",
-        "shortDesc": "Gauge Brightness",
-        "units": {
-            "PID_UNITS_PERCENT": {"Min": 0, "Max": 100, "decimals": "0"},
         },
     },
 }
