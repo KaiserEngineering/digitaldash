@@ -145,11 +145,11 @@ def setup(self, layouts):
 
         numGauges = len(view["gauges"]) or 1
 
-        if( numGauges == 1 ):
+        if numGauges == 1:
             xPosition = [ 0.5 ]
-        elif( numGauges == 2 ):
+        elif numGauges == 2:
             xPosition = [ 0.33, 0.66 ]
-        elif( numGauges == 3 ):
+        elif numGauges == 3:
             xPosition = [ 0.20, 0.5, 0.80 ]
 
         for count, widget in enumerate(view["gauges"]):
