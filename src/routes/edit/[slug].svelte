@@ -88,9 +88,23 @@
         unitsSelect.options[i] = new Option(label, unit, false, false);
       });
       // Actually set the select value to the first unit
-      let currentValue = KE_PID[pid].units[ view.gauges[index].unit ];
+      let currentValue;
+      let unit;
+      if ( type == 'gauge' ) {
+        currentValue = KE_PID[pid].units[ view.gauges[index].unit ];
+        unit = view.gauges[index].unit;
+      }
+      else if ( type == 'alert' ) {
+        currentValue = KE_PID[pid].units[ view.alerts[index].unit ];
+        unit = view.alerts[index].unit;
+      }
+      else if ( type == 'dynamic' ) {
+        currentValue = KE_PID[pid].units[ view.dynamic.unit ];
+        unit = view.dynamic.unit;
+      }
+
       if ( currentValue ) {
-        unitsSelect.value = view.gauges[index].unit;
+        unitsSelect.value = unit;
       }
       else {
         unitsSelect.value = unitsSelect.options[0].value;
@@ -111,23 +125,7 @@
   }
 
   function handleSubmit(event) {
-    // TODO: Eventually re-enable this when we track down the
-    // bug with empty gauges getting into the config
-    // See I#98
-
-    // We need a seperate array to account for empty gauges
-    // let gauges = [];
-    // view.gauges.forEach((gauge, i) => {
-    //   // Slip if we don't have a value for PID
-    //   if ( gauge.pid ) {
-    //       gauge.theme = theme;
-    //       gauges.push(gauge);
-    //   }
-    // });
-
-    let tempView = view;
-    // tempView.gauges = gauges;
-    configuration.views[id] = tempView;
+    configuration.views[id] = view;
 
     if ( configuration.views[id].dynamic && !configuration.views[id].dynamic.pid ) {
        configuration.views[id].dynamic = {};
@@ -140,6 +138,7 @@
       .then(d => d.json())
       .then(d => {
         $session.configuration = d.config;
+        configuration = d.config;
         view = normalizeGauges( d.config.views[id] );
 
         $session.actions = [{
