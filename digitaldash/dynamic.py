@@ -88,7 +88,7 @@ class Dynamic:
             app.objectsToUpdate,
             app.pids,
             app.pid_byte_code,
-        ) = app.views[self.viewId].values()
+        ) = app.views[str(self.viewId)].values()
 
         app.background.add_widget(app.containers[self.viewId])
         app.background.add_widget(app.alerts)

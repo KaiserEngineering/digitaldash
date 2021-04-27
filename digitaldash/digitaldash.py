@@ -80,7 +80,7 @@ def setup(self, layouts):
 
     # Callbacks are things like Dynamic objects and Alerts that we need to check
     callbacks = {}
-    views = []
+    views = {}
     containers = []
     dynamicPids = {}
     # Currently we only allow one type of units per PID
@@ -185,34 +185,32 @@ def setup(self, layouts):
 
         containers.append(container)
 
-        views.append(
-            {
-                "app": Background(
-                    WorkingPath=self.WORKING_PATH, BackgroundSource=background
-                ),
-                "alerts": FloatLayout(),
-                "objectsToUpdate": objectsToUpdate,
-                "pids": pids,
-            }
-        )
+        views[Id] = {
+            "app": Background(
+                WorkingPath=self.WORKING_PATH, BackgroundSource=background
+            ),
+            "alerts": FloatLayout(),
+            "objectsToUpdate": objectsToUpdate,
+            "pids": pids,
+        }
 
     # We need to retro-actively add our dynamic PIDs into the PIDs array per view
-    for i, view in enumerate(views):
+    for viewId in views:
         # Check if we have any dynamic PIDs for the other views
         for dynamicPIDKeys in dynamicPids:
-            if dynamicPIDKeys != str(i):
+            if dynamicPIDKeys != str(viewId):
                 pid = dynamicPids[dynamicPIDKeys]
-                if pid not in view["pids"]:
-                    views[i]["pids"].append(pid)
+                if pid not in views[viewId]["pids"]:
+                    views[viewId]["pids"].append(pid)
 
         # Now we can generate a complete byte array for the PIDs
-        if len(units) > 0 and len(view["pids"]) > 0:
-            if list(units.values())[0] != "n/a" and view["pids"][0] != "n/a":
-                views[i]["pid_byte_code"] = buildUpdateRequirementsBytearray(
-                    views[i]["pids"]
+        if len(units) > 0 and len(views[viewId]["pids"]) > 0:
+            if list(units.values())[0] != "n/a" and views[viewId]["pids"][0] != "n/a":
+                views[viewId]["pid_byte_code"] = buildUpdateRequirementsBytearray(
+                    views[viewId]["pids"]
                 )
             else:
-                views[i]["pid_byte_code"] = ""
+                views[viewId]["pid_byte_code"] = ""
     return ([views, containers, callbacks], "Successful setup")
 
 
@@ -260,7 +258,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         self.objectsToUpdate,
         self.pids,
         self.pid_byte_code,
-    ) = self.views[0].values()
+    ) = self.views[next(iter(self.views))].values()
 
     if self.first_iteration and dataSource and dataSource is not Test:
         # Initialize our hardware set-up and verify everything is peachy
