@@ -14,7 +14,6 @@ from kivy.properties import StringProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.clock import mainthread
 
 from etc import config
 from digitaldash.base import Base
@@ -79,21 +78,23 @@ def setup(self, layouts):
     """
 
     # Callbacks are things like Dynamic objects and Alerts that we need to check
-    callbacks = {}
+    callbacks = {"dynamic": []}
     views = {}
-    containers = []
+    containers = {}
     dynamicPids = {}
     # Currently we only allow one type of units per PID
     units = {}
 
     # Sort based on default value
     for Id in layouts["views"]:
+        Logger.info("GUI: Starting on view %s", Id)
         # Make sure a callback key exist for each view Id
         callbacks.setdefault(Id, [])
 
         view = layouts["views"][Id]
         # Skip disabled views
         if not view["enabled"]:
+            Logger.info("GUI: Skipping view %s as it is marked as disabled", Id)
             continue
 
         pids = findPids(view)
@@ -104,29 +105,27 @@ def setup(self, layouts):
         # Create our callbacks
         if view["dynamic"].keys():
             dynamicConfig = view["dynamic"]
-            if not dynamicConfig["enabled"]:
-                continue
-            dynamicConfig["viewId"] = Id
+            if dynamicConfig["enabled"]:
+                dynamicConfig["viewId"] = Id
 
-            # Keep track of our dynamic PIDs
-            dynamicPID = PID(**dynamicConfig)
-            if not dynamicPID.value:
-                return (0, "Couldn't set dynamic PID")
-            # We only will ever have one dynamic PID right?
-            dynamicPids[Id] = dynamicPID
+                # Keep track of our dynamic PIDs
+                dynamicPID = PID(**dynamicConfig)
+                if not dynamicPID.value:
+                    Logger.error("GUI: Bailing out: Couldn't set dynamic PID")
+                    return (0, "Couldn't set dynamic PID")
+                # We only will ever have one dynamic PID right?
+                dynamicPids[Id] = dynamicPID
 
-            # Replace our string pid value with our new object
-            dynamicConfig["pid"] = dynamicPID
+                # Replace our string pid value with our new object
+                dynamicConfig["pid"] = dynamicPID
 
-            dynamicObj = Dynamic()
-            (ret, msg) = dynamicObj.new(**dynamicConfig)
-            if ret:
-                callbacks.setdefault("dynamic", []).append(dynamicObj)
-            else:
-                Logger.error(msg)
-                callbacks.setdefault("dynamic", [])
-        else:
-            callbacks.setdefault("dynamic", [])
+                dynamicObj = Dynamic()
+                (ret, msg) = dynamicObj.new(**dynamicConfig)
+                if ret:
+                    callbacks.setdefault("dynamic", []).append(dynamicObj)
+                else:
+                    Logger.error(msg)
+                    callbacks.setdefault("dynamic", [])
 
         if len(view["alerts"]) > 0:
             for alert in view["alerts"]:
@@ -155,7 +154,6 @@ def setup(self, layouts):
             xPosition = [ 0.20, 0.5, 0.80 ]
 
         for count, widget in enumerate(view["gauges"]):
-
             if count > 3:
                 break
 
@@ -178,14 +176,14 @@ def setup(self, layouts):
                 module.buildComponent(
                     workingPath=self.WORKING_PATH,
                     container=subcontainer,
-                    view_id=int(Id),
+                    view_id=Id,
                     xPosition=xPosition[count],
                     **widget,
                     **view,
                 )
             )
 
-        containers.append(container)
+        containers[Id] = container
 
         views[Id] = {
             "app": Background(
@@ -206,17 +204,17 @@ def setup(self, layouts):
                     views[viewId]["pids"].append(pid)
 
         # Now we can generate a complete byte array for the PIDs
-        if len(units) > 0 and len(views[viewId]["pids"]) > 0:
-            if list(units.values())[0] != "n/a" and views[viewId]["pids"][0] != "n/a":
-                views[viewId]["pid_byte_code"] = buildUpdateRequirementsBytearray(
-                    views[viewId]["pids"]
-                )
-            else:
-                views[viewId]["pid_byte_code"] = ""
+        if len(views[viewId]["pids"]) > 0 or views[viewId]["pids"][0] != "n/a":
+            views[viewId]["pid_byte_code"] = buildUpdateRequirementsBytearray(
+                views[viewId]["pids"]
+            )
+        else:
+            Logger.info("GUI: No pid_byte_code generated for view #%s", viewId)
+            views[viewId]["pid_byte_code"] = ""
+
     return ([views, containers, callbacks], "Successful setup")
 
 
-@mainthread
 def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     """Build all our gauges and widgets from the config file provided to self"""
     self.success = 0
@@ -261,6 +259,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         self.pids,
         self.pid_byte_code,
     ) = self.views[next(iter(self.views))].values()
+    # Grabbing our first key ^
 
     if self.first_iteration and dataSource and dataSource is not Test:
         # Initialize our hardware set-up and verify everything is peachy
@@ -300,7 +299,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
             Logger.error(msg)
 
     self.app.add_widget(self.background)
-    self.background.add_widget(self.containers[0])
+    self.background.add_widget(self.containers[next(iter(self.containers))])
     self.background.add_widget(self.alerts)
 
     # Unschedule our previous clock event

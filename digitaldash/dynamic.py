@@ -1,7 +1,6 @@
 """Dynamic class used for changing views"""
 from typing import Tuple
 from kivy.logger import Logger
-from kivy.clock import mainthread
 from digitaldash.pid import PID
 from digitaldash.base import convertOpToBytes
 
@@ -69,7 +68,6 @@ class Dynamic:
 
         return (1, "New dynamic object successfully created")
 
-    @mainthread
     def change(self, app) -> bool:
         """
         Perform view change
@@ -78,6 +76,7 @@ class Dynamic:
           self (<digitaldash.dynamic>) : The current Dynamic object
           app (<GUI>) : The main application object
         """
+        Logger.info("GUI: Dynamic change happening for view #%s", self.viewId)
         app.app.clear_widgets()
         app.background.clear_widgets()
         app.alerts.clear_widgets()
@@ -90,7 +89,7 @@ class Dynamic:
             app.pid_byte_code,
         ) = app.views[str(self.viewId)].values()
 
-        app.background.add_widget(app.containers[self.viewId])
+        app.background.add_widget(app.containers[str(self.viewId)])
         app.background.add_widget(app.alerts)
 
         # Sort our dynamic and alerts callbacks by priority
