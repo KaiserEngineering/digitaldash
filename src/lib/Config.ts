@@ -46,6 +46,19 @@ export function ReadConfig(Force: boolean = false) {
 }
 
 export function UpdateConfig( Config: Config ): Config {
+  // Remove gauges that aren't defined
+  // TODO: We should remove this and fix the real issue
+  // How are blank gauges getting into the config?
+  for ( var id in Object.keys( Config.views ) ) {
+    let gauges = [];
+    Config.views[id].gauges.forEach(function(gauge, i) {
+      if ( gauge.pid ) {
+        gauges.push(gauge);
+      }
+    });
+    Config.views[id].gauges = gauges;
+  }
+
   fs.writeFileSync( `${config_path}/etc/config.json`, JSON.stringify( Config, null, 2 ) );
 
   configCache = ReadConfig(true);

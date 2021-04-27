@@ -34,19 +34,19 @@
   }
 
   function normalizeGauges(config=undefined) {
-    let tempView = config ? config : view;
+    let temp = config ? config : view;
 
-    if ( tempView ) {
+    if ( temp ) {
       // Ensure we always have 3 entries in our array
-      while ( tempView.gauges.length < 3 ) {
-        tempView.gauges.push({
-          "theme"       : "",
-          "unit"        : "",
-          "pid"         : ""
+      while ( temp.gauges.length < 3 ) {
+        temp.gauges.push({
+          "theme"       : undefined,
+          "unit"        : undefined,
+          "pid"         : undefined
         });
       }
     }
-    return tempView;
+    return temp;
   }
   view = normalizeGauges();
 
@@ -111,18 +111,22 @@
   }
 
   function handleSubmit(event) {
+    // TODO: Eventually re-enable this when we track down the
+    // bug with empty gauges getting into the config
+    // See I#98
+
     // We need a seperate array to account for empty gauges
-    let gauges = [];
-    view.gauges.forEach((gauge, i) => {
-      // Slip if we don't have a value for PID
-      if ( gauge.pid ) {
-          gauge.theme = theme;
-          gauges.push(gauge);
-      }
-    });
+    // let gauges = [];
+    // view.gauges.forEach((gauge, i) => {
+    //   // Slip if we don't have a value for PID
+    //   if ( gauge.pid ) {
+    //       gauge.theme = theme;
+    //       gauges.push(gauge);
+    //   }
+    // });
 
     let tempView = view;
-    tempView.gauges = gauges;
+    // tempView.gauges = gauges;
     configuration.views[id] = tempView;
 
     if ( configuration.views[id].dynamic && !configuration.views[id].dynamic.pid ) {
@@ -136,7 +140,7 @@
       .then(d => d.json())
       .then(d => {
         $session.configuration = d.config;
-        view = normalizeGauges( $session.configuration.views[id] );
+        view = normalizeGauges( d.config.views[id] );
 
         $session.actions = [{
           id    : $session.count,
