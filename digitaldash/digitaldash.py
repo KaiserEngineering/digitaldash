@@ -144,10 +144,6 @@ def setup(self, layouts):
         objectsToUpdate = []
 
         numGauges = len(view["gauges"]) or 1
-        # Get our % width that each gauge should claim
-        # The 0.05 is our squish value to move gauges inwards
-        percentWidth = (1 / numGauges) - 0.05
-        Logger.info(numGauges)
 
         if( numGauges == 1 ):
             xPosition = [ 0.5 ]
