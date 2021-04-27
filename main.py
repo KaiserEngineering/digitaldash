@@ -111,6 +111,7 @@ class GUI(App):
         """
         self.configFile = configFile
         self.WORKING_PATH = WORKING_PATH
+        self.count = 0
 
         self.success = 1
         self.status  = ''
@@ -149,6 +150,11 @@ class GUI(App):
         doesn't beat the race condition.
         """
         ret = False
+
+        self.count = self.count + 1
+        if self.count < 8:
+            return ret
+
         try:
             # Check if any dynamic changes need to be made
             if libdigitaldash.check(
@@ -160,6 +166,10 @@ class GUI(App):
                 "GUI: Firmware did not provide data value for key: %s",
                 callback.pid.value,
             )
+
+        if ret:
+           self.count = 0
+
         return ret
 
     @mainthread
