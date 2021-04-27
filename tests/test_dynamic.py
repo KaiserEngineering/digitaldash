@@ -20,8 +20,7 @@ class Application:
     def __init__(self):
         pass
 
-
-def loopy(self):
+def loop(self):
     pass
 
 
@@ -32,7 +31,7 @@ def my_application():
 
     self = Application()
     self.WORKING_PATH = working_path
-    self.loop = loopy
+    self.loop = loop
     self.configFile = "etc/configs/dynamic.json"
     self.app = AnchorLayout()
     self.data_source = t

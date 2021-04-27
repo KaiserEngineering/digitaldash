@@ -14,9 +14,8 @@ from static.constants import KE_PID
 from kivy.uix.anchorlayout import AnchorLayout
 from digitaldash.digitaldash import buildFromConfig
 from digitaldash.pid import PID
-from kivy.clock import mainthread
 
-
+import pytest
 import pathlib
 
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
@@ -24,7 +23,6 @@ config.setWorkingPath(( working_path ))
 
 pid = PID(pid="0x010C", unit="PID_UNITS_RPM")
 
-@mainthread
 def test_needle_simple():
     """Basic needle tests"""
     needles = (
@@ -86,7 +84,6 @@ def test_needle_simple():
             + " component sets the correct rotational value with smoothing (not true value)"
         )
 
-@mainthread
 def test_needle_min_max():
     # Test that Min and Max is set correctly based on constants.py
     needle = NeedleRadial(
@@ -98,7 +95,6 @@ def test_needle_min_max():
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Min"] == needle.minValue
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Max"] == needle.maxValue
 
-@mainthread
 def test_label_simple():
     """Basic label tests"""
     label = KELabel(
@@ -163,7 +159,6 @@ def test_label_simple():
 pid2 = PID(pid="0x010B", unit="PID_UNITS_KPA")
 
 
-@mainthread
 def test_alert_simple():
     """Basic alerts tests"""
     alert = Alert(
@@ -184,24 +179,27 @@ class Application:
     def __init__(self):
         self.background_source = "woof"
 
-@mainthread
-def test_build():
-    """Test build process"""
-    config.setWorkingPath(working_path)
+def loop():
+  pass
 
-    def loop():
-        pass
+@pytest.fixture
+def my_application():
+    config.setWorkingPath(working_path)
 
     self = Application()
     self.WORKING_PATH = working_path
     self.loop = loop
     self.configFile = None
-    self.app = AnchorLayout()
     self.data_source = None
+    self.app = AnchorLayout()
     self.working_path = str(pathlib.Path(__file__).parent.absolute())
 
     buildFromConfig(self)
-    background = self.app.children[0]
+    return self
+
+def test_build(my_application):
+    """Test build process"""
+    background = my_application.app.children[0]
 
     container = background.children[1].children
     assert len(container) == 3
