@@ -131,6 +131,12 @@
        configuration.views[id].dynamic = {};
     }
 
+    view.gauges.forEach((gauge, i) => {
+      if ( gauge.pid ) {
+          view.gauges[i].theme = theme;
+      }
+    });
+
     fetch("/api/config", {
         method : "POST",
         body   : JSON.stringify( configuration )
@@ -140,6 +146,7 @@
         $session.configuration = d.config;
         configuration = d.config;
         view = normalizeGauges( d.config.views[id] );
+        theme = view.gauges[0].theme;
 
         $session.actions = [{
           id    : $session.count,
