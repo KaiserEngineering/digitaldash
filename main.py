@@ -229,8 +229,8 @@ class GUI(App):
                             self.alerts.add_widget(my_callback)
                     elif callback.parent:
                         self.alerts.remove_widget(callback)
-
-        self.count = self.count + 1
+        else:
+            self.count = self.count + 1
         self.update_values(data)
 
 
