@@ -18,7 +18,7 @@
   import Notifications from '$lib/Notifications.svelte';
 
   export let segment = undefined;
-  export let title   = "KE!"
+  export let title   = "KE Digital Dash"
 </script>
 
 <svelte:head>
