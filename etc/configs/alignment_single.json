@@ -19,7 +19,7 @@
     "1": {
         "name":"Don't see me",
         "enabled" : false,
-        "background":"bg.jpg",
+        "background":"black.png",
         "dynamic": {
             "enabled": true,
             "pid": "0x010C",

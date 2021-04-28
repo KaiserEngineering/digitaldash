@@ -4,7 +4,7 @@
       "name":"single config",
       "enabled" : true,
       "default" : 1,
-      "background":"bg.jpg",
+      "background":"black.png",
       "dynamic": {},
       "alerts": [],
       "gauges": [
@@ -18,7 +18,7 @@
     "1": {
         "name":"Don't see me",
         "enabled" : false,
-        "background":"bg.jpg",
+        "background":"black.png",
         "dynamic": {
             "enabled": true,
             "pid": "0x010C",

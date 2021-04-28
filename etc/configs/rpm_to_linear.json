@@ -4,7 +4,7 @@
         "enabled" : true,
         "default" : 1,
         "name":"rpm to linear config",
-        "background":"bg.jpg",
+        "background":"black.png",
         "dynamic": {
             "enabled": true,
             "pid": "0x010C",
@@ -35,7 +35,7 @@
         "1" : {
           "enabled" : true,
           "name": "linear",
-          "background":"banner1.jpg",
+          "background":"black.jpg",
           "dynamic": {
             "enabled": true,
             "pid": "0x010C",

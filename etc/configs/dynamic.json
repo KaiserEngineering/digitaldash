@@ -4,7 +4,7 @@
       "name":"dynamic view 1",
       "enabled" : true,
       "default" : 1,
-      "background":"bg.jpg",
+      "background":"black.png",
         "dynamic": {
           "enabled": false,
           "pid": "0x220461",
@@ -27,7 +27,7 @@
       "name":"dynamic view 2",
       "enabled" : true,
       "default" : 0,
-      "background":"bg.jpg",
+      "background":"black.png",
         "dynamic": {
           "enabled": true,
           "pid": "0x220461",

@@ -4,7 +4,7 @@
         "name":"alerts config",
         "enabled" : true,
         "default" : 1,
-        "background":"bg.jpg",
+        "background":"black.png",
           "dynamic": {},
           "alerts": [
             {
@@ -36,7 +36,7 @@
       "name":"alerts config two",
       "enabled" : true,
       "default" : 0,
-      "background":"bg.jpg",
+      "background":"black.png",
         "dynamic": {},
         "alerts": [
           {

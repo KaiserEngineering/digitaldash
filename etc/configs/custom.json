@@ -5,7 +5,7 @@
           "name":"Custom config",
           "enabled" : true,
           "default" : 1,
-          "background":"bg.jpg",
+          "background":"black.png",
           "dynamic": {},
           "alerts": [],
           "gauges": [
