@@ -199,23 +199,6 @@ KE_PID = {
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "2"},
         },
     },
-    "0x2203CA": {
-        "name": "MANIFOLD_CHARGE_TEMPERATURE",
-        "shortName": "MCT",
-        "shortDesc": "Manifold Charge Temp",
-        "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
-            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
-        },
-    },
-    "0x2203E8": {
-        "name": "OCTANE_ADJUST_RATIO",
-        "shortName": "OAR",
-        "shortDesc": "Octane Adjust Ratio",
-        "units": {
-            "PID_UNITS_RATIO": {"Min": -1, "Max": 1, "decimals": "2"},
-        },
-    },
     "0x22057D": {
         "name": "AMBIENT_AIR_TEMPERATURE",
         "shortName": "AAT",
