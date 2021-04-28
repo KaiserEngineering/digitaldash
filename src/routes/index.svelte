@@ -136,12 +136,4 @@
     margin-top: 1em;
   }
 
-  .center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    top: 50%;
-    width: 100%;
-  }
-
 </style>
