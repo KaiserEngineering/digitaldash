@@ -151,10 +151,6 @@ class GUI(App):
         """
         ret = False
 
-        self.count = self.count + 1
-        if self.count < 8:
-            return ret
-
         try:
             # Check if any dynamic changes need to be made
             if libdigitaldash.check(
@@ -166,9 +162,6 @@ class GUI(App):
                 "GUI: Firmware did not provide data value for key: %s",
                 callback.pid.value,
             )
-
-        if ret:
-           self.count = 0
 
         return ret
 
@@ -209,31 +202,36 @@ class GUI(App):
             dataSource.service(app=self, pids=self.pids),
         )
 
-        dynamic_change = False
-        # Check dynamic gauges before any alerts in case we make a change
-        for dynamic in self.dynamic_callbacks:
-            if self.current == dynamic.viewId:
-                pass
-            else:
-                my_callback = self.check_callback(dynamic, data)
-
-            if my_callback:
-                self.change(self, my_callback)
-                dynamic_change = True
-                break
-
-        # Check our alerts if no dynamic changes have occured
-        if not dynamic_change:
-            for callback in self.alert_callbacks:
-                my_callback = self.check_callback(callback, data)
+        # Buffer our alerts and dynamic updates
+        if self.count > 8:
+            dynamic_change = False
+            # Check dynamic gauges before any alerts in case we make a change
+            for dynamic in self.dynamic_callbacks:
+                if self.current == dynamic.viewId:
+                    pass
+                else:
+                    my_callback = self.check_callback(dynamic, data)
 
                 if my_callback:
-                    if callback.parent is None:
-                        self.alerts.add_widget(my_callback)
-                elif callback.parent:
-                    self.alerts.remove_widget(callback)
+                    self.count = 0
+                    self.change(self, my_callback)
+                    dynamic_change = True
+                    break
 
-            self.update_values(data)
+            # Check our alerts if no dynamic changes have occured
+            if not dynamic_change:
+                for callback in self.alert_callbacks:
+                    my_callback = self.check_callback(callback, data)
+
+                    if my_callback:
+                        self.count = 0
+                        if callback.parent is None:
+                            self.alerts.add_widget(my_callback)
+                    elif callback.parent:
+                        self.alerts.remove_widget(callback)
+
+        self.count = self.count + 1
+        self.update_values(data)
 
 
 if __name__ == "__main__":
