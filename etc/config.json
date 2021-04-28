@@ -1,56 +1,65 @@
 {
   "views": {
     "0": {
-      "name": "Some view",
+      "name": "Daily Driver",
       "enabled": true,
       "default": 1,
-      "background": "CarbonFiber.png",
-      "alerts": [],
+      "background": "Blue Purple Gradient.png",
+      "alerts": [
+        {
+          "message": "Shift!",
+          "op": ">=",
+          "priority": 0,
+          "unit": "PID_UNITS_RPM",
+          "value": "6500",
+          "pid": "0x010C"
+        }
+      ],
       "dynamic": {
-        "pid": "0x0133",
-        "op": ">=",
+        "pid": "0x016F",
+        "op": "<=",
         "enabled": true,
-        "priority": 4,
-        "value": "1234",
-        "unit": "PID_UNITS_KPA"
+        "priority": 0,
+        "value": "10",
+        "unit": "PID_UNITS_PSI"
       },
       "gauges": [
         {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_CELCIUS",
-          "pid": "0x0105"
+          "theme": "Stock ST",
+          "unit": "PID_UNITS_FAHRENHEIT",
+          "pid": "0x220461"
         },
         {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_KPA",
-          "pid": "0x010B"
+          "theme": "Stock ST",
+          "unit": "PID_UNITS_PSI",
+          "pid": "0x016F"
         },
         {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_CELCIUS",
+          "theme": "Stock ST",
+          "unit": "PID_UNITS_FAHRENHEIT",
           "pid": "0x015C"
         }
       ]
     },
     "1": {
-      "name": "Test",
+      "name": "Boost",
       "enabled": true,
       "default": 0,
-      "background": "bg.jpg",
+      "background": "Blue Purple Gradient.png",
       "alerts": [],
       "dynamic": {
-        "pid": "0x010C",
+        "pid": "0x016F",
         "op": ">",
         "enabled": true,
-        "unit": "PID_UNITS_RPM",
-        "value": "1",
-        "priority": 5
+        "unit": "PID_UNITS_PSI",
+        "value": "10",
+        "priority": 10
       },
       "gauges": [
         {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_KMH",
-          "pid": "0x010D"
+          "theme": "Linear",
+          "unit": "PID_UNITS_PSI",
+          "pid": "0x016F"
         }
       ]
     }
