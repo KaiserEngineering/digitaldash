@@ -76,8 +76,7 @@
 
             <div class="col-6 text-left">
               {#if views[id].gauges[0]}
-                <img class="image-overlay" src="images/{views[id].gauges[0].theme}/gauge.png">
-                <img class="image-overlay" src="images/{views[id].gauges[0].theme}/needle.png">
+                <img class="mx-4 image-overlay my-auto" src="images/{views[id].gauges[0].theme}/preview.png">
               {/if}
             </div>
 
@@ -136,4 +135,13 @@
     padding: 0.5em;
     margin-top: 1em;
   }
+
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50%;
+    width: 100%;
+  }
+
 </style>
