@@ -70,7 +70,7 @@
         <a href="/edit/{id}">
 
           <div class="card transparent">
-            <img class="card-img-top" src="images/Background/{views[id].background}" alt="view background">
+            <img class="background-preview" src="images/Background/{views[id].background}" alt="view background">
 
             <div class="row card-img-overlay">
 
@@ -125,6 +125,10 @@
     left: 0;
     padding: 1rem;
     border-radius: calc(.25rem - 1px);
+  }
+
+  .background-preview {
+    height: 13em;
   }
 
   .card {
