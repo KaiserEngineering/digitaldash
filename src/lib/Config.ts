@@ -1,7 +1,6 @@
 import fs from 'fs';
 
-const env = process.env;
-const config_path: String = env.KEGUIHome
+const config_path: String = import.meta.env.VITE_KEGUIHome;
 
 export interface Config {
   views: { [key: string]: View };

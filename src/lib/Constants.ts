@@ -3,8 +3,7 @@ import util from 'util';
 const execute = util.promisify(exec);
 import fs from 'fs';
 
-const env = process.env;
-const constants_path: String = env.KEGUIHome;
+const constants_path: String = import.meta.env.VITE_KEGUIHome;
 let constantsCache: any;
 let themesCache: any;
 
