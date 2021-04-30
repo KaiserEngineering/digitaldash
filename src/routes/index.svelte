@@ -84,7 +84,7 @@
                 {#each views[id].gauges as gauge}
                   {#if gauge && gauge.pid}
                     <div class="text-center">
-                      <p class="pid">{ KE_PIDS[ gauge.pid ].shortName ? KE_PIDS[ gauge.pid ].shortName : "Undefined" }</p>
+                      <p class="pid">{ KE_PIDS[ gauge.pid ] ? KE_PIDS[ gauge.pid ].shortName ? KE_PIDS[ gauge.pid ].shortName : "Undefined" : "Undefined" }</p>
                     </div>
                   {/if}
                 {/each}
