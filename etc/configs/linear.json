@@ -9,7 +9,7 @@
       "alerts": [],
       "gauges": [
         {
-          "theme": "Linear",
+          "theme": "Bar (Red)",
           "pid": "0x010C",
           "unit" : "PID_UNITS_RPM"
         }
