@@ -57,7 +57,7 @@
       },
       "gauges": [
         {
-          "theme": "Linear",
+          "theme": "Bar (Red)",
           "unit": "PID_UNITS_PSI",
           "pid": "0x016F"
         }
