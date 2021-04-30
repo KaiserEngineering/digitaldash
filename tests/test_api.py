@@ -39,8 +39,8 @@ def test_needle_simple():
             working_path=working_path,
         ),
         NeedleLinear(
-            theme='Linear',
-            **config.getThemeConfig( 'Linear' ),
+            theme='Bar (Red)',
+            **config.getThemeConfig( 'Bar (Red)' ),
             pid=pid,
             working_path=working_path,
         ),
