@@ -147,10 +147,13 @@ def setup(self, layouts):
 
         if numGauges == 1:
             xPosition = [ 0.5 ]
+            yTop = [ 0.99 ]
         elif numGauges == 2:
             xPosition = [ 0.33, 0.66 ]
+            yTop = [ 0.985, 0.99 ]
         elif numGauges == 3:
             xPosition = [ 0.20, 0.5, 0.80 ]
+            yTop = [ 0.98, 0.985, 0.99 ]
 
         for count, widget in enumerate(view["gauges"]):
             if count > 3:
@@ -159,7 +162,7 @@ def setup(self, layouts):
             # This handles our gauge positions, see the following for reference:
             # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
             subcontainer = RelativeLayout(
-                pos_hint={'top': 0.99, 'center_x': xPosition[count]},
+                pos_hint={'top': yTop[count], 'center_x': xPosition[count]},
                 size_hint_max_y=200,
                 size_hint_max_x=Window.width / numGauges,
             )
