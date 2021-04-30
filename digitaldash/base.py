@@ -4,6 +4,9 @@
 # pylint: disable=unused-import
 
 from typing import List
+
+from kivy.logger import Logger
+
 from etc import config
 from digitaldash.gauge import Gauge
 from digitaldash.face import Face
@@ -12,7 +15,6 @@ from digitaldash.keLabel import KELabel
 from digitaldash.needles.ellipse import NeedleEllipse as Ellipse
 from digitaldash.needles.radial import NeedleRadial as Radial
 from digitaldash.needles.linear import NeedleLinear as Linear
-
 
 class Base:
     """Base class used to provide helper method for creating a gauge."""
@@ -58,6 +60,17 @@ class Base:
         # Create our labels
         for labelConfig in themeConfig["labels"]:
             labelConfig["pid"] = ARGS["pid"]
+
+            # FIXME
+            # This is a bandaid on the issue of spacing for linear gauges
+            if ARGS['skipLinearMinMax'] and themeConfig["module"] and \
+              labelConfig["default"] in ['Min: ', 'Max: ']:
+                Logger.info(
+                  'GUI: Received skipLinearMinMax flag, \
+                    removing Min/Max labels from Linear gauges'
+                )
+                continue
+            # FIXME
 
             labelConfig = {**ARGS, **labelConfig}
 

@@ -96,6 +96,17 @@ def setup(self, layouts):
             Logger.info("GUI: Skipping view %s as it is marked as disabled", Id)
             continue
 
+        # FIXME
+        # This is a bandaid on the issue of spacing for linear gauges
+        skipLinearMinMax = False
+        linearCount = 0
+        for gauge in view['gauges']:
+            if gauge['theme'] == 'Bar (Red)':
+                linearCount = linearCount + 1
+        if linearCount > 1:
+            skipLinearMinMax = True
+        # FIXME
+
         pids = findPids(view)
         units = {**units, **findUnits(view)}
 
@@ -176,6 +187,7 @@ def setup(self, layouts):
                 module = Base()
             objectsToUpdate.append(
                 module.buildComponent(
+                    skipLinearMinMax=skipLinearMinMax,
                     workingPath=self.WORKING_PATH,
                     container=subcontainer,
                     view_id=Id,
