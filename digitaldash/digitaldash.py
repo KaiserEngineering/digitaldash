@@ -140,6 +140,8 @@ def setup(self, layouts):
         if len(view["alerts"]) > 0:
             for alert in view["alerts"]:
                 alert["viewId"] = Id
+                if not alert['pid']:
+                    continue
 
                 # Get our already created PID object
                 for pid in pids:
