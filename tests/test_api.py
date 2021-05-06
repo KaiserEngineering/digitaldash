@@ -14,6 +14,7 @@ from static.constants import KE_PID
 from kivy.uix.anchorlayout import AnchorLayout
 from digitaldash.digitaldash import buildFromConfig
 from digitaldash.pid import PID
+from main import GUI
 
 import pytest
 import pathlib
@@ -173,22 +174,12 @@ def test_alert_simple():
     assert alert.text == "Hello, from tests", print("Do not set alert value")
 
 
-class Application:
-    """Class for replacing 'self' from main.py"""
-
-    def __init__(self):
-        self.background_source = "woof"
-
-def loop():
-  pass
-
 @pytest.fixture
 def my_application():
     config.setWorkingPath(working_path)
 
-    self = Application()
+    self = GUI()
     self.WORKING_PATH = working_path
-    self.loop = loop
     self.configFile = None
     self.data_source = None
     self.app = AnchorLayout()

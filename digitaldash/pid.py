@@ -20,6 +20,8 @@ class PID:
         self.value = kwargs.get("pid", None)
         self.unit = PID_UNITS[kwargs.get("unit", "")]
         self.unitLabel = kwargs.get("unit", "")
+        self.minObserved = 9999
+        self.maxObserved = -9999
 
         self.range = (
             KE_PID.get(self.value).get("units").get(self.unitLabel) if self.unit else ""
