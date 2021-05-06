@@ -6,6 +6,7 @@
 # pylint: disable=too-many-locals
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-statements
+# pylint: disable=fixme
 
 
 from kivy.uix.floatlayout import FloatLayout
@@ -179,8 +180,10 @@ def setup(self, layouts):
             if count > 3:
                 break
             if not gauge['pid']:
-              Logger.error('GUI: Skipping gauge %s for view %s as not PID found', count, Id)
-              continue
+                Logger.error(
+                  'GUI: Skipping gauge %s for view %s as not PID found', count, Id
+                )
+                continue
 
             # This handles our gauge positions, see the following for reference:
             # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
