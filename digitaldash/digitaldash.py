@@ -44,11 +44,13 @@ def findPids(view):
     """Find all PIDs in a view"""
     pidsDict = {}
     for i, gauge in enumerate(view["gauges"]):
+        if not gauge['pid']:
+            continue
         pidsDict[gauge["pid"]] = PID(**gauge)
         view["gauges"][i]["pid"] = pidsDict[gauge["pid"]]
 
     for i, alert in enumerate(view["alerts"]):
-        if alert["pid"] in pidsDict:
+        if not alert["pid"] or alert["pid"] in pidsDict:
             continue
         pidsDict[alert["pid"]] = PID(**alert)
         view["alerts"][i]["pid"] = pidsDict[alert["pid"]]
@@ -60,11 +62,16 @@ def findUnits(view):
     """Create a dictionary of PIDs and their corresponding unit"""
     units = {}
     for gauge in view["gauges"]:
+        if not gauge['pid']:
+            continue
         units[gauge["pid"]] = gauge["unit"]
     for alert in view["alerts"]:
+        if not alert['pid']:
+            continue
         units[alert["pid"]] = alert["unit"]
     if view["dynamic"] and view["dynamic"]["enabled"]:
-        units[view["dynamic"]["pid"]] = view["dynamic"]["unit"]
+        if view["dynamic"]["pid"]:
+            units[view["dynamic"]["pid"]] = view["dynamic"]["unit"]
     return units
 
 
@@ -140,6 +147,8 @@ def setup(self, layouts):
         if len(view["alerts"]) > 0:
             for alert in view["alerts"]:
                 alert["viewId"] = Id
+                if not alert['pid']:
+                    continue
 
                 # Get our already created PID object
                 for pid in pids:
@@ -166,9 +175,12 @@ def setup(self, layouts):
             xPosition = [ 0.20, 0.5, 0.80 ]
             yTop = [ 0.98, 0.985, 0.99 ]
 
-        for count, widget in enumerate(view["gauges"]):
+        for count, gauge in enumerate(view["gauges"]):
             if count > 3:
                 break
+            if not gauge['pid']:
+              Logger.error('GUI: Skipping gauge %s for view %s as not PID found', count, Id)
+              continue
 
             # This handles our gauge positions, see the following for reference:
             # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
@@ -182,7 +194,7 @@ def setup(self, layouts):
             module = None
             try:
                 # This loads any standalone modules
-                module = globals()[widget["module"]]()
+                module = globals()[gauge["module"]]()
             except KeyError:
                 module = Base()
             objectsToUpdate.append(
@@ -192,7 +204,7 @@ def setup(self, layouts):
                     container=subcontainer,
                     view_id=Id,
                     xPosition=xPosition[count],
-                    **widget,
+                    **gauge,
                     **view,
                 )
             )
@@ -218,7 +230,7 @@ def setup(self, layouts):
                     views[viewId]["pids"].append(pid)
 
         # Now we can generate a complete byte array for the PIDs
-        if len(views[viewId]["pids"]) > 0 or views[viewId]["pids"][0] != "n/a":
+        if len(views[viewId]["pids"]) > 0:
             views[viewId]["pid_byte_code"] = buildUpdateRequirementsBytearray(
                 views[viewId]["pids"]
             )
