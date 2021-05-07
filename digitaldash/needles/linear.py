@@ -1,6 +1,6 @@
 """Linear!"""
 from kivy.properties import NumericProperty
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ColorProperty
 from kivy.uix.stencilview import StencilView
 from kivy.core.window import Window
 from digitaldash.needles.needle import Needle
@@ -18,11 +18,11 @@ class NeedleLinear(Needle, StencilView):
     g = NumericProperty()
     b = NumericProperty()
     a = NumericProperty()
+    color = ColorProperty(defaultvalue='red')
 
     def __init__(self, **kwargs):
         super(NeedleLinear, self).__init__()
         self.setUp(**kwargs)
-        (self.r, self.g, self.b, self.a) = (1, 0, 0, 0.7)
         self.type = "Linear"
         self.padding = 100
         self.xOffset = self.padding
