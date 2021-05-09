@@ -27,8 +27,6 @@ class KELabel(Label):
             (default is nothing)
         """
         super().__init__()
-        self.minObserved = 9999
-        self.maxObserved = -9999
         self.default = args.get("default", "")
         self.configColor = args.get("color", (1, 1, 1, 1))  # White
         self.color = self.configColor
@@ -95,13 +93,13 @@ class KELabel(Label):
             value = float(value)
 
             if self.default == "Min: ":
-                if self.minObserved > value:
-                    self.minObserved = value
-                    self.text = ("{0:.%sf}" % (self.decimals)).format(value)
+                if self.pid.minObserved > value:
+                    self.pid.minObserved = value
+                self.text = ("{0:.%sf}" % (self.decimals)).format(self.pid.minObserved)
             elif self.default == "Max: ":
-                if self.maxObserved < value:
-                    self.maxObserved = value
-                    self.text = ("{0:.%sf}" % (self.decimals)).format(value)
+                if self.pid.maxObserved < value:
+                    self.pid.maxObserved = value
+                self.text = ("{0:.%sf}" % (self.decimals)).format(self.pid.maxObserved)
             else:
                 self.text = self.default + ("{0:.%sf}" % (self.decimals)).format(value)
                 if self.unitString:

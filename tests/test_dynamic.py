@@ -3,6 +3,7 @@
 
 import digitaldash.test as KETester
 from digitaldash.digitaldash import buildFromConfig
+from main import GUI
 from etc import config
 from kivy.clock import mainthread, Clock
 from kivy.config import Config
@@ -14,24 +15,14 @@ Config.set('kivy', 'kivy_clock', 'interrupt')
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 config.setWorkingPath(( working_path ))
 
-class Application:
-    """Class for replacing 'self' from main.py"""
-
-    def __init__(self):
-        pass
-
-def loop(self):
-    pass
-
 
 @pytest.fixture
 def my_application():
     t = KETester.Test()
     config.setWorkingPath(working_path)
 
-    self = Application()
+    self = GUI()
     self.WORKING_PATH = working_path
-    self.loop = loop
     self.configFile = "etc/configs/dynamic.json"
     self.app = AnchorLayout()
     self.data_source = t

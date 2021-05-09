@@ -40,20 +40,23 @@ class Background(AnchorLayout):
         )
         self.source = f"{WorkingPath + '/static/imgs/Background/'}{BackgroundSource}"
 
-
+# We want this variable to be shared across views
+pidsDict = {}
 def findPids(view):
     """Find all PIDs in a view"""
-    pidsDict = {}
     for i, gauge in enumerate(view["gauges"]):
         if not gauge['pid']:
             continue
-        pidsDict[gauge["pid"]] = PID(**gauge)
+      # Do not create a new PID, as we want to share reference objects for same PIDs
+        if not gauge["pid"] in pidsDict:
+            pidsDict[gauge["pid"]] = PID(**gauge)
         view["gauges"][i]["pid"] = pidsDict[gauge["pid"]]
 
     for i, alert in enumerate(view["alerts"]):
-        if not alert["pid"] or alert["pid"] in pidsDict:
+        if not alert["pid"]:
             continue
-        pidsDict[alert["pid"]] = PID(**alert)
+        if not alert["pid"] in pidsDict:
+            pidsDict[alert["pid"]] = PID(**alert)
         view["alerts"][i]["pid"] = pidsDict[alert["pid"]]
 
     return list(pidsDict.values())
@@ -179,7 +182,7 @@ def setup(self, layouts):
         for count, gauge in enumerate(view["gauges"]):
             if count > 3:
                 break
-            if not gauge['pid']:
+            if not gauge['pid'] or not isinstance(gauge['pid'], PID):
                 Logger.error(
                   'GUI: Skipping gauge %s for view %s as not PID found', count, Id
                 )
