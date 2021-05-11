@@ -33,6 +33,9 @@ export const routes = [
 	// src/routes/api/config.ts
 	[/^\/api\/config\/?$/],
 
+	// src/routes/api/debug.ts
+	[/^\/api\/debug\/?$/],
+
 	// src/routes/api/user.ts
 	[/^\/api\/user\/?$/]
 ];

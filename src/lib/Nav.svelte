@@ -21,6 +21,9 @@
             <li class="nav-item">
               <a class:active="{segment === 'advanced'}" class="nav-link" href="/advanced">Advanced</a>
             </li>
+            <li class="nav-item">
+              <a class:active="{segment === 'debug'}" class="nav-link" href="/debug">Debug</a>
+            </li>
           </ul>
         </div>
       </div>
