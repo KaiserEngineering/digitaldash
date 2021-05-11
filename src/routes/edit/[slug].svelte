@@ -263,7 +263,7 @@
 
                 <div class="col-sm-3 col-12 pl-1 pr-1">
                   <label class="label" for="alertValue">Value</label>
-                  <input required bind:value={alert.value} class="form-control" type="text" name="alertValue"/>
+                  <input required bind:value={alert.value} class="form-control" type="number" name="alertValue"/>
                 </div>
 
                 <div class="col-sm-3 col-12 pl-1 pr-1">
@@ -348,7 +348,7 @@
 
             <div class="col-sm-3 col-12">
               <label for="dynamicValue">Value</label>
-              <input required bind:value={view.dynamic.value} disabled={!view.dynamic.enabled} class="form-control" type="text" name="dynamicValue"/>
+              <input required bind:value={view.dynamic.value} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicValue"/>
             </div>
 
             <div class="col-sm-3 col-12">
