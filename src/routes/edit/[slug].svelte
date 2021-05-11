@@ -348,12 +348,12 @@
 
             <div class="col-sm-3 col-12">
               <label for="dynamicValue">Value</label>
-              <input bind:value={view.dynamic.value} disabled={!view.dynamic.enabled} class="form-control" type="text" name="dynamicValue"/>
+              <input required bind:value={view.dynamic.value} disabled={!view.dynamic.enabled} class="form-control" type="text" name="dynamicValue"/>
             </div>
 
             <div class="col-sm-3 col-12">
               <label for="dynamicOP">Operand</label>
-              <select bind:value={view.dynamic.op} name="dynamicOP" disabled={!view.dynamic.enabled} class="form-control">
+              <select required bind:value={view.dynamic.op} name="dynamicOP" disabled={!view.dynamic.enabled} class="form-control">
                 <option value="">-</option>
                 {#each ['=', '>', '<', '>=', '<='] as op}
                   <option value={op}>
@@ -365,7 +365,7 @@
 
             <div class="col-sm-3 col-12">
               <label for="dynamicPriority">Priority <i>(Lower equals higher priority)</i></label>
-              <input bind:value={view.dynamic.priority} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicPriority"/>
+              <input required bind:value={view.dynamic.priority} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicPriority"/>
             </div>
 
           </div>
