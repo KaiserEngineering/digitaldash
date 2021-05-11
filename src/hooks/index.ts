@@ -1,7 +1,7 @@
 import * as cookie from 'cookie';
 import { checkToken } from '../routes/api/user';
-import { ReadConfig } from '$lib/Config';
 import { GetConstants } from '$lib/Constants';
+import { ReadFile } from '$lib/Util';
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ request, render }) {
@@ -15,7 +15,7 @@ export async function handle({ request, render }) {
   }
 
   request.locals.user = user;
-  request.locals.configuration = ReadConfig();
+  request.locals.configuration = ReadFile( '/etc/config.json' );
   request.locals.constants = await GetConstants();
 
   const response = await render(request);
@@ -23,7 +23,7 @@ export async function handle({ request, render }) {
 };
 
 /** @type {import('@sveltejs/kit').GetSession} */
-export function getSession(request) {
+export function getSession(request: any) {
   return {
     user: request.locals.user && {
       username: request.locals.user.Username
