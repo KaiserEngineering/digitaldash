@@ -3,31 +3,34 @@ import { checkToken } from '../routes/api/user';
 import { ReadConfig } from '$lib/Config';
 import { GetConstants } from '$lib/Constants';
 
-/** @type {import('@sveltejs/kit').GetContext} */
-export async function getContext({ headers }) {
-  const cookies = cookie.parse(headers.cookie || '');
-  const user = await checkToken( cookies['ke_web_app'] );
+/** @type {import('@sveltejs/kit').Handle} */
+export async function handle({ request, render }) {
+  const cookies = cookie.parse(request.headers.cookie || '');
+  request.locals.ke_web_app = cookies.ke_web_app || undefined;
 
-  return {
-    context: {
-      user: user,
-      configuration: ReadConfig(),
-      constants    : await GetConstants()
-    },
+  const user = await checkToken( request.locals.ke_web_app );
+  // TODO https://github.com/sveltejs/kit/issues/1046
+  if (request.query.has('_method')) {
+    request.method = request.query.get('_method').toUpperCase();
   }
+
+  request.locals.user = user;
+  request.locals.configuration = ReadConfig();
+  request.locals.constants = await GetConstants();
+
+  const response = await render(request);
+  return response;
 };
 
 /** @type {import('@sveltejs/kit').GetSession} */
-export function getSession({ context }) {
-  context = context.context;
-
+export function getSession(request) {
   return {
-    user: context.user && {
-      username: context.user.Username
+    user: request.locals.user && {
+      username: request.locals.user.Username
     },
     actions       : [],
-    configuration : context.configuration,
-    constants     : context.constants,
+    configuration : request.locals.configuration,
+    constants     : request.locals.constants,
     count         : 0
   }
 };
