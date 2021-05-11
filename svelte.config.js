@@ -1,17 +1,23 @@
 import preprocess from 'svelte-preprocess';
 import node from '@sveltejs/adapter-node';
+import { resolve } from 'path';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   preprocess: preprocess(),
   kit: {
-    // By default, `npm run build` will create a standard Node app.
-    // You can create optimized builds for different platforms by
-    // specifying a different adapter
     adapter: node(),
     files: {
       hooks: 'src/hooks',
       lib: 'src/lib',
+      routes: 'src/routes'
+    },
+    vite: {
+      resolve: {
+        alias: {
+          $components: resolve("./src/components"),
+        },
+      },
     },
 
     // hydrate the <div id="svelte"> element in src/app.html

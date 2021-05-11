@@ -6,7 +6,7 @@
 
 <script>
   import { session } from "$app/stores";
-  import Slider from "$lib/Slider.svelte";
+  import Slider from "$components/Slider.svelte";
 
   export let id;
   let configuration = $session.configuration;
@@ -15,7 +15,7 @@
   const KE_PID     = $session.constants.KE_PID;
   const UNIT_LABEL = $session.constants.PID_UNIT_LABEL;
   const pids       = Object.keys( KE_PID );
-  const themes     = $session.constants.themes;
+  const themes     = $session.constants.themes || [];
   let theme;
   if ( view && view.gauges.length > 0 ) {
     theme = view.gauges[0].theme
