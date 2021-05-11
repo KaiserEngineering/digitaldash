@@ -1,6 +1,6 @@
 import { ReadFile, WriteFile } from '$lib/Util';
+import type { Config } from '../globals';
 
-/** @type {import('@dd').Config} */
 export function UpdateConfig( Config: Config ): Config {
   // Remove gauges that aren't defined
   // TODO: We should remove this and fix the real issue
