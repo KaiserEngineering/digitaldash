@@ -118,13 +118,13 @@ class Serial:
 
         cpu = CPUTemperature()
 
-        if( cpu.temperature > 80 ):
+        if( cpu.temperature > 70 ):
             self.fan_speed = 0x03    # Request max fan speed
-        elif( cpu.temperature > 76 ):
+        elif( cpu.temperature > 65 ):
             self.fan_speed = 0x02    # Request med fan speed
-        elif( cpu.temperature > 72 ):
+        elif( cpu.temperature > 60 ):
             self.fan_speed = 0x01    # Request min fan speed
-        elif( cpu.temperature < 60 ):
+        elif( cpu.temperature < 55 ):
             self.fan_speed = 0x00    # Turn off the fan 
 
         while self.ser.inWaiting():
