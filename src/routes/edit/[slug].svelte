@@ -199,7 +199,7 @@
 
             <div class="col-6">
               <label for="background">Background</label>
-              <select bind:value={view.background} name="background" class="custom-select form-control d-block w-100" id="country" required>
+              <select bind:value={view.background} name="background" class="custom-select form-control d-block w-100" id="background" required>
                 <option value="">-</option>
                 {#each ['Black.png', 'Blue Purple Gradient.png', 'Carbon Fiber.png', 'Galaxy.png'] as background}
                 <option value={background}>{background}</option>
