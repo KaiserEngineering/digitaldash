@@ -1,48 +1,5 @@
-import fs from 'fs';
-
-const config_path: String = import.meta.env.VITE_KEGUIHome;
-
-export interface Config {
-  views: { [key: string]: View };
-}
-
-export interface View {
-  name:       string;
-  enabled:    boolean;
-  default:    number;
-  background: string;
-  theme:      string;
-  alerts:     any[];
-  dynamic:    Dynamic;
-  gauges:     Gauge[];
-}
-
-export interface Dynamic {
-  enabled:  boolean;
-  pid:      string;
-  op:       string;
-  priority: number;
-  value:    string;
-  unit:     string;
-}
-
-export interface Gauge {
-  theme:       string;
-  unit:        string;
-  pid:         string;
-}
-
-let configCache: Config;
-
-// Force update by passing true
-export function ReadConfig(Force: boolean = false) {
-  if ( !Force && configCache ) {
-    return configCache;
-  }
-  else {
-    return JSON.parse( fs.readFileSync(config_path+'/etc/config.json').toString() );
-  }
-}
+import { ReadFile, WriteFile } from '$lib/Util';
+import type { Config } from '../globals';
 
 export function UpdateConfig( Config: Config ): Config {
   // Remove gauges that aren't defined
@@ -58,11 +15,9 @@ export function UpdateConfig( Config: Config ): Config {
     Config.views[id].gauges = gauges;
   }
 
-  fs.writeFileSync( `${config_path}/etc/config.json`, JSON.stringify( Config, null, 2 ) );
-
-  configCache = ReadConfig(true);
-
-  return configCache;
+  WriteFile( 'etc/config.json', Config );
+  return ReadFile( 'etc/config.json', true );
 }
 
-configCache = ReadConfig();
+// Build our cache right away
+ReadFile( 'etc/config.json', true );

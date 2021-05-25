@@ -1,6 +1,6 @@
 <script>
   import { session } from "$app/stores";
-  import Slider from "$lib/Slider.svelte";
+  import Slider from "$components/Slider.svelte";
 
   let KE_PIDS = $session.constants.KE_PID;
   $: views = $session.configuration.views;

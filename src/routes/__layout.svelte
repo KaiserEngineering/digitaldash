@@ -14,8 +14,8 @@
 
 <script>
   import '../app.css';
-  import Nav from "$lib/Nav.svelte";
-  import Notifications from '$lib/Notifications.svelte';
+  import Nav from "$components/Nav.svelte";
+  import Notifications from '$components/Notifications.svelte';
 
   export let segment = undefined;
   export let title   = "KE Digital Dash"

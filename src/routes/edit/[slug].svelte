@@ -6,7 +6,7 @@
 
 <script>
   import { session } from "$app/stores";
-  import Slider from "$lib/Slider.svelte";
+  import Slider from "$components/Slider.svelte";
 
   export let id;
   let configuration = $session.configuration;
@@ -15,7 +15,7 @@
   const KE_PID     = $session.constants.KE_PID;
   const UNIT_LABEL = $session.constants.PID_UNIT_LABEL;
   const pids       = Object.keys( KE_PID );
-  const themes     = $session.constants.themes;
+  const themes     = $session.constants.themes || [];
   let theme;
   if ( view && view.gauges.length > 0 ) {
     theme = view.gauges[0].theme
@@ -263,7 +263,7 @@
 
                 <div class="col-sm-3 col-12 pl-1 pr-1">
                   <label class="label" for="alertValue">Value</label>
-                  <input required bind:value={alert.value} class="form-control" type="text" name="alertValue"/>
+                  <input required bind:value={alert.value} class="form-control" type="number" name="alertValue"/>
                 </div>
 
                 <div class="col-sm-3 col-12 pl-1 pr-1">
@@ -348,12 +348,12 @@
 
             <div class="col-sm-3 col-12">
               <label for="dynamicValue">Value</label>
-              <input bind:value={view.dynamic.value} disabled={!view.dynamic.enabled} class="form-control" type="text" name="dynamicValue"/>
+              <input required bind:value={view.dynamic.value} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicValue"/>
             </div>
 
             <div class="col-sm-3 col-12">
               <label for="dynamicOP">Operand</label>
-              <select bind:value={view.dynamic.op} name="dynamicOP" disabled={!view.dynamic.enabled} class="form-control">
+              <select required bind:value={view.dynamic.op} name="dynamicOP" disabled={!view.dynamic.enabled} class="form-control">
                 <option value="">-</option>
                 {#each ['=', '>', '<', '>=', '<='] as op}
                   <option value={op}>
@@ -365,7 +365,7 @@
 
             <div class="col-sm-3 col-12">
               <label for="dynamicPriority">Priority <i>(Lower equals higher priority)</i></label>
-              <input bind:value={view.dynamic.priority} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicPriority"/>
+              <input required bind:value={view.dynamic.priority} disabled={!view.dynamic.enabled} class="form-control" type="number" name="dynamicPriority"/>
             </div>
 
           </div>
