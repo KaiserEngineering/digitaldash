@@ -1,6 +1,10 @@
 import { ReadFile, WriteFile } from '$lib/Util';
 import type { Config } from '../globals';
 
+export function ReadConfig() {
+  return ReadFile( 'etc/config.json', true );
+}
+
 export function UpdateConfig( Config: Config ): Config {
   // Remove gauges that aren't defined
   // TODO: We should remove this and fix the real issue
@@ -16,8 +20,8 @@ export function UpdateConfig( Config: Config ): Config {
   }
 
   WriteFile( 'etc/config.json', Config );
-  return ReadFile( 'etc/config.json', true );
+  return ReadConfig();
 }
 
 // Build our cache right away
-ReadFile( 'etc/config.json', true );
+ReadConfig()
