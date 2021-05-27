@@ -25,10 +25,12 @@ class Router {
 	/** @param {{
 	 *    base: string;
 	 *    routes: import('types/internal').CSRRoute[];
+	 *    trailing_slash: import('types/internal').TrailingSlash;
 	 * }} opts */
-	constructor({ base, routes }) {
+	constructor({ base, routes, trailing_slash }) {
 		this.base = base;
 		this.routes = routes;
+		this.trailing_slash = trailing_slash;
 	}
 
 	/** @param {import('./renderer').Renderer} renderer */
@@ -135,8 +137,7 @@ class Router {
 
 			const url = new URL(href);
 
-			// Don't handle hash changes
-			if (url.pathname === location.pathname && url.search === location.search) return;
+			if (!this.owns(url)) return;
 
 			const noscroll = a.hasAttribute('sveltekit:noscroll');
 			history.pushState({}, '', url.href);
@@ -158,22 +159,26 @@ class Router {
 		history.replaceState(history.state || {}, '', location.href);
 	}
 
+	/** @param {URL} url */
+	owns(url) {
+		return url.origin === location.origin && url.pathname.startsWith(this.base);
+	}
+
 	/**
 	 * @param {URL} url
 	 * @returns {import('./types').NavigationInfo}
 	 */
 	parse(url) {
-		if (url.origin !== location.origin) return null;
-		if (!url.pathname.startsWith(this.base)) return null;
+		if (this.owns(url)) {
+			const path = decodeURIComponent(url.pathname.slice(this.base.length) || '/');
 
-		const path = decodeURIComponent(url.pathname.slice(this.base.length) || '/');
+			const routes = this.routes.filter(([pattern]) => pattern.test(path));
 
-		const routes = this.routes.filter(([pattern]) => pattern.test(path));
+			const query = new URLSearchParams(url.search);
+			const id = `${path}?${query}`;
 
-		const query = new URLSearchParams(url.search);
-		const id = `${path}?${query}`;
-
-		return { id, routes, path, query };
+			return { id, routes, path, query };
+		}
 	}
 
 	/**
@@ -182,14 +187,14 @@ class Router {
 	 * @param {string[]} chain
 	 */
 	async goto(href, { noscroll = false, replaceState = false } = {}, chain) {
-		if (this.enabled) {
-			const url = new URL(href, get_base_uri(document));
+		const url = new URL(href, get_base_uri(document));
 
+		if (this.enabled && this.owns(url)) {
 			history[replaceState ? 'replaceState' : 'pushState']({}, '', href);
 			return this._navigate(url, noscroll ? scroll_state() : null, chain, url.hash);
 		}
 
-		location.href = href;
+		location.href = url.href;
 		return new Promise(() => {
 			/* never resolves */
 		});
@@ -208,7 +213,13 @@ class Router {
 	 * @returns {Promise<import('./types').NavigationResult>}
 	 */
 	async prefetch(url) {
-		return this.renderer.load(this.parse(url));
+		const info = this.parse(url);
+
+		if (!info) {
+			throw new Error('Attempted to prefetch a URL that does not belong to this app');
+		}
+
+		return this.renderer.load(info);
 	}
 
 	/**
@@ -220,15 +231,30 @@ class Router {
 	async _navigate(url, scroll, chain, hash) {
 		const info = this.parse(url);
 
+		if (!info) {
+			throw new Error('Attempted to navigate to a URL that does not belong to this app');
+		}
+
+		// remove trailing slashes
+		if (info.path !== '/') {
+			const has_trailing_slash = info.path.endsWith('/');
+
+			const incorrect =
+				(has_trailing_slash && this.trailing_slash === 'never') ||
+				(!has_trailing_slash &&
+					this.trailing_slash === 'always' &&
+					!info.path.split('/').pop().includes('.'));
+
+			if (incorrect) {
+				info.path = has_trailing_slash ? info.path.slice(0, -1) : info.path + '/';
+				history.replaceState({}, '', `${info.path}${location.search}`);
+			}
+		}
+
 		this.renderer.notify({
 			path: info.path,
 			query: info.query
 		});
-
-		// remove trailing slashes
-		if (location.pathname.endsWith('/') && location.pathname !== '/') {
-			history.replaceState({}, '', `${location.pathname.slice(0, -1)}${location.search}`);
-		}
 
 		await this.renderer.update(info, chain, false);
 
@@ -1035,6 +1061,7 @@ class Renderer {
  *   host: string;
  *   route: boolean;
  *   spa: boolean;
+ *   trailing_slash: import('types/internal').TrailingSlash;
  *   hydrate: {
  *     status: number;
  *     error: Error;
@@ -1042,7 +1069,7 @@ class Renderer {
  *     page: import('types/page').Page;
  *   };
  * }} opts */
-async function start({ paths, target, session, host, route, spa, hydrate }) {
+async function start({ paths, target, session, host, route, spa, trailing_slash, hydrate }) {
 	if (import.meta.env.DEV && !target) {
 		throw new Error('Missing target element. See https://kit.svelte.dev/docs#configuration-target');
 	}
@@ -1051,7 +1078,8 @@ async function start({ paths, target, session, host, route, spa, hydrate }) {
 		route &&
 		new Router({
 			base: paths.base,
-			routes
+			routes,
+			trailing_slash
 		});
 
 	const renderer = new Renderer({
