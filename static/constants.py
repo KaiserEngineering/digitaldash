@@ -44,7 +44,13 @@ PID_UNITS = {
     "PID_UNITS_MPH": 0x08,
     "PID_UNITS_GRAMSEC": 0x09,
     "PID_UNITS_DEGREES": 0x0A,
-    "PID_UNITS_VOLTS": 0x0B
+    "PID_UNITS_VOLTS": 0x0B,
+    "PID_UNITS_KM": 0x0C,
+    "PID_UNITS_MILES": 0x0D,
+    "PID_UNITS_SECONDS": 0x0E,
+    "PID_UNITS_RATIO": 0x0F,
+    "PID_UNITS_LPH": 0x10,
+    "PID_UNITS_BAR": 0x11
 }
 
 PID_UNIT_LABEL = {
@@ -59,7 +65,13 @@ PID_UNIT_LABEL = {
     "PID_UNITS_MPH": "mph",
     "PID_UNITS_GRAMSEC": "g/s",
     "PID_UNITS_DEGREES": "\u00b0",
-    "PID_UNITS_VOLTS": "V"
+    "PID_UNITS_VOLTS": "V",
+    "PID_UNITS_KM": "km",
+    "PID_UNITS_MILES": "mi",
+    "PID_UNITS_SECONDS": "s",
+    "PID_UNITS_RATIO": ":1",
+    "PID_UNITS_LPH": "lpm",
+    "PID_UNITS_BAR": "bar"
 }
 
 KE_PID = {
