@@ -36,6 +36,10 @@ class KELabel(Label):
         self.decimals = "2"  # Default to 2 and update later if a value is provided
         self.unitString = ""
 
+        # Min/Max handling args
+        self.isMin = args.get("Min", False)
+        self.isMax = args.get("Max", False)
+
         if self.pid:
             self.unit = self.pid.unitLabel
 
@@ -83,8 +87,6 @@ class KELabel(Label):
         """
         Send data to Label widget.
 
-        Check for Min/Max key words to cache values with regex checks.
-
         Args:
             self (<lib.keLabel>): KELabel object
             value (float) : value that label is being updated to
@@ -92,11 +94,11 @@ class KELabel(Label):
         try:
             value = float(value)
 
-            if self.default == "Min: ":
+            if self.isMin:
                 if self.pid.minObserved > value:
                     self.pid.minObserved = value
                 self.text = ("{0:.%sf}" % (self.decimals)).format(self.pid.minObserved)
-            elif self.default == "Max: ":
+            elif self.isMax:
                 if self.pid.maxObserved < value:
                     self.pid.maxObserved = value
                 self.text = ("{0:.%sf}" % (self.decimals)).format(self.pid.maxObserved)

@@ -5,6 +5,7 @@
       "enabled": true,
       "default": 1,
       "background": "Blue Purple Gradient.png",
+      "dynamicMinMax": true,
       "alerts": [
       ],
       "dynamic": {
@@ -19,6 +20,7 @@
     },
     "1": {
       "name": "view #2",
+      "dynamicMinMax": true,
       "enabled": true,
       "default": 1,
       "background": "Blue Purple Gradient.png",

@@ -143,7 +143,7 @@ def test_label_simple():
     label.setData(100)
     assert label.text == "hello, world 100", print("Min value stays minimum seen")
 
-    label = KELabel(default="Max: ", data=1, pid=pid)
+    label = KELabel(default="", data=1, pid=pid, Max=1)
     label.setData(0)
     assert label.text == "0", print("Default text value is set correctly")
     label.setData(100)

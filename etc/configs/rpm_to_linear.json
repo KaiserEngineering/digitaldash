@@ -5,6 +5,7 @@
         "default" : 1,
         "name":"rpm to linear config",
         "background":"black.png",
+        "dynamicMinMax": true,
         "dynamic": {
             "enabled": true,
             "pid": "0x010C",
@@ -34,6 +35,7 @@
         },
         "1" : {
           "enabled" : true,
+          "dynamicMinMax": true,
           "name": "linear",
           "background":"black.jpg",
           "dynamic": {
