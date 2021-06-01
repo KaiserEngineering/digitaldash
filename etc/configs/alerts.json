@@ -5,6 +5,7 @@
         "enabled" : true,
         "default" : 1,
         "background":"black.png",
+        "dynamicMinMax": true,
           "dynamic": {},
           "alerts": [
             {
@@ -37,6 +38,7 @@
       "enabled" : true,
       "default" : 0,
       "background":"black.png",
+      "dynamicMinMax": true,
         "dynamic": {},
         "alerts": [
           {

@@ -83,6 +83,7 @@ def validateConfig(config):
             "dynamic": dict,
             "alerts": list,
             "gauges": list,
+            "dynamicMinMax": bool
         },
         "alerts": {
             "pid": str,

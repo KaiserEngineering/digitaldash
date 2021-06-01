@@ -4,6 +4,7 @@
             "name": "First view",
             "enabled" : true,
             "default" : 1,
+            "dynamicMinMax": true,
             "background" : "alignment.png",
             "alerts" : [
                 {

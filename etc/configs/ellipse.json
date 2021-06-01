@@ -7,6 +7,7 @@
         "background":"black.png",
         "dynamic": {},
         "alerts": [],
+        "dynamicMinMax": true,
         "gauges": [
             {
                 "theme": "Glow",

@@ -5,6 +5,7 @@
       "enabled" : true,
       "default" : 1,
       "background":"black.png",
+      "dynamicMinMax": true,
       "dynamic": {},
       "alerts": [],
       "gauges": [
@@ -17,6 +18,7 @@
     },
     "1": {
         "name":"Don't see me",
+        "dynamicMinMax": true,
         "enabled" : false,
         "background":"black.png",
         "dynamic": {

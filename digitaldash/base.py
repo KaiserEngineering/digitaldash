@@ -85,7 +85,18 @@ class Base:
 
             # Add to data recieving widgets
             if "data" in labelConfig and labelConfig['data']:
-                self.liveWidgets.append(label)
+                # Don't update our Min/Max labels if they are static
+                if ( label.isMax or label.isMin ) and not ARGS['dynamicMinMax']:
+                    if label.isMax:
+                        label.text =\
+                          str(label.pid.range['Max'])+"[size=15]"+" "\
+                          +label.unitString+"[/size]"
+                    else:
+                        label.text =\
+                          str(label.pid.range['Min'])+"[size=15]"+" "\
+                            +label.unitString+"[/size]"
+                else:
+                    self.liveWidgets.append(label)
             self.container.add_widget(label)
 
         return self.liveWidgets

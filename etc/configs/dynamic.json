@@ -5,6 +5,7 @@
       "enabled" : true,
       "default" : 1,
       "background":"black.png",
+      "dynamicMinMax": true,
         "dynamic": {
           "enabled": false,
           "pid": "0x220461",
@@ -25,6 +26,7 @@
     },
     "1" : {
       "name":"dynamic view 2",
+      "dynamicMinMax": true,
       "enabled" : true,
       "default" : 0,
       "background":"black.png",

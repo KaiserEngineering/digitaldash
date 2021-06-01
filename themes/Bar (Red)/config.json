@@ -3,12 +3,10 @@
     "module" : "Linear",
     "labels":
       [{
-        "pos": [300, 25], "font_size": 22, "default": "Max: ",
-        "data": 1
+        "pos": [300, 25], "font_size": 22, "default": "", "Max": 1, "data": 1
       },
       {
-        "pos": [-300, 25], "font_size": 22, "default": "Min: ",
-        "data": 1
+        "pos": [-300, 25], "font_size": 22, "default": "", "Min": 1, "data": 1
       },
       {
        "pos": [-45, 25], "font_size": 25, "data": 1, "dataIndex" : 1, "default": ""

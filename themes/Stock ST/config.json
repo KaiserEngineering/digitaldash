@@ -4,10 +4,10 @@
     "labels":
       [
        {
-       "pos": [85, 25], "font_size": 22, "default": "Max: ", "data": 1
+       "pos": [85, 25], "font_size": 22, "default": "", "data": 1, "Max": 1
        },
       {
-       "pos": [-85, 25], "font_size": 22, "default": "Min: ", "data": 1
+       "pos": [-85, 25], "font_size": 22, "default": "", "data": 1, "Min": 1
        },
       {
        "pos": [0, 55], "font_size": 26, "default": "", "data": 1
