@@ -95,12 +95,10 @@ class KELabel(Label):
             value = float(value)
 
             if self.isMin:
-                if self.pid.minObserved > value:
-                    self.pid.minObserved = value
+                self.pid.minObserved = min(self.pid.minObserved, value)
                 self.text = ("{0:.%sf}" % (self.decimals)).format(self.pid.minObserved)
             elif self.isMax:
-                if self.pid.maxObserved < value:
-                    self.pid.maxObserved = value
+                self.pid.maxObserved = max(self.pid.maxObserved, value)
                 self.text = ("{0:.%sf}" % (self.decimals)).format(self.pid.maxObserved)
             else:
                 self.text = self.default + ("{0:.%sf}" % (self.decimals)).format(value)
