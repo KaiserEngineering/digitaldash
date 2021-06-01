@@ -62,6 +62,33 @@ def findPids(view):
     return list(pidsDict.values())
 
 
+def findPidsForView(views, Id, dynamicPids):
+    """Only return pids from the pidsDict that apply to this view"""
+
+    pidsList = []
+    # We need to retro-actively add our dynamic PIDs into the PIDs array per view
+    for viewId in views:
+        # Check if we have any dynamic PIDs for the other views
+        for dynamicPIDKeys in dynamicPids:
+            if dynamicPIDKeys != str(viewId):
+                pid = dynamicPids[dynamicPIDKeys]
+                if pid not in pidsList:
+                    pidsList.append(pid)
+
+    myView = views[Id]
+    for gauge in myView["gauges"]:
+        print(gauge)
+        if not gauge['pid']:
+            continue
+        pidsList.append(gauge["pid"])
+
+    for alert in myView["alerts"]:
+        if not alert["pid"]:
+            continue
+        pidsList.append(alert["pid"])
+
+    return pidsList
+
 def findUnits(view):
     """Create a dictionary of PIDs and their corresponding unit"""
     units = {}
@@ -223,26 +250,17 @@ def setup(self, layouts):
             ),
             "alerts": FloatLayout(),
             "objectsToUpdate": objectsToUpdate,
-            "pids": pids,
+            "pids": findPidsForView(layouts['views'], Id, dynamicPids),
         }
 
-    # We need to retro-actively add our dynamic PIDs into the PIDs array per view
-    for viewId in views:
-        # Check if we have any dynamic PIDs for the other views
-        for dynamicPIDKeys in dynamicPids:
-            if dynamicPIDKeys != str(viewId):
-                pid = dynamicPids[dynamicPIDKeys]
-                if pid not in views[viewId]["pids"]:
-                    views[viewId]["pids"].append(pid)
-
         # Now we can generate a complete byte array for the PIDs
-        if len(views[viewId]["pids"]) > 0:
-            views[viewId]["pid_byte_code"] = buildUpdateRequirementsBytearray(
-                views[viewId]["pids"]
+        if len(views[Id]["pids"]) > 0:
+            views[Id]["pid_byte_code"] = buildUpdateRequirementsBytearray(
+                views[Id]["pids"]
             )
         else:
-            Logger.info("GUI: No pid_byte_code generated for view #%s", viewId)
-            views[viewId]["pid_byte_code"] = ""
+            Logger.info("GUI: No pid_byte_code generated for view #%s", Id)
+            views[Id]["pid_byte_code"] = ""
 
     return ([views, containers, callbacks], "Successful setup")
 
