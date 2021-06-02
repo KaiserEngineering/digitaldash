@@ -14,6 +14,7 @@ from digitaldash.face import Face
 from digitaldash.keLabel import KELabel
 
 from digitaldash.needles.ellipse import NeedleEllipse as Ellipse
+from digitaldash.needles.static import NeedleStatic as Static
 from digitaldash.needles.radial import NeedleRadial as Radial
 from digitaldash.needles.linear import NeedleLinear as Linear
 

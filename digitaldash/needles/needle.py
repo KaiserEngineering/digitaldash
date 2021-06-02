@@ -1,6 +1,7 @@
 """Main needle base class"""
 from digitaldash.massager import smooth
 from kivy.logger import Logger
+from kivy.graphics import Color
 
 class Needle:
     """
@@ -15,6 +16,7 @@ class Needle:
     unit: int
     minValue: float
     maxValue: float
+    valueRange: float
 
     def setUp(self, **kwargs):
         """Call all our methods"""
@@ -52,7 +54,13 @@ class Needle:
             pid.range["Min"],
             pid.range["Max"],
         )
+        self.colorChanging = args.get("colorChanging", False)
+        self.valueRange = self.maxValue - self.minValue
         self.setStep()
+
+    def setColor(self):
+        color = 0.7 - ( ( self.trueValue - self.minValue ) * (0.7) / (self.valueRange) )
+        self.color = tuple(Color(color, 1, 1, mode='hsv').rgba)
 
     def setData(self, value=0) -> None:
         """
@@ -75,3 +83,6 @@ class Needle:
             self.update = smooth(old=current, new=value * self.step - self.offset)
         except:
             Logger.error("GUI: needle.py is not numeric")
+
+        if self.colorChanging:
+            self.setColor()

@@ -1,1 +1,1 @@
-__all__ = ["Needle", "Ellipse", "Linear", "Radial"]
+__all__ = ["needle", "ellipse", "linear", "radial", "static"]

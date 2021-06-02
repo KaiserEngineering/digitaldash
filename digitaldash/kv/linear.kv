@@ -11,10 +11,9 @@
         StencilUse
         # Now we want to draw our gauge and have it be cropped by the stencil
         Color:
-            rgba: self.r, self.g, self.b, self.a
+            rgba: self.color
         Rectangle:
             size: self.size
-            # source: self.source
 
         StencilUnUse
         # Redraw our stencil to remove it
@@ -25,7 +24,7 @@
         StencilPop
 
         Color:
-            rgba: 1, 1, 1, 1
+            rgba: self.color
         Rectangle:
             pos: (self.update + self.center_x - self.width / 2 + self.xOffset, self.center_y + 45)
             size: 10, 49
