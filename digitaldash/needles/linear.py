@@ -18,7 +18,7 @@ class NeedleLinear(Needle, StencilView):
     g = NumericProperty()
     b = NumericProperty()
     a = NumericProperty()
-    color = ColorProperty(defaultvalue='red')
+    color = ColorProperty(defaultvalue='#FF0000FF')
 
     def __init__(self, **kwargs):
         super(NeedleLinear, self).__init__()
