@@ -243,6 +243,22 @@
 
           </div>
         </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input
+              id="dynamicMinMax"
+              data-bs-toggle="tooltip" data-bs-placement="top"
+              title="Show default min/max values or show dynamic values based on observed min max"
+              class="form-check-input" type="checkbox"
+              bind:checked="{view.dynamicMinMax}"
+            >
+            <label class="form-check-label" for="dynamicMinMax">
+              Observed Min/Max
+            </label>
+          </div>
+        </div>
+
         <!-- END BASICS -->
 
         <br>
