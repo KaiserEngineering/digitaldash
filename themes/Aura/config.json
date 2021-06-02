@@ -5,17 +5,17 @@
     "labels":
       [
         {
-        "pos": [40, 47], "font_size": 22, "default": "Max: ", "data": 1
+        "pos": [45, 54], "font_size": 22, "default": "Max: ", "data": 1
         },
         {
-        "pos": [-40, 47], "font_size": 22, "default": "Min: ", "data": 1
+        "pos": [-45, 54], "font_size": 22, "default": "Min: ", "data": 1
         },
         {
-        "pos": [0, 75], "font_size": 30, "default": "",
+        "pos": [0, 80], "font_size": 30, "default": "",
         "data": 1
         },
         {
-          "pos": [0, 20], "font_size": 24, "default": "__PID__"
+          "pos": [0, 32], "font_size": 20, "default": "__PID__"
         }
     ]
 }
