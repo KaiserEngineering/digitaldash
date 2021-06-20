@@ -4,7 +4,7 @@ import { GetConstants } from '$lib/Constants';
 import { ReadFile } from '$lib/Util';
 
 /** @type {import('@sveltejs/kit').Handle} */
-export async function handle({ request, render }) {
+export async function handle({ request, resolve }) {
   const cookies = cookie.parse(request.headers.cookie || '');
   request.locals.ke_web_app = cookies.ke_web_app || undefined;
 
@@ -18,7 +18,7 @@ export async function handle({ request, render }) {
   request.locals.configuration = ReadFile( '/etc/config.json' );
   request.locals.constants = await GetConstants();
 
-  const response = await render(request);
+  const response = await resolve(request);
   return response;
 };
 
