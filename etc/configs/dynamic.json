@@ -36,7 +36,7 @@
           "op": ">",
           "priority": 2,
           "value": "-9999",
-          "unit": "PID_UNITS_CELCIUS"
+          "unit": "PID_UNITS_CELSIUS"
         },
         "alerts": [
         ],
@@ -44,7 +44,7 @@
           {
               "theme": "Stock ST",
               "pid": "0x220461",
-              "unit" : "PID_UNITS_CELCIUS"
+              "unit" : "PID_UNITS_CELSIUS"
           }
       ]
     }

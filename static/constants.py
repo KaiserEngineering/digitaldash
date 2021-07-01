@@ -35,7 +35,7 @@ PID_UNITS = {
     "n/a": "",
     "PID_UNITS_RESERVED": 0x00,
     "PID_UNITS_PERCENT": 0x01,
-    "PID_UNITS_CELCIUS": 0x02,
+    "PID_UNITS_CELSIUS": 0x02,
     "PID_UNITS_FAHRENHEIT": 0x03,
     "PID_UNITS_KPA": 0x04,
     "PID_UNITS_PSI": 0x05,
@@ -56,7 +56,7 @@ PID_UNITS = {
 PID_UNIT_LABEL = {
     "PID_UNITS_RESERVED": "",
     "PID_UNITS_PERCENT": "%",
-    "PID_UNITS_CELCIUS": "\u00b0C",
+    "PID_UNITS_CELSIUS": "\u00b0C",
     "PID_UNITS_FAHRENHEIT": "\u00b0F",
     "PID_UNITS_KPA": "kPa",
     "PID_UNITS_PSI": "psi",
@@ -88,7 +88,7 @@ KE_PID = {
         "shortName": "ECT",
         "shortDesc": "Coolant Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 215, "decimals": "0"},
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 215, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
@@ -147,7 +147,7 @@ KE_PID = {
         "shortName": "IAT",
         "shortDesc": "Intake Air Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
@@ -181,7 +181,7 @@ KE_PID = {
         "shortName": "Oil Temp",
         "shortDesc": "Oil Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
@@ -207,7 +207,7 @@ KE_PID = {
         "shortName": "CAT",
         "shortDesc": "Charge Air Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "1"},
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "1"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "2"},
         },
     },
@@ -216,7 +216,7 @@ KE_PID = {
         "shortName": "AAT",
         "shortDesc": "Ambient Air Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
