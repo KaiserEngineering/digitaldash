@@ -45,7 +45,7 @@ def views(file=None):
     except Exception as e:
         # We can shorten the error message by removing the trace/line the
         # error happened on.
-        errorString = (str(e).split(":"))[0]
+        errorString = (str(e).split(":", maxsplit=1))[0]
         errorConfig = errorConfig.replace("Config file isn't valid!", errorString)
         Logger.error(
           "GUI: Invalid config provided, falling back to default: %s", errorString
@@ -116,7 +116,8 @@ def validateConfig(config):
             sawDefault = True
 
         # Top level keys
-        for key in requiredValues:
+        for item in requiredValues.items():
+            (key, value) = (item)
             if key not in view and not key == "top":
                 Logger.error("%s required for view", key)
                 return False
