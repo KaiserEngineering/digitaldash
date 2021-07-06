@@ -116,8 +116,8 @@ def validateConfig(config):
             sawDefault = True
 
         # Top level keys
-        for item in requiredValues.items():
-            (key, value) = (item)
+        for myTuple in requiredValues.items():
+            (key, value) = (myTuple)
             if key not in view and not key == "top":
                 Logger.error("%s required for view", key)
                 return False
@@ -136,13 +136,13 @@ def validateConfig(config):
                         )
                         return False
             else:
-                for item in requiredValues[key].keys():
+                for item in value.keys():
                     if len(view[key]) > 0:
 
                         if isinstance(view[key], dict):
                             if (
                                 not isinstance(
-                                    view[key][item], requiredValues[key][item]
+                                    view[key][item], value[item]
                                 )
                                 and not view[key][item] == "n/a"
                             ):
@@ -150,14 +150,14 @@ def validateConfig(config):
                                     "%s for %s must be of type %s",
                                     item,
                                     str(view[key][item]),
-                                    str(requiredValues[key][item]),
+                                    str(value[item]),
                                 )
                                 return False
                         else:
                             for myHash in view[key]:
                                 if (
                                     not isinstance(
-                                        myHash.get(item), requiredValues[key][item]
+                                        myHash.get(item), value[item]
                                     )
                                     and not myHash.get(item) == "n/a"
                                 ):
@@ -165,7 +165,7 @@ def validateConfig(config):
                                         "%s for %s must be of type %s",
                                         item,
                                         str(myHash[item]),
-                                        str(requiredValues[key][item]),
+                                        str(value[item]),
                                     )
                                     return False
     if not sawDefault:
