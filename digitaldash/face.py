@@ -16,5 +16,5 @@ class Face(Image):
         self.source = (
           workingPath + "/themes/" + kwargs['themeConfig']['theme'] + "/gauge.png"
         )
-        for key in kwargs:
-            setattr(self, key, kwargs[key])
+        for item in kwargs.items():
+            setattr(self, *item)
