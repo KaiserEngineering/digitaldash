@@ -77,7 +77,6 @@ def findPidsForView(views, Id, dynamicPids):
 
     myView = views[Id]
     for gauge in myView["gauges"]:
-        print(gauge)
         if not gauge['pid']:
             continue
         pidsList.append(gauge["pid"])
