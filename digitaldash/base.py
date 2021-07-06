@@ -74,7 +74,10 @@ class Base:
                 continue
             # FIXME
 
-            labelConfig = {**ARGS, **labelConfig}
+            # remove duplicate "default" config option from main config
+            tempArgs = dict(ARGS)
+            tempArgs.pop('default', None)
+            labelConfig = {**tempArgs, **labelConfig}
 
             # Create Label widget
             label = KELabel(
