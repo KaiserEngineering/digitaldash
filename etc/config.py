@@ -88,7 +88,7 @@ def validateConfig(config):
         "alerts": {
             "pid": str,
             "op": str,
-            "value": str,
+            "value": int,
             "unit": str,
             "priority": int,
             "message": str,

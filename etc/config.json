@@ -12,7 +12,7 @@
           "op": ">=",
           "priority": 0,
           "unit": "PID_UNITS_RPM",
-          "value": "6500",
+          "value": 6500,
           "pid": "0x010C"
         }
       ],
