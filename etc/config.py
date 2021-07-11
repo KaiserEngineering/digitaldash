@@ -103,7 +103,7 @@ def validateConfig(config):
             "pid": str,
             "op": str,
             "priority": int,
-            "value": str,
+            "value": int,
             "unit": str,
         },
     }

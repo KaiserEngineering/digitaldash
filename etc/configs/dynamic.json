@@ -11,7 +11,7 @@
           "pid": "0x220461",
           "op": "<",
           "priority": 1,
-          "value": "4000",
+          "value": 4000,
           "unit": "PID_UNITS_RPM"
         },
         "alerts": [
@@ -35,7 +35,7 @@
           "pid": "0x220461",
           "op": ">",
           "priority": 2,
-          "value": "-9999",
+          "value": -9999,
           "unit": "PID_UNITS_CELSIUS"
         },
         "alerts": [

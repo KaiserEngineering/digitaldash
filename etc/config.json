@@ -21,7 +21,7 @@
         "op": "<=",
         "enabled": true,
         "priority": 0,
-        "value": "10",
+        "value": 10,
         "unit": "PID_UNITS_PSI"
       },
       "gauges": [
@@ -54,7 +54,7 @@
         "op": ">",
         "enabled": false,
         "unit": "PID_UNITS_PSI",
-        "value": "10",
+        "value": 10,
         "priority": 10
       },
       "gauges": [
