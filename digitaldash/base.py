@@ -66,7 +66,7 @@ class Base:
             # FIXME
             # This is a bandaid on the issue of spacing for linear gauges
             if ARGS['skipLinearMinMax'] and themeConfig["module"] and \
-              labelConfig.get("Min") or labelConfig.get("Max"):
+              ( labelConfig.get("Min") or labelConfig.get("Max") ):
                 Logger.info(
                   'GUI: Received skipLinearMinMax flag, \
                     removing Min/Max labels from Linear gauges'
