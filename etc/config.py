@@ -32,7 +32,7 @@ def views(file=None):
           "unit": "n/a",
           "priority": 1,
           "message": "Config file isn't valid!"
-        }], "default": 1, "theme": "Error", "background": "black.png",
+        }], "default": 1, "theme": "Error", "background": "Black.png",
               "dynamic": {},"gauges": [], "name": "Error", "enabled": 1}}}
           """
     try:
