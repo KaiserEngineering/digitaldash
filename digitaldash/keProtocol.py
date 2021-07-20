@@ -286,18 +286,19 @@ def buildUpdateRequirementsBytearray(requirements):
     pid_byte_code = []
     byte_count = 3
     for requirement in requirements:
-        pid_byte_code.append(0x00)  # Spare
-        pid_byte_code.append(requirement.unit)  # Units
-        if len(requirement.value) == 6:
-            pid_byte_code.append((int(requirement.value, 16) >> 8) & 0xFF)  # Mode
-            pid_byte_code.append(0x00)  # PID byte 0
-        else:
-            pid_byte_code.append((int(requirement.value, 16) >> 16) & 0xFF)  # Mode
-            pid_byte_code.append((int(requirement.value, 16) >> 8) & 0xFF)  # PID byte 0
-        pid_byte_code.append((int(requirement.value, 16)) & 0xFF)  # PID byte 1
+        if ( not requirement.value == "n/a" ):
+            pid_byte_code.append(0x00)  # Spare
+            pid_byte_code.append(requirement.unit)  # Units
+            if len(requirement.value) == 6:
+                pid_byte_code.append((int(requirement.value, 16) >> 8) & 0xFF)  # Mode
+                pid_byte_code.append(0x00)  # PID byte 0
+            else:
+                pid_byte_code.append((int(requirement.value, 16) >> 16) & 0xFF)  # Mode
+                pid_byte_code.append((int(requirement.value, 16) >> 8) & 0xFF)  # PID byte 0
+            pid_byte_code.append((int(requirement.value, 16)) & 0xFF)  # PID byte 1
 
-        index += 1
-        byte_count += 5
+            index += 1
+            byte_count += 5
 
     pid_byte_code = [
         KE_SOL,
