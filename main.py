@@ -159,6 +159,13 @@ class GUI(App):
             ):
                 ret = callback
         except Exception as e:
+            # Check if this is the error config (i.e. PID = "n/a")
+            if callback.pid.value == "n/a":
+                Logger.error(
+                    "GUI: Config file is invalid"
+                )
+                return callback
+
             Logger.error(
                 "GUI: Firmware did not provide data value for key: %s",
                 callback.pid.value,
