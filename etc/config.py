@@ -52,7 +52,7 @@ def views(file=None):
         # We can shorten the error message by removing the trace/line the
         # error happened on.
         errorString = (str(e).split(":", maxsplit=1))[0]
-        errorConfig = errorConfig.replace("Config file isn't valid!", errorString)
+        errorConfig = errorConfig.replace("Config file isn't valid!", "Config file isn't valid! Exception Error")
         Logger.error(
           "GUI: Invalid config provided, falling back to default: %s", errorString
         )
