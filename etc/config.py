@@ -27,8 +27,8 @@ def views(file=None):
     {"views": { "0": {
               "alerts": [{
           "pid": "0x010C",
-          "op": "<=",
-          "value": 0,
+          "op": ">=",
+          "value": -9999,
           "unit": "PID_UNITS_RPM",
           "priority": 1,
           "message": "Config file isn't valid!"
