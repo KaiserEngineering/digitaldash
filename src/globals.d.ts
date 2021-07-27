@@ -7,27 +7,27 @@ export interface Config {
 }
 
 export interface View {
-  name:       string;
-  enabled:    boolean;
-  default:    number;
+  name: string;
+  enabled: boolean;
+  default: number;
   background: string;
-  theme:      string;
-  alerts:     any[];
-  dynamic:    Dynamic;
-  gauges:     Gauge[];
+  theme: string;
+  alerts: any[];
+  dynamic: Dynamic;
+  gauges: Gauge[];
 }
 
 export interface Dynamic {
-  enabled:  boolean;
-  pid:      string;
-  op:       string;
+  enabled: boolean;
+  pid: string;
+  op: string;
   priority: number;
-  value:    string;
-  unit:     string;
+  value: string;
+  unit: string;
 }
 
 export interface Gauge {
-  theme:       string;
-  unit:        string;
-  pid:         string;
+  theme: string;
+  unit: string;
+  pid: string;
 }

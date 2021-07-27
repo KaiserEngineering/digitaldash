@@ -1,6 +1,6 @@
-import preprocess from 'svelte-preprocess';
-import node from '@sveltejs/adapter-node';
-import { resolve } from 'path';
+import preprocess from "svelte-preprocess";
+import node from "@sveltejs/adapter-node";
+import { resolve } from "path";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -8,9 +8,9 @@ const config = {
   kit: {
     adapter: node(),
     files: {
-      hooks: 'src/hooks',
-      lib: 'src/lib',
-      routes: 'src/routes'
+      hooks: "src/hooks",
+      lib: "src/lib",
+      routes: "src/routes",
     },
     vite: {
       resolve: {
@@ -21,8 +21,8 @@ const config = {
     },
 
     // hydrate the <div id="svelte"> element in src/app.html
-    target: '#svelte',
-  }
+    target: "#svelte",
+  },
 };
 
 export default config;
