@@ -1,0 +1,19 @@
+{
+    "degrees": 120,
+    "module" : "Linear",
+    "colorChanging": true,
+    "labels":
+      [{
+        "pos": [300, 25], "font_size": 22, "Max": 1, "data": 1
+      },
+      {
+        "pos": [-300, 25], "font_size": 22, "Min": 1, "data": 1
+      },
+      {
+       "pos": [-45, 25], "font_size": 25, "data": 1, "dataIndex" : 1, "default": ""
+      },
+      {
+        "pos": [45, 25], "font_size": 25, "default": "__PID__"
+      }
+    ]
+}
