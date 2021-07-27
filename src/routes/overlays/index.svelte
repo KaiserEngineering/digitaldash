@@ -1,4 +1,4 @@
-<script context="module">
+<!-- <script context="module">
   export async function load({ fetch }) {
     const res = await fetch("/api/overlays");
 
@@ -35,4 +35,4 @@
   textarea {
     width: 100%;
   }
-</style>
+</style> -->
