@@ -41,18 +41,19 @@ def views(file=None):
 
             dataFile.close()
 
-        valid, Error = validateConfig(jsonData)
+        valid, error = validateConfig(jsonData)
 
         if not valid:
-            Logger.error(Error)
-            errorConfig = errorConfig.replace("Config file isn't valid!", Error)
+            Logger.error(error)
+            errorConfig = errorConfig.replace("Config file isn't valid!", error)
             jsonData = json.loads(errorConfig)
 
     except Exception as e:
         # We can shorten the error message by removing the trace/line the
         # error happened on.
         errorString = (str(e).split(":", maxsplit=1))[0]
-        errorConfig = errorConfig.replace("Config file isn't valid!", "Config file isn't valid! Exception Error")
+        errorConfig = errorConfig.replace("Config file isn't valid!",
+          "Config file isn't valid! Exception Error")
         Logger.error(
           "GUI: Invalid config provided, falling back to default: %s", errorString
         )
@@ -114,7 +115,7 @@ def validateConfig(config):
         },
     }
 
-    Error = "Config file isn't valid! Unexpected Failure"
+    error = "Config file isn't valid! Unexpected Failure"
 
     sawDefault = False
     for Id in config["views"]:
@@ -127,8 +128,8 @@ def validateConfig(config):
         for myTuple in requiredValues.items():
             (key, value) = (myTuple)
             if key not in view and not key == "top":
-                Error = "%s required for view" % key
-                return False, Error
+                error = "%s required for view" % key
+                return False, error
             if key == "top":
                 for secondKey in requiredValues["top"]:
                     if (
@@ -137,11 +138,11 @@ def validateConfig(config):
                         )
                         and not view[secondKey] == "n/a"
                     ):
-                        Error = "%s must be of type %s" % (
+                        error = "%s must be of type %s" % (
                             secondKey,
                             str(requiredValues["top"][secondKey]),
                         )
-                        return False, Error
+                        return False, error
             else:
                 for item in value.keys():
                     if len(view[key]) > 0:
@@ -153,12 +154,12 @@ def validateConfig(config):
                                 )
                                 and not view[key][item] == "n/a"
                             ):
-                                Error = "%s for %s must be of type %s" % (
+                                error = "%s for %s must be of type %s" % (
                                     item,
                                     str(view[key][item]),
                                     str(value[item]),
                                 )
-                                return False, Error
+                                return False, error
                         else:
                             for myHash in view[key]:
                                 if (
@@ -167,13 +168,13 @@ def validateConfig(config):
                                     )
                                     and not myHash.get(item) == "n/a"
                                 ):
-                                    Error = "%s for %s must be of type %s" % (
+                                    error = "%s for %s must be of type %s" % (
                                         item,
                                         str(myHash[item]),
                                         str(value[item]),
                                     )
-                                    return False, Error
+                                    return False, error
     if not sawDefault:
-        Error = "Default view required"
-        return False, Error
+        error = "Default view required"
+        return False, error
     return True, "Config file is valid!"

@@ -34,6 +34,7 @@ def test_config_file_from_cli():
     with os.scandir(path) as dirs:
         for entry in dirs:
             json_config = config.views(file=working_path + "/etc/configs/" + entry.name)
-            assert config.validateConfig(json_config) == True, print(
+            (ret, msg) = config.validateConfig(json_config)
+            assert  ret == True, print(
                 entry.name + " passes config validation check"
             )
