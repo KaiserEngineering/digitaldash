@@ -92,6 +92,7 @@
                   <img
                     class="mx-4 image-overlay my-auto"
                     src="images/{views[id].gauges[0].theme}/preview.png"
+                    alt="gauge image"
                   />
                 {/if}
               </div>
