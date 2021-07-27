@@ -50,7 +50,7 @@
   <select
     id="logName"
     bind:value={current}
-    on:change={(e) => loadContent(e.target.value)}
+    on:blur={(e) => loadContent(e.target.value)}
     class="custom-select form-control d-block w-100 mb-2"
     required
   >
