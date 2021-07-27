@@ -26,10 +26,10 @@ def views(file=None):
     errorConfig = """
     {"views": { "0": {
               "alerts": [{
-          "pid": "n/a",
-          "op": ">",
-          "value": "-9999",
-          "unit": "n/a",
+          "pid": "0x010C",
+          "op": "<=",
+          "value": 0,
+          "unit": "PID_UNITS_RPM",
           "priority": 1,
           "message": "Config file isn't valid!"
         }], "default": 1, "theme": "Error", "background": "Black.png",
