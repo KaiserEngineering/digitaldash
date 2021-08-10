@@ -5,6 +5,9 @@
     if ($session.actions && $session.actions.length) {
       $session.count = $session.count + 1;
     }
+    $session.actions.forEach((item, index) => {
+      setTimeout(() => remove(item.id), 3000)
+    });
   }
 
   function remove(id) {
