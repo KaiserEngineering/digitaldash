@@ -47,17 +47,21 @@ def findPids(view):
     for i, gauge in enumerate(view["gauges"]):
         if not gauge['pid']:
             continue
+        # We concat pid and unit into a key so that we can have duplicate PIDs
+        # with different units
+        pidUnitHash = gauge['pid']+gauge['unit']
       # Do not create a new PID, as we want to share reference objects for same PIDs
-        if not gauge["pid"] in pidsDict:
-            pidsDict[gauge["pid"]] = PID(**gauge)
-        view["gauges"][i]["pid"] = pidsDict[gauge["pid"]]
+        if not pidUnitHash in pidsDict:
+            pidsDict[pidUnitHash] = PID(**gauge)
+        view["gauges"][i]['pid'] = pidsDict[pidUnitHash]
 
     for i, alert in enumerate(view["alerts"]):
         if not alert["pid"]:
             continue
-        if not alert["pid"] in pidsDict:
-            pidsDict[alert["pid"]] = PID(**alert)
-        view["alerts"][i]["pid"] = pidsDict[alert["pid"]]
+        pidUnitHash = alert['pid']+alert['unit']
+        if not pidUnitHash in pidsDict:
+            pidsDict[pidUnitHash] = PID(**alert)
+        view["alerts"][i]['pid'] = pidsDict[pidUnitHash]
 
     return list(pidsDict.values())
 
@@ -77,12 +81,14 @@ def findPidsForView(views, Id, dynamicPids):
 
     myView = views[Id]
     for gauge in myView["gauges"]:
-        if not gauge['pid']:
+        if not gauge['pid'] or\
+          str(gauge['pid'].value)+str(gauge['pid'].unit) in pidsList:
             continue
         pidsList.append(gauge["pid"])
 
     for alert in myView["alerts"]:
-        if not alert["pid"]:
+        if not alert["pid"] or \
+          str(alert['pid'].value)+str(alert['pid'].unit) in pidsList:
             continue
         pidsList.append(alert["pid"])
 
@@ -102,8 +108,6 @@ def setup(self, layouts):
     views = {}
     containers = {}
     dynamicPids = {}
-    # Currently we only allow one type of units per PID
-    units = {}
 
     # Sort based on default value
     for Id in layouts["views"]:
@@ -147,8 +151,10 @@ def setup(self, layouts):
                 # We only will ever have one dynamic PID right?
                 dynamicPids[Id] = dynamicPID
 
+                pidUnitHash = str(dynamicPID.value)+str(dynamicPID.unit)
+
                 # Replace our string pid value with our new object
-                dynamicConfig["pid"] = dynamicPID
+                dynamicConfig[pidUnitHash] = dynamicPID
 
                 dynamicObj = Dynamic()
                 (ret, msg) = dynamicObj.new(**dynamicConfig)
@@ -165,9 +171,9 @@ def setup(self, layouts):
                     continue
 
                 # Get our already created PID object
-                for pid in pids:
-                    if pid.value == alert["pid"]:
-                        alert["pid"] = pid
+                for pidKey in pidsDict:
+                    if pidKey == str(alert["pid"].value)+str(alert["pid"].unit):
+                        alert["pid"] = pidsDict[pidKey]
                         break
 
                 callbacks.setdefault(Id, []).append(Alert(**alert))
