@@ -210,7 +210,7 @@ def setup(self, layouts):
                 break
             if not gauge['pid'] or not isinstance(gauge['pid'], PID):
                 Logger.error(
-                  'GUI: Skipping gauge %s for view %s as not PID found', count, Id
+                  'GUI: Skipping gauge %s for view %s as PID not found', count, Id
                 )
                 continue
 
