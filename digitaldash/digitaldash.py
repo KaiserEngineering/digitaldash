@@ -88,22 +88,6 @@ def findPidsForView(views, Id, dynamicPids):
 
     return pidsList
 
-def findUnits(view):
-    """Create a dictionary of PIDs and their corresponding unit"""
-    units = {}
-    for gauge in view["gauges"]:
-        if not gauge['pid']:
-            continue
-        units[gauge["pid"]] = gauge["unit"]
-    for alert in view["alerts"]:
-        if not alert['pid']:
-            continue
-        units[alert["pid"]] = alert["unit"]
-    if view["dynamic"] and view["dynamic"]["enabled"]:
-        if view["dynamic"]["pid"]:
-            units[view["dynamic"]["pid"]] = view["dynamic"]["unit"]
-    return units
-
 
 def setup(self, layouts):
     """
@@ -144,8 +128,8 @@ def setup(self, layouts):
             skipLinearMinMax = True
         # FIXME
 
-        pids = findPids(view)
-        units = {**units, **findUnits(view)}
+        # Update our global dictionary with new view values -- if any.
+        findPids(view)
 
         background = view["background"]
 
