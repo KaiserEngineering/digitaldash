@@ -9,9 +9,8 @@
   import Slider from "$components/Slider.svelte";
 
   export let id;
-  let configuration = $session.configuration;
 
-  let view = configuration.views[id];
+  let view = $session.configuration.views[id];
   const KE_PID = $session.constants.KE_PID;
   const UNIT_LABEL = $session.constants.PID_UNIT_LABEL;
   const pids = Object.keys(KE_PID);
@@ -122,6 +121,7 @@
   }
 
   function handleSubmit(event) {
+    let configuration = $session.configuration;
     configuration.views[id] = view;
 
     if (
@@ -144,7 +144,6 @@
       .then((d) => d.json())
       .then((d) => {
         $session.configuration = d.config;
-        configuration = d.config;
         view = normalizeGauges(d.config.views[id]);
         theme = view.gauges[0].theme;
 
