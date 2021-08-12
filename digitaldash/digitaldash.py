@@ -171,9 +171,10 @@ def setup(self, layouts):
                     continue
 
                 # Get our already created PID object
-                for pidKey in pidsDict:
-                    if pidKey == str(alert["pid"].value)+str(alert["pid"].unit):
-                        alert["pid"] = pidsDict[pidKey]
+                for myTuple in pidsDict.items():
+                    (key, value) = (myTuple)
+                    if key == str(alert["pid"].value)+str(alert["pid"].unit):
+                        alert["pid"] = value
                         break
 
                 callbacks.setdefault(Id, []).append(Alert(**alert))
