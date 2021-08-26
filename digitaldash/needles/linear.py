@@ -48,6 +48,8 @@ class NeedleLinear(Needle, StencilView):
         if self.width == (Window.width - 100):
             self.xOffset = 100
 
+        self.xOffset = (self.step * abs(self.minValue)) + self.padding
+
     def setOffset(self) -> None:
         """
         Set offset for negative values or 0 for strictly positive PIDs
