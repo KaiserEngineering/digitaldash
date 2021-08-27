@@ -36,7 +36,7 @@ def views(file=None):
               "dynamic": {},"gauges": [], "name": "Error", "enabled": 1}}}
           """
     try:
-        with open(file) as dataFile:
+        with open(file, encoding='utf-8') as dataFile:
             jsonData = json.load(dataFile)
 
             dataFile.close()
@@ -66,7 +66,8 @@ def getThemeConfig(theme):
     jsonData = {}
 
     try:
-        with open(WORKINGPATH + "/themes/"+theme+"/config.json") as dataFile:
+        with open(WORKINGPATH + "/themes/"+theme+"/config.json", encoding='utf-8') \
+            as dataFile:
             jsonData = json.load(dataFile)
 
             dataFile.close()

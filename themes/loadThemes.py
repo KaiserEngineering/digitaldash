@@ -14,5 +14,5 @@ for folder in os.listdir( WORKING_PATH ):
             continue
         themes.append( folder )
 
-with open(WORKING_PATH+'/themes.json', 'w') as outfile:
+with open(WORKING_PATH+'/themes.json', 'w', encoding='utf-8') as outfile:
     json.dump(themes, outfile, indent=4)
