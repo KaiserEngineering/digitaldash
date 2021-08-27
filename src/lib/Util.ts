@@ -9,9 +9,11 @@ const guiHome: string | boolean = import.meta.env.VITE_KEGUIHome;
 let cache: any = {};
 
 export function ReadFile(File: string, Force: boolean = false) {
-  if (cache[File] && !Force) {
+  // We don't cache config as it can change and our threads aren't sync'd
+  if (cache[File] && !Force && File != '/etc/config.json' ) {
     return cache[File];
-  } else {
+  }
+  else {
     cache[File] = JSON.parse(fs.readFileSync(`${guiHome}/${File}`).toString());
     return cache[File];
   }

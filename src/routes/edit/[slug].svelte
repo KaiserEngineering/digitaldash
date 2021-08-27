@@ -32,23 +32,6 @@
     };
   }
 
-  function normalizeGauges(config = undefined) {
-    let temp = config ? config : view;
-
-    if (temp) {
-      // Ensure we always have 3 entries in our array
-      while (temp.gauges.length < 3) {
-        temp.gauges.push({
-          theme: undefined,
-          unit: undefined,
-          pid: undefined,
-        });
-      }
-    }
-    return temp;
-  }
-  view = normalizeGauges();
-
   function pidChange(node) {
     function getUnits(node) {
       const pid = node.target.value;
@@ -58,12 +41,17 @@
       let type = matches[1],
         index = matches[2];
 
-      if (type == "gauge") {
-        view.gauges[index].pid = pid;
-      } else if (type == "alert") {
-        view.alerts[index].pid = pid;
-      } else if (type == "dynamic") {
-        view.dynamic.pid = pid;
+      if ( view.gauges[index] ) {
+        if (type == "gauge") {
+          view.gauges[index].pid = pid;
+        } else if (type == "alert") {
+          view.alerts[index].pid = pid;
+        } else if (type == "dynamic") {
+          view.dynamic.pid = pid;
+        }
+      }
+      else {
+        view.gauges[index] = { 'pid' : pid };
       }
 
       // find our units for the provided pid
@@ -89,24 +77,26 @@
       // Actually set the select value to the first unit
       let currentValue;
       let unit;
-      if (type == "gauge") {
-        currentValue = KE_PID[pid].units[view.gauges[index].unit];
-        unit = view.gauges[index].unit;
-      } else if (type == "alert") {
-        currentValue = KE_PID[pid].units[view.alerts[index].unit];
-        unit = view.alerts[index].unit;
-      } else if (type == "dynamic") {
-        currentValue = KE_PID[pid].units[view.dynamic.unit];
-        unit = view.dynamic.unit;
-      }
+      if ( view.gauges[index] ) {
+        if (type == "gauge") {
+          currentValue = KE_PID[pid].units[view.gauges[index].unit];
+          unit = view.gauges[index].unit;
+        } else if (type == "alert") {
+          currentValue = KE_PID[pid].units[view.alerts[index].unit];
+          unit = view.alerts[index].unit;
+        } else if (type == "dynamic") {
+          currentValue = KE_PID[pid].units[view.dynamic.unit];
+          unit = view.dynamic.unit;
+        }
 
-      if (currentValue) {
-        unitsSelect.value = unit;
-      } else {
-        unitsSelect.value = unitsSelect.options[0].value;
+        if (currentValue) {
+          unitsSelect.value = unit;
+        } else {
+          unitsSelect.value = unitsSelect.options[0].value;
+        }
+        unitsSelect.focus();
+        unitsSelect.blur();
       }
-      unitsSelect.focus();
-      unitsSelect.blur();
     }
     node.addEventListener("change", getUnits);
     // Set our initial values
@@ -144,7 +134,7 @@
       .then((d) => d.json())
       .then((d) => {
         $session.configuration = d.config;
-        view = normalizeGauges(d.config.views[id]);
+        view = d.config.views[id];
         theme = view.gauges[0].theme;
 
         $session.actions = [
@@ -249,7 +239,7 @@
                         <select
                           use:pidChange
                           name="gauge-{i}"
-                          value={view.gauges[i].pid}
+                          value={view.gauges[i] ? view.gauges[i].pid: undefined}
                           class="mb-2 form-control"
                           id="pid-{id}"
                         >
@@ -269,8 +259,8 @@
                         <select
                           name="units"
                           on:blur={(e) =>
-                            (view.gauges[i].unit = e.target.value)}
-                          value={view.gauges[i].unit}
+                            view.gauges[i] ? view.gauges[i].unit = e.target.value : view.gauges[i] = { 'unit': e.target.value } }
+                          value={view.gauges[i] ? view.gauges[i].unit: undefined}
                           class="form-control"
                         />
                       </div>
