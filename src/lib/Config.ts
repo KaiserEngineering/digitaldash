@@ -1,4 +1,4 @@
-import { ReadFile, WriteFile } from "$lib/Util";
+import { ReadFile, WriteFile, ResetWithGit } from "$lib/Util";
 import type { Config } from "../globals";
 
 export function ReadConfig() {
@@ -21,6 +21,12 @@ export function UpdateConfig(Config: Config): Config {
 
   WriteFile("etc/config.json", Config);
   return ReadConfig();
+}
+
+export async function ResetConfig() {
+  let res = await ResetWithGit( 'etc/config.json' );
+
+  return {body: res };
 }
 
 // Build our cache right away

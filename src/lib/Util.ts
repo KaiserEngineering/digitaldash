@@ -9,8 +9,7 @@ const guiHome: string | boolean = import.meta.env.VITE_KEGUIHome;
 let cache: any = {};
 
 export function ReadFile(File: string, Force: boolean = false) {
-  // We don't cache config as it can change and our threads aren't sync'd
-  if (cache[File] && !Force && File != '/etc/config.json' ) {
+  if (cache[File] && !Force ) {
     return cache[File];
   }
   else {
@@ -34,4 +33,10 @@ export async function GetPythonDictionary(
     cache[File] = JSON.parse(stdout);
     return cache[File];
   }
+}
+
+export async function ResetWithGit(File: String) {
+  await execute(`cd ${guiHome}; git checkout ${guiHome}/${File}`);
+  // Todo - Need some kind of sane error checking here
+  return 1;
 }

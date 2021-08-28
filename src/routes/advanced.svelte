@@ -11,6 +11,8 @@
       .then((d) => d.json())
       .then((d) => {
         $session.configuration = d.config;
+        configString = JSON.stringify(d.config, null, 2);
+
         $session.actions = [
           {
             id: $session.count,
@@ -31,6 +33,26 @@
       invalid = true;
     }
   }
+
+  function reset() {
+    fetch("/api/config", {
+      method: "DELETE",
+    })
+      .then((d) => d.json())
+      .then((d) => {
+        $session.configuration = d.config;
+        configString = JSON.stringify(d.config, null, 2);
+
+        $session.actions = [
+          {
+            id: $session.count,
+            msg: d.message,
+            theme: d.ret ? "alert-info" : "alert-danger",
+          },
+          ...$session.actions,
+        ];
+      });
+  }
 </script>
 
 <div class="col-12 pr-4 pl-4 advanced">
@@ -44,6 +66,12 @@
     class="mt-2 form-control"
     type="submit"
     on:click={submit}>Save</button
+  >
+
+  <button
+    class="mt-2 form-control"
+    type="submit"
+    on:click={reset}>Reset To Default</button
   >
 </div>
 

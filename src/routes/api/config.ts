@@ -1,4 +1,4 @@
-import { ReadConfig, UpdateConfig } from "$lib/Config";
+import { ReadConfig, UpdateConfig, ResetConfig } from "$lib/Config";
 
 export interface Config {
   views: { [key: string]: View };
@@ -72,4 +72,20 @@ export async function put(request: { body: { id: any } }) {
     config = UpdateConfig(config);
     return { body: { ret: 1, views: config, message: "Config updated" } };
   }
+}
+
+// Reset our config
+export async function del() {
+  let res = {
+    message: "Failed to reset config",
+    ret: 0,
+    config: undefined
+  };
+
+  if ( await ResetConfig() ) {
+      res.message = "Config reset!";
+      res.ret = 1;
+      res.config = ReadConfig();
+  }
+  return { body: res };
 }
