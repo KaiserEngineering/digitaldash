@@ -241,7 +241,7 @@
                           name="gauge-{i}"
                           value={view.gauges[i] ? view.gauges[i].pid: undefined}
                           class="mb-2 form-control"
-                          id="pid-{id}"
+                          id="pid-{i}"
                         >
                           <option value="">-</option>
                           {#each pids as pid}
