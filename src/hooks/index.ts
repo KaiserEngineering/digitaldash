@@ -15,7 +15,7 @@ export async function handle({ request, resolve }) {
   }
 
   request.locals.user = user;
-  request.locals.configuration = ReadFile("/etc/config.json");
+  request.locals.configuration = ReadFile("/etc/config.json", true);
   request.locals.constants = await GetConstants();
 
   const response = await resolve(request);
