@@ -32,72 +32,74 @@
     };
   }
 
-  function pidChange(node) {
-    function getUnits(node) {
-      const pid = node.target.value;
-      let pidRegex = /(gauge|dynamic|alert)-(\d+)/;
-      let matches = pidRegex.exec(node.target.name);
 
-      let type = matches[1],
-        index = matches[2];
+  function getUnits(node) {
+    const pid = node.target.value;
+    let pidRegex = /(gauge|dynamic|alert)-(\d+)/;
+    let matches = pidRegex.exec(node.target.name);
 
-      if ( view.gauges[index] ) {
-        if (type == "gauge") {
-          view.gauges[index].pid = pid;
-        } else if (type == "alert") {
-          view.alerts[index].pid = pid;
-        } else if (type == "dynamic") {
-          view.dynamic.pid = pid;
-        }
-      }
-      else {
-        view.gauges[index] = { 'pid' : pid };
-      }
+    let type = matches[1],
+      index = matches[2];
 
-      // find our units for the provided pid
-      let unitsSelect = node.srcElement.parentElement.nextSibling.nextSibling.querySelectorAll(
-        "[name=units]"
-      )[0];
-      // Clear our old units from units select input
-      let i = 0;
-      for (i = 0; i < unitsSelect.options.length; i++) {
-        unitsSelect.remove(i);
-      }
-
-      if (!pid) {
-        unitsSelect.options[0] = new Option("-", "", false, false);
-        return;
-      }
-      // Add our units to our select input
-      Object.keys(KE_PID[pid].units).forEach((unit, i) => {
-        let label = UNIT_LABEL[unit];
-
-        unitsSelect.options[i] = new Option(label, unit, false, false);
-      });
-      // Actually set the select value to the first unit
-      let currentValue;
-      let unit;
-      if ( view.gauges[index] ) {
-        if (type == "gauge") {
-          currentValue = KE_PID[pid].units[view.gauges[index].unit];
-          unit = view.gauges[index].unit;
-        } else if (type == "alert") {
-          currentValue = KE_PID[pid].units[view.alerts[index].unit];
-          unit = view.alerts[index].unit;
-        } else if (type == "dynamic") {
-          currentValue = KE_PID[pid].units[view.dynamic.unit];
-          unit = view.dynamic.unit;
-        }
-
-        if (currentValue) {
-          unitsSelect.value = unit;
-        } else {
-          unitsSelect.value = unitsSelect.options[0].value;
-        }
-        unitsSelect.focus();
-        unitsSelect.blur();
+    if ( view.gauges[index] ) {
+      if (type == "gauge") {
+        view.gauges[index].pid = pid;
+      } else if (type == "alert") {
+        view.alerts[index].pid = pid;
+      } else if (type == "dynamic") {
+        view.dynamic.pid = pid;
       }
     }
+    else {
+      view.gauges[index] = { 'pid' : pid };
+    }
+
+    // find our units for the provided pid
+    let unitsSelect = node.srcElement.parentElement.nextSibling.nextSibling.querySelectorAll(
+      "[name=units]"
+    )[0];
+    // Clear our old units from units select input
+    let i = 0;
+    for (i = 0; i < unitsSelect.options.length; i++) {
+      unitsSelect.remove(i);
+    }
+
+    if (!pid) {
+      unitsSelect.options[0] = new Option("-", "", false, false);
+      return;
+    }
+    // Add our units to our select input
+    Object.keys(KE_PID[pid].units).forEach((unit, i) => {
+      let label = UNIT_LABEL[unit];
+
+      unitsSelect.options[i] = new Option(label, unit, false, false);
+    });
+    // Actually set the select value to the first unit
+    let currentValue;
+    let unit;
+    if ( view.gauges[index] ) {
+      if (type == "gauge") {
+        currentValue = KE_PID[pid].units[view.gauges[index].unit];
+        unit = view.gauges[index].unit;
+      } else if (type == "alert") {
+        currentValue = KE_PID[pid].units[view.alerts[index].unit];
+        unit = view.alerts[index].unit;
+      } else if (type == "dynamic") {
+        currentValue = KE_PID[pid].units[view.dynamic.unit];
+        unit = view.dynamic.unit;
+      }
+
+      if (currentValue) {
+        unitsSelect.value = unit;
+      } else {
+        unitsSelect.value = unitsSelect.options[0].value;
+      }
+      unitsSelect.focus();
+      unitsSelect.blur();
+    }
+  }
+
+  function pidChange(node) {
     node.addEventListener("change", getUnits);
     // Set our initial values
     var event = new Event("change");
@@ -145,6 +147,13 @@
           },
           ...$session.actions,
         ];
+      });
+
+      let changeEvent = new Event("change");
+      let elements = ['pid-0', 'pid-1', 'pid-2'];
+      elements.forEach((elements) => {
+        let pidInput = document.getElementById(element)
+        pidInput.dispatchEvent(changeEvent);
       });
   }
 
