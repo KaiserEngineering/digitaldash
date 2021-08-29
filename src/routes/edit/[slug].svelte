@@ -219,7 +219,7 @@
                 >
                   <option value="">-</option>
                   {#each ["Black.png", "Blue Purple Gradient.png", "Carbon Fiber.png", "Galaxy.png"] as background}
-                    <option value={background}>{background}</option>
+                    <option value={background}>{background.replace(/\.png|\.jpg/, '')}</option>
                   {/each}
                 </select>
               </div>
