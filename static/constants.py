@@ -50,7 +50,9 @@ PID_UNITS = {
     "PID_UNITS_SECONDS": 0x0E,
     "PID_UNITS_RATIO": 0x0F,
     "PID_UNITS_LPH": 0x10,
-    "PID_UNITS_BAR": 0x11
+    "PID_UNITS_BAR": 0x11,
+    "PID_UNITS_G_FORCE": 0x12,
+    "PID_UNITS_NONE": 0x13,
 }
 
 PID_UNIT_LABEL = {
@@ -71,7 +73,9 @@ PID_UNIT_LABEL = {
     "PID_UNITS_SECONDS": "s",
     "PID_UNITS_RATIO": ":1",
     "PID_UNITS_LPH": "lpm",
-    "PID_UNITS_BAR": "bar"
+    "PID_UNITS_BAR": "bar",
+    "PID_UNITS_G_FORCE": "G",
+    "PID_UNITS_NONE": ""
 }
 
 KE_PID = {
