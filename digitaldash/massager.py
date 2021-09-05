@@ -15,6 +15,6 @@ def smooth(old, new) -> float:
     if new is None:
         Logger.error("Cannot set smoothing value without New value")
         return 0
-    delta = abs(new - old)
+    delta = new - old
 
     return new - (delta * 0.97)
