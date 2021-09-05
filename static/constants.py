@@ -224,6 +224,86 @@ KE_PID = {
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
+    "0xDE0802": {
+        "name": "BRAKE_PEDAL_STATUS",
+        "shortName": "Brake Pedal",
+        "shortDesc": "Brake Pedal",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0C82": {
+        "name": "EMERGENCY_BRAKE_STATUS",
+        "shortName": "E-Brake",
+        "shortDesc": "E-Brake",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0803": {
+        "name": "REVERSE_STATUS",
+        "shortName": "Reverse",
+        "shortDesc": "Reverse",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0301": {
+        "name": "CRUISE_CONTROL_ON_BUTTON",
+        "shortName": "ON Button",
+        "shortDesc": "ON Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0302": {
+        "name": "CRUISE_CONTROL_OFF_BUTTON",
+        "shortName": "OFF Button",
+        "shortDesc": "OFF Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0303": {
+        "name": "CRUISE_CONTROL_SET_PLUS_BUTTON",
+        "shortName": "SET+ Button",
+        "shortDesc": "SET+ Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0304": {
+        "name": "CRUISE_CONTROL_SET_MINUS_BUTTON",
+        "shortName": "SET- Button",
+        "shortDesc": "SET- Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0305": {
+        "name": "CRUISE_CONTROL_RES_BUTTON",
+        "shortName": "RES Button",
+        "shortDesc": "RES Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0306": {
+        "name": "CRUISE_CONTROL_CAN_BUTTON",
+        "shortName": "CAN Button",
+        "shortDesc": "CAN Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE01C8": {
+        "name": "GAUGE_BRIGHTNESS",
+        "shortName": "Brightness",
+        "shortDesc": "Gauge Illum Level",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 31, "decimals": "0"},
+        },
+    },
 }
 
 
