@@ -144,14 +144,23 @@ def setup(self, layouts):
                 dynamicConfig["viewId"] = Id
 
                 # Keep track of our dynamic PIDs
-                dynamicPID = PID(**dynamicConfig)
-                if not dynamicPID.value:
-                    Logger.error("GUI: Bailing out: Couldn't set dynamic PID")
-                    return (0, "Couldn't set dynamic PID")
+                dynamicPID = None
+
+                pidUnitHash = str(dynamicConfig['value'])+str(dynamicConfig['unit'])
+                # Get our already created PID object
+                for myTuple in pidsDict.items():
+                    (key, value) = (myTuple)
+                    if key == str(pidUnitHash):
+                        dynamicPID = value
+                        break
+
+                if not dynamicPID:
+                    dynamicPID = PID(**dynamicConfig)
+                    if not dynamicPID.value:
+                        Logger.error("GUI: Bailing out: Couldn't set dynamic PID")
+                        return (0, "Couldn't set dynamic PID")
                 # We only will ever have one dynamic PID right?
                 dynamicPids[Id] = dynamicPID
-
-                pidUnitHash = str(dynamicPID.value)+str(dynamicPID.unit)
 
                 # Replace our string pid value with our new object
                 dynamicConfig['pid'] = dynamicPID
