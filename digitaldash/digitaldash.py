@@ -154,7 +154,7 @@ def setup(self, layouts):
                 pidUnitHash = str(dynamicPID.value)+str(dynamicPID.unit)
 
                 # Replace our string pid value with our new object
-                dynamicConfig[pidUnitHash] = dynamicPID
+                dynamicConfig['pid'] = dynamicPID
 
                 dynamicObj = Dynamic()
                 (ret, msg) = dynamicObj.new(**dynamicConfig)
