@@ -80,7 +80,7 @@ class Needle:
                 value = self.maxValue
             elif value < self.minValue:
                 value = self.minValue
-            self.update = smooth(old=current, new=value * self.step)
+            self.update = smooth(old=current, new=value * self.step - self.offset)
         except:
             Logger.error("GUI: needle.py is not numeric")
 
