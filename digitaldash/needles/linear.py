@@ -52,12 +52,9 @@ class NeedleLinear(Needle, StencilView):
 
     def setOffset(self) -> None:
         """
-        Set offset for negative values or 0 for strictly positive PIDs
+        Set offset to 0, the offset of the starting point is handled in setStep
 
         Args:
           self <digitaldash.needles.linear>
         """
-        if self.minValue < 0:
-            self.offset = self.minValue
-        else:
-            self.offset = 0
+        self.offset = 0
