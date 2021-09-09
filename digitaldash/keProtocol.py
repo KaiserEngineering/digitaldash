@@ -2,9 +2,10 @@
 # pylint: skip-file
 import serial
 import time
-from kivy.logger import Logger
+from kivy.logger import Logger, LOG_LEVELS
 import subprocess  # nosec
 from static.constants import KE_CP_OP_CODES
+from static.constants import PID_UNITS
 import os
 import fnmatch
 from gpiozero import CPUTemperature
@@ -234,6 +235,23 @@ class Serial:
         if len(pid_byte_code) <= 0:
             Logger.error(msg)
             return (0, msg)
+
+        if ( LOG_LEVELS['debug'] == Logger.getEffectiveLevel()):
+            inv_map = {v: k for k, v in KE_CP_OP_CODES.items()}
+            Logger.debug('Header: sol: 0x{:02X}  length: {:d}'.format(pid_byte_code[0],pid_byte_code[1]) + '  cmd:' + inv_map[pid_byte_code[2]] )
+
+            inv_map = {v: k for k, v in PID_UNITS.items()}
+            num_pids = int((len(pid_byte_code) - 3) / 5)
+
+            for i in range(num_pids):
+                spare = pid_byte_code[(i*5)+3]
+                units = pid_byte_code[(i*5)+4]
+                mode  = pid_byte_code[(i*5)+5]
+                pid   = pid_byte_code[(i*5)+6] << 8 | pid_byte_code[(i*5)+7]
+                Logger.debug( 'PID {:d} of {:d}:'.format(i+1, num_pids) +
+                    ' mode:0x{:02X}'.format(mode) +
+                    '  pid:0x{:04X}'.format(pid) +
+                    '  units:' + inv_map[units])
 
         msg = "GUI: Updating requirements: " + str(pid_byte_code)
         Logger.info(msg)
