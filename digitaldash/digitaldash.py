@@ -159,8 +159,7 @@ def setup(self, layouts):
                     if not dynamicPID.value:
                         Logger.error("GUI: Bailing out: Couldn't set dynamic PID")
                         return (0, "Couldn't set dynamic PID")
-                    else:
-                        pidsDict[pidUnitHash] = dynamicPID
+                    pidsDict[pidUnitHash] = dynamicPID
                 # We only will ever have one dynamic PID right?
                 dynamicPids[Id] = dynamicPID
 
