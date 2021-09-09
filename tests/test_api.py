@@ -79,7 +79,7 @@ def test_needle_simple():
             needle.type + " component defaults to minimum value"
         )
         assert needle.update == smooth(
-            old=old_value, new=4000 * needle.step
+            old=old_value, new=4000 * needle.step - offset
         ), print(
             needle.type
             + " component sets the correct rotational value with smoothing (not true value)"
