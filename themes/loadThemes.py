@@ -12,7 +12,7 @@ def getThemes():
     """Return a list of our themes."""
     for folder in os.listdir( WORKING_PATH ):
         if os.path.isdir(os.path.join( WORKING_PATH, folder )):
-            if folder in ("Error", "Clock" ):
+            if folder in ("Error", "Clock", "__pycache__" ):
                 continue
             themes.append( folder )
     return themes
