@@ -5,17 +5,17 @@
     "labels":
       [
         {
-        "pos": [45, 50], "font_size": 22, "Max": "1", "data": 1
+        "pos": [45, 48], "font_size": 22, "Max": "1", "data": 1
         },
         {
-        "pos": [-45, 50], "font_size": 22, "Min": "1", "data": 1
+        "pos": [-45, 48], "font_size": 22, "Min": "1", "data": 1
         },
         {
         "pos": [0, 82], "font_size": 40, "default": "",
         "data": 1
         },
         {
-          "pos": [0, 28], "font_size": 20, "default": "__PID__"
+          "pos": [0, 26], "font_size": 20, "default": "__PID__"
         }
     ]
 }
