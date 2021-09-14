@@ -5,6 +5,7 @@
 # pylint: disable=broad-except
 
 import json
+import sys
 from kivy.logger import Logger
 
 WORKINGPATH = ""
@@ -16,12 +17,22 @@ def setWorkingPath(path):
     WORKINGPATH = path
 
 
-def views(file=None):
+def views(file=None, jsonData=None):
     """Get data from JSON."""
+    # This is for tests so its fine to just die on error
+    if jsonData:
+        valid, error = validateConfig(jsonData)
+
+        if not valid:
+            sys.exit(error)
+
+        return jsonData
+
     # Allow for a file to be submitted in place of default config, this is
     # useful for tests
     if file is None or file == "":
         file = WORKINGPATH + "/etc/config.json"
+
     jsonData = {}
     errorConfig = """
     {"views": { "0": {

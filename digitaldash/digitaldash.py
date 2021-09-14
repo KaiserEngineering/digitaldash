@@ -286,7 +286,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         self.dynamic_callbacks = []
         self.callbacks = {}
 
-    (ret, msg) = setup(self, config.views(file=self.configFile))
+    (ret, msg) = setup(self, config.views(file=self.configFile, jsonData=self.jsonData))
     if ret:
         self.views, self.containers, self.callbacks = ret
     else:

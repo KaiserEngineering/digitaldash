@@ -104,17 +104,23 @@ class GUI(App):
     success: str
     status : str
 
-    def new(self, configFile=None, data=None):
-        """
-        This method can be used to set any values before the app starts, this is useful for
-        testing.
-        """
-        self.configFile = configFile
+    def __init__(self, **args):
+        super().__init__()
+        self.configFile = args.get('configFile')
+        self.jsonData = args.get('jsonData')
         self.WORKING_PATH = WORKING_PATH
         self.count = 0
 
         self.success = 1
         self.status  = ''
+
+    def new(self, configFile=None, data=None):
+        """
+        This method can be used to set any values before the app starts, this is useful for
+        testing.
+        """
+        if configFile:
+            self.configFile = configFile
 
         if data:
             global dataSource

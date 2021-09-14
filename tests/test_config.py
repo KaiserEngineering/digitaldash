@@ -8,7 +8,12 @@ import os
 from digitaldash import digitaldash
 from static.constants import get_constants
 from themes.loadThemes import getThemes
+from main import GUI
+from digitaldash.digitaldash import buildFromConfig
+from kivy.uix.anchorlayout import AnchorLayout
 import pathlib
+import pytest
+import copy
 
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
@@ -40,6 +45,20 @@ def test_config_file_from_cli():
                 entry.name + " passes config validation check"
             )
 
+def my_gui(newConfig):
+    config.setWorkingPath(working_path)
+
+    self = GUI()
+    self.WORKING_PATH = working_path
+    self.jsonData = newConfig
+    self.configFile = None
+    self.data_source = None
+    self.app = AnchorLayout()
+    self.working_path = working_path
+
+    buildFromConfig(self)
+    return self
+
 def test_config_programatically():
     dd = main.GUI()
     dd.working_path = working_path
@@ -62,22 +81,20 @@ def test_config_programatically():
     themes = getThemes()
     constants = get_constants()
 
-    for pid in constants['KE_PID']:
-      newConfig = dict(configBase)
-      newConfig['views']['0']['gauges'].append({
-        'pid' : constants['KE_PID'][pid]['name'],
-      })
+    for pidTuple in constants['KE_PID'].items():
+        (pid, values) = (pidTuple)
+        newConfig = copy.deepcopy( configBase )
 
-      for theme in themes:
-        newConfig['views']['0']['gauges'][0]['theme'] = theme
+        newConfig['views']['0']['gauges'].append({
+          'pid' : pid,
+        })
 
-        for myTuple in constants['KE_PID'][pid]['units'].items():
-            (unit, value) = (myTuple)
-            newConfig['views']['0']['gauges'][0]['unit'] = unit
+        for theme in themes:
+          newConfig['views']['0']['gauges'][0]['theme'] = theme
 
-            (ret, msg) = config.validateConfig(newConfig)
-            assert  ret == True, print(
-                "Random config passes config validation check"
-            )
-      # Remove the last gauge we entered
-      newConfig['views']['0']['gauges'].pop()
+          for myTuple in constants['KE_PID'][pid]['units'].items():
+              (unit, value) = (myTuple)
+              newConfig['views']['0']['gauges'][0]['unit'] = unit
+
+              newConfigCopy = copy.deepcopy( newConfig )
+              my_gui(newConfigCopy)
