@@ -1,6 +1,6 @@
 {
   "name": "dd",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "svelte-kit dev -p 80 --host",
