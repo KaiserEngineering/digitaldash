@@ -5,12 +5,13 @@
       "enabled" : true,
       "default" : 1,
       "background":"black.png",
+      "dynamicMinMax": true,
         "dynamic": {
           "enabled": false,
           "pid": "0x220461",
           "op": "<",
           "priority": 1,
-          "value": "4000",
+          "value": 4000,
           "unit": "PID_UNITS_RPM"
         },
         "alerts": [
@@ -25,6 +26,7 @@
     },
     "1" : {
       "name":"dynamic view 2",
+      "dynamicMinMax": true,
       "enabled" : true,
       "default" : 0,
       "background":"black.png",
@@ -33,8 +35,8 @@
           "pid": "0x220461",
           "op": ">",
           "priority": 2,
-          "value": "-9999",
-          "unit": "PID_UNITS_CELCIUS"
+          "value": -9999,
+          "unit": "PID_UNITS_CELSIUS"
         },
         "alerts": [
         ],
@@ -42,7 +44,7 @@
           {
               "theme": "Stock ST",
               "pid": "0x220461",
-              "unit" : "PID_UNITS_CELCIUS"
+              "unit" : "PID_UNITS_CELSIUS"
           }
       ]
     }

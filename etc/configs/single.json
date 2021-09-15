@@ -5,6 +5,7 @@
       "enabled" : true,
       "default" : 1,
       "background":"black.png",
+      "dynamicMinMax": true,
       "dynamic": {},
       "alerts": [],
       "gauges": [
@@ -17,13 +18,14 @@
     },
     "1": {
         "name":"Don't see me",
+        "dynamicMinMax": true,
         "enabled" : false,
         "background":"black.png",
         "dynamic": {
             "enabled": true,
             "pid": "0x010C",
             "op": ">=",
-            "value": "1000",
+            "value": 1000,
             "priority": 10,
             "unit" : "PID_UNITS_RPM"
         },

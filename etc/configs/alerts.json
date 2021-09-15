@@ -5,12 +5,13 @@
         "enabled" : true,
         "default" : 1,
         "background":"black.png",
+        "dynamicMinMax": true,
           "dynamic": {},
           "alerts": [
             {
                 "pid": "0x010C",
                 "op": "<",
-                "value": "4000",
+                "value": 4000,
                 "priority": 1,
                 "message" : "Hello, world",
                 "unit" : "PID_UNITS_RPM"
@@ -18,7 +19,7 @@
             {
               "pid": "0x010C",
               "op": ">=",
-              "value": "4000",
+              "value": 4000,
               "priority": 2,
               "message" : "Alert two",
               "unit" : "PID_UNITS_RPM"
@@ -37,12 +38,13 @@
       "enabled" : true,
       "default" : 0,
       "background":"black.png",
+      "dynamicMinMax": true,
         "dynamic": {},
         "alerts": [
           {
               "pid": "0x010C",
               "op": ">",
-              "value": "4000",
+              "value": 4000,
               "priority": 1,
               "message" : "Alert two",
               "unit" : "PID_UNITS_RPM"

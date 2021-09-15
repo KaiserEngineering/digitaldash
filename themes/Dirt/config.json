@@ -3,15 +3,13 @@
   "degrees": 120, "angle_start": 298,
     "labels":
       [{
-       "pos": [85, 25], "font_size": 20, "default": "Max: ",
-       "data": 1
+       "pos": [85, 25], "font_size": 20, "Max": 1, "data": 1
        },
       {
-       "pos": [-85, 25], "font_size": 20, "default": "Min: ",
-       "data": 1
+       "pos": [-85, 25], "font_size": 20, "Min": 1, "data": 1
        },
       {
-       "pos": [0, 70], "font_size": 30, "default": "",
+       "pos": [0, 70], "font_size": 30,
        "data": 1
        },
        {

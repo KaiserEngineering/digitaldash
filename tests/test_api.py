@@ -14,6 +14,7 @@ from static.constants import KE_PID
 from kivy.uix.anchorlayout import AnchorLayout
 from digitaldash.digitaldash import buildFromConfig
 from digitaldash.pid import PID
+from main import GUI
 
 import pytest
 import pathlib
@@ -78,7 +79,7 @@ def test_needle_simple():
             needle.type + " component defaults to minimum value"
         )
         assert needle.update == smooth(
-            old=old_value, new=4000 * needle.step - needle.offset
+            old=old_value, new=4000 * needle.step - offset
         ), print(
             needle.type
             + " component sets the correct rotational value with smoothing (not true value)"
@@ -142,7 +143,7 @@ def test_label_simple():
     label.setData(100)
     assert label.text == "hello, world 100", print("Min value stays minimum seen")
 
-    label = KELabel(default="Max: ", data=1, pid=pid)
+    label = KELabel(default="", data=1, pid=pid, Max=1)
     label.setData(0)
     assert label.text == "0", print("Default text value is set correctly")
     label.setData(100)
@@ -173,22 +174,12 @@ def test_alert_simple():
     assert alert.text == "Hello, from tests", print("Do not set alert value")
 
 
-class Application:
-    """Class for replacing 'self' from main.py"""
-
-    def __init__(self):
-        self.background_source = "woof"
-
-def loop():
-  pass
-
 @pytest.fixture
 def my_application():
     config.setWorkingPath(working_path)
 
-    self = Application()
+    self = GUI()
     self.WORKING_PATH = working_path
-    self.loop = loop
     self.configFile = None
     self.data_source = None
     self.app = AnchorLayout()

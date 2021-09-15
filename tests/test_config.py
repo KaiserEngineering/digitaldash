@@ -6,8 +6,14 @@ from etc import config
 import os
 
 from digitaldash import digitaldash
-
+from static.constants import get_constants
+from themes.loadThemes import getThemes
+from main import GUI
+from digitaldash.digitaldash import buildFromConfig
+from kivy.uix.anchorlayout import AnchorLayout
 import pathlib
+import pytest
+import copy
 
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
@@ -34,6 +40,62 @@ def test_config_file_from_cli():
     with os.scandir(path) as dirs:
         for entry in dirs:
             json_config = config.views(file=working_path + "/etc/configs/" + entry.name)
-            assert config.validateConfig(json_config) == True, print(
+            (ret, msg) = config.validateConfig(json_config)
+            assert  ret == True, print(
                 entry.name + " passes config validation check"
             )
+
+def my_gui(newConfig):
+    config.setWorkingPath(working_path)
+
+    self = GUI()
+    self.WORKING_PATH = working_path
+    self.jsonData = newConfig
+    self.configFile = None
+    self.data_source = None
+    self.app = AnchorLayout()
+    self.working_path = working_path
+
+    buildFromConfig(self)
+    return self
+
+def test_config_programatically():
+    dd = main.GUI()
+    dd.working_path = working_path
+
+    configBase = {
+        "views" : {
+            "0": {
+              "name":"base",
+              "enabled" : True,
+              "default" : 1,
+              "background":"black.png",
+              "dynamicMinMax": True,
+              "dynamic": {},
+              "alerts": [],
+              "gauges": []
+            }
+        }
+    }
+
+    themes = getThemes()
+    constants = get_constants()
+
+    for pidTuple in constants['KE_PID'].items():
+        (pid, values) = (pidTuple)
+        newConfig = copy.deepcopy( configBase )
+
+        for x in range(0, 3):
+            newConfig['views']['0']['gauges'].append({
+              'pid' : pid,
+            })
+
+            for theme in themes:
+              newConfig['views']['0']['gauges'][x]['theme'] = theme
+
+              for myTuple in constants['KE_PID'][pid]['units'].items():
+                  (unit, value) = (myTuple)
+                  newConfig['views']['0']['gauges'][x]['unit'] = unit
+
+        newConfigCopy = copy.deepcopy( newConfig )
+        my_gui(newConfigCopy)

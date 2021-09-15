@@ -1,0 +1,40 @@
+{
+  "views": {
+    "0": {
+      "name": "view #1",
+      "enabled": true,
+      "default": 1,
+      "background": "Blue Purple Gradient.png",
+      "dynamicMinMax": true,
+      "alerts": [
+      ],
+      "dynamic": {
+      },
+      "gauges": [
+        {
+          "theme": "Stock ST",
+          "unit": "PID_UNITS_RPM",
+          "pid": "0x010C"
+        }
+      ]
+    },
+    "1": {
+      "name": "view #2",
+      "dynamicMinMax": true,
+      "enabled": true,
+      "default": 1,
+      "background": "Blue Purple Gradient.png",
+      "alerts": [
+      ],
+      "dynamic": {
+      },
+      "gauges": [
+        {
+          "theme": "Stock ST",
+          "unit": "PID_UNITS_RPM",
+          "pid": "0x010C"
+        }
+      ]
+    }
+  }
+}

@@ -5,12 +5,13 @@
         "default" : 1,
         "name":"rpm to linear config",
         "background":"black.png",
+        "dynamicMinMax": true,
         "dynamic": {
             "enabled": true,
             "pid": "0x010C",
             "unit" : "PID_UNITS_RPM",
             "op": "<",
-            "value": "500",
+            "value": 500,
             "priority": 1
           },
         "alerts": [],
@@ -34,6 +35,7 @@
         },
         "1" : {
           "enabled" : true,
+          "dynamicMinMax": true,
           "name": "linear",
           "background":"black.jpg",
           "dynamic": {
@@ -41,7 +43,7 @@
             "pid": "0x010C",
             "unit" : "PID_UNITS_RPM",
             "op": ">=",
-            "value": "500",
+            "value": 500,
             "priority": 10
           },
           "alerts": [],

@@ -27,8 +27,6 @@ class KELabel(Label):
             (default is nothing)
         """
         super().__init__()
-        self.minObserved = 9999
-        self.maxObserved = -9999
         self.default = args.get("default", "")
         self.configColor = args.get("color", (1, 1, 1, 1))  # White
         self.color = self.configColor
@@ -37,6 +35,10 @@ class KELabel(Label):
         self.pid = args.get("pid", None)
         self.decimals = "2"  # Default to 2 and update later if a value is provided
         self.unitString = ""
+
+        # Min/Max handling args
+        self.isMin = args.get("Min", False)
+        self.isMax = args.get("Max", False)
 
         if self.pid:
             self.unit = self.pid.unitLabel
@@ -85,8 +87,6 @@ class KELabel(Label):
         """
         Send data to Label widget.
 
-        Check for Min/Max key words to cache values with regex checks.
-
         Args:
             self (<lib.keLabel>): KELabel object
             value (float) : value that label is being updated to
@@ -94,14 +94,12 @@ class KELabel(Label):
         try:
             value = float(value)
 
-            if self.default == "Min: ":
-                if self.minObserved > value:
-                    self.minObserved = value
-                    self.text = ("{0:.%sf}" % (self.decimals)).format(value)
-            elif self.default == "Max: ":
-                if self.maxObserved < value:
-                    self.maxObserved = value
-                    self.text = ("{0:.%sf}" % (self.decimals)).format(value)
+            if self.isMin:
+                self.pid.minObserved = min(self.pid.minObserved, value)
+                self.text = ("{0:.%sf}" % (self.decimals)).format(self.pid.minObserved)
+            elif self.isMax:
+                self.pid.maxObserved = max(self.pid.maxObserved, value)
+                self.text = ("{0:.%sf}" % (self.decimals)).format(self.pid.maxObserved)
             else:
                 self.text = self.default + ("{0:.%sf}" % (self.decimals)).format(value)
                 if self.unitString:

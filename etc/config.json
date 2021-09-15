@@ -5,13 +5,14 @@
       "enabled": true,
       "default": 1,
       "background": "Blue Purple Gradient.png",
+      "dynamicMinMax": true,
       "alerts": [
         {
           "message": "Shift!",
           "op": ">=",
           "priority": 0,
           "unit": "PID_UNITS_RPM",
-          "value": "6500",
+          "value": 6500,
           "pid": "0x010C"
         }
       ],
@@ -20,7 +21,7 @@
         "op": "<=",
         "enabled": true,
         "priority": 0,
-        "value": "10",
+        "value": 10,
         "unit": "PID_UNITS_PSI"
       },
       "gauges": [
@@ -43,16 +44,17 @@
     },
     "1": {
       "name": "Boost",
-      "enabled": true,
+      "enabled": false,
+      "dynamicMinMax": true,
       "default": 0,
       "background": "Blue Purple Gradient.png",
       "alerts": [],
       "dynamic": {
         "pid": "0x016F",
         "op": ">",
-        "enabled": true,
+        "enabled": false,
         "unit": "PID_UNITS_PSI",
-        "value": "10",
+        "value": 10,
         "priority": 10
       },
       "gauges": [

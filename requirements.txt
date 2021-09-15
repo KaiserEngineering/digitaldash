@@ -1,4 +1,5 @@
 watchdog>=1.0.0
+pillow
 pgen>=0.2.1
 kivy>=2.0.0
 pytest>=6.1.2

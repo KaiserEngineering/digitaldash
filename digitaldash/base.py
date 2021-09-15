@@ -2,6 +2,7 @@
 # pylint: disable=unused-import
 # pylint: disable=too-few-public-methods
 # pylint: disable=unused-import
+# pylint: disable=fixme
 
 from typing import List
 
@@ -13,6 +14,7 @@ from digitaldash.face import Face
 from digitaldash.keLabel import KELabel
 
 from digitaldash.needles.ellipse import NeedleEllipse as Ellipse
+from digitaldash.needles.static import NeedleStatic as Static
 from digitaldash.needles.radial import NeedleRadial as Radial
 from digitaldash.needles.linear import NeedleLinear as Linear
 
@@ -64,7 +66,7 @@ class Base:
             # FIXME
             # This is a bandaid on the issue of spacing for linear gauges
             if ARGS['skipLinearMinMax'] and themeConfig["module"] and \
-              labelConfig["default"] in ['Min: ', 'Max: ']:
+              ( labelConfig.get("Min") or labelConfig.get("Max") ):
                 Logger.info(
                   'GUI: Received skipLinearMinMax flag, \
                     removing Min/Max labels from Linear gauges'
@@ -72,7 +74,10 @@ class Base:
                 continue
             # FIXME
 
-            labelConfig = {**ARGS, **labelConfig}
+            # remove duplicate "default" config option from main config
+            tempArgs = dict(ARGS)
+            tempArgs.pop('default', None)
+            labelConfig = {**tempArgs, **labelConfig}
 
             # Create Label widget
             label = KELabel(
@@ -84,7 +89,18 @@ class Base:
 
             # Add to data recieving widgets
             if "data" in labelConfig and labelConfig['data']:
-                self.liveWidgets.append(label)
+                # Don't update our Min/Max labels if they are static
+                if ( label.isMax or label.isMin ) and not ARGS['dynamicMinMax']:
+                    if label.isMax:
+                        label.text =\
+                          str(label.pid.range['Max'])+"[size=15]"+" "\
+                          +label.unitString+"[/size]"
+                    else:
+                        label.text =\
+                          str(label.pid.range['Min'])+"[size=15]"+" "\
+                            +label.unitString+"[/size]"
+                else:
+                    self.liveWidgets.append(label)
             self.container.add_widget(label)
 
         return self.liveWidgets

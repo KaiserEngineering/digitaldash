@@ -8,6 +8,7 @@
       "background":"alignment.png",
       "dynamic": {},
       "alerts": [],
+      "dynamicMinMax": true,
       "gauges": [
         {
             "theme": "Stock ST",
@@ -20,11 +21,12 @@
         "name":"Don't see me",
         "enabled" : false,
         "background":"black.png",
+        "dynamicMinMax": true,
         "dynamic": {
             "enabled": true,
             "pid": "0x010C",
             "op": ">=",
-            "value": "1000",
+            "value": 1000,
             "priority": 10,
             "unit" : "PID_UNITS_RPM"
         },

@@ -1,6 +1,7 @@
 {
     "degrees": 120,
     "module" : "Linear",
+    "colorChanging": true,
     "labels":
       [{
         "pos": [300, 25], "font_size": 22, "Max": 1, "data": 1

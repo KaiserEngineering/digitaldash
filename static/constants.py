@@ -35,7 +35,7 @@ PID_UNITS = {
     "n/a": "",
     "PID_UNITS_RESERVED": 0x00,
     "PID_UNITS_PERCENT": 0x01,
-    "PID_UNITS_CELCIUS": 0x02,
+    "PID_UNITS_CELSIUS": 0x02,
     "PID_UNITS_FAHRENHEIT": 0x03,
     "PID_UNITS_KPA": 0x04,
     "PID_UNITS_PSI": 0x05,
@@ -44,13 +44,21 @@ PID_UNITS = {
     "PID_UNITS_MPH": 0x08,
     "PID_UNITS_GRAMSEC": 0x09,
     "PID_UNITS_DEGREES": 0x0A,
-    "PID_UNITS_VOLTS": 0x0B
+    "PID_UNITS_VOLTS": 0x0B,
+    "PID_UNITS_KM": 0x0C,
+    "PID_UNITS_MILES": 0x0D,
+    "PID_UNITS_SECONDS": 0x0E,
+    "PID_UNITS_RATIO": 0x0F,
+    "PID_UNITS_LPH": 0x10,
+    "PID_UNITS_BAR": 0x11,
+    "PID_UNITS_G_FORCE": 0x12,
+    "PID_UNITS_NONE": 0x13,
 }
 
 PID_UNIT_LABEL = {
     "PID_UNITS_RESERVED": "",
     "PID_UNITS_PERCENT": "%",
-    "PID_UNITS_CELCIUS": "\u00b0C",
+    "PID_UNITS_CELSIUS": "\u00b0C",
     "PID_UNITS_FAHRENHEIT": "\u00b0F",
     "PID_UNITS_KPA": "kPa",
     "PID_UNITS_PSI": "psi",
@@ -59,7 +67,15 @@ PID_UNIT_LABEL = {
     "PID_UNITS_MPH": "mph",
     "PID_UNITS_GRAMSEC": "g/s",
     "PID_UNITS_DEGREES": "\u00b0",
-    "PID_UNITS_VOLTS": "V"
+    "PID_UNITS_VOLTS": "V",
+    "PID_UNITS_KM": "km",
+    "PID_UNITS_MILES": "mi",
+    "PID_UNITS_SECONDS": "s",
+    "PID_UNITS_RATIO": ":1",
+    "PID_UNITS_LPH": "lpm",
+    "PID_UNITS_BAR": "bar",
+    "PID_UNITS_G_FORCE": "G",
+    "PID_UNITS_NONE": ""
 }
 
 KE_PID = {
@@ -76,7 +92,7 @@ KE_PID = {
         "shortName": "ECT",
         "shortDesc": "Coolant Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 215, "decimals": "0"},
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 215, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
@@ -135,7 +151,7 @@ KE_PID = {
         "shortName": "IAT",
         "shortDesc": "Intake Air Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
@@ -169,7 +185,7 @@ KE_PID = {
         "shortName": "Oil Temp",
         "shortDesc": "Oil Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
@@ -195,7 +211,7 @@ KE_PID = {
         "shortName": "CAT",
         "shortDesc": "Charge Air Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "1"},
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "1"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "2"},
         },
     },
@@ -204,8 +220,88 @@ KE_PID = {
         "shortName": "AAT",
         "shortDesc": "Ambient Air Temp",
         "units": {
-            "PID_UNITS_CELCIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
+    },
+    "0xDE0802": {
+        "name": "BRAKE_PEDAL_STATUS",
+        "shortName": "Brake Pedal",
+        "shortDesc": "Brake Pedal",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0C82": {
+        "name": "EMERGENCY_BRAKE_STATUS",
+        "shortName": "E-Brake",
+        "shortDesc": "E-Brake",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0803": {
+        "name": "REVERSE_STATUS",
+        "shortName": "Reverse",
+        "shortDesc": "Reverse",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0301": {
+        "name": "CRUISE_CONTROL_ON_BUTTON",
+        "shortName": "ON Button",
+        "shortDesc": "ON Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0302": {
+        "name": "CRUISE_CONTROL_OFF_BUTTON",
+        "shortName": "OFF Button",
+        "shortDesc": "OFF Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0303": {
+        "name": "CRUISE_CONTROL_SET_PLUS_BUTTON",
+        "shortName": "SET+ Button",
+        "shortDesc": "SET+ Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0304": {
+        "name": "CRUISE_CONTROL_SET_MINUS_BUTTON",
+        "shortName": "SET- Button",
+        "shortDesc": "SET- Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0305": {
+        "name": "CRUISE_CONTROL_RES_BUTTON",
+        "shortName": "RES Button",
+        "shortDesc": "RES Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE0306": {
+        "name": "CRUISE_CONTROL_CAN_BUTTON",
+        "shortName": "CAN Button",
+        "shortDesc": "CAN Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xDE01C8": {
+        "name": "GAUGE_BRIGHTNESS",
+        "shortName": "Brightness",
+        "shortDesc": "Gauge Illum Level",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 31, "decimals": "0"},
         },
     },
 }

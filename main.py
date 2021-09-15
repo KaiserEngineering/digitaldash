@@ -104,17 +104,23 @@ class GUI(App):
     success: str
     status : str
 
-    def new(self, configFile=None, data=None):
-        """
-        This method can be used to set any values before the app starts, this is useful for
-        testing.
-        """
-        self.configFile = configFile
+    def __init__(self, **args):
+        super().__init__()
+        self.configFile = args.get('configFile')
+        self.jsonData = args.get('jsonData')
         self.WORKING_PATH = WORKING_PATH
         self.count = 0
 
         self.success = 1
         self.status  = ''
+
+    def new(self, configFile=None, data=None):
+        """
+        This method can be used to set any values before the app starts, this is useful for
+        testing.
+        """
+        if configFile:
+            self.configFile = configFile
 
         if data:
             global dataSource
@@ -159,6 +165,13 @@ class GUI(App):
             ):
                 ret = callback
         except Exception as e:
+            # Check if this is the error config (i.e. PID = "n/a")
+            if callback.pid.value == "n/a":
+                Logger.error(
+                    "GUI: Config file is invalid"
+                )
+                return callback
+
             Logger.error(
                 "GUI: Firmware did not provide data value for key: %s",
                 callback.pid.value,

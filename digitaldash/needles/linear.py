@@ -1,6 +1,6 @@
 """Linear!"""
 from kivy.properties import NumericProperty
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ColorProperty
 from kivy.uix.stencilview import StencilView
 from kivy.core.window import Window
 from digitaldash.needles.needle import Needle
@@ -18,11 +18,11 @@ class NeedleLinear(Needle, StencilView):
     g = NumericProperty()
     b = NumericProperty()
     a = NumericProperty()
+    color = ColorProperty(defaultvalue='#FF0000FF')
 
     def __init__(self, **kwargs):
         super(NeedleLinear, self).__init__()
         self.setUp(**kwargs)
-        (self.r, self.g, self.b, self.a) = (1, 0, 0, 0.7)
         self.type = "Linear"
         self.padding = 100
         self.xOffset = self.padding
@@ -48,14 +48,13 @@ class NeedleLinear(Needle, StencilView):
         if self.width == (Window.width - 100):
             self.xOffset = 100
 
+        self.xOffset = (self.step * abs(self.minValue)) + self.padding
+
     def setOffset(self) -> None:
         """
-        Set offset for negative values or 0 for strictly positive PIDs
+        Set offset to 0, the offset of the starting point is handled in setStep
 
         Args:
           self <digitaldash.needles.linear>
         """
-        if self.minValue < 0:
-            self.offset = self.minValue
-        else:
-            self.offset = 0
+        self.offset = 0

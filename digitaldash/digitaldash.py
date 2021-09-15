@@ -6,6 +6,7 @@
 # pylint: disable=too-many-locals
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-statements
+# pylint: disable=fixme
 
 
 from kivy.uix.floatlayout import FloatLayout
@@ -39,33 +40,59 @@ class Background(AnchorLayout):
         )
         self.source = f"{WorkingPath + '/static/imgs/Background/'}{BackgroundSource}"
 
-
+# We want this variable to be shared across views
+pidsDict = {}
 def findPids(view):
     """Find all PIDs in a view"""
-    pidsDict = {}
     for i, gauge in enumerate(view["gauges"]):
-        pidsDict[gauge["pid"]] = PID(**gauge)
-        view["gauges"][i]["pid"] = pidsDict[gauge["pid"]]
+        if not gauge['pid']:
+            continue
+        # We concat pid and unit into a key so that we can have duplicate PIDs
+        # with different units
+        pidUnitHash = gauge['pid']+gauge['unit']
+      # Do not create a new PID, as we want to share reference objects for same PIDs
+        if not pidUnitHash in pidsDict:
+            pidsDict[pidUnitHash] = PID(**gauge)
+        view["gauges"][i]['pid'] = pidsDict[pidUnitHash]
 
     for i, alert in enumerate(view["alerts"]):
-        if alert["pid"] in pidsDict:
+        if not alert["pid"]:
             continue
-        pidsDict[alert["pid"]] = PID(**alert)
-        view["alerts"][i]["pid"] = pidsDict[alert["pid"]]
+        pidUnitHash = alert['pid']+alert['unit']
+        if not pidUnitHash in pidsDict:
+            pidsDict[pidUnitHash] = PID(**alert)
+        view["alerts"][i]['pid'] = pidsDict[pidUnitHash]
 
     return list(pidsDict.values())
 
 
-def findUnits(view):
-    """Create a dictionary of PIDs and their corresponding unit"""
-    units = {}
-    for gauge in view["gauges"]:
-        units[gauge["pid"]] = gauge["unit"]
-    for alert in view["alerts"]:
-        units[alert["pid"]] = alert["unit"]
-    if view["dynamic"] and view["dynamic"]["enabled"]:
-        units[view["dynamic"]["pid"]] = view["dynamic"]["unit"]
-    return units
+def findPidsForView(views, Id, dynamicPids):
+    """Only return pids from the pidsDict that apply to this view"""
+
+    pidsList = []
+    # We need to retro-actively add our dynamic PIDs into the PIDs array per view
+    for viewId in views:
+        # Check if we have any dynamic PIDs for the other views
+        for dynamicPIDKeys in dynamicPids:
+            if dynamicPIDKeys != str(viewId):
+                pid = dynamicPids[dynamicPIDKeys]
+                if pid not in pidsList:
+                    pidsList.append(pid)
+
+    myView = views[Id]
+    for gauge in myView["gauges"]:
+        if not gauge['pid'] or\
+          str(gauge['pid'].value)+str(gauge['pid'].unit) in pidsList:
+            continue
+        pidsList.append(gauge["pid"])
+
+    for alert in myView["alerts"]:
+        if not alert["pid"] or \
+          str(alert['pid'].value)+str(alert['pid'].unit) in pidsList:
+            continue
+        pidsList.append(alert["pid"])
+
+    return pidsList
 
 
 def setup(self, layouts):
@@ -81,8 +108,6 @@ def setup(self, layouts):
     views = {}
     containers = {}
     dynamicPids = {}
-    # Currently we only allow one type of units per PID
-    units = {}
 
     # Sort based on default value
     for Id in layouts["views"]:
@@ -107,8 +132,8 @@ def setup(self, layouts):
             skipLinearMinMax = True
         # FIXME
 
-        pids = findPids(view)
-        units = {**units, **findUnits(view)}
+        # Update our global dictionary with new view values -- if any.
+        findPids(view)
 
         background = view["background"]
 
@@ -119,15 +144,27 @@ def setup(self, layouts):
                 dynamicConfig["viewId"] = Id
 
                 # Keep track of our dynamic PIDs
-                dynamicPID = PID(**dynamicConfig)
-                if not dynamicPID.value:
-                    Logger.error("GUI: Bailing out: Couldn't set dynamic PID")
-                    return (0, "Couldn't set dynamic PID")
+                dynamicPID = None
+
+                pidUnitHash = str(dynamicConfig['value'])+str(dynamicConfig['unit'])
+                # Get our already created PID object
+                for myTuple in pidsDict.items():
+                    (key, value) = (myTuple)
+                    if key == str(pidUnitHash):
+                        dynamicPID = value
+                        break
+
+                if not dynamicPID:
+                    dynamicPID = PID(**dynamicConfig)
+                    if not dynamicPID.value:
+                        Logger.error("GUI: Bailing out: Couldn't set dynamic PID")
+                        return (0, "Couldn't set dynamic PID")
+                    pidsDict[pidUnitHash] = dynamicPID
                 # We only will ever have one dynamic PID right?
                 dynamicPids[Id] = dynamicPID
 
                 # Replace our string pid value with our new object
-                dynamicConfig["pid"] = dynamicPID
+                dynamicConfig['pid'] = dynamicPID
 
                 dynamicObj = Dynamic()
                 (ret, msg) = dynamicObj.new(**dynamicConfig)
@@ -140,11 +177,14 @@ def setup(self, layouts):
         if len(view["alerts"]) > 0:
             for alert in view["alerts"]:
                 alert["viewId"] = Id
+                if not alert['pid']:
+                    continue
 
                 # Get our already created PID object
-                for pid in pids:
-                    if pid.value == alert["pid"]:
-                        alert["pid"] = pid
+                for myTuple in pidsDict.items():
+                    (key, value) = (myTuple)
+                    if key == str(alert["pid"].value)+str(alert["pid"].unit):
+                        alert["pid"] = value
                         break
 
                 callbacks.setdefault(Id, []).append(Alert(**alert))
@@ -166,9 +206,14 @@ def setup(self, layouts):
             xPosition = [ 0.20, 0.5, 0.80 ]
             yTop = [ 0.98, 0.985, 0.99 ]
 
-        for count, widget in enumerate(view["gauges"]):
+        for count, gauge in enumerate(view["gauges"]):
             if count > 3:
                 break
+            if not gauge['pid'] or not isinstance(gauge['pid'], PID):
+                Logger.error(
+                  'GUI: Skipping gauge %s for view %s as PID not found', count, Id
+                )
+                continue
 
             # This handles our gauge positions, see the following for reference:
             # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
@@ -182,7 +227,7 @@ def setup(self, layouts):
             module = None
             try:
                 # This loads any standalone modules
-                module = globals()[widget["module"]]()
+                module = globals()[gauge["module"]]()
             except KeyError:
                 module = Base()
             objectsToUpdate.append(
@@ -192,7 +237,7 @@ def setup(self, layouts):
                     container=subcontainer,
                     view_id=Id,
                     xPosition=xPosition[count],
-                    **widget,
+                    **gauge,
                     **view,
                 )
             )
@@ -205,26 +250,17 @@ def setup(self, layouts):
             ),
             "alerts": FloatLayout(),
             "objectsToUpdate": objectsToUpdate,
-            "pids": pids,
+            "pids": findPidsForView(layouts['views'], Id, dynamicPids),
         }
 
-    # We need to retro-actively add our dynamic PIDs into the PIDs array per view
-    for viewId in views:
-        # Check if we have any dynamic PIDs for the other views
-        for dynamicPIDKeys in dynamicPids:
-            if dynamicPIDKeys != str(viewId):
-                pid = dynamicPids[dynamicPIDKeys]
-                if pid not in views[viewId]["pids"]:
-                    views[viewId]["pids"].append(pid)
-
         # Now we can generate a complete byte array for the PIDs
-        if len(views[viewId]["pids"]) > 0 or views[viewId]["pids"][0] != "n/a":
-            views[viewId]["pid_byte_code"] = buildUpdateRequirementsBytearray(
-                views[viewId]["pids"]
+        if len(views[Id]["pids"]) > 0:
+            views[Id]["pid_byte_code"] = buildUpdateRequirementsBytearray(
+                views[Id]["pids"]
             )
         else:
-            Logger.info("GUI: No pid_byte_code generated for view #%s", viewId)
-            views[viewId]["pid_byte_code"] = ""
+            Logger.info("GUI: No pid_byte_code generated for view #%s", Id)
+            views[Id]["pid_byte_code"] = ""
 
     return ([views, containers, callbacks], "Successful setup")
 
@@ -250,7 +286,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         self.dynamic_callbacks = []
         self.callbacks = {}
 
-    (ret, msg) = setup(self, config.views(file=self.configFile))
+    (ret, msg) = setup(self, config.views(file=self.configFile, jsonData=self.jsonData))
     if ret:
         self.views, self.containers, self.callbacks = ret
     else:
