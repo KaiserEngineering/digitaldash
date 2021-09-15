@@ -198,6 +198,15 @@ KE_PID = {
             "PID_UNITS_PSI": {"Min": 0, "Max": 36, "decimals": "1"},
         },
     },
+    "0xC16F": {
+        "name": "TURBOCHARGER_COMPRESSOR_INLET_PRESSURE",
+        "shortName": "Boost",
+        "shortDesc": "Boost/Vacuum",
+        "units": {
+            "PID_UNITS_KPA": {"Min": -82, "Max": 170, "decimals": "0"},
+            "PID_UNITS_PSI": {"Min": -12, "Max": 24, "decimals": "1"},
+        },
+    },
     "0x220301": {
         "name": "MANIFOLD_ABSOLUTE_PRESSURE_SENSOR_VOLTAGE_1",
         "shortName": "MAP",
@@ -209,10 +218,19 @@ KE_PID = {
     "0x220461": {
         "name": "CHARGE_AIR_TEMPERATURE",
         "shortName": "CAT",
-        "shortDesc": "Charge Air Temp",
+        "shortDesc": "[ST] Charge Air Temp",
         "units": {
             "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "1"},
-            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "2"},
+            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
+    },
+    "0x2203CA": {
+        "name": "MANIFOLD_CHARGE_TEMPERATURE",
+        "shortName": "MCT",
+        "shortDesc": "[RS] Manifold Charge Temp",
+        "units": {
+            "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "0"},
+            "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
     "0x22057D": {
