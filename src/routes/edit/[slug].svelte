@@ -32,6 +32,22 @@
     };
   }
 
+  function normalizeGauges(config = undefined) {
+    let temp = config ? config : view;
+
+    if (temp) {
+      // Ensure we always have 3 entries in our array
+      while (temp.gauges.length < 3) {
+        temp.gauges.push({
+          theme: undefined,
+          unit: undefined,
+          pid: undefined,
+        });
+      }
+    }
+    return temp;
+  }
+  view = normalizeGauges();
 
   function getUnits(node) {
     const pid = node.target.value;
@@ -41,7 +57,7 @@
     let type = matches[1],
       index = matches[2];
 
-    if ( view.gauges[index] ) {
+    if ( view.gauges[index] && view.gauges[index].pid ) {
       if (type == "gauge") {
         view.gauges[index].pid = pid;
       } else if (type == "alert") {
@@ -136,8 +152,11 @@
       .then((d) => d.json())
       .then((d) => {
         $session.configuration = d.config;
+        view = {};
         view = d.config.views[id];
         theme = view.gauges[0].theme;
+
+        view = normalizeGauges();
 
         $session.actions = [
           {
@@ -151,7 +170,7 @@
 
       let changeEvent = new Event("change");
       let elements = ['pid-0', 'pid-1', 'pid-2'];
-      elements.forEach((elements) => {
+      elements.forEach((element) => {
         let pidInput = document.getElementById(element)
         pidInput.dispatchEvent(changeEvent);
       });
@@ -248,7 +267,7 @@
                         <select
                           use:pidChange
                           name="gauge-{i}"
-                          value={view.gauges[i] ? view.gauges[i].pid: undefined}
+                          bind:value={view.gauges[i].pid}
                           class="mb-2 form-control"
                           id="pid-{i}"
                         >
@@ -269,7 +288,7 @@
                           name="units"
                           on:blur={(e) =>
                             view.gauges[i] ? view.gauges[i].unit = e.target.value : view.gauges[i] = { 'unit': e.target.value } }
-                          value={view.gauges[i] ? view.gauges[i].unit: undefined}
+                          value={view.gauges[i].unit}
                           class="form-control"
                         />
                       </div>
