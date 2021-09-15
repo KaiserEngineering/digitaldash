@@ -1,10 +1,8 @@
-import db from '$lib/DB';
-import { createHash } from 'crypto';
+import db from "$lib/DB";
+import { createHash } from "crypto";
 
 export function HashPassword(Password: string): string {
-  return createHash("sha256")
-    .update(Password)
-    .digest("hex");
+  return createHash("sha256").update(Password).digest("hex");
 }
 
 export function UpdateToken(Token: string) {
@@ -13,8 +11,10 @@ export function UpdateToken(Token: string) {
 }
 
 export function UpdateUserCredentials(Username: string, Password: string) {
-  const updateUser = db.prepare("UPDATE User SET username=?, password=? WHERE rowid=1");
-  updateUser.run(Username, HashPassword(Password) );
+  const updateUser = db.prepare(
+    "UPDATE User SET username=?, password=? WHERE rowid=1"
+  );
+  updateUser.run(Username, HashPassword(Password));
 }
 
 export function User() {

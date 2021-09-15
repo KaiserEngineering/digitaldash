@@ -5,8 +5,14 @@
 </script>
 
 <label class="switch">
-  <input on:click="{() => {checked=callback(callbackArgs)}}" bind:checked={checked} type="checkbox">
-  <span class="slider round"></span>
+  <input
+    on:click={() => {
+      checked = callback(callbackArgs);
+    }}
+    bind:checked
+    type="checkbox"
+  />
+  <span class="slider round" />
 </label>
 
 <style>
@@ -33,8 +39,8 @@
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
   }
 
   .slider:before {
@@ -45,16 +51,16 @@
     left: 4px;
     bottom: 4px;
     background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
   }
 
   input:checked + .slider {
-    background-color: #FF4D4D;
+    background-color: #ff4d4d;
   }
 
   input:focus + .slider {
-    box-shadow: 0 0 1px #FF4D4D;
+    box-shadow: 0 0 1px #ff4d4d;
   }
 
   input:checked + .slider:before {
