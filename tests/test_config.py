@@ -85,16 +85,17 @@ def test_config_programatically():
         (pid, values) = (pidTuple)
         newConfig = copy.deepcopy( configBase )
 
-        newConfig['views']['0']['gauges'].append({
-          'pid' : pid,
-        })
+        for x in range(0, 3):
+            newConfig['views']['0']['gauges'].append({
+              'pid' : pid,
+            })
 
-        for theme in themes:
-          newConfig['views']['0']['gauges'][0]['theme'] = theme
+            for theme in themes:
+              newConfig['views']['0']['gauges'][x]['theme'] = theme
 
-          for myTuple in constants['KE_PID'][pid]['units'].items():
-              (unit, value) = (myTuple)
-              newConfig['views']['0']['gauges'][0]['unit'] = unit
+              for myTuple in constants['KE_PID'][pid]['units'].items():
+                  (unit, value) = (myTuple)
+                  newConfig['views']['0']['gauges'][x]['unit'] = unit
 
-              newConfigCopy = copy.deepcopy( newConfig )
-              my_gui(newConfigCopy)
+        newConfigCopy = copy.deepcopy( newConfig )
+        my_gui(newConfigCopy)
