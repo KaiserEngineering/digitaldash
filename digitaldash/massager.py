@@ -17,4 +17,4 @@ def smooth(old, new) -> float:
         return 0
     delta = new - old
 
-    return new - (delta * 0.97)
+    return new - (delta * 0.90)
