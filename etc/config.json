@@ -17,23 +17,23 @@
         }
       ],
       "dynamic": {
-        "pid": "0x016F",
-        "op": "<=",
+        "pid": "0xDE0302",
+        "op": ">=",
         "enabled": true,
         "priority": 0,
-        "value": 10,
-        "unit": "PID_UNITS_PSI"
+        "value": 1,
+        "unit": "PID_UNITS_NONE"
       },
       "gauges": [
         {
           "theme": "Stock ST",
           "unit": "PID_UNITS_FAHRENHEIT",
-          "pid": "0x220461"
+          "pid": "0x22057D"
         },
         {
           "theme": "Stock ST",
           "unit": "PID_UNITS_PSI",
-          "pid": "0x016F"
+          "pid": "0xC16F"
         },
         {
           "theme": "Stock ST",
@@ -44,24 +44,33 @@
     },
     "1": {
       "name": "Boost",
-      "enabled": false,
+      "enabled": true,
       "dynamicMinMax": true,
       "default": 0,
-      "background": "Blue Purple Gradient.png",
-      "alerts": [],
+      "background": "Flare.png",
+      "alerts": [
+        {
+          "message": "Shift!",
+          "op": ">=",
+          "priority": 0,
+          "unit": "PID_UNITS_RPM",
+          "value": 6500,
+          "pid": "0x010C"
+        }
+      ],
       "dynamic": {
-        "pid": "0x016F",
-        "op": ">",
-        "enabled": false,
-        "unit": "PID_UNITS_PSI",
-        "value": 10,
+        "pid": "0xDE0302",
+        "op": "<=",
+        "enabled": true,
+        "unit": "PID_UNITS_NONE",
+        "value": 0,
         "priority": 10
       },
       "gauges": [
         {
-          "theme": "Bar (Red)",
+          "theme": "Bar (Aura)",
           "unit": "PID_UNITS_PSI",
-          "pid": "0x016F"
+          "pid": "0xC16F"
         }
       ]
     }
