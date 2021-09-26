@@ -273,7 +273,7 @@ KE_PID = {
     "0xDE0301": {
         "name": "CRUISE_CONTROL_ON_BUTTON",
         "shortName": "ON Button",
-        "shortDesc": "ON Button",
+        "shortDesc": "Cruise Control ON Button",
         "units": {
             "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
         },
@@ -281,7 +281,7 @@ KE_PID = {
     "0xDE0302": {
         "name": "CRUISE_CONTROL_OFF_BUTTON",
         "shortName": "OFF Button",
-        "shortDesc": "OFF Button",
+        "shortDesc": "Cruise Control OFF Button",
         "units": {
             "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
         },
@@ -289,7 +289,7 @@ KE_PID = {
     "0xDE0303": {
         "name": "CRUISE_CONTROL_SET_PLUS_BUTTON",
         "shortName": "SET+ Button",
-        "shortDesc": "SET+ Button",
+        "shortDesc": "Cruise Control SET+ Button",
         "units": {
             "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
         },
@@ -297,7 +297,7 @@ KE_PID = {
     "0xDE0304": {
         "name": "CRUISE_CONTROL_SET_MINUS_BUTTON",
         "shortName": "SET- Button",
-        "shortDesc": "SET- Button",
+        "shortDesc": "Cruise Control SET- Button",
         "units": {
             "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
         },
@@ -305,7 +305,7 @@ KE_PID = {
     "0xDE0305": {
         "name": "CRUISE_CONTROL_RES_BUTTON",
         "shortName": "RES Button",
-        "shortDesc": "RES Button",
+        "shortDesc": "Cruise Control RES Button",
         "units": {
             "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
         },
@@ -313,7 +313,7 @@ KE_PID = {
     "0xDE0306": {
         "name": "CRUISE_CONTROL_CAN_BUTTON",
         "shortName": "CAN Button",
-        "shortDesc": "CAN Button",
+        "shortDesc": "Cruise Control CAN Button",
         "units": {
             "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
         },
