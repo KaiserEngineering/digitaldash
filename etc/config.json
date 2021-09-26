@@ -26,17 +26,17 @@
       },
       "gauges": [
         {
-          "theme": "Stock ST",
+          "theme": "Stock RS",
           "unit": "PID_UNITS_FAHRENHEIT",
-          "pid": "0x22057D"
+          "pid": "0x010F"
         },
         {
-          "theme": "Stock ST",
+          "theme": "Stock RS",
           "unit": "PID_UNITS_PSI",
           "pid": "0xC16F"
         },
         {
-          "theme": "Stock ST",
+          "theme": "Stock RS",
           "unit": "PID_UNITS_FAHRENHEIT",
           "pid": "0x015C"
         }
@@ -44,7 +44,7 @@
     },
     "1": {
       "name": "Boost",
-      "enabled": true,
+      "enabled": false,
       "dynamicMinMax": true,
       "default": 0,
       "background": "Flare.png",
