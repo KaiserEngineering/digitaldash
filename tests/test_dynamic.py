@@ -11,9 +11,9 @@ from kivy.uix.anchorlayout import AnchorLayout
 import pathlib
 import pytest
 
-Config.set('kivy', 'kivy_clock', 'interrupt')
+Config.set("kivy", "kivy_clock", "interrupt")
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
-config.setWorkingPath(( working_path ))
+config.setWorkingPath((working_path))
 
 
 @pytest.fixture
@@ -31,6 +31,7 @@ def my_application():
     buildFromConfig(self)
     return self
 
+
 def test_pid_byte_code_caching(my_application):
     """Ensure our byte code string is always updated on dynamic change"""
     oldByteCode = my_application.pid_byte_code
@@ -38,6 +39,7 @@ def test_pid_byte_code_caching(my_application):
         dynamic.change(my_application)
         break
     assert oldByteCode != my_application.pid_byte_code
+
 
 def test_respect_enable_flag(my_application):
     """Test that we only see our enabled dynamic checks"""

@@ -14,4 +14,3 @@ class NeedleStatic(Needle, Image):
         super(NeedleStatic, self).__init__()
         self.setUp(**kwargs)
         self.type = "Static"
-

@@ -37,7 +37,7 @@ class Test:
             :param self: <DigitalDash.Test>Test instance
             :param file: <String>File path
         """
-        with open(file, "r", encoding='utf-8') as csvfile:
+        with open(file, "r", encoding="utf-8") as csvfile:
             datareader = csv.reader(csvfile, delimiter=",", quotechar="|")
             for row in datareader:
                 self.data.append(row)

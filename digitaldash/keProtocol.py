@@ -119,14 +119,14 @@ class Serial:
 
         cpu = CPUTemperature()
 
-        if( cpu.temperature > 70 ):
-            self.fan_speed = 0x03    # Request max fan speed
-        elif( cpu.temperature > 65 ):
-            self.fan_speed = 0x02    # Request med fan speed
-        elif( cpu.temperature > 60 ):
-            self.fan_speed = 0x01    # Request min fan speed
-        elif( cpu.temperature < 55 ):
-            self.fan_speed = 0x00    # Turn off the fan 
+        if cpu.temperature > 70:
+            self.fan_speed = 0x03  # Request max fan speed
+        elif cpu.temperature > 65:
+            self.fan_speed = 0x02  # Request med fan speed
+        elif cpu.temperature > 60:
+            self.fan_speed = 0x01  # Request min fan speed
+        elif cpu.temperature < 55:
+            self.fan_speed = 0x00  # Turn off the fan
 
         while self.ser.inWaiting():
             byte = self.ser.read()
@@ -236,22 +236,31 @@ class Serial:
             Logger.error(msg)
             return (0, msg)
 
-        if ( LOG_LEVELS['debug'] == Logger.getEffectiveLevel()):
+        if LOG_LEVELS["debug"] == Logger.getEffectiveLevel():
             inv_map = {v: k for k, v in KE_CP_OP_CODES.items()}
-            Logger.debug('Header: sol: 0x{:02X}  length: {:d}'.format(pid_byte_code[0],pid_byte_code[1]) + '  cmd:' + inv_map[pid_byte_code[2]] )
+            Logger.debug(
+                "Header: sol: 0x{:02X}  length: {:d}".format(
+                    pid_byte_code[0], pid_byte_code[1]
+                )
+                + "  cmd:"
+                + inv_map[pid_byte_code[2]]
+            )
 
             inv_map = {v: k for k, v in PID_UNITS.items()}
             num_pids = int((len(pid_byte_code) - 3) / 5)
 
             for i in range(num_pids):
-                spare = pid_byte_code[(i*5)+3]
-                units = pid_byte_code[(i*5)+4]
-                mode  = pid_byte_code[(i*5)+5]
-                pid   = pid_byte_code[(i*5)+6] << 8 | pid_byte_code[(i*5)+7]
-                Logger.debug( 'PID {:d} of {:d}:'.format(i+1, num_pids) +
-                    ' mode:0x{:02X}'.format(mode) +
-                    '  pid:0x{:04X}'.format(pid) +
-                    '  units:' + inv_map[units])
+                spare = pid_byte_code[(i * 5) + 3]
+                units = pid_byte_code[(i * 5) + 4]
+                mode = pid_byte_code[(i * 5) + 5]
+                pid = pid_byte_code[(i * 5) + 6] << 8 | pid_byte_code[(i * 5) + 7]
+                Logger.debug(
+                    "PID {:d} of {:d}:".format(i + 1, num_pids)
+                    + " mode:0x{:02X}".format(mode)
+                    + "  pid:0x{:04X}".format(pid)
+                    + "  units:"
+                    + inv_map[units]
+                )
 
         msg = "GUI: Updating requirements: " + str(pid_byte_code)
         Logger.info(msg)
@@ -279,7 +288,7 @@ class Serial:
         """
         global KE_CP_OP_CODES
         Logger.info("GUI: Initializing hardware")
-        
+
         return (True, "Hardware: Successfully initiated hardware")
 
     def power_cycle(self):
@@ -304,7 +313,7 @@ def buildUpdateRequirementsBytearray(requirements):
     pid_byte_code = []
     byte_count = 3
     for requirement in requirements:
-        if ( not requirement.value == "n/a" ):
+        if not requirement.value == "n/a":
             pid_byte_code.append(0x00)  # Spare
             pid_byte_code.append(requirement.unit)  # Units
             if len(requirement.value) == 6:
@@ -312,7 +321,9 @@ def buildUpdateRequirementsBytearray(requirements):
                 pid_byte_code.append(0x00)  # PID byte 0
             else:
                 pid_byte_code.append((int(requirement.value, 16) >> 16) & 0xFF)  # Mode
-                pid_byte_code.append((int(requirement.value, 16) >> 8) & 0xFF)  # PID byte 0
+                pid_byte_code.append(
+                    (int(requirement.value, 16) >> 8) & 0xFF
+                )  # PID byte 0
             pid_byte_code.append((int(requirement.value, 16)) & 0xFF)  # PID byte 1
 
             index += 1

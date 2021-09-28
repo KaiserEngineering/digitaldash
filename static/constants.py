@@ -75,7 +75,7 @@ PID_UNIT_LABEL = {
     "PID_UNITS_LPH": "lpm",
     "PID_UNITS_BAR": "bar",
     "PID_UNITS_G_FORCE": "G",
-    "PID_UNITS_NONE": ""
+    "PID_UNITS_NONE": "",
 }
 
 KE_PID = {
@@ -337,7 +337,12 @@ def get_constants():
 def export_json():
     """This is used by the web app to get Constants.py as JSON"""
     return json.dumps(
-        {"KE_PID": KE_PID, "KE_CP_OP_CODES": KE_CP_OP_CODES, "PID_UNITS": PID_UNITS, "PID_UNIT_LABEL": PID_UNIT_LABEL}
+        {
+            "KE_PID": KE_PID,
+            "KE_CP_OP_CODES": KE_CP_OP_CODES,
+            "PID_UNITS": PID_UNITS,
+            "PID_UNIT_LABEL": PID_UNIT_LABEL,
+        }
     )
 
 

@@ -71,16 +71,18 @@ class MyHandler(PatternMatchingEventHandler):
     patterns = ["*.json"]
 
     def rebuild(self, dt):
-      Logger.info("Rebuilding config")
-      buildFromConfig(self.DigitalDash, dataSource)
-      if self.DigitalDash.data_source:
-          self.DigitalDash.clock_event = Clock.schedule_interval(self.DigitalDash.loop, 0)
+        Logger.info("Rebuilding config")
+        buildFromConfig(self.DigitalDash, dataSource)
+        if self.DigitalDash.data_source:
+            self.DigitalDash.clock_event = Clock.schedule_interval(
+                self.DigitalDash.loop, 0
+            )
 
     @mainthread
     def on_modified(self, event):
-      if hasattr(self.DigitalDash, "clock_event"):
-          self.DigitalDash.clock_event.cancel()
-      Clock.schedule_once(self.rebuild, 0)
+        if hasattr(self.DigitalDash, "clock_event"):
+            self.DigitalDash.clock_event.cancel()
+        Clock.schedule_once(self.rebuild, 0)
 
 
 # Load our KV files
@@ -101,18 +103,19 @@ class GUI(App):
     array. Only add Objects to the **widgets** array if they are
     to be updated and have the necessary methods.
     """
+
     success: str
-    status : str
+    status: str
 
     def __init__(self, **args):
         super().__init__()
-        self.configFile = args.get('configFile')
-        self.jsonData = args.get('jsonData')
+        self.configFile = args.get("configFile")
+        self.jsonData = args.get("jsonData")
         self.WORKING_PATH = WORKING_PATH
         self.count = 0
 
         self.success = 1
-        self.status  = ''
+        self.status = ""
 
     def new(self, configFile=None, data=None):
         """
@@ -167,9 +170,7 @@ class GUI(App):
         except Exception as e:
             # Check if this is the error config (i.e. PID = "n/a")
             if callback.pid.value == "n/a":
-                Logger.error(
-                    "GUI: Config file is invalid"
-                )
+                Logger.error("GUI: Config file is invalid")
                 return callback
 
             Logger.error(

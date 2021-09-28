@@ -4,6 +4,7 @@ from kivy.logger import Logger
 from digitaldash.pid import PID
 from digitaldash.base import convertOpToBytes
 
+
 class Dynamic:
     """
     The dynamic class is applied on per view, where the dynamic object has

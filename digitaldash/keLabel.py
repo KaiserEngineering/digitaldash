@@ -96,13 +96,15 @@ class KELabel(Label):
 
             if self.isMin:
                 self.pid.minObserved = min(self.pid.minObserved, value)
-                self.text = f'{self.pid.minObserved:.{self.decimals}f}'
+                self.text = f"{self.pid.minObserved:.{self.decimals}f}"
             elif self.isMax:
                 self.pid.maxObserved = max(self.pid.maxObserved, value)
-                self.text = f'{self.pid.maxObserved:.{self.decimals}f}'
+                self.text = f"{self.pid.maxObserved:.{self.decimals}f}"
             else:
-                self.text = f'{self.default}{value:.{self.decimals}f}'
+                self.text = f"{self.default}{value:.{self.decimals}f}"
                 if self.unitString:
-                    self.text = self.text+"[size=15]"+" "+self.unitString+"[/size]"
+                    self.text = (
+                        self.text + "[size=15]" + " " + self.unitString + "[/size]"
+                    )
         except ValueError as e:
             Logger.error("GUI: keLabel.py is not numeric: %s", e)

@@ -40,28 +40,31 @@ class Background(AnchorLayout):
         )
         self.source = f"{WorkingPath + '/static/imgs/Background/'}{BackgroundSource}"
 
+
 # We want this variable to be shared across views
 pidsDict = {}
+
+
 def findPids(view):
     """Find all PIDs in a view"""
     for i, gauge in enumerate(view["gauges"]):
-        if not gauge['pid']:
+        if not gauge["pid"]:
             continue
         # We concat pid and unit into a key so that we can have duplicate PIDs
         # with different units
-        pidUnitHash = gauge['pid']+gauge['unit']
-      # Do not create a new PID, as we want to share reference objects for same PIDs
+        pidUnitHash = gauge["pid"] + gauge["unit"]
+        # Do not create a new PID, as we want to share reference objects for same PIDs
         if not pidUnitHash in pidsDict:
             pidsDict[pidUnitHash] = PID(**gauge)
-        view["gauges"][i]['pid'] = pidsDict[pidUnitHash]
+        view["gauges"][i]["pid"] = pidsDict[pidUnitHash]
 
     for i, alert in enumerate(view["alerts"]):
         if not alert["pid"]:
             continue
-        pidUnitHash = alert['pid']+alert['unit']
+        pidUnitHash = alert["pid"] + alert["unit"]
         if not pidUnitHash in pidsDict:
             pidsDict[pidUnitHash] = PID(**alert)
-        view["alerts"][i]['pid'] = pidsDict[pidUnitHash]
+        view["alerts"][i]["pid"] = pidsDict[pidUnitHash]
 
     return list(pidsDict.values())
 
@@ -81,14 +84,18 @@ def findPidsForView(views, Id, dynamicPids):
 
     myView = views[Id]
     for gauge in myView["gauges"]:
-        if not gauge['pid'] or\
-          str(gauge['pid'].value)+str(gauge['pid'].unit) in pidsList:
+        if (
+            not gauge["pid"]
+            or str(gauge["pid"].value) + str(gauge["pid"].unit) in pidsList
+        ):
             continue
         pidsList.append(gauge["pid"])
 
     for alert in myView["alerts"]:
-        if not alert["pid"] or \
-          str(alert['pid'].value)+str(alert['pid'].unit) in pidsList:
+        if (
+            not alert["pid"]
+            or str(alert["pid"].value) + str(alert["pid"].unit) in pidsList
+        ):
             continue
         pidsList.append(alert["pid"])
 
@@ -125,8 +132,8 @@ def setup(self, layouts):
         # This is a bandaid on the issue of spacing for linear gauges
         skipLinearMinMax = False
         linearCount = 0
-        for gauge in view['gauges']:
-            if gauge['theme'] == 'Bar (Red)':
+        for gauge in view["gauges"]:
+            if gauge["theme"] == "Bar (Red)":
                 linearCount = linearCount + 1
         if linearCount > 1:
             skipLinearMinMax = True
@@ -146,10 +153,10 @@ def setup(self, layouts):
                 # Keep track of our dynamic PIDs
                 dynamicPID = None
 
-                pidUnitHash = str(dynamicConfig['value'])+str(dynamicConfig['unit'])
+                pidUnitHash = str(dynamicConfig["value"]) + str(dynamicConfig["unit"])
                 # Get our already created PID object
                 for myTuple in pidsDict.items():
-                    (key, value) = (myTuple)
+                    (key, value) = myTuple
                     if key == str(pidUnitHash):
                         dynamicPID = value
                         break
@@ -164,7 +171,7 @@ def setup(self, layouts):
                 dynamicPids[Id] = dynamicPID
 
                 # Replace our string pid value with our new object
-                dynamicConfig['pid'] = dynamicPID
+                dynamicConfig["pid"] = dynamicPID
 
                 dynamicObj = Dynamic()
                 (ret, msg) = dynamicObj.new(**dynamicConfig)
@@ -177,13 +184,13 @@ def setup(self, layouts):
         if len(view["alerts"]) > 0:
             for alert in view["alerts"]:
                 alert["viewId"] = Id
-                if not alert['pid']:
+                if not alert["pid"]:
                     continue
 
                 # Get our already created PID object
                 for myTuple in pidsDict.items():
-                    (key, value) = (myTuple)
-                    if key == str(alert["pid"].value)+str(alert["pid"].unit):
+                    (key, value) = myTuple
+                    if key == str(alert["pid"].value) + str(alert["pid"].unit):
                         alert["pid"] = value
                         break
 
@@ -191,34 +198,34 @@ def setup(self, layouts):
         else:
             callbacks.setdefault(Id, [])
 
-        container = FloatLayout( pos_hint={'center_y': 0.5, 'center_x': 0.5} )
+        container = FloatLayout(pos_hint={"center_y": 0.5, "center_x": 0.5})
         objectsToUpdate = []
 
         numGauges = len(view["gauges"]) or 1
 
         if numGauges == 1:
-            xPosition = [ 0.5 ]
-            yTop = [ 0.99 ]
+            xPosition = [0.5]
+            yTop = [0.99]
         elif numGauges == 2:
-            xPosition = [ 0.33, 0.66 ]
-            yTop = [ 0.985, 0.99 ]
+            xPosition = [0.33, 0.66]
+            yTop = [0.985, 0.99]
         elif numGauges == 3:
-            xPosition = [ 0.20, 0.5, 0.80 ]
-            yTop = [ 0.98, 0.985, 0.99 ]
+            xPosition = [0.20, 0.5, 0.80]
+            yTop = [0.98, 0.985, 0.99]
 
         for count, gauge in enumerate(view["gauges"]):
             if count > 3:
                 break
-            if not gauge['pid'] or not isinstance(gauge['pid'], PID):
+            if not gauge["pid"] or not isinstance(gauge["pid"], PID):
                 Logger.error(
-                  'GUI: Skipping gauge %s for view %s as PID not found', count, Id
+                    "GUI: Skipping gauge %s for view %s as PID not found", count, Id
                 )
                 continue
 
             # This handles our gauge positions, see the following for reference:
             # https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html#kivy.uix.floatlayout.FloatLayout
             subcontainer = RelativeLayout(
-                pos_hint={'top': yTop[count], 'center_x': xPosition[count]},
+                pos_hint={"top": yTop[count], "center_x": xPosition[count]},
                 size_hint_max_y=200,
                 size_hint_max_x=Window.width / numGauges,
             )
@@ -250,7 +257,7 @@ def setup(self, layouts):
             ),
             "alerts": FloatLayout(),
             "objectsToUpdate": objectsToUpdate,
-            "pids": findPidsForView(layouts['views'], Id, dynamicPids),
+            "pids": findPidsForView(layouts["views"], Id, dynamicPids),
         }
 
         # Now we can generate a complete byte array for the PIDs
@@ -268,7 +275,7 @@ def setup(self, layouts):
 def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     """Build all our gauges and widgets from the config file provided to self"""
     self.success = 0
-    self.status  = ""
+    self.status = ""
 
     # Current is used to track which viewId we are currently displaying.
     # This is important for skipping dynamic checks that we don't need to check.
@@ -278,7 +285,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     # We need to clear the widgets before rebuilding or else we must face
     # the segfault monster.
     if not self.first_iteration:
-        Logger.info( "GUI: Clearing widgets for reload" )
+        Logger.info("GUI: Clearing widgets for reload")
         self.app.clear_widgets()
         self.background.clear_widgets()
         self.alerts.clear_widgets()
@@ -295,13 +302,9 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         return
 
     # Sort our dynamic and alerts callbacks by priority
-    self.dynamic_callbacks = sorted(
-        self.callbacks["dynamic"], key=lambda x: x.priority
-    )
+    self.dynamic_callbacks = sorted(self.callbacks["dynamic"], key=lambda x: x.priority)
     # Since we are building for the first time we can default to index 0
-    self.alert_callbacks = sorted(
-        self.callbacks["0"], key=lambda x: x.priority
-    )
+    self.alert_callbacks = sorted(self.callbacks["0"], key=lambda x: x.priority)
 
     (
         self.background,
@@ -336,16 +339,12 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         else:
             Logger.info(msg)
         self.data_source = dataSource
-        (ret, msg) = dataSource.updateRequirements(
-          self, self.pid_byte_code, self.pids
-        )
+        (ret, msg) = dataSource.updateRequirements(self, self.pid_byte_code, self.pids)
         if not ret:
             Logger.error(msg)
     elif dataSource:
         # If we have a datasource we should update PIDs
-        (ret, msg) = dataSource.updateRequirements(
-          self, self.pid_byte_code, self.pids
-        )
+        (ret, msg) = dataSource.updateRequirements(self, self.pid_byte_code, self.pids)
         if not ret:
             Logger.error(msg)
 

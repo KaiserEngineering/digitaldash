@@ -20,28 +20,29 @@ import pytest
 import pathlib
 
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
-config.setWorkingPath(( working_path ))
+config.setWorkingPath((working_path))
 
 pid = PID(pid="0x010C", unit="PID_UNITS_RPM")
+
 
 def test_needle_simple():
     """Basic needle tests"""
     needles = (
         NeedleRadial(
-            theme='Stock ST',
-            **config.getThemeConfig( 'Stock ST' ),
+            theme="Stock ST",
+            **config.getThemeConfig("Stock ST"),
             pid=pid,
             working_path=working_path,
         ),
         NeedleEllipse(
-            theme='Dirt',
-            **config.getThemeConfig( 'Dirt' ),
+            theme="Dirt",
+            **config.getThemeConfig("Dirt"),
             pid=pid,
             working_path=working_path,
         ),
         NeedleLinear(
-            theme='Bar (Red)',
-            **config.getThemeConfig( 'Bar (Red)' ),
+            theme="Bar (Red)",
+            **config.getThemeConfig("Bar (Red)"),
             pid=pid,
             working_path=working_path,
         ),
@@ -85,16 +86,18 @@ def test_needle_simple():
             + " component sets the correct rotational value with smoothing (not true value)"
         )
 
+
 def test_needle_min_max():
     # Test that Min and Max is set correctly based on constants.py
     needle = NeedleRadial(
-        theme='Stock ST',
-        **config.getThemeConfig( 'Stock ST' ),
+        theme="Stock ST",
+        **config.getThemeConfig("Stock ST"),
         pid=pid,
-        working_path=working_path
+        working_path=working_path,
     )
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Min"] == needle.minValue
     assert KE_PID["0x010C"]["units"]["PID_UNITS_RPM"]["Max"] == needle.maxValue
+
 
 def test_label_simple():
     """Basic label tests"""
@@ -187,6 +190,7 @@ def my_application():
 
     buildFromConfig(self)
     return self
+
 
 def test_build(my_application):
     """Test build process"""

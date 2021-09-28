@@ -15,6 +15,7 @@ working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
 t = KETester.Test()
 
+
 class Config_TestCase(GraphicUnitTest):
     @mainthread
     def test_Single(self):

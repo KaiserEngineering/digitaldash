@@ -47,7 +47,7 @@ def views(file=None, jsonData=None):
               "dynamic": {},"gauges": [], "name": "Error", "enabled": 1}}}
           """
     try:
-        with open(file, encoding='utf-8') as dataFile:
+        with open(file, encoding="utf-8") as dataFile:
             jsonData = json.load(dataFile)
 
             dataFile.close()
@@ -63,10 +63,11 @@ def views(file=None, jsonData=None):
         # We can shorten the error message by removing the trace/line the
         # error happened on.
         errorString = (str(e).split(":", maxsplit=1))[0]
-        errorConfig = errorConfig.replace("Config file isn't valid!",
-          "Config file isn't valid! Exception Error")
+        errorConfig = errorConfig.replace(
+            "Config file isn't valid!", "Config file isn't valid! Exception Error"
+        )
         Logger.error(
-          "GUI: Invalid config provided, falling back to default: %s", errorString
+            "GUI: Invalid config provided, falling back to default: %s", errorString
         )
         jsonData = json.loads(errorConfig)
     return jsonData
@@ -77,15 +78,18 @@ def getThemeConfig(theme):
     jsonData = {}
 
     try:
-        with open(WORKINGPATH + "/themes/"+theme+"/config.json", encoding='utf-8') \
-            as dataFile:
+        with open(
+            WORKINGPATH + "/themes/" + theme + "/config.json", encoding="utf-8"
+        ) as dataFile:
             jsonData = json.load(dataFile)
 
             dataFile.close()
     except FileNotFoundError:
         Logger.info(
-          "Config: \
-            Could not find config file: /%s/themes/%s/config.json", WORKINGPATH, theme
+            "Config: \
+            Could not find config file: /%s/themes/%s/config.json",
+            WORKINGPATH,
+            theme,
         )
 
     return jsonData
@@ -102,7 +106,7 @@ def validateConfig(config):
             "dynamic": dict,
             "alerts": list,
             "gauges": list,
-            "dynamicMinMax": bool
+            "dynamicMinMax": bool,
         },
         "alerts": {
             "pid": str,
@@ -112,11 +116,7 @@ def validateConfig(config):
             "priority": int,
             "message": str,
         },
-        "gauges": {
-            "theme": str,
-            "pid": str,
-            "unit": str
-        },
+        "gauges": {"theme": str, "pid": str, "unit": str},
         "dynamic": {
             "enabled": bool,
             "pid": str,
@@ -138,9 +138,9 @@ def validateConfig(config):
 
         # Top level keys
         for myTuple in requiredValues.items():
-            (key, value) = (myTuple)
+            (key, value) = myTuple
             if key not in view and not key == "top":
-                error = f'{key} required for view'
+                error = f"{key} required for view"
                 return False, error
             if key == "top":
                 for secondKey in requiredValues["top"]:
@@ -150,7 +150,8 @@ def validateConfig(config):
                         )
                         and not view[secondKey] == "n/a"
                     ):
-                        error = f'{secondKey} must be of type {requiredValues["top"][secondKey]}'
+                        error = f'{secondKey} must be of type \
+                          {requiredValues["top"][secondKey]}'
                         return False, error
             else:
                 for item in value.keys():
@@ -158,22 +159,20 @@ def validateConfig(config):
 
                         if isinstance(view[key], dict):
                             if (
-                                not isinstance(
-                                    view[key][item], value[item]
-                                )
+                                not isinstance(view[key][item], value[item])
                                 and not view[key][item] == "n/a"
                             ):
-                                error = f'{item} for {view[key][item]} must be of type {value[item]}'
+                                error = f"{item} \
+                                for{view[key][item]} must be of type {value[item]}"
                                 return False, error
                         else:
                             for myHash in view[key]:
                                 if (
-                                    not isinstance(
-                                        myHash.get(item), value[item]
-                                    )
+                                    not isinstance(myHash.get(item), value[item])
                                     and not myHash.get(item) == "n/a"
                                 ):
-                                    error = f'{item} for {myHash[item]} must be of type {value[item]}'
+                                    error = f"{item} for {myHash[item]} \
+                                      must be of type {value[item]}"
                                     return False, error
     if not sawDefault:
         error = "Default view required"

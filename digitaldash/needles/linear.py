@@ -18,7 +18,7 @@ class NeedleLinear(Needle, StencilView):
     g = NumericProperty()
     b = NumericProperty()
     a = NumericProperty()
-    color = ColorProperty(defaultvalue='#FF0000FF')
+    color = ColorProperty(defaultvalue="#FF0000FF")
 
     def __init__(self, **kwargs):
         super(NeedleLinear, self).__init__()
@@ -41,7 +41,9 @@ class NeedleLinear(Needle, StencilView):
         Args:
           self <digitaldash.needles.linear>
         """
-        self.step = (self.width - (self.padding*2)) / (abs(self.minValue) + abs(self.maxValue))
+        self.step = (self.width - (self.padding * 2)) / (
+            abs(self.minValue) + abs(self.maxValue)
+        )
         if self.step == 0:
             self.step = 1.0
 

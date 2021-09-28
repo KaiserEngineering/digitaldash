@@ -18,6 +18,7 @@ from digitaldash.needles.static import NeedleStatic as Static
 from digitaldash.needles.radial import NeedleRadial as Radial
 from digitaldash.needles.linear import NeedleLinear as Linear
 
+
 class Base:
     """Base class used to provide helper method for creating a gauge."""
 
@@ -40,7 +41,7 @@ class Base:
         notError = ARGS["theme"] != "Error"
 
         # Import theme specifc Config
-        themeConfig = config.getThemeConfig( ARGS['theme'] )
+        themeConfig = config.getThemeConfig(ARGS["theme"])
         args["themeConfig"] = {**ARGS, **themeConfig}
 
         self.needle = None
@@ -65,18 +66,21 @@ class Base:
 
             # FIXME
             # This is a bandaid on the issue of spacing for linear gauges
-            if ARGS['skipLinearMinMax'] and themeConfig["module"] and \
-              ( labelConfig.get("Min") or labelConfig.get("Max") ):
+            if (
+                ARGS["skipLinearMinMax"]
+                and themeConfig["module"]
+                and (labelConfig.get("Min") or labelConfig.get("Max"))
+            ):
                 Logger.info(
-                  'GUI: Received skipLinearMinMax flag, \
-                    removing Min/Max labels from Linear gauges'
+                    "GUI: Received skipLinearMinMax flag, \
+                    removing Min/Max labels from Linear gauges"
                 )
                 continue
             # FIXME
 
             # remove duplicate "default" config option from main config
             tempArgs = dict(ARGS)
-            tempArgs.pop('default', None)
+            tempArgs.pop("default", None)
             labelConfig = {**tempArgs, **labelConfig}
 
             # Create Label widget
@@ -88,17 +92,25 @@ class Base:
             self.gauge.labels.append(label)
 
             # Add to data recieving widgets
-            if "data" in labelConfig and labelConfig['data']:
+            if "data" in labelConfig and labelConfig["data"]:
                 # Don't update our Min/Max labels if they are static
-                if ( label.isMax or label.isMin ) and not ARGS['dynamicMinMax']:
+                if (label.isMax or label.isMin) and not ARGS["dynamicMinMax"]:
                     if label.isMax:
-                        label.text =\
-                          str(label.pid.range['Max'])+"[size=15]"+" "\
-                          +label.unitString+"[/size]"
+                        label.text = (
+                            str(label.pid.range["Max"])
+                            + "[size=15]"
+                            + " "
+                            + label.unitString
+                            + "[/size]"
+                        )
                     else:
-                        label.text =\
-                          str(label.pid.range['Min'])+"[size=15]"+" "\
-                            +label.unitString+"[/size]"
+                        label.text = (
+                            str(label.pid.range["Min"])
+                            + "[size=15]"
+                            + " "
+                            + label.unitString
+                            + "[/size]"
+                        )
                 else:
                     self.liveWidgets.append(label)
             self.container.add_widget(label)

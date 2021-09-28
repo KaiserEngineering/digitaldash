@@ -3,6 +3,7 @@ from digitaldash.massager import smooth
 from kivy.logger import Logger
 from kivy.graphics import Color
 
+
 class Needle:
     """
     Base class for Needle classes to inherit from.
@@ -48,7 +49,7 @@ class Needle:
 
         pid = args["pid"]
         (self.source, self.degrees, self.unit, self.minValue, self.maxValue) = (
-            workingPath + "/themes/" + args['theme'] + "/needle.png",
+            workingPath + "/themes/" + args["theme"] + "/needle.png",
             float(args.get("degrees", 0)),
             pid.unit,
             pid.range["Min"],
@@ -59,8 +60,8 @@ class Needle:
         self.setStep()
 
     def setColor(self):
-        color = 0.7 - ( ( self.trueValue - self.minValue ) * (0.7) / (self.valueRange) )
-        self.color = tuple(Color(color, 1, 1, mode='hsv').rgba)
+        color = 0.7 - ((self.trueValue - self.minValue) * (0.7) / (self.valueRange))
+        self.color = tuple(Color(color, 1, 1, mode="hsv").rgba)
 
     def setData(self, value=0) -> None:
         """
