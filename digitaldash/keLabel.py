@@ -96,12 +96,12 @@ class KELabel(Label):
 
             if self.isMin:
                 self.pid.minObserved = min(self.pid.minObserved, value)
-                self.text = ("{0:.%sf}" % (self.decimals)).format(self.pid.minObserved)
+                self.text = f'{self.pid.minObserved:.{self.decimals}f}'
             elif self.isMax:
                 self.pid.maxObserved = max(self.pid.maxObserved, value)
-                self.text = ("{0:.%sf}" % (self.decimals)).format(self.pid.maxObserved)
+                self.text = f'{self.pid.maxObserved:.{self.decimals}f}'
             else:
-                self.text = self.default + ("{0:.%sf}" % (self.decimals)).format(value)
+                self.text = f'{self.default}{value:.{self.decimals}f}'
                 if self.unitString:
                     self.text = self.text+"[size=15]"+" "+self.unitString+"[/size]"
         except ValueError as e:

@@ -140,7 +140,7 @@ def validateConfig(config):
         for myTuple in requiredValues.items():
             (key, value) = (myTuple)
             if key not in view and not key == "top":
-                error = "%s required for view" % key
+                error = f'{key} required for view'
                 return False, error
             if key == "top":
                 for secondKey in requiredValues["top"]:
@@ -150,10 +150,7 @@ def validateConfig(config):
                         )
                         and not view[secondKey] == "n/a"
                     ):
-                        error = "%s must be of type %s" % (
-                            secondKey,
-                            str(requiredValues["top"][secondKey]),
-                        )
+                        error = f'{secondKey} must be of type {requiredValues["top"][secondKey]}'
                         return False, error
             else:
                 for item in value.keys():
@@ -166,11 +163,7 @@ def validateConfig(config):
                                 )
                                 and not view[key][item] == "n/a"
                             ):
-                                error = "%s for %s must be of type %s" % (
-                                    item,
-                                    str(view[key][item]),
-                                    str(value[item]),
-                                )
+                                error = f'{item} for {view[key][item]} must be of type {value[item]}'
                                 return False, error
                         else:
                             for myHash in view[key]:
@@ -180,11 +173,7 @@ def validateConfig(config):
                                     )
                                     and not myHash.get(item) == "n/a"
                                 ):
-                                    error = "%s for %s must be of type %s" % (
-                                        item,
-                                        str(myHash[item]),
-                                        str(value[item]),
-                                    )
+                                    error = f'{item} for {myHash[item]} must be of type {value[item]}'
                                     return False, error
     if not sawDefault:
         error = "Default view required"
