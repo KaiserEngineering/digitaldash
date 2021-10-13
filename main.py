@@ -6,6 +6,7 @@ import sys
 from digitaldash.test import Test
 import os
 import pathlib
+from functools import lru_cache
 
 WORKING_PATH = str(pathlib.Path(__file__).parent.absolute())
 os.environ["KIVY_HOME"] = WORKING_PATH + "/etc/kivy/"
@@ -154,31 +155,30 @@ class GUI(App):
 
         return self.app
 
+    @lru_cache
+    def rust_check(self: DD, value: float, callback):
+      try:
+            # Check if any dynamic changes need to be made
+            if libdigitaldash.check(value, callback.value, callback.op):
+                return callback
+      except Exception as e:
+          # Check if this is the error config (i.e. PID = "n/a")
+          # TODO: Do we need this any longer?
+          if callback.pid.value == "n/a":
+              Logger.error("GUI: Config file is invalid")
+              return callback
+
+          Logger.error(
+              "GUI: Firmware did not provide data value for key: %s",
+              callback.pid.value,
+          )
+
     def check_callback(self: DD, callback, data):
         """
         We mainthread this function so that someone with crazy toggle fingers
         doesn't beat the race condition.
         """
-        ret = False
-
-        try:
-            # Check if any dynamic changes need to be made
-            if libdigitaldash.check(
-                float(data[callback.pid.value]), callback.value, callback.op
-            ):
-                ret = callback
-        except Exception as e:
-            # Check if this is the error config (i.e. PID = "n/a")
-            if callback.pid.value == "n/a":
-                Logger.error("GUI: Config file is invalid")
-                return callback
-
-            Logger.error(
-                "GUI: Firmware did not provide data value for key: %s",
-                callback.pid.value,
-            )
-
-        return ret
+        return self.rust_check(float(data[callback.pid.value]), callback)
 
     @mainthread
     def change(self: DD, app, my_callback) -> NoReturn:
