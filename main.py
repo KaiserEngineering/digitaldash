@@ -158,7 +158,7 @@ class GUI(App):
 
         return self.app
 
-    @lru_cache
+    @lru_cache(maxsize=128)
     def rust_check(self: DD, value: float, callback: Union[Alert, Dynamic]):
         try:
             # Check if any dynamic changes need to be made
