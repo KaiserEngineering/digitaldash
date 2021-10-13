@@ -9,7 +9,7 @@ For more information see the [wiki](https://wiki.kaiserengineering.io/en/gui)
 Requires Python3.7
 
 ```sh
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Running the DD
@@ -21,8 +21,8 @@ make run
 ## Testing
 
 ```bash
-python3 -m pytest tests
-
+make test
+make lint
 cd libdigitaldash
 cargo test
 ```
