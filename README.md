@@ -2,6 +2,8 @@
 
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FKaiserEngineering%2Fdigitaldash%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/KaiserEngineering/digitaldash/goto?ref=master)
 
+[![Python_rust](https://pimp-my-readme.webapp.io/pimp-my-readme/technology?technology=Python_rust)](https://pimp-my-readme.webapp.io)
+
 For more information see the [wiki](https://wiki.kaiserengineering.io/en/gui)
 
 ## Install Deps
