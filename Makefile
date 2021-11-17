@@ -1,8 +1,22 @@
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-run:
+build:
+	cd frontend; npm run build
+	@python3 themes/loadThemes.py
+.PHONY: build
+
+start_python:
 	@python3 main.py
+.PHONY: start_python
+
+start_webapp:
+	cd frontend; npm run dev
+.PHONY: start_webapp
+
+run:
+	make -j 2 start_python start_webapp
+.PHONY: run
 
 test:
 	@python3 -m pytest tests
