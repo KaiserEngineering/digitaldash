@@ -1,6 +1,14 @@
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+install:
+	echo -e "${BLUE}Installing Python requirements..${NC}";
+	python3 -m pip install -r requirements.txt;
+	echo -e "${BLUE}Installing Nodejs requirements..${NC}";
+	cd frontend npm install; cd ..;
+	echo -e "${BLUE}All done..${NC}";
+.PHONY: install
+
 build:
 	cd frontend; npm run build
 	@python3 themes/loadThemes.py
