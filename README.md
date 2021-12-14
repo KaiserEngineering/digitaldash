@@ -23,6 +23,4 @@ make run
 ```bash
 make test
 make lint
-cd libdigitaldash
-cargo test
 ```

@@ -28,6 +28,8 @@ run:
 
 test:
 	@python3 -m pytest tests
+	cd libdigitaldash/;cargo test;
+.PHONY: test
 
 lint:
 	@echo "\n${BLUE}Running Pylint against source and test files...${NC}\n"
