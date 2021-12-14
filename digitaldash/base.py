@@ -53,7 +53,7 @@ class Base:
             self.liveWidgets.append(self.needle)
         self.face = Face(**args, workingPath=ARGS.get("workingPath", ""))
 
-        self.gauge = Gauge(Face=self.face, Needle=self.needle)
+        self.gauge = Gauge(face=self.face, needle=self.needle)
         self.container.add_widget(self.face)
 
         # Needle needs to be added after so its on top

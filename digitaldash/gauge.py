@@ -23,8 +23,8 @@ class Gauge:
 
     def buildGauge(self, **args) -> None:
         """Build"""
-        self.needle = args.get("Needle", False)
+        self.needle = args.get("needle", False)
         if self.needle:
             self.needle.setStep()
             self.needle.setData(self.needle.minValue)
-        self.face = args.get("Face", False)
+        self.face = args.get("face", False)
