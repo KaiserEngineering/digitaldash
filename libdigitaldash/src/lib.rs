@@ -2,16 +2,17 @@ use pyo3::prelude::*;
 use pyo3::wrap_pyfunction;
 
 #[pyfunction]
-fn check(current: f64, val: f64, op: u16) -> bool {
-  let ret = match op {
+fn check(current: f32, val: f32, op: u16) -> bool {
+  // Use match operator to perform check based on 'op' value
+  // return bool of result.
+  match op {
     0x203C => current < val,
     0x203E => current > val,
     0x203D => current == val,
     0x3C3D => current <= val,
     0x3E3D => current >= val,
     _      => false
-  };
-  return ret
+  }
 }
 
 #[pymodule]
