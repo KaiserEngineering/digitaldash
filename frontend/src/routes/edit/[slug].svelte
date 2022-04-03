@@ -1,6 +1,6 @@
 <script context="module">
-  export async function load({ page, context }) {
-    return { props: { id: page.params.slug } };
+  export async function load({ url, params }) {
+    return { props: { id: params.slug } };
   }
 </script>
 
@@ -11,6 +11,7 @@
   export let id;
 
   let view = $session.configuration.views[id];
+
   const KE_PID = $session.constants.KE_PID;
   const UNIT_LABEL = $session.constants.PID_UNIT_LABEL;
   const pids = Object.keys(KE_PID);
@@ -49,6 +50,9 @@
   }
   view = normalizeGauges();
 
+  /**
+  * @param {{ target: { value: any; name: string; }; srcElement: { parentElement: { nextSibling: { nextSibling: { querySelectorAll: (arg0: string) => any[]; }; }; }; }; }} node
+  */
   function getUnits(node) {
     const pid = node.target.value;
     let pidRegex = /(gauge|dynamic|alert)-(\d+)/;
@@ -103,6 +107,8 @@
       } else if (type == "dynamic") {
         currentValue = KE_PID[pid].units[view.dynamic.unit];
         unit = view.dynamic.unit;
+        console.log(currentValue)
+        console.log(unit)
       }
 
       if (currentValue) {
@@ -128,7 +134,7 @@
     };
   }
 
-  function handleSubmit(event) {
+  function handleSubmit() {
     let configuration = $session.configuration;
     configuration.views[id] = view;
 
@@ -189,6 +195,9 @@
     ];
   }
 
+  /**
+  * @param {number} index
+  */
   function removeAlert(index) {
     let tempArr = view.alerts;
     tempArr.splice(index, 1);
@@ -288,7 +297,6 @@
                           name="units"
                           on:blur={(e) =>
                             view.gauges[i] ? view.gauges[i].unit = e.target.value : view.gauges[i] = { 'unit': e.target.value } }
-                          value={view.gauges[i].unit}
                           class="form-control"
                         />
                       </div>
@@ -399,7 +407,6 @@
                     <select
                       name="units"
                       on:blur={(e) => (alert.unit = e.target.value)}
-                      value={alert.unit}
                       class="form-control value"
                       required><option>-</option></select
                     >
@@ -486,7 +493,6 @@
                   name="units"
                   on:blur={(e) => (view.dynamic.unit = e.target.value)}
                   disabled={!view.dynamic.enabled}
-                  value={view.dynamic.unit}
                   class="form-control value"
                   required><option>-</option></select
                 >

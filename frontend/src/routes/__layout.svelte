@@ -1,14 +1,14 @@
 <script context="module">
-  export async function load({ page, session }) {
+  export async function load({ url, session }) {
     const { user } = session;
 
-    if (!user && page.path != "/login") {
+    if (!user && url.pathname != "/login") {
       return {
         redirect: "/login",
         status: 301,
       };
     }
-    return { props: { segment: page.path } };
+    return { props: { segment: url.pathname } };
   }
 </script>
 

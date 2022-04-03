@@ -36,7 +36,7 @@ export async function GetPythonDictionary(
 }
 
 export async function ResetWithGit(File: String) {
-  await execute(`cd ${guiHome}; git checkout ${guiHome}/${File}`);
+  await execute(`git checkout ${guiHome}/${File}`);
   // Todo - Need some kind of sane error checking here
   return 1;
 }

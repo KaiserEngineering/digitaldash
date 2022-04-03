@@ -20,8 +20,8 @@ export function get() {
 }
 
 // Do our login
-export function post(request: { body: string }) {
-  let attempt = JSON.parse(request.body);
+export async function post({request, url, params, locals}) {
+  let attempt = await request.json()
 
   let user = User();
 
@@ -39,7 +39,7 @@ export function post(request: { body: string }) {
     res.ret = 1;
     res.message = "Success";
     res.user = {
-      username: user.Username,
+      username: user.username,
     };
 
     // Can we make our seed actually useful?
@@ -59,8 +59,8 @@ export function post(request: { body: string }) {
 }
 
 // Update our auth creds
-export function put(request: { body: string }) {
-  let args = JSON.parse(request.body);
+export async function put({request}) {
+  let args = await request.json()
 
   UpdateUserCredentials(args.username, args.password);
 

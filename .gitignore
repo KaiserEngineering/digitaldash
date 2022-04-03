@@ -220,3 +220,5 @@ node_modules
 /functions
 /.svelte-kit
 /build
+
+frontend/.svelte-kit/

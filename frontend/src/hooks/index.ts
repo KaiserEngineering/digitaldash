@@ -4,33 +4,33 @@ import { GetConstants } from "$lib/Constants";
 import { ReadFile } from "$lib/Util";
 
 /** @type {import('@sveltejs/kit').Handle} */
-export async function handle({ request, resolve }) {
-  const cookies = cookie.parse(request.headers.cookie || "");
-  request.locals.ke_web_app = cookies.ke_web_app || undefined;
+export async function handle({ event, resolve, headers }) {
+  const cookies = cookie.parse(event.request.headers.get('cookie') || "");
+  event.locals.ke_web_app = cookies.ke_web_app || undefined;
 
-  const user = await checkToken(request.locals.ke_web_app);
+  const user = await checkToken(cookies.ke_web_app);
   // TODO https://github.com/sveltejs/kit/issues/1046
-  if (request.query.has("_method")) {
-    request.method = request.query.get("_method").toUpperCase();
+  if (event.url.searchParams.has("_method")) {
+    event.method = event.query.get("_method").toUpperCase();
   }
 
-  request.locals.user = user;
-  request.locals.configuration = ReadFile("/etc/config.json", true);
-  request.locals.constants = await GetConstants();
+  event.locals.user = user;
+  event.locals.configuration = ReadFile("/etc/config.json", true);
+  event.locals.constants = await GetConstants();
 
-  const response = await resolve(request);
+  const response = await resolve(event);
   return response;
 }
 
 /** @type {import('@sveltejs/kit').GetSession} */
-export function getSession(request: any) {
+export function getSession(event) {
   return {
-    user: request.locals.user && {
-      username: request.locals.user.Username,
+    user: event.locals.user && {
+      username: event.locals.user.Username,
     },
     actions: [],
-    configuration: request.locals.configuration,
-    constants: request.locals.constants,
+    configuration: event.locals.configuration,
+    constants: event.locals.constants,
     count: 0,
   };
 }

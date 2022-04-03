@@ -37,16 +37,17 @@ export async function get() {
 }
 
 // Use this to update config
-export async function post(request: { body: string }) {
-  const newConfig = JSON.parse(request.body);
+export async function post({request}) {
+  let newConfig = await request.json()
 
   let config = UpdateConfig(newConfig);
   return { body: { ret: 1, message: "Config updated", config: config } };
 }
 
 // Right now lets use this for toggling view
-export async function put(request: { body: { id: any } }) {
-  const id = request.body.id;
+export async function put({request}) {
+  let body = await request.json();
+  const id = body.id;
 
   var config = ReadConfig();
   config.views[id].enabled = config.views[id].enabled ? false : true;
