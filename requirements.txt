@@ -1,7 +1,7 @@
 watchdog>=1.0.0
 pillow
 pgen>=0.2.1
-kivy>=2.0.0
+kivy>=2.1.0
 pytest>=6.1.2
 bandit>=1.6.3
 pyserial>=3.5

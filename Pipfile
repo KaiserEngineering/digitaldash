@@ -19,11 +19,11 @@ lib-digital-dash = {path = "./libdigitaldash"}
 Pillow = "*"
 PGen = ">=0.2.1"
 Kivy = ">=2.1.0"
-Mock = "*"
 
 [dev-packages]
 pre-commit = "*"
 black = "*"
+Mock = "*"
 
 [requires]
 python_version = "3.9"
