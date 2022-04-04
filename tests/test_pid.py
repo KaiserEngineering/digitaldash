@@ -12,6 +12,12 @@ from digitaldash.pid import PID
 import pytest
 import pathlib
 
+from unittest.mock import patch
+
+from kivy.base import EventLoop
+EventLoop.ensure_window()
+window = EventLoop.window
+
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 config.setWorkingPath((working_path))
 
@@ -19,7 +25,8 @@ pid = PID(pid="0x010C", unit="PID_UNITS_RPM")
 
 
 @pytest.fixture
-def my_application():
+@patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+def my_application(mock_window):
     config.setWorkingPath(working_path)
 
     self = GUI()

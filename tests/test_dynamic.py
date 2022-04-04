@@ -10,14 +10,19 @@ from kivy.config import Config
 from kivy.uix.anchorlayout import AnchorLayout
 import pathlib
 import pytest
+from unittest.mock import patch
 
 Config.set("kivy", "kivy_clock", "interrupt")
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 config.setWorkingPath((working_path))
 
+from kivy.base import EventLoop
+EventLoop.ensure_window()
+window = EventLoop.window
 
 @pytest.fixture
-def my_application():
+@patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+def my_application(mock_window):
     t = KETester.Test()
     config.setWorkingPath(working_path)
 

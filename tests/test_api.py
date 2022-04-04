@@ -17,15 +17,21 @@ from digitaldash.pid import PID
 from main import GUI
 
 import pytest
+from unittest.mock import patch
 import pathlib
+
+from kivy.base import EventLoop
+EventLoop.ensure_window()
+window = EventLoop.window
 
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 config.setWorkingPath((working_path))
 
 pid = PID(pid="0x010C", unit="PID_UNITS_RPM")
 
-
-def test_needle_simple():
+@patch('digitaldash.needles.linear.Window', return_value=window)
+@patch('digitaldash.digitaldash.Window', return_value=window)
+def test_needle_simple(mock_dd_window, mock_linear_window):
     """Basic needle tests"""
     needles = (
         NeedleRadial(
@@ -178,7 +184,9 @@ def test_alert_simple():
 
 
 @pytest.fixture
-def my_application():
+@patch('digitaldash.needles.linear.Window', return_value=window)
+@patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+def my_application(mock_dd_window, mock_linear_window):
     config.setWorkingPath(working_path)
 
     self = GUI()

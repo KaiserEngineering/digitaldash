@@ -1,9 +1,18 @@
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+setup-env:
+		pipenv install
+		pipenv shell
+
+evaluate:
+		@ if [ "$(which python)" != *"virtualenvs"* ]; then \
+				make setup-env; \
+		fi
+
 install:
 	echo -e "${BLUE}Installing Python requirements..${NC}";
-	python3 -m pip install -r requirements.txt;
+	pipenv install;
 	echo -e "${BLUE}Installing Nodejs requirements..${NC}";
 	cd frontend npm install; cd ..;
 	echo -e "${BLUE}All done..${NC}";
@@ -11,11 +20,11 @@ install:
 
 build:
 	cd frontend; npm run build
-	@python3 themes/loadThemes.py
+	@python themes/loadThemes.py
 .PHONY: build
 
 start_python:
-	@python3 main.py
+	@python main.py
 .PHONY: start_python
 
 start_webapp:
@@ -27,7 +36,7 @@ run:
 .PHONY: run
 
 test:
-	@python3 -m pytest tests
+	@python -m pytest tests
 	cd libdigitaldash/;cargo test;
 .PHONY: test
 

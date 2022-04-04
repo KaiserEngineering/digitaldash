@@ -14,11 +14,16 @@ from kivy.uix.anchorlayout import AnchorLayout
 import pathlib
 import pytest
 import copy
+from unittest.mock import patch
 
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
+from kivy.base import EventLoop
+EventLoop.ensure_window()
+window = EventLoop.window
 
-def test_config_file_from_cli():
+@patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+def test_config_file_from_cli(mock_window):
     dd = main.GUI()
     dd.working_path = working_path
     dd.new(configFile=working_path + "/etc/configs/single.json")
@@ -43,8 +48,8 @@ def test_config_file_from_cli():
             (ret, msg) = config.validateConfig(json_config)
             assert ret == True, print(entry.name + " passes config validation check")
 
-
-def my_gui(newConfig):
+@patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+def my_gui(newConfig, mock_window):
     config.setWorkingPath(working_path)
 
     self = GUI()
@@ -58,8 +63,8 @@ def my_gui(newConfig):
     buildFromConfig(self)
     return self
 
-
-def test_config_programatically():
+@patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+def test_config_programatically(mock_window):
     dd = main.GUI()
     dd.working_path = working_path
 

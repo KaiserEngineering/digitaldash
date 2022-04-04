@@ -45,6 +45,10 @@ class Background(AnchorLayout):
 pidsDict = {}
 
 
+def windowWidth():
+    """Return window width, we use a function for testing"""
+    return Window.width
+
 def findPids(view):
     """Find all PIDs in a view"""
     for i, gauge in enumerate(view["gauges"]):
@@ -227,7 +231,7 @@ def setup(self, layouts):
             subcontainer = RelativeLayout(
                 pos_hint={"top": yTop[count], "center_x": xPosition[count]},
                 size_hint_max_y=200,
-                size_hint_max_x=Window.width / numGauges,
+                size_hint_max_x=windowWidth() / numGauges,
             )
             container.add_widget(subcontainer)
 
