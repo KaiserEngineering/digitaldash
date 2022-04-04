@@ -19,12 +19,11 @@ jobs:
         sudo apt-get -y install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-mixer-dev libmtdev1
         sudo apt-get -y install libsmpeg-dev libswscale-dev libavformat-dev libavcodec-dev libjpeg-dev libtiff5-dev libx11-dev libmtdev-dev
         sudo apt-get -y install build-essential libgl1-mesa-dev libgles2-mesa-dev
-        sudo apt install rustc
+        sudo apt install rustc pipenv
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        make setup-env
 
 
     - name: Run Rust tests
