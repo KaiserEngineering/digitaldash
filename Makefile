@@ -24,7 +24,7 @@ build:
 .PHONY: build
 
 start_python:
-	@python main.py
+	@pipenv run run
 .PHONY: start_python
 
 start_webapp:
@@ -36,7 +36,7 @@ run:
 .PHONY: run
 
 test:
-	@python -m pytest tests
+	@pipenv run test
 	cd libdigitaldash/;cargo test;
 .PHONY: test
 
