@@ -30,7 +30,6 @@ for o, arg in opts:
         ConfigFile = arg
 
 # Our Kivy deps
-import kivy
 from kivy.logger import Logger
 from kivy.app import App
 from kivy.lang import Builder
@@ -91,10 +90,6 @@ class MyHandler(PatternMatchingEventHandler):
 for file in os.listdir(WORKING_PATH + "/digitaldash/kv/"):
     Builder.load_file(WORKING_PATH + "/digitaldash/kv/" + str(file))
 
-DD = TypeVar("DD", bound="DigitalDash")
-
-GUIApp = TypeVar("GUI", bound="GUI")
-
 
 class GUI(App):
     """
@@ -121,7 +116,7 @@ class GUI(App):
         self.success = 1
         self.status = ""
 
-    def new(self: DD, configFile=None, data=None):
+    def new(self, configFile=None, data=None):
         """
         This method can be used to set any values before the app starts, this is useful for
         testing.
@@ -143,7 +138,9 @@ class GUI(App):
         self.working_path = WORKING_PATH
 
         observer = Observer()
-        observer.schedule(MyHandler(self), WORKING_PATH + "/etc/", recursive=True)
+        observer.schedule(
+            MyHandler(self), WORKING_PATH + "/etc/", recursive=True
+        )
         observer.start()
 
         buildFromConfig(self, dataSource)
@@ -159,12 +156,12 @@ class GUI(App):
         return self.app
 
     @lru_cache(maxsize=128)
-    def rust_check(self: DD, value: float, callback: Union[Alert, Dynamic]):
+    def rust_check(self, value: float, callback: Union[Alert, Dynamic]):
         try:
             # Check if any dynamic changes need to be made
             if libdigitaldash.check(value, callback.value, callback.op):
                 return callback
-        except Exception as e:
+        except Exception:
             # Check if this is the error config (i.e. PID = "n/a")
             # TODO: Do we need this any longer?
             if callback.pid.value == "n/a":
@@ -176,7 +173,7 @@ class GUI(App):
                 callback.pid.value,
             )
 
-    def check_callback(self: DD, callback: Union[Alert, Dynamic], data: List):
+    def check_callback(self, callback: Union[Alert, Dynamic], data: List):
         """
         We mainthread this function so that someone with crazy toggle fingers
         doesn't beat the race condition.
@@ -184,7 +181,7 @@ class GUI(App):
         return self.rust_check(float(data[callback.pid.value]), callback)
 
     @mainthread
-    def change(self: DD, app: GUIApp, my_callback) -> NoReturn:
+    def change(self, app, my_callback) -> NoReturn:
         """
         This method only handles dynamic changing, the alert changing is handled in
         the main application loop.
@@ -192,13 +189,13 @@ class GUI(App):
         self.current = my_callback.viewId
         my_callback.change(self)
 
-    def update_values(self: DD, data: List[float]) -> NoReturn:
+    def update_values(self, data: List[float]) -> NoReturn:
         for widget in self.objectsToUpdate:
             for obj in widget:
                 if obj.pid:
                     try:
                         obj.setData(data[obj.pid.value])
-                    except:
+                    except Exception:
                         Logger.error(
                             "GUI: Firmware did not provide data value for key: %s",
                             obj.pid.value,
@@ -210,13 +207,12 @@ class GUI(App):
 
     # TODO: Is there a big issue with mainthreading the whole loop?
     @mainthread
-    def loop(self: DD, dt: float):
+    def loop(self, _dt: float):
         if self.first_iteration:
             self.first_iteration = False
 
-        (my_callback, priority, data) = (
+        (my_callback, data) = (
             None,
-            0,
             dataSource.service(app=self, pids=self.pids),
         )
 

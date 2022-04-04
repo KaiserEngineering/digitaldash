@@ -22,6 +22,8 @@ Kivy = ">=2.1.0"
 Mock = "*"
 
 [dev-packages]
+pre-commit = "*"
+black = "*"
 
 [requires]
 python_version = "3.9"

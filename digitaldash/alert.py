@@ -36,4 +36,7 @@ class Alert(KELabel):
         self.buffer = 0
 
     def setPos(self, **args):
-        self.pos = (self.center_x + self.width / 4, self.center_y + self.height / 1.5)
+        self.pos = (
+            self.center_x + self.width / 4,
+            self.center_y + self.height / 1.5,
+        )

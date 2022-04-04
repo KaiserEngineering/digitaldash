@@ -42,9 +42,9 @@ test:
 
 lint:
 	@echo "\n${BLUE}Running Pylint against source and test files...${NC}\n"
-	@pylint --rcfile=setup.cfg **/*.py
+	@pylint --rcfile=setup.cfg **/*.py || true
 	@echo "\n${BLUE}Running Bandit against source files...${NC}\n"
-	@bandit -r --ini setup.cfg
+	@bandit -r --ini setup.cfg || true
 
 clean:
 	rm -rf .pytest_cache .coverage .pytest_cache coverage.xml

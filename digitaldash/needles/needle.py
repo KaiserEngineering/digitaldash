@@ -48,7 +48,13 @@ class Needle:
         workingPath = args.get("workingPath", "")
 
         pid = args["pid"]
-        (self.source, self.degrees, self.unit, self.minValue, self.maxValue) = (
+        (
+            self.source,
+            self.degrees,
+            self.unit,
+            self.minValue,
+            self.maxValue,
+        ) = (
             workingPath + "/themes/" + args["theme"] + "/needle.png",
             float(args.get("degrees", 0)),
             pid.unit,
@@ -60,7 +66,9 @@ class Needle:
         self.setStep()
 
     def setColor(self):
-        color = 0.7 - ((self.trueValue - self.minValue) * (0.7) / (self.valueRange))
+        color = 0.7 - (
+            (self.trueValue - self.minValue) * (0.7) / (self.valueRange)
+        )
         self.color = tuple(Color(color, 1, 1, mode="hsv").rgba)
 
     def setData(self, value=0) -> None:
@@ -81,8 +89,10 @@ class Needle:
                 value = self.maxValue
             elif value < self.minValue:
                 value = self.minValue
-            self.update = smooth(old=current, new=value * self.step - self.offset)
-        except:
+            self.update = smooth(
+                old=current, new=value * self.step - self.offset
+            )
+        except Exception:
             Logger.error("GUI: needle.py is not numeric")
 
         if self.colorChanging:

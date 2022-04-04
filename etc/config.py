@@ -56,7 +56,9 @@ def views(file=None, jsonData=None):
 
         if not valid:
             Logger.error(error)
-            errorConfig = errorConfig.replace("Config file isn't valid!", error)
+            errorConfig = errorConfig.replace(
+                "Config file isn't valid!", error
+            )
             jsonData = json.loads(errorConfig)
 
     except Exception as e:
@@ -64,10 +66,12 @@ def views(file=None, jsonData=None):
         # error happened on.
         errorString = (str(e).split(":", maxsplit=1))[0]
         errorConfig = errorConfig.replace(
-            "Config file isn't valid!", "Config file isn't valid! Exception Error"
+            "Config file isn't valid!",
+            "Config file isn't valid! Exception Error",
         )
         Logger.error(
-            "GUI: Invalid config provided, falling back to default: %s", errorString
+            "GUI: Invalid config provided, falling back to default: %s",
+            errorString,
         )
         jsonData = json.loads(errorConfig)
     return jsonData
@@ -168,7 +172,9 @@ def validateConfig(config):
                         else:
                             for myHash in view[key]:
                                 if (
-                                    not isinstance(myHash.get(item), value[item])
+                                    not isinstance(
+                                        myHash.get(item), value[item]
+                                    )
                                     and not myHash.get(item) == "n/a"
                                 ):
                                     error = f"{item} for {myHash[item]} \

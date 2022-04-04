@@ -33,7 +33,9 @@ class KELabel(Label):
         self.configFontSize = args.get("font_size", 25)
         self.font_size = self.configFontSize
         self.pid = args.get("pid", None)
-        self.decimals = "2"  # Default to 2 and update later if a value is provided
+        self.decimals = (
+            "2"  # Default to 2 and update later if a value is provided
+        )
         self.unitString = ""
 
         # Min/Max handling args
@@ -51,7 +53,10 @@ class KELabel(Label):
                         "GUI: Found unit: %s but no PID_UNIT_LABEL value found",
                         self.unit,
                     )
-            if self.pid.range and self.pid.range.get("decimals", None) is not None:
+            if (
+                self.pid.range
+                and self.pid.range.get("decimals", None) is not None
+            ):
                 self.decimals = self.pid.range["decimals"]
 
         self.objectType = "Label"
@@ -79,7 +84,10 @@ class KELabel(Label):
         posHints = args.get("pos", (0, 0))
 
         if args.get("gauge"):
-            self.pos = (args.get("xPosition") + posHints[0], self.pos[1] + posHints[1])
+            self.pos = (
+                args.get("xPosition") + posHints[0],
+                self.pos[1] + posHints[1],
+            )
         else:
             self.pos_hint = {"x": posHints[0] / 100, "y": posHints[1] / 100}
 
@@ -104,7 +112,11 @@ class KELabel(Label):
                 self.text = f"{self.default}{value:.{self.decimals}f}"
                 if self.unitString:
                     self.text = (
-                        self.text + "[size=15]" + " " + self.unitString + "[/size]"
+                        self.text
+                        + "[size=15]"
+                        + " "
+                        + self.unitString
+                        + "[/size]"
                     )
         except ValueError as e:
             Logger.error("GUI: keLabel.py is not numeric: %s", e)
