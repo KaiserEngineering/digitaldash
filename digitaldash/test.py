@@ -7,8 +7,10 @@ import csv
 from unittest.mock import patch
 
 from kivy.base import EventLoop
+
 EventLoop.ensure_window()
 window = EventLoop.window
+
 
 class Test:
     """Test instance."""
@@ -87,7 +89,7 @@ class Test:
         app.pids = pids
         return (1, "PIDs updated")
 
-    @patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+    @patch("digitaldash.digitaldash.windowWidth", return_value=window.width)
     def new(self, config=None, data=None, csvFile=None):
         """Test method"""
         from main import GUI

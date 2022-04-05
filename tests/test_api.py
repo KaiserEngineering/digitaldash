@@ -21,6 +21,7 @@ from unittest.mock import patch
 import pathlib
 
 from kivy.base import EventLoop
+
 EventLoop.ensure_window()
 window = EventLoop.window
 
@@ -29,8 +30,9 @@ config.setWorkingPath((working_path))
 
 pid = PID(pid="0x010C", unit="PID_UNITS_RPM")
 
-@patch('digitaldash.needles.linear.Window', return_value=window)
-@patch('digitaldash.digitaldash.Window', return_value=window)
+
+@patch("digitaldash.needles.linear.Window", return_value=window)
+@patch("digitaldash.digitaldash.Window", return_value=window)
 def test_needle_simple(mock_dd_window, mock_linear_window):
     """Basic needle tests"""
     needles = (
@@ -114,7 +116,9 @@ def test_label_simple():
         data=0,
         pid=pid,
     )
-    assert label.text == "hello, world", print("Default text value is set correctly")
+    assert label.text == "hello, world", print(
+        "Default text value is set correctly"
+    )
     assert label.decimals == "0", print(
         "Default decimal place set correctly for label when no unit provided"
     )
@@ -145,12 +149,16 @@ def test_label_simple():
     )
 
     label.setData(0)
-    assert label.text == "hello, world 0", print("Default text value is set correctly")
+    assert label.text == "hello, world 0", print(
+        "Default text value is set correctly"
+    )
     label.setData(-100)
     assert label.text == "hello, world -100", print("Min value sets correctly")
 
     label.setData(100)
-    assert label.text == "hello, world 100", print("Min value stays minimum seen")
+    assert label.text == "hello, world 100", print(
+        "Min value stays minimum seen"
+    )
 
     label = KELabel(default="", data=1, pid=pid, Max=1)
     label.setData(0)
@@ -172,20 +180,25 @@ pid2 = PID(pid="0x010B", unit="PID_UNITS_KPA")
 def test_alert_simple():
     """Basic alerts tests"""
     alert = Alert(
-        value=100, op=">", viewId=0, priority=0, message="Hello, from tests", pid=pid2
+        value=100,
+        op=">",
+        viewId=0,
+        priority=0,
+        message="Hello, from tests",
+        pid=pid2,
     )
-    assert libdigitaldash.check(float(99), alert.value, alert.op) is False, print(
-        "Check fails when it should"
-    )
-    assert libdigitaldash.check(float(101), alert.value, alert.op) is True, print(
-        "Check passes when it should"
-    )
+    assert (
+        libdigitaldash.check(float(99), alert.value, alert.op) is False
+    ), print("Check fails when it should")
+    assert (
+        libdigitaldash.check(float(101), alert.value, alert.op) is True
+    ), print("Check passes when it should")
     assert alert.text == "Hello, from tests", print("Do not set alert value")
 
 
 @pytest.fixture
-@patch('digitaldash.needles.linear.Window', return_value=window)
-@patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+@patch("digitaldash.needles.linear.Window", return_value=window)
+@patch("digitaldash.digitaldash.windowWidth", return_value=window.width)
 def my_application(mock_dd_window, mock_linear_window):
     config.setWorkingPath(working_path)
 
@@ -211,4 +224,4 @@ def test_build(my_application):
     for widget in container[0].children:
         if type(widget) is KELabel and widget.unitString:
             saw_unitString_label = True
-    assert saw_unitString_label == True, print("Set PID unit string")
+    assert saw_unitString_label is True, print("Set PID unit string")

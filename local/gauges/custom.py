@@ -5,10 +5,13 @@ from kivy.lang import Builder
 from kivy.uix.label import Label
 
 # KV Styling, here we set color of our text
-Builder.load_string("""
+Builder.load_string(
+    """
 <MyCustomLabel>:
       color: 1, 0, 0, 1
-""")
+"""
+)
+
 
 class MyCustomLabel(Label):
     """Custom label class"""
@@ -18,18 +21,19 @@ class MyCustomLabel(Label):
         Logger.info("Custom gauge setData method called, got: %s", val)
 
 
-class Custom():
+class Custom:
     """Custom gauge"""
+
     def __init__(self):
         super(Custom, self).__init__()
         Logger.info("Instantiate new custom gauge")
 
     def buildComponent(self, **ARGS) -> []:
         """Function that is called when gauge is created"""
-        self.container = ARGS['container']
+        self.container = ARGS["container"]
         live_widgets = []
 
-        label = MyCustomLabel(text='Custom gauge!')
+        label = MyCustomLabel(text="Custom gauge!")
 
         # Use Kivy RelativeLayout as our gauge layout
         layout = RelativeLayout()
@@ -43,6 +47,6 @@ class Custom():
 
         # Need to provide a pid attribute for our label to update from,
         # see static/constants.py
-        label.pid = '0x010C'
+        label.pid = "0x010C"
 
         return live_widgets

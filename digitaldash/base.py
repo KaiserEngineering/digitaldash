@@ -46,7 +46,9 @@ class Base:
 
         self.needle = None
         if notError:
-            self.needle = globals()[themeConfig["module"]](**ARGS, **themeConfig)
+            self.needle = globals()[themeConfig["module"]](
+                **ARGS, **themeConfig
+            )
             (self.needle.sizex, self.needle.sizey) = (512, 512)
             self.needle.pid = ARGS["pid"]
             # Adding widgets that get updated with data

@@ -4,12 +4,28 @@
 
 For more information see the [wiki](https://wiki.kaiserengineering.io/en/gui)
 
-## Install Deps
+## Running Locally
 
-Requires Python3.7
+### Install pipenv
 
 ```sh
-pip install -r requirements.txt
+python -m pip install pipenv
+```
+
+### Install Nodejs
+
+* TODO Instructions on this
+
+### Install Python and Nodejs packages 
+
+```
+make install
+```
+
+### If doing development work install Python dev deps
+
+```sh
+pipenv install --dev
 ```
 
 ## Running the DD

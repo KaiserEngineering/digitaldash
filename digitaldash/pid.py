@@ -24,5 +24,7 @@ class PID:
         self.maxObserved = -9999
 
         self.range = (
-            KE_PID.get(self.value).get("units").get(self.unitLabel) if self.unit else ""
+            KE_PID.get(self.value).get("units").get(self.unitLabel)
+            if self.unit
+            else ""
         )

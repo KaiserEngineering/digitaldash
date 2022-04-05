@@ -331,7 +331,11 @@ KE_PID = {
 
 def get_constants():
     """Return combined constants dictionary"""
-    return {"KE_PID": KE_PID, "KE_CP_OP_CODES": KE_CP_OP_CODES, "PID_UNITS": PID_UNITS}
+    return {
+        "KE_PID": KE_PID,
+        "KE_CP_OP_CODES": KE_CP_OP_CODES,
+        "PID_UNITS": PID_UNITS,
+    }
 
 
 def export_json():

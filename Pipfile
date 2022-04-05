@@ -3,6 +3,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[scripts]
+test = "python -m pytest tests"
+run  = "python main.py"
+
 [packages]
 watchdog = ">=1.0.0"
 pytest = ">=6.1.2"
@@ -15,9 +19,11 @@ lib-digital-dash = {path = "./libdigitaldash"}
 Pillow = "*"
 PGen = ">=0.2.1"
 Kivy = ">=2.1.0"
-Mock = "*"
 
 [dev-packages]
+pre-commit = "*"
+black = "*"
+Mock = "*"
 
 [requires]
 python_version = "3.9"

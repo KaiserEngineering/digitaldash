@@ -19,10 +19,12 @@ from unittest.mock import patch
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
 from kivy.base import EventLoop
+
 EventLoop.ensure_window()
 window = EventLoop.window
 
-@patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+
+@patch("digitaldash.digitaldash.windowWidth", return_value=window.width)
 def test_config_file_from_cli(mock_window):
     dd = main.GUI()
     dd.working_path = working_path
@@ -44,11 +46,16 @@ def test_config_file_from_cli(mock_window):
     path = r"%s" % path
     with os.scandir(path) as dirs:
         for entry in dirs:
-            json_config = config.views(file=working_path + "/etc/configs/" + entry.name)
+            json_config = config.views(
+                file=working_path + "/etc/configs/" + entry.name
+            )
             (ret, msg) = config.validateConfig(json_config)
-            assert ret == True, print(entry.name + " passes config validation check")
+            assert ret is True, print(
+                entry.name + " passes config validation check"
+            )
 
-@patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+
+@patch("digitaldash.digitaldash.windowWidth", return_value=window.width)
 def my_gui(newConfig, mock_window):
     config.setWorkingPath(working_path)
 
@@ -63,7 +70,8 @@ def my_gui(newConfig, mock_window):
     buildFromConfig(self)
     return self
 
-@patch('digitaldash.digitaldash.windowWidth', return_value=window.width)
+
+@patch("digitaldash.digitaldash.windowWidth", return_value=window.width)
 def test_config_programatically(mock_window):
     dd = main.GUI()
     dd.working_path = working_path

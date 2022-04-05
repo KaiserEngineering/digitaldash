@@ -24,7 +24,7 @@ build:
 .PHONY: build
 
 start_python:
-	@python main.py
+	@pipenv run run
 .PHONY: start_python
 
 start_webapp:
@@ -36,15 +36,15 @@ run:
 .PHONY: run
 
 test:
-	@python -m pytest tests
+	@pipenv run test
 	cd libdigitaldash/;cargo test;
 .PHONY: test
 
 lint:
 	@echo "\n${BLUE}Running Pylint against source and test files...${NC}\n"
-	@pylint --rcfile=setup.cfg **/*.py
+	@pylint --rcfile=setup.cfg **/*.py || true
 	@echo "\n${BLUE}Running Bandit against source files...${NC}\n"
-	@bandit -r --ini setup.cfg
+	@bandit -r --ini setup.cfg || true
 
 clean:
 	rm -rf .pytest_cache .coverage .pytest_cache coverage.xml

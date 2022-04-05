@@ -14,7 +14,10 @@ class Face(Image):
         workingPath = kwargs.get("workingPath", "")
 
         self.source = (
-            workingPath + "/themes/" + kwargs["themeConfig"]["theme"] + "/gauge.png"
+            workingPath
+            + "/themes/"
+            + kwargs["themeConfig"]["theme"]
+            + "/gauge.png"
         )
         for item in kwargs.items():
             setattr(self, *item)

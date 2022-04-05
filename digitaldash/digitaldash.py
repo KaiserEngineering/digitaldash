@@ -9,6 +9,7 @@
 # pylint: disable=fixme
 
 
+from kivy.logger import Logger
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import StringProperty
@@ -36,9 +37,12 @@ class Background(AnchorLayout):
     def __init__(self, BackgroundSource="", WorkingPath=""):
         super().__init__()
         Logger.debug(
-            "GUI: Creating new Background obj with source: %s", BackgroundSource
+            "GUI: Creating new Background obj with source: %s",
+            BackgroundSource,
         )
-        self.source = f"{WorkingPath + '/static/imgs/Background/'}{BackgroundSource}"
+        self.source = (
+            f"{WorkingPath + '/static/imgs/Background/'}{BackgroundSource}"
+        )
 
 
 # We want this variable to be shared across views
@@ -49,6 +53,7 @@ def windowWidth():
     """Return window width, we use a function for testing"""
     return Window.width
 
+
 def findPids(view):
     """Find all PIDs in a view"""
     for i, gauge in enumerate(view["gauges"]):
@@ -58,7 +63,7 @@ def findPids(view):
         # with different units
         pidUnitHash = gauge["pid"] + gauge["unit"]
         # Do not create a new PID, as we want to share reference objects for same PIDs
-        if not pidUnitHash in pidsDict:
+        if pidUnitHash not in pidsDict:
             pidsDict[pidUnitHash] = PID(**gauge)
         view["gauges"][i]["pid"] = pidsDict[pidUnitHash]
 
@@ -66,7 +71,7 @@ def findPids(view):
         if not alert["pid"]:
             continue
         pidUnitHash = alert["pid"] + alert["unit"]
-        if not pidUnitHash in pidsDict:
+        if pidUnitHash not in pidsDict:
             pidsDict[pidUnitHash] = PID(**alert)
         view["alerts"][i]["pid"] = pidsDict[pidUnitHash]
 
@@ -106,6 +111,7 @@ def findPidsForView(views, Id, dynamicPids):
     return pidsList
 
 
+# flake8: noqa: C901
 def setup(self, layouts):
     """
     Build all widgets for DigitalDash.
@@ -129,7 +135,9 @@ def setup(self, layouts):
         view = layouts["views"][Id]
         # Skip disabled views
         if not view["enabled"]:
-            Logger.info("GUI: Skipping view %s as it is marked as disabled", Id)
+            Logger.info(
+                "GUI: Skipping view %s as it is marked as disabled", Id
+            )
             continue
 
         # FIXME
@@ -157,7 +165,9 @@ def setup(self, layouts):
                 # Keep track of our dynamic PIDs
                 dynamicPID = None
 
-                pidUnitHash = str(dynamicConfig["value"]) + str(dynamicConfig["unit"])
+                pidUnitHash = str(dynamicConfig["value"]) + str(
+                    dynamicConfig["unit"]
+                )
                 # Get our already created PID object
                 for myTuple in pidsDict.items():
                     (key, value) = myTuple
@@ -168,7 +178,9 @@ def setup(self, layouts):
                 if not dynamicPID:
                     dynamicPID = PID(**dynamicConfig)
                     if not dynamicPID.value:
-                        Logger.error("GUI: Bailing out: Couldn't set dynamic PID")
+                        Logger.error(
+                            "GUI: Bailing out: Couldn't set dynamic PID"
+                        )
                         return (0, "Couldn't set dynamic PID")
                     pidsDict[pidUnitHash] = dynamicPID
                 # We only will ever have one dynamic PID right?
@@ -222,7 +234,9 @@ def setup(self, layouts):
                 break
             if not gauge["pid"] or not isinstance(gauge["pid"], PID):
                 Logger.error(
-                    "GUI: Skipping gauge %s for view %s as PID not found", count, Id
+                    "GUI: Skipping gauge %s for view %s as PID not found",
+                    count,
+                    Id,
                 )
                 continue
 
@@ -297,7 +311,9 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         self.dynamic_callbacks = []
         self.callbacks = {}
 
-    (ret, msg) = setup(self, config.views(file=self.configFile, jsonData=self.jsonData))
+    (ret, msg) = setup(
+        self, config.views(file=self.configFile, jsonData=self.jsonData)
+    )
     if ret:
         self.views, self.containers, self.callbacks = ret
     else:
@@ -306,9 +322,13 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         return
 
     # Sort our dynamic and alerts callbacks by priority
-    self.dynamic_callbacks = sorted(self.callbacks["dynamic"], key=lambda x: x.priority)
+    self.dynamic_callbacks = sorted(
+        self.callbacks["dynamic"], key=lambda x: x.priority
+    )
     # Since we are building for the first time we can default to index 0
-    self.alert_callbacks = sorted(self.callbacks["0"], key=lambda x: x.priority)
+    self.alert_callbacks = sorted(
+        self.callbacks["0"], key=lambda x: x.priority
+    )
 
     (
         self.background,
@@ -329,7 +349,8 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
             # Loop in the restart process until we succeed
             while not ret and count < 3:
                 Logger.error(
-                    "Hardware: Running hardware restart, attempt :#%s", str(count)
+                    "Hardware: Running hardware restart, attempt :#%s",
+                    str(count),
                 )
                 (ret, msg) = dataSource.initialize_hardware()
 
@@ -343,12 +364,16 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         else:
             Logger.info(msg)
         self.data_source = dataSource
-        (ret, msg) = dataSource.updateRequirements(self, self.pid_byte_code, self.pids)
+        (ret, msg) = dataSource.updateRequirements(
+            self, self.pid_byte_code, self.pids
+        )
         if not ret:
             Logger.error(msg)
     elif dataSource:
         # If we have a datasource we should update PIDs
-        (ret, msg) = dataSource.updateRequirements(self, self.pid_byte_code, self.pids)
+        (ret, msg) = dataSource.updateRequirements(
+            self, self.pid_byte_code, self.pids
+        )
         if not ret:
             Logger.error(msg)
 
