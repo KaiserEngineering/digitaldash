@@ -22,11 +22,21 @@ python -m pip install pipenv
 make install
 ```
 
-### If doing development work install Python dev deps
+### If doing development work install Python dev deps and pre-commit
 
 ```sh
 pipenv install --dev
+
+# mac
+brew install pre-commit
+
+# pip
+pip install pre-commit
+
+# conda
+conda install -c conda-forge pre-commit
 ```
+
 
 ## Running the DD
 
