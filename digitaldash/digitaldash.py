@@ -41,7 +41,7 @@ class Background(AnchorLayout):
             BackgroundSource,
         )
         self.source = (
-            f"{WorkingPath + '/static/imgs/Background/'}{BackgroundSource}"
+            f"{WorkingPath + '/static/images/Background/'}{BackgroundSource}"
         )
 
 
