@@ -200,6 +200,8 @@ class Serial:
                         # Indicate an RX has ended
                         self.KE_RX_IN_PROGRESS = False
 
+                        packet = self.rx_buffer[0 : self.rx_byte_count]
+
                         # Increment the number of received RX messages
                         self.rx_count += 1
 
