@@ -75,7 +75,7 @@ PID_UNIT_LABEL = {
     "PID_UNITS_LPH": "lpm",
     "PID_UNITS_BAR": "bar",
     "PID_UNITS_G_FORCE": "G",
-    "PID_UNITS_NONE": "",
+    "PID_UNITS_NONE": ""
 }
 
 KE_PID = {
@@ -338,6 +338,14 @@ KE_PID = {
         "name": "LATERAL_ACCELERATION",
         "shortName": "Lat Accel",
         "shortDesc": "Lateral Acceleration",
+        "units": {
+            "PID_UNITS_G_FORCE": {"Min": -1.5, "Max": 1.5, "decimals": "2"},
+        },
+    },
+    "0xDE1602": {
+        "name": "LONGITUDINAL_ACCELERATION",
+        "shortName": "Long Accel",
+        "shortDesc": "Longitudinal Acceleration",
         "units": {
             "PID_UNITS_G_FORCE": {"Min": -1.5, "Max": 1.5, "decimals": "2"},
         },
