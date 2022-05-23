@@ -208,7 +208,7 @@ KE_PID = {
         "units": {
             "PID_UNITS_KPA": {"Min": -82, "Max": 170, "decimals": "0"},
             "PID_UNITS_PSI": {"Min": -12, "Max": 24, "decimals": "1"},
-            "PID_UNITS_BAR": {"Min": 0, "Max": 1.70, "decimals": "2"},
+            "PID_UNITS_BAR": {"Min": -1, "Max": 1.70, "decimals": "2"},
         },
     },
     "0x220301": {
