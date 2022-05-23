@@ -286,6 +286,14 @@ KE_PID = {
             "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
         },
     },
+    "0xC10302": {
+        "name": "CRUISE_CONTROL_OFF_BUTTON_TOGGLE",
+        "shortName": "OFF Button",
+        "shortDesc": "Cruise Control OFF button Toggle",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
     "0xDE0303": {
         "name": "CRUISE_CONTROL_SET_PLUS_BUTTON",
         "shortName": "SET+ Button",
