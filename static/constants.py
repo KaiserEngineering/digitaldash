@@ -334,6 +334,14 @@ KE_PID = {
             "PID_UNITS_NONE": {"Min": 0, "Max": 31, "decimals": "0"},
         },
     },
+    "0xDE1802": {
+        "name": "LATERAL_ACCELERATION",
+        "shortName": "Lat Accel",
+        "shortDesc": "Lateral Acceleration",
+        "units": {
+            "PID_UNITS_G_FORCE": {"Min": -1.5, "Max": 1.5, "decimals": "2"},
+        },
+    },
 }
 
 
