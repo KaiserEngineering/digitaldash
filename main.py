@@ -178,7 +178,14 @@ class GUI(App):
         We mainthread this function so that someone with crazy toggle fingers
         doesn't beat the race condition.
         """
-        return self.rust_check(float(data[callback.pid.value]), callback)
+        try:
+          return self.rust_check(float(data[callback.pid.value]), callback)
+        except KeyError as ex:
+          Logger.error(
+              "GUI: Firmware did not provide expected data value: %s",
+              ex,
+          )
+          return False
 
     @mainthread
     def change(self, app, my_callback) -> NoReturn:

@@ -4,7 +4,6 @@
 # pylint: disable=no-self-use
 # pylint: disable=invalid-name
 import csv
-from unittest.mock import patch
 
 class Test:
     """Test instance."""
