@@ -2,22 +2,24 @@
   import { page } from "$app/stores";
 
   $: {
-    if ($page.data.actions && $page.data.actions.length) {
-      $page.data.count = $page.data.count + 1;
+    if ($page.data.locals.actions && $page.data.locals.actions.length) {
+      $page.data.locals.count = $page.data.locals.count + 1;
     }
-    $page.data.actions.forEach((item, index) => {
+    $page.data.locals.actions.forEach((item, index) => {
       setTimeout(() => remove(item.id), 3000);
     });
   }
 
   function remove(id) {
-    $page.data.actions = $page.data.actions.filter((action) => action.id != id);
+    $page.data.locals.actions = $page.data.locals.actions.filter(
+      (action) => action.id != id
+    );
   }
 </script>
 
-{#if $page.data.actions && $page.data.actions.length}
+{#if $page.data.locals.actions && $page.data.locals.actions.length}
   <div class="notifications" id="notifications">
-    {#each $page.data.actions as action (action.id)}
+    {#each $page.data.locals.actions as action (action.id)}
       <div
         class="alert-dismissible fade show alert {action.theme}"
         role="alert"

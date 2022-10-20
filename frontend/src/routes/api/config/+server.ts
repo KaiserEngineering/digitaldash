@@ -32,20 +32,20 @@ export interface Gauge {
   pid: string;
 }
 
-export async function get() {
-  return ReadConfig();
+export async function GET() {
+  return new Response(ReadConfig());
 }
 
 // Use this to update config
-export async function post({ request }) {
+export async function POST({ request }) {
   let newConfig = await request.json()
 
   let config = UpdateConfig(newConfig);
-  return { body: { ret: 1, message: "Config updated", config: config } };
+  return new Response(JSON.stringify({ body: { ret: 1, message: "Config updated", config: config } }));
 }
 
 // Right now lets use this for toggling view
-export async function put({ request }) {
+export async function PUT({ request }) {
   let body = await request.json();
   const id = body.id;
 
@@ -62,21 +62,21 @@ export async function put({ request }) {
 
   if (count === 0) {
     config.views[id].enabled = config.views[id].enabled ? false : true;
-    return {
+    return new Response(JSON.stringify({
       body: {
         ret: 0,
         views: config,
         message: "Need at least one enabled view",
       },
-    };
+    }));
   } else {
     config = UpdateConfig(config);
-    return { body: { ret: 1, views: config, message: "Config updated" } };
+    return new Response(JSON.stringify({ body: { ret: 1, views: config, message: "Config updated" } }));
   }
 }
 
 // Reset our config
-export async function del() {
+export async function DEL() {
   let res = {
     message: "Failed to reset config",
     ret: 0,
@@ -88,5 +88,5 @@ export async function del() {
     res.ret = 1;
     res.config = ReadConfig();
   }
-  return { body: res };
+  return new Response(JSON.stringify({ body: res }));
 }

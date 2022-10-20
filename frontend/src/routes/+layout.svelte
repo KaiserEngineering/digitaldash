@@ -1,23 +1,10 @@
-<script context="module">
-  export async function load({ url, session }) {
-    const { user } = session;
-
-    if (!user && url.pathname != "/login") {
-      return {
-        redirect: "/login",
-        status: 301,
-      };
-    }
-    return { props: { segment: url.pathname } };
-  }
-</script>
-
-<script>
+<script lang="ts">
   import "../app.css";
-  import Nav from "$components/Nav.svelte";
-  // import Notifications from "$components/Notifications.svelte";
 
-  export let segment = undefined;
+  import Nav from "$components/Nav.svelte";
+  import Notifications from "$components/Notifications.svelte";
+
+  export let segment: string = "";
   export let title = "KE Digital Dash";
 </script>
 
@@ -29,8 +16,8 @@
   <svelte:component this={Nav} {segment} />
 {/if}
 
-<!-- <div class="col-sm-12 col-md-6">
+<div class="col-sm-12 col-md-6">
   <svelte:component this={Notifications} />
-</div> -->
+</div>
 
 <slot />

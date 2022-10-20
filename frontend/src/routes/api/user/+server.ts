@@ -15,12 +15,12 @@ export function checkToken(sid: String) {
   return undefined;
 }
 
-export function get() {
-  User();
+export function GET() {
+  return new Response(User());
 }
 
 // Do our login
-export async function post({request, url, params, locals}) {
+export async function POST({ request }) {
   let attempt = await request.json()
 
   let user = User();
@@ -52,17 +52,17 @@ export async function post({request, url, params, locals}) {
     UpdateToken(token);
   }
 
-  return {
+  return new Response(JSON.stringify({
     headers: headers,
     body: res,
-  };
+  }));
 }
 
 // Update our auth creds
-export async function put({request}) {
+export async function PUT({ request }) {
   let args = await request.json()
 
   UpdateUserCredentials(args.username, args.password);
 
-  return { body: { ret: 1, message: "Updated user authentification" } };
+  return new Response(JSON.stringify({ body: { ret: 1, message: "Updated user authentification" } }));
 }

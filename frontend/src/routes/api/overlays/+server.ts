@@ -1,5 +1,5 @@
 import { ReadOverlayFile } from "$lib/Overlays";
 
-export async function get() {
+export async function GET() {
   return ReadOverlayFile();
 }

@@ -1,5 +1,5 @@
 import { ReadLog } from "$lib/Debug";
 
-export async function get() {
+export async function GET() {
   return ReadLog();
 }

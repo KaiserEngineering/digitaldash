@@ -1,19 +1,10 @@
-<script>
+<script lang="ts">
   import { page } from "$app/stores";
 
-  /**
-   * @type {string}
-   */
-  let username;
-  /**
-   * @type {string}
-   */
-  let password;
+  let username: string;
+  let password: string;
 
-  /**
-   * @param {any} _event
-   */
-  function handleSubmit(_event) {
+  function handleSubmit(_event: any) {
     fetch("/api/user", {
       method: "PUT",
       body: JSON.stringify({

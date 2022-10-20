@@ -1,22 +1,17 @@
-<script context="module">
-  export async function load({ url, params }) {
-    return { props: { id: params.slug } };
-  }
-</script>
-
-<script>
+<script lang="ts">
   import { page } from "$app/stores";
   import Slider from "$components/Slider.svelte";
+  import type { PageData } from "./$types";
 
-  export let id;
+  export let data: PageData;
 
-  let view = $page.data.configuration.views[id];
+  let view = $page.data.configuration.views[data.id];
 
   const KE_PID = $page.data.constants.KE_PID;
   const UNIT_LABEL = $page.data.constants.PID_UNIT_LABEL;
   const pids = Object.keys(KE_PID);
   const themes = $page.data.constants.themes || [];
-  let theme;
+  let theme: string = "";
   if (view && view.gauges.length > 0) {
     theme = view.gauges[0].theme;
   }
@@ -50,10 +45,16 @@
   }
   view = normalizeGauges();
 
-  /**
-   * @param {{ target: { value: any; name: string; }; srcElement: { parentElement: { nextSibling: { nextSibling: { querySelectorAll: (arg0: string) => any[]; }; }; }; }; }} node
-   */
-  function getUnits(node) {
+  function getUnits(node: {
+    target: { value: any; name: string };
+    srcElement: {
+      parentElement: {
+        nextSibling: {
+          nextSibling: { querySelectorAll: (arg0: string) => any[] };
+        };
+      };
+    };
+  }) {
     const pid = node.target.value;
     let pidRegex = /(gauge|dynamic|alert)-(\d+)/;
     let matches = pidRegex.exec(node.target.name);
@@ -107,8 +108,6 @@
       } else if (type == "dynamic") {
         currentValue = KE_PID[pid].units[view.dynamic.unit];
         unit = view.dynamic.unit;
-        console.log(currentValue);
-        console.log(unit);
       }
 
       if (currentValue) {
@@ -121,7 +120,7 @@
     }
   }
 
-  function pidChange(node) {
+  function pidChange(node: HTMLSelectElement) {
     node.addEventListener("change", getUnits);
     // Set our initial values
     var event = new Event("change");
@@ -136,16 +135,16 @@
 
   function handleSubmit() {
     let configuration = $page.data.configuration;
-    configuration.views[id] = view;
+    configuration.views[data.id] = view;
 
     if (
-      configuration.views[id].dynamic &&
-      !configuration.views[id].dynamic.pid
+      configuration.views[data.id].dynamic &&
+      !configuration.views[data.id].dynamic.pid
     ) {
-      configuration.views[id].dynamic = {};
+      configuration.views[data.id].dynamic = {};
     }
 
-    view.gauges.forEach((gauge, i) => {
+    view.gauges.forEach((gauge: { pid: any }, i: string | number) => {
       if (gauge.pid) {
         view.gauges[i].theme = theme;
       }
@@ -159,18 +158,18 @@
       .then((d) => {
         $page.data.configuration = d.config;
         view = {};
-        view = d.config.views[id];
+        view = d.config.views[data.id];
         theme = view.gauges[0].theme;
 
         view = normalizeGauges();
 
-        $page.data.actions = [
+        $page.data.locals.actions = [
           {
             id: $page.data.count,
             msg: d.message,
             theme: d.ret ? "alert-info" : "alert-warning",
           },
-          ...$page.data.actions,
+          ...$page.data.locals.actions,
         ];
       });
 
@@ -195,10 +194,7 @@
     ];
   }
 
-  /**
-   * @param {number} index
-   */
-  function removeAlert(index) {
+  function removeAlert(index: number) {
     let tempArr = view.alerts;
     tempArr.splice(index, 1);
 
@@ -214,9 +210,9 @@
   {#if view}
     <div id="edit-container" class="container">
       <div class="col-sm-12 order-sm-1">
-        <h4 class="mb-3">Editing view #{id}</h4>
+        <h4 class="mb-3">Editing view #{data.id}</h4>
         <form on:submit|preventDefault={handleSubmit} class="needs-validation">
-          <input type="hidden" value="<%$id%>" name="id" />
+          <input type="hidden" value="<%$data.id%>" name="id" />
 
           <h4>Basics</h4>
           <hr />
@@ -562,20 +558,6 @@
 </div>
 
 <style>
-  .basicsContainer {
-    /* padding: 5px;
-    border:turquoise;
-    border-width: 2px;
-    border-style: solid; */
-  }
-
-  .alertsContainer {
-    /* padding: 5px;
-    border:rgb(101, 145, 140);
-    border-width: 2px;
-    border-style: solid; */
-  }
-
   .alertContainer {
     padding: 5px;
     margin: 5px;
@@ -583,13 +565,6 @@
     border: grey;
     border-width: 1px;
     border-style: solid;
-  }
-
-  .dynamicContainer {
-    /* padding: 5px;
-    border:rgb(104, 232, 104);
-    border-width: 2px;
-    border-style: solid; */
   }
 
   .delete {

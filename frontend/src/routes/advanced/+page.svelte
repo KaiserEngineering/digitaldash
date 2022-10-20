@@ -13,13 +13,13 @@
         $page.data.configuration = d.config;
         configString = JSON.stringify(d.config, null, 2);
 
-        $page.data.actions = [
+        $page.data.locals.actions = [
           {
             id: $page.data.count,
             msg: d.message,
             theme: d.ret ? "alert-info" : "alert-danger",
           },
-          ...$page.data.actions,
+          ...$page.data.locals.actions,
         ];
       });
   }
@@ -43,13 +43,13 @@
         $page.data.configuration = d.config;
         configString = JSON.stringify(d.config, null, 2);
 
-        $page.data.actions = [
+        $page.data.locals.actions = [
           {
             id: $page.data.count,
             msg: d.message,
             theme: d.ret ? "alert-info" : "alert-danger",
           },
-          ...$page.data.actions,
+          ...$page.data.locals.actions,
         ];
       });
   }

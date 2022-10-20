@@ -1,15 +1,9 @@
-<script>
+<script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
 
-  /**
-   * @type {string}
-   */
-  let username;
-  /**
-   * @type {string}
-   */
-  let password;
+  let username: string;
+  let password: string;
 
   function handleSubmit() {
     fetch("/api/user", {
@@ -29,13 +23,13 @@
         }
         // Only add notification for failed login
         else {
-          $page.data.actions = [
+          $page.data.locals.actions = [
             {
               id: $page.data.count,
               msg: d.message,
               theme: "alert-danger",
             },
-            ...$page.data.actions,
+            ...$page.data.locals.actions,
           ];
         }
       });

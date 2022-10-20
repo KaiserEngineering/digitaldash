@@ -12,7 +12,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   const user = await checkToken(cookies.ke_web_app);
 
   event.locals.user = user;
-  event.locals.username = user.username;
+  event.locals.username = user ? user.username : "";
 
   event.locals.configuration = ReadFile("/etc/config.json", true);
   event.locals.constants = await GetConstants();
