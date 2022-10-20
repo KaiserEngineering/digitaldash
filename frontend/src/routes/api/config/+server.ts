@@ -1,3 +1,4 @@
+import { json } from '@sveltejs/kit';
 import { ReadConfig, UpdateConfig, ResetConfig } from "$lib/Config";
 
 export interface Config {
@@ -41,7 +42,7 @@ export async function POST({ request }) {
   let newConfig = await request.json()
 
   let config = UpdateConfig(newConfig);
-  return new Response(JSON.stringify({ body: { ret: 1, message: "Config updated", config: config } }));
+  return json({ body: { ret: 1, message: "Config updated", config: config } });
 }
 
 // Right now lets use this for toggling view
@@ -62,16 +63,14 @@ export async function PUT({ request }) {
 
   if (count === 0) {
     config.views[id].enabled = config.views[id].enabled ? false : true;
-    return new Response(JSON.stringify({
-      body: {
-        ret: 0,
-        views: config,
-        message: "Need at least one enabled view",
-      },
-    }));
+    return json({
+      ret: 0,
+      views: config,
+      message: "Need at least one enabled view",
+    });
   } else {
     config = UpdateConfig(config);
-    return new Response(JSON.stringify({ body: { ret: 1, views: config, message: "Config updated" } }));
+    return json({ ret: 1, views: config, message: "Config updated" });
   }
 }
 
@@ -88,5 +87,5 @@ export async function DEL() {
     res.ret = 1;
     res.config = ReadConfig();
   }
-  return new Response(JSON.stringify({ body: res }));
+  return json(res);
 }

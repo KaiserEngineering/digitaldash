@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { json } from '@sveltejs/kit';
 import {
   HashPassword,
   UpdateToken,
@@ -12,11 +13,11 @@ export function checkToken(sid: String) {
   if (user) {
     return user.token == sid ? user : undefined;
   }
-  return undefined;
+  return json({});
 }
 
 export function GET() {
-  return new Response(User());
+  return json(User());
 }
 
 // Do our login
@@ -52,10 +53,10 @@ export async function POST({ request }) {
     UpdateToken(token);
   }
 
-  return new Response(JSON.stringify({
+  return json({
     headers: headers,
     body: res,
-  }));
+  });
 }
 
 // Update our auth creds
@@ -64,5 +65,5 @@ export async function PUT({ request }) {
 
   UpdateUserCredentials(args.username, args.password);
 
-  return new Response(JSON.stringify({ body: { ret: 1, message: "Updated user authentification" } }));
+  return json({ body: { ret: 1, message: "Updated user authentification" } });
 }

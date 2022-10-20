@@ -26,7 +26,7 @@
   }
 </script>
 
-<form on:submit|preventDefault={handleSubmit}>
+<form method="POST">
   <div class="p-4 col-md-12 order-md-1">
     <div class="row">
       <div class="col-md-6 mb-3">

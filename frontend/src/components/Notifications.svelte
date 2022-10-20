@@ -1,25 +1,26 @@
 <script>
-  import { page } from "$app/stores";
+  import { keys } from "$lib/keys";
+  import { getContext } from "svelte";
+
+  const { session } = getContext(keys.session);
 
   $: {
-    if ($page.data.locals.actions && $page.data.locals.actions.length) {
-      $page.data.locals.count = $page.data.locals.count + 1;
+    if ($session.actions && $session.actions.length) {
+      $session.count = $session.count + 1;
     }
-    $page.data.locals.actions.forEach((item, index) => {
+    $session.actions.forEach((item, index) => {
       setTimeout(() => remove(item.id), 3000);
     });
   }
 
   function remove(id) {
-    $page.data.locals.actions = $page.data.locals.actions.filter(
-      (action) => action.id != id
-    );
+    $session.actions = $session.actions.filter((action) => action.id != id);
   }
 </script>
 
-{#if $page.data.locals.actions && $page.data.locals.actions.length}
+{#if $session.actions && $session.actions.length}
   <div class="notifications" id="notifications">
-    {#each $page.data.locals.actions as action (action.id)}
+    {#each $session.actions as action (action.id)}
       <div
         class="alert-dismissible fade show alert {action.theme}"
         role="alert"

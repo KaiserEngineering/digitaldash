@@ -1,5 +1,10 @@
-<script>
+<script lang="ts">
   import { page } from "$app/stores";
+  import { keys } from "$lib/keys";
+  import { getContext } from "svelte";
+
+  const { session } = getContext(keys.session);
+
   import Slider from "$components/Slider.svelte";
 
   let KE_PIDS = $page.data.locals.constants.KE_PID;
@@ -31,25 +36,25 @@
         .then((d) => d.json())
         .then((d) => {
           views = d.views.views;
-          $page.data.locals.configuration.views = d.views.views;
-          $page.data.locals.actions = [
+          // $page.data.locals.configuration.views = d.views.views;
+          $session.actions = [
             {
-              id: $page.data.count,
+              id: $session.count,
               msg: d.message,
               theme: d.ret ? "alert-info" : "alert-warning",
             },
-            ...$page.data.locals.actions,
+            ...$session.actions,
           ];
         });
       return false;
     } else {
-      $page.data.locals.actions = [
+      session.actions = [
         {
-          id: $page.data.count,
+          id: $session.count,
           msg: "Set-up this view to enable it!",
           theme: "alert-info",
         },
-        ...$page.data.local.actions,
+        ...$session.actions,
       ];
       return true;
     }

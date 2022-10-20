@@ -1,43 +1,15 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import { page } from "$app/stores";
+  import type { ActionData } from "./$types";
 
-  let username: string;
-  let password: string;
-
-  function handleSubmit() {
-    fetch("/api/user", {
-      method: "POST",
-      mode: "cors",
-      credentials: "same-origin",
-      body: JSON.stringify({
-        Username: username,
-        Password: password,
-      }),
-    })
-      .then((d) => d.json())
-      .then((d) => {
-        if (d.ret) {
-          $page.data.user = d.user;
-          goto("/");
-        }
-        // Only add notification for failed login
-        else {
-          $page.data.locals.actions = [
-            {
-              id: $page.data.count,
-              msg: d.message,
-              theme: "alert-danger",
-            },
-            ...$page.data.locals.actions,
-          ];
-        }
-      });
-  }
+  export let form: ActionData;
 </script>
 
+{#if form?.failed}
+  <p>Login failed</p>
+{/if}
+
 <div class="col-sm-12 col-md-6 justify-content-center d-flex">
-  <form on:submit|preventDefault={handleSubmit} class="form-signin">
+  <form method="POST" class="form-signin">
     <div class="text-center container">
       <img src="images/logo.png" alt="" width="72" height="72" />
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
@@ -45,7 +17,6 @@
 
     <div class="form-label-group">
       <input
-        bind:value={username}
         type="text"
         name="username"
         id="Username"
@@ -58,7 +29,6 @@
 
     <div class="form-label-group">
       <input
-        bind:value={password}
         type="password"
         name="password"
         id="password"

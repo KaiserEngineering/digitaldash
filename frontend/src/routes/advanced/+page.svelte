@@ -1,7 +1,10 @@
 <script>
-  import { page } from "$app/stores";
+  import { keys } from "$lib/keys";
+  import { getContext } from "svelte";
 
-  let configString = JSON.stringify($page.data.configuration, null, 2);
+  const { session } = getContext(keys.session);
+
+  let configString = JSON.stringify($session.configuration, null, 2);
 
   function submit() {
     fetch("/api/config", {
@@ -10,16 +13,16 @@
     })
       .then((d) => d.json())
       .then((d) => {
-        $page.data.configuration = d.config;
+        $session.configuration = d.config;
         configString = JSON.stringify(d.config, null, 2);
 
-        $page.data.locals.actions = [
+        $session.locals.actions = [
           {
-            id: $page.data.count,
+            id: $session.count,
             msg: d.message,
             theme: d.ret ? "alert-info" : "alert-danger",
           },
-          ...$page.data.locals.actions,
+          ...$session.locals.actions,
         ];
       });
   }
@@ -40,16 +43,16 @@
     })
       .then((d) => d.json())
       .then((d) => {
-        $page.data.configuration = d.config;
+        $session.configuration = d.config;
         configString = JSON.stringify(d.config, null, 2);
 
-        $page.data.locals.actions = [
+        $session.locals.actions = [
           {
-            id: $page.data.count,
+            id: $session.count,
             msg: d.message,
             theme: d.ret ? "alert-info" : "alert-danger",
           },
-          ...$page.data.locals.actions,
+          ...$session.locals.actions,
         ];
       });
   }

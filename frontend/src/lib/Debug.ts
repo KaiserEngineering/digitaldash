@@ -1,9 +1,10 @@
+import { json } from "@sveltejs/kit";
 import fs from "fs";
 
-const gui_path: String|Boolean = import.meta.env.VITE_KEGUIHome;
+const gui_path: String | Boolean = import.meta.env.VITE_KEGUIHome;
 
 export function ReadLog() {
-  const logNames = fs.readdirSync(gui_path + "/etc/kivy/logs");
+  const logNames = fs.readdirSync(gui_path + "etc/kivy/logs");
 
   let logHash = {};
   logNames.forEach((log) => {
@@ -12,7 +13,5 @@ export function ReadLog() {
       .toString();
   });
 
-  return {
-    body: logHash,
-  };
+  return json(logHash);
 }

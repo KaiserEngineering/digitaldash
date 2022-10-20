@@ -2,15 +2,21 @@
   import { page } from "$app/stores";
   import Slider from "$components/Slider.svelte";
   import type { PageData } from "./$types";
+  import { keys } from "$lib/keys";
+  import { getContext } from "svelte";
+  import type { ActionData } from "./$types";
+
+  const { session } = getContext(keys.session);
 
   export let data: PageData;
+  export let form: ActionData;
 
-  let view = $page.data.configuration.views[data.id];
+  let view = $session.configuration.views[data.id];
 
-  const KE_PID = $page.data.constants.KE_PID;
-  const UNIT_LABEL = $page.data.constants.PID_UNIT_LABEL;
+  const KE_PID = $page.data.locals.constants.KE_PID;
+  const UNIT_LABEL = $page.data.locals.constants.PID_UNIT_LABEL;
   const pids = Object.keys(KE_PID);
-  const themes = $page.data.constants.themes || [];
+  const themes = $page.data.locals.constants.themes || [];
   let theme: string = "";
   if (view && view.gauges.length > 0) {
     theme = view.gauges[0].theme;
@@ -207,11 +213,18 @@
 </script>
 
 <div class="col-sm-12 col-sm-8 pb-4">
+  {#if form?.failed}
+    <p>Update failed</p>
+  {/if}
+  {#if form?.success}
+    <p>Config upated</p>
+  {/if}
+
   {#if view}
     <div id="edit-container" class="container">
       <div class="col-sm-12 order-sm-1">
         <h4 class="mb-3">Editing view #{data.id}</h4>
-        <form on:submit|preventDefault={handleSubmit} class="needs-validation">
+        <form method="POST" class="needs-validation">
           <input type="hidden" value="<%$data.id%>" name="id" />
 
           <h4>Basics</h4>
