@@ -1,13 +1,9 @@
 """Serial handler class."""
 # pylint: skip-file
 import serial
-import time
 from kivy.logger import Logger, LOG_LEVELS
-import subprocess  # nosec
 from static.constants import KE_CP_OP_CODES
 from static.constants import PID_UNITS
-import os
-import fnmatch
 from gpiozero import CPUTemperature
 
 KE_SOL = 0xFF
@@ -200,7 +196,7 @@ class Serial:
                         # Indicate an RX has ended
                         self.KE_RX_IN_PROGRESS = False
 
-                        packet = self.rx_buffer[0 : self.rx_byte_count]
+                        # packet = self.rx_buffer[0 : self.rx_byte_count]
 
                         # Increment the number of received RX messages
                         self.rx_count += 1

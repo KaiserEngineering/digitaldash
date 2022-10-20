@@ -290,7 +290,7 @@ def setup(self, layouts):
     return ([views, containers, callbacks], "Successful setup")
 
 
-def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
+def buildFromConfig(self, dataSource=None):
     """Build all our gauges and widgets from the config file provided to self"""
     self.success = 0
     self.status = ""
@@ -319,7 +319,6 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
     else:
         self.success = 0
         self.status = msg
-        return
 
     # Sort our dynamic and alerts callbacks by priority
     self.dynamic_callbacks = sorted(

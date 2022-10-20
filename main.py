@@ -6,12 +6,15 @@ import sys
 from digitaldash.test import Test
 import os
 import pathlib
+from typing import List, Optional, Union
 from functools import lru_cache
+from digitaldash.keProtocol import Serial
 
 WORKING_PATH = str(pathlib.Path(__file__).parent.absolute())
 os.environ["KIVY_HOME"] = WORKING_PATH + "/etc/kivy/"
 
-(dataSource, TESTING, ConfigFile) = (False, False, None)
+(TESTING, ConfigFile) = (False, None)
+dataSource: Optional[Test | Serial] = None
 
 opts, args = getopt.getopt(
     sys.argv[1:], "tdf:c:", ["test", "development", "file=", "config="]
@@ -23,7 +26,7 @@ for o, arg in opts:
     if o in ("-d", "--development"):
         sys.argv = ["main.py -m console"]
     elif o in ("-f", "--file"):
-        dataSource = Test(file=arg)
+        dataSource = Test(file="tests/data/rpm_increasing.csv")
     elif o in ("-t", "--test"):
         TESTING = True
     elif o in ("-c", "--config"):
@@ -35,9 +38,8 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.anchorlayout import AnchorLayout
 from watchdog.observers import Observer
-from kivy.uix.label import Label
 from watchdog.events import PatternMatchingEventHandler
-from typing import NoReturn, List, TypeVar, Union
+from kivy.uix.label import Label
 from kivy.clock import mainthread, Clock
 
 # Rust import
@@ -50,10 +52,8 @@ from etc import config
 
 config.setWorkingPath(WORKING_PATH)
 
-if not dataSource:
+if dataSource is not None:
     try:
-        from digitaldash.keProtocol import Serial
-
         dataSource = Serial()
         Logger.info("Using serial data source" + str(dataSource))
     except Exception as e:
@@ -161,16 +161,17 @@ class GUI(App):
             # Check if any dynamic changes need to be made
             if libdigitaldash.check(value, callback.value, callback.op):
                 return callback
-        except Exception:
+        except Exception as ex:
             # Check if this is the error config (i.e. PID = "n/a")
             # TODO: Do we need this any longer?
             if callback.pid.value == "n/a":
-                Logger.error("GUI: Config file is invalid")
+                Logger.error("GUI: Config file is invalid: %s", ex)
                 return callback
 
             Logger.error(
-                "GUI: Firmware did not provide data value for key: %s",
+                "GUI: Firmware did not provide data value for key: %s: %s",
                 callback.pid.value,
+                ex,
             )
 
     def check_callback(self, callback: Union[Alert, Dynamic], data: List):
@@ -179,16 +180,16 @@ class GUI(App):
         doesn't beat the race condition.
         """
         try:
-          return self.rust_check(float(data[callback.pid.value]), callback)
+            return self.rust_check(float(data[callback.pid.value]), callback)
         except KeyError as ex:
-          Logger.error(
-              "GUI: Firmware did not provide expected data value: %s",
-              ex,
-          )
-          return False
+            Logger.error(
+                "GUI: Firmware did not provide expected data value: %s",
+                ex,
+            )
+            return False
 
     @mainthread
-    def change(self, app, my_callback) -> NoReturn:
+    def change(self, app, my_callback):
         """
         This method only handles dynamic changing, the alert changing is handled in
         the main application loop.
@@ -196,7 +197,7 @@ class GUI(App):
         self.current = my_callback.viewId
         my_callback.change(self)
 
-    def update_values(self, data: List[float]) -> NoReturn:
+    def update_values(self, data: List[float]):
         for widget in self.objectsToUpdate:
             for obj in widget:
                 if obj.pid:
@@ -218,41 +219,42 @@ class GUI(App):
         if self.first_iteration:
             self.first_iteration = False
 
-        (my_callback, data) = (
-            None,
-            dataSource.service(app=self, pids=self.pids),
-        )
+        if dataSource is not None:
+            (my_callback, data) = (
+                None,
+                dataSource.service(app=self, pids=self.pids),
+            )
 
-        # Buffer our alerts and dynamic updates
-        if self.count > 8:
-            dynamic_change = False
-            # Check dynamic gauges before any alerts in case we make a change
-            for dynamic in self.dynamic_callbacks:
-                if self.current == dynamic.viewId:
-                    pass
-                else:
-                    my_callback = self.check_callback(dynamic, data)
-
-                if my_callback:
-                    self.count = 0
-                    self.change(self, my_callback)
-                    dynamic_change = True
-                    break
-
-            # Check our alerts if no dynamic changes have occured
-            if not dynamic_change:
-                for callback in self.alert_callbacks:
-                    my_callback = self.check_callback(callback, data)
+            # Buffer our alerts and dynamic updates
+            if self.count > 8:
+                dynamic_change = False
+                # Check dynamic gauges before any alerts in case we make a change
+                for dynamic in self.dynamic_callbacks:
+                    if self.current == dynamic.viewId:
+                        pass
+                    else:
+                        my_callback = self.check_callback(dynamic, data)
 
                     if my_callback:
                         self.count = 0
-                        if callback.parent is None:
-                            self.alerts.add_widget(my_callback)
-                    elif callback.parent:
-                        self.alerts.remove_widget(callback)
-        else:
-            self.count = self.count + 1
-        self.update_values(data)
+                        self.change(self, my_callback)
+                        dynamic_change = True
+                        break
+
+                # Check our alerts if no dynamic changes have occured
+                if not dynamic_change:
+                    for callback in self.alert_callbacks:
+                        my_callback = self.check_callback(callback, data)
+
+                        if my_callback:
+                            self.count = 0
+                            if callback.parent is None:
+                                self.alerts.add_widget(my_callback)
+                        elif callback.parent:
+                            self.alerts.remove_widget(callback)
+            else:
+                self.count = self.count + 1
+            self.update_values(data)
 
 
 if __name__ == "__main__":
