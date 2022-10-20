@@ -8,14 +8,8 @@ const guiHome: string | boolean = import.meta.env.VITE_KEGUIHome;
 // Cache all our goodies
 let cache: any = {};
 
-export function ReadFile(File: string, Force: boolean = false) {
-  if (cache[File] && !Force) {
-    return cache[File];
-  }
-  else {
-    cache[File] = JSON.parse(fs.readFileSync(`${guiHome}/${File}`).toString());
-    return cache[File];
-  }
+export function ReadFile(File: string) {
+  return JSON.parse(fs.readFileSync(`${guiHome}/${File}`).toString());
 }
 
 export function WriteFile(File: string, Value: any) {

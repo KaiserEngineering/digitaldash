@@ -9,7 +9,7 @@
   import Slider from "$components/Slider.svelte";
 
   let KE_PIDS = $page.data.locals.constants.KE_PID;
-  $: views = $page.data.locals.configuration.views;
+  $: views = $session.configuration.views;
 
   $: {
     if (views && Object.keys(views).length < 2) {
@@ -40,16 +40,29 @@
   {#each Object.keys(views) as id}
     <form
       method="POST"
-      formaction="?/toggle_enabled"
+      action="?/toggle_enabled"
       class="container col-sm-10 col-md-6 pr-4 pl-4"
     >
-      <div class="card">
+      <input name="id" value={id} type="hidden" />
+      <input
+        name="config"
+        value={JSON.stringify($session.configuration)}
+        type="hidden"
+      />
+
+      <div class="card" formaction="?/toggle_enabled">
         <div class="row m-2">
           <div class="text-left col-6">
             <h5>{views[id].name}</h5>
           </div>
           <div class="text-right col-6">
-            <svelte:component this={Slider} checked={views[id].enabled} />
+            <button class="" type="submit">
+              <svelte:component
+                this={Slider}
+                checked={$session.configuration.views[id].enabled}
+                formaction="?/toggle_enabled"
+              />
+            </button>
           </div>
         </div>
 
@@ -131,5 +144,14 @@
     border-radius: 20px;
     padding: 0.5em;
     margin-top: 1em;
+  }
+  button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
   }
 </style>

@@ -1,9 +1,8 @@
 import { ReadFile, WriteFile, ResetWithGit } from "$lib/server/Util";
-import { forEachChild } from "typescript";
 import type { Config } from "../../app";
 
 export function ReadConfig() {
-  return ReadFile("etc/config.json", true);
+  return ReadFile("etc/config.json");
 }
 
 export function UpdateConfig(Config: Config) {

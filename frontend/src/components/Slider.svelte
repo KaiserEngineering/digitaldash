@@ -3,7 +3,7 @@
 </script>
 
 <label class="switch">
-  <input bind:checked type="checkbox" />
+  <input {checked} type="checkbox" />
   <span class="slider round" />
 </label>
 

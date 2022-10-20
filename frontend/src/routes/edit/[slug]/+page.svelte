@@ -159,10 +159,6 @@
     view.alerts = tempArr;
   }
 
-  function toggleDynamic() {
-    view.dynamic.enabled = view.dynamic.enabled ? false : true;
-  }
-
   export let form: ActionData;
   if (form) {
     form.id = $session.count;
@@ -239,7 +235,7 @@
                         <select
                           use:pidChange
                           name="gauge-pid-{i}"
-                          bind:value={view.gauges[i].pid}
+                          value={view.gauges[i].pid}
                           class="mb-2 form-control"
                           id="pid-{i}"
                         >
@@ -258,10 +254,7 @@
                       <div class="col-12">
                         <select
                           name="gauge-unit-{i}"
-                          on:blur={(e) =>
-                            view.gauges[i]
-                              ? (view.gauges[i].unit = e.target.value)
-                              : (view.gauges[i] = { unit: e.target.value })}
+                          value={view.gauges[i].unit}
                           class="form-control"
                         />
                       </div>
@@ -281,7 +274,7 @@
                 title="Show default min/max values or show dynamic values based on observed min max"
                 class="form-check-input"
                 type="checkbox"
-                bind:checked={view.dynamicMinMax}
+                checked={view.dynamicMinMax}
               />
               <label class="form-check-label" for="dynamicMinMax">
                 Observed Min/Max
@@ -371,7 +364,6 @@
                     <label class="label" for="alert-unit-{i}">Unit</label>
                     <select
                       name="alert-unit-{i}"
-                      on:blur={(e) => (alert.unit = e.target.value)}
                       class="form-control value"
                       required><option>-</option></select
                     >
@@ -420,10 +412,18 @@
           <div class="dynamicContainer">
             <div class="row">
               <div class="col-sm-3 col-12">
-                <svelte:component
-                  this={Slider}
-                  checked={view.dynamic.enabled}
-                />
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    name="dynamic-enabled"
+                    id="dynamic-enabled"
+                  />
+                  <label class="form-check-label" for="flexCheckIndeterminate">
+                    Indeterminate checkbox
+                  </label>
+                </div>
               </div>
             </div>
             <div class="row">
@@ -432,7 +432,7 @@
 
                 <select
                   use:pidChange
-                  bind:value={view.dynamic.pid}
+                  value={view.dynamic.pid}
                   disabled={!view.dynamic.enabled}
                   name="dynamic-pid"
                   class="form-control"
@@ -454,7 +454,6 @@
                 <label class="label" for="dynamicUnit">Unit</label>
                 <select
                   name="dynamic-unit"
-                  on:blur={(e) => (view.dynamic.unit = e.target.value)}
                   disabled={!view.dynamic.enabled}
                   class="form-control value"
                   required><option>-</option></select

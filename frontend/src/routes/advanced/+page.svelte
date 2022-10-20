@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { ActionData } from "./$types";
-  import { enhance } from "$app/forms";
 
   import { keys } from "$lib/Keys";
   import { getContext } from "svelte";
@@ -26,7 +25,7 @@
   }
 </script>
 
-<form method="POST" class="col-12 advanced" action="?/updateConfig" use:enhance>
+<form method="POST" class="col-12 advanced" action="?/updateConfig">
   {#if invalid}
     <div class="alert alert-danger">Invalid JSON</div>
   {/if}
