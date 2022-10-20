@@ -1,31 +1,13 @@
-<script>
-  import { keys } from "$lib/keys";
+<script lang="ts">
+  import type { ActionData } from "./$types";
+  import { enhance } from "$app/forms";
+
+  import { keys } from "$lib/Keys";
   import { getContext } from "svelte";
 
   const { session } = getContext(keys.session);
 
   let configString = JSON.stringify($session.configuration, null, 2);
-
-  function submit() {
-    fetch("/api/config", {
-      method: "POST",
-      body: configString,
-    })
-      .then((d) => d.json())
-      .then((d) => {
-        $session.configuration = d.config;
-        configString = JSON.stringify(d.config, null, 2);
-
-        $session.locals.actions = [
-          {
-            id: $session.count,
-            msg: d.message,
-            theme: d.ret ? "alert-info" : "alert-danger",
-          },
-          ...$session.locals.actions,
-        ];
-      });
-  }
 
   let invalid = false;
   $: {
@@ -37,44 +19,28 @@
     }
   }
 
-  function reset() {
-    fetch("/api/config", {
-      method: "DELETE",
-    })
-      .then((d) => d.json())
-      .then((d) => {
-        $session.configuration = d.config;
-        configString = JSON.stringify(d.config, null, 2);
-
-        $session.locals.actions = [
-          {
-            id: $session.count,
-            msg: d.message,
-            theme: d.ret ? "alert-info" : "alert-danger",
-          },
-          ...$session.locals.actions,
-        ];
-      });
+  export let form: ActionData;
+  if (form) {
+    form.id = $session.count;
+    $session.actions.push(form);
   }
 </script>
 
-<div class="col-12 pr-4 pl-4 advanced">
+<form method="POST" class="col-12 advanced" action="?/updateConfig" use:enhance>
   {#if invalid}
     <div class="alert alert-danger">Invalid JSON</div>
   {/if}
 
-  <textarea class="form-control" bind:value={configString} />
-  <button
-    disabled={invalid}
-    class="mt-2 form-control"
-    type="submit"
-    on:click={submit}>Save</button
+  <textarea name="config" class="form-control" bind:value={configString} />
+
+  <button disabled={invalid} class="mt-2 form-control" type="submit"
+    >Save</button
   >
 
-  <button class="mt-2 form-control" type="submit" on:click={reset}
+  <button class="mt-2 form-control" type="submit" formaction="?/reset"
     >Reset To Default</button
   >
-</div>
+</form>
 
 <style>
   textarea {

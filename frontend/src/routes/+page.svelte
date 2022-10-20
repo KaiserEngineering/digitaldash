@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { keys } from "$lib/keys";
+  import type { ActionData } from "./$types";
+  import { keys } from "$lib/Keys";
   import { getContext } from "svelte";
 
   const { session } = getContext(keys.session);
@@ -24,40 +25,10 @@
     }
   }
 
-  function toggleEnabled(id) {
-    if (views[id].gauges[0]) {
-      fetch("./api/config", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: id }),
-      })
-        .then((d) => d.json())
-        .then((d) => {
-          views = d.views.views;
-          // $page.data.locals.configuration.views = d.views.views;
-          $session.actions = [
-            {
-              id: $session.count,
-              msg: d.message,
-              theme: d.ret ? "alert-info" : "alert-warning",
-            },
-            ...$session.actions,
-          ];
-        });
-      return false;
-    } else {
-      session.actions = [
-        {
-          id: $session.count,
-          msg: "Set-up this view to enable it!",
-          theme: "alert-info",
-        },
-        ...$session.actions,
-      ];
-      return true;
-    }
+  export let form: ActionData;
+  if (form) {
+    form.id = $session.count;
+    $session.actions.push(form);
   }
 </script>
 
@@ -67,19 +38,18 @@
     <p>Select a gauge layout to edit the configuration</p>
   </div>
   {#each Object.keys(views) as id}
-    <div class="container col-sm-10 col-md-6 pr-4 pl-4">
+    <form
+      method="POST"
+      formaction="?/toggle_enabled"
+      class="container col-sm-10 col-md-6 pr-4 pl-4"
+    >
       <div class="card">
         <div class="row m-2">
           <div class="text-left col-6">
             <h5>{views[id].name}</h5>
           </div>
           <div class="text-right col-6">
-            <svelte:component
-              this={Slider}
-              callback={toggleEnabled}
-              callbackArgs={id}
-              checked={views[id].enabled}
-            />
+            <svelte:component this={Slider} checked={views[id].enabled} />
           </div>
         </div>
 
@@ -121,7 +91,7 @@
           </div>
         </a>
       </div>
-    </div>
+    </form>
   {/each}
 {/if}
 

@@ -17,8 +17,14 @@ export const actions: Actions = {
       cookies.set("ke_web_app", token + "; Path=/; SameSite=Strict; Expires='';",)
 
       UpdateToken(token);
-      return { success: true };
+      return {
+        msg: "Login successful",
+        theme: "alert-info"
+      };
     }
-    return { failed: true }
+    return {
+      msg: "Login failed",
+      theme: "alert-danger"
+    };
   }
 };

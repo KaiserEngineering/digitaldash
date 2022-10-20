@@ -30,16 +30,8 @@
           "unit": "PID_UNITS_FAHRENHEIT",
           "pid": "0x010F"
         },
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_PSI",
-          "pid": "0xC16F"
-        },
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_FAHRENHEIT",
-          "pid": "0x015C"
-        }
+        { "theme": "Stock RS", "unit": "PID_UNITS_PSI", "pid": "0xC16F" },
+        { "theme": "Stock RS", "unit": "PID_UNITS_FAHRENHEIT", "pid": "0x015C" }
       ]
     },
     "1": {
@@ -67,11 +59,7 @@
         "priority": 10
       },
       "gauges": [
-        {
-          "theme": "Bar (Aura)",
-          "unit": "PID_UNITS_PSI",
-          "pid": "0xC16F"
-        }
+        { "theme": "Bar (Aura)", "unit": "PID_UNITS_PSI", "pid": "0xC16F" }
       ]
     }
   }

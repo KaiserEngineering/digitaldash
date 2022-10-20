@@ -1,17 +1,12 @@
 import type { Handle } from "@sveltejs/kit";
-import * as cookie from "cookie";
-import { checkToken } from "./routes/api/user/+server";
-import { GetConstants } from "$lib/Constants";
-import { ReadFile } from "$lib/Util";
+import { checkToken } from "$lib/User";
+import { GetConstants } from "$lib/server/Constants";
+import { ReadFile } from "$lib/server/Util";
 
-/** @type {import('@sveltejs/kit').Handle} */
 export const handle: Handle = async ({ event, resolve }) => {
-  event.locals.ke_web_app = event.cookies.get("ke_web_app") || undefined;
-
-  event.locals.session = {
-    actions: [],
-    count: 0,
-  }
+  // Create our session object
+  event.locals.actions = [];
+  event.locals.count = 0;
 
   if (event.url.pathname == '/login') {
     // skip verifying user, and allow to load website
@@ -19,7 +14,9 @@ export const handle: Handle = async ({ event, resolve }) => {
     return response;
   }
 
-  const user = await checkToken(event.locals.ke_web_app);
+  // Check if we have a logged in user already via cookie
+  const user = await checkToken(event.cookies.get("ke_web_app"));
+
   if (!user) {
     return new Response(null, {
       status: 302,
@@ -29,10 +26,11 @@ export const handle: Handle = async ({ event, resolve }) => {
     })
   }
 
+  // Set our user locals
   event.locals.user = user;
 
-  event.locals.configuration = ReadFile("/etc/config.json", true);
-  event.locals.session.configuration = event.locals.configuration;
+  // Read in our static content
+  event.locals.configuration = ReadFile("/etc/config.json", true)
 
   event.locals.constants = await GetConstants();
 
@@ -40,7 +38,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   return response;
 };
 
-export async function getSession(event) {
+export async function getSession(event: { locals: { user: { username: any; }; }; }) {
   return event.locals.user ? {
     username: event.locals.user.username
   } : {}

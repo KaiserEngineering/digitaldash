@@ -1,15 +1,20 @@
 <script lang="ts">
   import type { ActionData } from "./$types";
+  import { keys } from "$lib/Keys";
+  import { getContext } from "svelte";
+  import { enhance } from "$app/forms";
+
+  const { session } = getContext(keys.session);
 
   export let form: ActionData;
+  if (form) {
+    form.id = $session.count;
+    $session.actions.push(form);
+  }
 </script>
 
-{#if form?.failed}
-  <p>Login failed</p>
-{/if}
-
 <div class="col-sm-12 col-md-6 justify-content-center d-flex">
-  <form method="POST" class="form-signin">
+  <form method="POST" class="form-signin" use:enhance>
     <div class="text-center container">
       <img src="images/logo.png" alt="" width="72" height="72" />
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>

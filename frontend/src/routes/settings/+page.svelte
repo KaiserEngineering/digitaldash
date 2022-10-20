@@ -1,28 +1,15 @@
 <script lang="ts">
-  import { page } from "$app/stores";
+  import type { ActionData } from "./$types";
+  import { keys } from "$lib/Keys";
+  import { getContext } from "svelte";
 
-  let username: string;
-  let password: string;
+  const { session } = getContext(keys.session);
 
-  function handleSubmit(_event: any) {
-    fetch("/api/user", {
-      method: "PUT",
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    })
-      .then((d) => d.json())
-      .then((d) => {
-        $page.data.actions = [
-          {
-            id: $page.data.count,
-            msg: d.message,
-            theme: d.ret ? "alert-info" : "alert-warning",
-          },
-          ...$page.data.actions,
-        ];
-      });
+  export let form: ActionData;
+
+  if (form) {
+    form.id = $session.count;
+    $session.actions.push(form);
   }
 </script>
 
@@ -31,25 +18,13 @@
     <div class="row">
       <div class="col-md-6 mb-3">
         <label for="username">Username</label>
-        <input
-          bind:value={username}
-          type="text"
-          class="form-control"
-          name="username"
-          required
-        />
+        <input type="text" class="form-control" name="username" required />
         <div class="invalid-feedback">Username is required</div>
       </div>
 
       <div class="col-md-6 mb-3">
         <label for="password">Password</label>
-        <input
-          bind:value={password}
-          type="password"
-          class="form-control"
-          name="password"
-          required
-        />
+        <input type="password" class="form-control" name="password" required />
         <div class="invalid-feedback">Password is required</div>
       </div>
     </div>

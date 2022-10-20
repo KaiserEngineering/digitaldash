@@ -1,17 +1,9 @@
-<script>
-  export let callback;
-  export let checked;
-  export let callbackArgs;
+<script lang="ts">
+  export let checked: Boolean = true;
 </script>
 
 <label class="switch">
-  <input
-    on:click={() => {
-      checked = callback(callbackArgs);
-    }}
-    bind:checked
-    type="checkbox"
-  />
+  <input bind:checked type="checkbox" />
   <span class="slider round" />
 </label>
 

@@ -1,21 +1,17 @@
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ fetch }) {
-  const res = await fetch("/api/debug");
-  if (res.ok) {
-    let data = await res.json();
-    const fileNames = Object.keys(data).sort();
+import { ReadLog } from '$lib/server/Debug';
 
-    return {
-      // We don't want to mutate our array, so no pop()
-      content: data[fileNames[fileNames.length - 1]],
-      logNames: fileNames,
-      logs: data,
-      current: fileNames[fileNames.length - 1],
-    };
-  }
+/** @type {import('./$types').PageServerLoad} */
+export async function load() {
+  const res = await ReadLog();
+
+  let data = await res.json();
+  const fileNames: string[] = Object.keys(data).sort();
 
   return {
-    status: res.status,
-    error: new Error(`Could not load /api/debug`),
+    // We don't want to mutate our array, so no pop()
+    content: data[fileNames[fileNames.length - 1]],
+    logNames: fileNames,
+    logs: data,
+    current: fileNames[fileNames.length - 1],
   };
 }

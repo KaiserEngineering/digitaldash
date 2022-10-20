@@ -1,5 +1,4 @@
 <script lang="ts">
-  export let segment: string;
 </script>
 
 <div class="m-4">
@@ -21,28 +20,16 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav nav mr-auto mb-2 mb-md-0">
             <li class="nav-item">
-              <a class:active={!segment} class="nav-link" href="/">Home</a>
+              <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a
-                class:active={segment === "settings"}
-                class="nav-link"
-                href="/settings">Settings</a
-              >
+              <a class="nav-link" href="/settings">Settings</a>
             </li>
             <li class="nav-item">
-              <a
-                class:active={segment === "advanced"}
-                class="nav-link"
-                href="/advanced">Advanced</a
-              >
+              <a class="nav-link" href="/advanced">Advanced</a>
             </li>
             <li class="nav-item">
-              <a
-                class:active={segment === "debug"}
-                class="nav-link"
-                href="/debug">Debug</a
-              >
+              <a class="nav-link" href="/debug">Debug</a>
             </li>
           </ul>
         </div>

@@ -1,20 +1,13 @@
 <script lang="ts">
-  export let content = "Loading...";
-  export let logNames: any[] = [];
-  export let logs = {};
-  export let current = "";
+  import { page } from "$app/stores";
+  import { redirect } from "@sveltejs/kit";
 
-  function refresh() {
-    fetch("/api/debug")
-      .then((d) => d.json())
-      .then((d) => {
-        (content = d[Object.keys(d).sort().pop()]),
-          (logNames = Object.keys(d)),
-          (logs = d);
-      });
-  }
+  let content = $page.data.content;
+  let logNames: any[] = $page.data.logNames;
+  let logs = $page.data.logs;
+  let current = $page.data.current;
 
-  function loadContent(logFile) {
+  function loadContent(logFile: string | number) {
     content = logs[logFile];
   }
 </script>
@@ -32,10 +25,6 @@
       <option value={log}>{log}</option>
     {/each}
   </select>
-
-  <button type="button" class="mb-2 btn btn-secondary" on:click={refresh}
-    >Refresh</button
-  >
 
   <div class="container col-sm-12 col-md-6 border">
     <pre>

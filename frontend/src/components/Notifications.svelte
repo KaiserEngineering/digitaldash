@@ -1,5 +1,5 @@
-<script>
-  import { keys } from "$lib/keys";
+<script lang="ts">
+  import { keys } from "$lib/Keys";
   import { getContext } from "svelte";
 
   const { session } = getContext(keys.session);
@@ -8,13 +8,15 @@
     if ($session.actions && $session.actions.length) {
       $session.count = $session.count + 1;
     }
-    $session.actions.forEach((item, index) => {
+    $session.actions.forEach((item: { id: any }) => {
       setTimeout(() => remove(item.id), 3000);
     });
   }
 
-  function remove(id) {
-    $session.actions = $session.actions.filter((action) => action.id != id);
+  function remove(id: any) {
+    $session.actions = $session.actions.filter((action: { id: any }) => {
+      action.id != id;
+    });
   }
 </script>
 

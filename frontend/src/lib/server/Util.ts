@@ -9,7 +9,7 @@ const guiHome: string | boolean = import.meta.env.VITE_KEGUIHome;
 let cache: any = {};
 
 export function ReadFile(File: string, Force: boolean = false) {
-  if (cache[File] && !Force ) {
+  if (cache[File] && !Force) {
     return cache[File];
   }
   else {
@@ -19,7 +19,7 @@ export function ReadFile(File: string, Force: boolean = false) {
 }
 
 export function WriteFile(File: string, Value: any) {
-  fs.writeFileSync(`${guiHome}/${File}`, JSON.stringify(Value, null, 2));
+  fs.writeFileSync(`${guiHome}/${File}`, Value);
 }
 
 export async function GetPythonDictionary(

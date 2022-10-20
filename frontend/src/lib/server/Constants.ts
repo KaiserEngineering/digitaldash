@@ -1,4 +1,4 @@
-import { ReadFile, GetPythonDictionary } from "$lib/Util";
+import { ReadFile, GetPythonDictionary } from "$lib/server/Util";
 
 export async function GetConstants() {
   let constants = await GetPythonDictionary("/static/constants.py");

@@ -2,14 +2,14 @@
   import { page } from "$app/stores";
   import Slider from "$components/Slider.svelte";
   import type { PageData } from "./$types";
-  import { keys } from "$lib/keys";
+  import { keys } from "$lib/Keys";
   import { getContext } from "svelte";
   import type { ActionData } from "./$types";
+  import { enhance } from "$app/forms";
 
   const { session } = getContext(keys.session);
 
   export let data: PageData;
-  export let form: ActionData;
 
   let view = $session.configuration.views[data.id];
 
@@ -139,54 +139,6 @@
     };
   }
 
-  function handleSubmit() {
-    let configuration = $page.data.configuration;
-    configuration.views[data.id] = view;
-
-    if (
-      configuration.views[data.id].dynamic &&
-      !configuration.views[data.id].dynamic.pid
-    ) {
-      configuration.views[data.id].dynamic = {};
-    }
-
-    view.gauges.forEach((gauge: { pid: any }, i: string | number) => {
-      if (gauge.pid) {
-        view.gauges[i].theme = theme;
-      }
-    });
-
-    fetch("/api/config", {
-      method: "POST",
-      body: JSON.stringify(configuration),
-    })
-      .then((d) => d.json())
-      .then((d) => {
-        $page.data.configuration = d.config;
-        view = {};
-        view = d.config.views[data.id];
-        theme = view.gauges[0].theme;
-
-        view = normalizeGauges();
-
-        $page.data.locals.actions = [
-          {
-            id: $page.data.count,
-            msg: d.message,
-            theme: d.ret ? "alert-info" : "alert-warning",
-          },
-          ...$page.data.locals.actions,
-        ];
-      });
-
-    let changeEvent = new Event("change");
-    let elements = ["pid-0", "pid-1", "pid-2"];
-    elements.forEach((element) => {
-      let pidInput = document.getElementById(element);
-      pidInput.dispatchEvent(changeEvent);
-    });
-  }
-
   function addAlert() {
     view.alerts = [
       ...view.alerts,
@@ -210,22 +162,21 @@
   function toggleDynamic() {
     view.dynamic.enabled = view.dynamic.enabled ? false : true;
   }
+
+  export let form: ActionData;
+  if (form) {
+    form.id = $session.count;
+    $session.actions.push(form);
+  }
 </script>
 
-<div class="col-sm-12 col-sm-8 pb-4">
-  {#if form?.failed}
-    <p>Update failed</p>
-  {/if}
-  {#if form?.success}
-    <p>Config upated</p>
-  {/if}
-
+<form method="POST" class="col-sm-12 col-sm-8 pb-4" use:enhance>
   {#if view}
     <div id="edit-container" class="container">
       <div class="col-sm-12 order-sm-1">
         <h4 class="mb-3">Editing view #{data.id}</h4>
         <form method="POST" class="needs-validation">
-          <input type="hidden" value="<%$data.id%>" name="id" />
+          <input type="hidden" value={data.id} name="id" />
 
           <h4>Basics</h4>
           <hr />
@@ -235,7 +186,7 @@
               <div class="col-12">
                 <label for="name">View name</label>
                 <input
-                  bind:value={view.name}
+                  value={view.name}
                   name="name"
                   type="text"
                   class="form-control"
@@ -248,7 +199,7 @@
               <div class="col-6">
                 <label for="background">Background</label>
                 <select
-                  bind:value={view.background}
+                  value={view.background}
                   name="background"
                   class="custom-select form-control d-block w-100"
                   id="background"
@@ -266,7 +217,7 @@
               <div class="col-6">
                 <label for="theme">Theme</label>
                 <select
-                  bind:value={theme}
+                  value={theme}
                   name="theme"
                   class="form-control d-block w-100"
                   id="theme"
@@ -356,7 +307,7 @@
                     <label class="label" for="alertMessage">Message</label>
                     <input
                       required
-                      bind:value={alert.message}
+                      value={alert.message}
                       class="value form-control"
                       type="text"
                       name="alertMessage"
@@ -367,7 +318,7 @@
                     <label class="label" for="alertValue">Value</label>
                     <input
                       required
-                      bind:value={alert.value}
+                      value={alert.value}
                       class="form-control"
                       type="number"
                       name="alertValue"
@@ -378,7 +329,7 @@
                     <label for="alertOP">Operand</label>
                     <select
                       required
-                      bind:value={alert.op}
+                      value={alert.op}
                       name="alertOP"
                       class="form-control"
                     >
@@ -431,7 +382,7 @@
                     >
                     <input
                       required
-                      bind:value={alert.priority}
+                      value={alert.priority}
                       class="value form-control"
                       type="number"
                       name="alertPriority"
@@ -515,7 +466,7 @@
                 <label for="dynamicValue">Value</label>
                 <input
                   required
-                  bind:value={view.dynamic.value}
+                  value={view.dynamic.value}
                   disabled={!view.dynamic.enabled}
                   class="form-control"
                   type="number"
@@ -527,7 +478,7 @@
                 <label for="dynamicOP">Operand</label>
                 <select
                   required
-                  bind:value={view.dynamic.op}
+                  value={view.dynamic.op}
                   name="dynamicOP"
                   disabled={!view.dynamic.enabled}
                   class="form-control"
@@ -547,7 +498,7 @@
                 >
                 <input
                   required
-                  bind:value={view.dynamic.priority}
+                  value={view.dynamic.priority}
                   disabled={!view.dynamic.enabled}
                   class="form-control"
                   type="number"
@@ -568,7 +519,7 @@
       </div>
     </div>
   {/if}
-</div>
+</form>
 
 <style>
   .alertContainer {

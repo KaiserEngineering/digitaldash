@@ -1,6 +1,15 @@
 import db from "$lib/DB";
 import { createHash } from "crypto";
 
+export function checkToken(sid: string) {
+  let user = User();
+
+  if (user) {
+    return user.token + "; Path=/; SameSite=Strict; Expires='';" == sid ? user : undefined;
+  }
+  return undefined;
+}
+
 export function HashPassword(Password: string): string {
   return createHash("sha256").update(Password).digest("hex");
 }
