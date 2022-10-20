@@ -56,7 +56,12 @@
             <h5>{views[id].name}</h5>
           </div>
           <div class="text-right col-6">
-            <button class="" type="submit">
+            <button
+              class=""
+              type="submit"
+              data-toggle="tooltip"
+              title="Enable/Disable this view"
+            >
               <svelte:component
                 this={Slider}
                 checked={$session.configuration.views[id].enabled}
