@@ -5,17 +5,17 @@
 </script>
 
 <script>
-  import { session } from "$app/stores";
+  import { page } from "$app/stores";
   import Slider from "$components/Slider.svelte";
 
   export let id;
 
-  let view = $session.configuration.views[id];
+  let view = $page.data.configuration.views[id];
 
-  const KE_PID = $session.constants.KE_PID;
-  const UNIT_LABEL = $session.constants.PID_UNIT_LABEL;
+  const KE_PID = $page.data.constants.KE_PID;
+  const UNIT_LABEL = $page.data.constants.PID_UNIT_LABEL;
   const pids = Object.keys(KE_PID);
-  const themes = $session.constants.themes || [];
+  const themes = $page.data.constants.themes || [];
   let theme;
   if (view && view.gauges.length > 0) {
     theme = view.gauges[0].theme;
@@ -51,8 +51,8 @@
   view = normalizeGauges();
 
   /**
-  * @param {{ target: { value: any; name: string; }; srcElement: { parentElement: { nextSibling: { nextSibling: { querySelectorAll: (arg0: string) => any[]; }; }; }; }; }} node
-  */
+   * @param {{ target: { value: any; name: string; }; srcElement: { parentElement: { nextSibling: { nextSibling: { querySelectorAll: (arg0: string) => any[]; }; }; }; }; }} node
+   */
   function getUnits(node) {
     const pid = node.target.value;
     let pidRegex = /(gauge|dynamic|alert)-(\d+)/;
@@ -61,7 +61,7 @@
     let type = matches[1],
       index = matches[2];
 
-    if ( view.gauges[index] && view.gauges[index].pid ) {
+    if (view.gauges[index] && view.gauges[index].pid) {
       if (type == "gauge") {
         view.gauges[index].pid = pid;
       } else if (type == "alert") {
@@ -69,15 +69,15 @@
       } else if (type == "dynamic") {
         view.dynamic.pid = pid;
       }
-    }
-    else {
-      view.gauges[index] = { 'pid' : pid };
+    } else {
+      view.gauges[index] = { pid: pid };
     }
 
     // find our units for the provided pid
-    let unitsSelect = node.srcElement.parentElement.nextSibling.nextSibling.querySelectorAll(
-      "[name=units]"
-    )[0];
+    let unitsSelect =
+      node.srcElement.parentElement.nextSibling.nextSibling.querySelectorAll(
+        "[name=units]"
+      )[0];
     // Clear our old units from units select input
     let i = 0;
     for (i = 0; i < unitsSelect.options.length; i++) {
@@ -97,7 +97,7 @@
     // Actually set the select value to the first unit
     let currentValue;
     let unit;
-    if ( view.gauges[index] ) {
+    if (view.gauges[index]) {
       if (type == "gauge") {
         currentValue = KE_PID[pid].units[view.gauges[index].unit];
         unit = view.gauges[index].unit;
@@ -107,8 +107,8 @@
       } else if (type == "dynamic") {
         currentValue = KE_PID[pid].units[view.dynamic.unit];
         unit = view.dynamic.unit;
-        console.log(currentValue)
-        console.log(unit)
+        console.log(currentValue);
+        console.log(unit);
       }
 
       if (currentValue) {
@@ -135,7 +135,7 @@
   }
 
   function handleSubmit() {
-    let configuration = $session.configuration;
+    let configuration = $page.data.configuration;
     configuration.views[id] = view;
 
     if (
@@ -157,29 +157,29 @@
     })
       .then((d) => d.json())
       .then((d) => {
-        $session.configuration = d.config;
+        $page.data.configuration = d.config;
         view = {};
         view = d.config.views[id];
         theme = view.gauges[0].theme;
 
         view = normalizeGauges();
 
-        $session.actions = [
+        $page.data.actions = [
           {
-            id: $session.count,
+            id: $page.data.count,
             msg: d.message,
             theme: d.ret ? "alert-info" : "alert-warning",
           },
-          ...$session.actions,
+          ...$page.data.actions,
         ];
       });
 
-      let changeEvent = new Event("change");
-      let elements = ['pid-0', 'pid-1', 'pid-2'];
-      elements.forEach((element) => {
-        let pidInput = document.getElementById(element)
-        pidInput.dispatchEvent(changeEvent);
-      });
+    let changeEvent = new Event("change");
+    let elements = ["pid-0", "pid-1", "pid-2"];
+    elements.forEach((element) => {
+      let pidInput = document.getElementById(element);
+      pidInput.dispatchEvent(changeEvent);
+    });
   }
 
   function addAlert() {
@@ -196,8 +196,8 @@
   }
 
   /**
-  * @param {number} index
-  */
+   * @param {number} index
+   */
   function removeAlert(index) {
     let tempArr = view.alerts;
     tempArr.splice(index, 1);
@@ -246,8 +246,10 @@
                   required
                 >
                   <option value="">-</option>
-                  {#each ["Black.png", "Blue Purple Gradient.png", "Carbon Fiber.png", "Galaxy.png",  "Digital Camo.png", "Flare.png", "Jellyfish.png", "Red.png"] as background}
-                    <option value={background}>{background.replace(/\.png|\.jpg/, '')}</option>
+                  {#each ["Black.png", "Blue Purple Gradient.png", "Carbon Fiber.png", "Galaxy.png", "Digital Camo.png", "Flare.png", "Jellyfish.png", "Red.png"] as background}
+                    <option value={background}
+                      >{background.replace(/\.png|\.jpg/, "")}</option
+                    >
                   {/each}
                 </select>
               </div>
@@ -296,7 +298,9 @@
                         <select
                           name="units"
                           on:blur={(e) =>
-                            view.gauges[i] ? view.gauges[i].unit = e.target.value : view.gauges[i] = { 'unit': e.target.value } }
+                            view.gauges[i]
+                              ? (view.gauges[i].unit = e.target.value)
+                              : (view.gauges[i] = { unit: e.target.value })}
                           class="form-control"
                         />
                       </div>

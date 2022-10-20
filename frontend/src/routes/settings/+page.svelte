@@ -1,10 +1,19 @@
 <script>
-  import { session } from "$app/stores";
+  import { page } from "$app/stores";
 
+  /**
+   * @type {string}
+   */
   let username;
+  /**
+   * @type {string}
+   */
   let password;
 
-  function handleSubmit(event) {
+  /**
+   * @param {any} _event
+   */
+  function handleSubmit(_event) {
     fetch("/api/user", {
       method: "PUT",
       body: JSON.stringify({
@@ -14,13 +23,13 @@
     })
       .then((d) => d.json())
       .then((d) => {
-        $session.actions = [
+        $page.data.actions = [
           {
-            id: $session.count,
+            id: $page.data.count,
             msg: d.message,
             theme: d.ret ? "alert-info" : "alert-warning",
           },
-          ...$session.actions,
+          ...$page.data.actions,
         ];
       });
   }

@@ -1,9 +1,10 @@
 <script>
-  import { session } from "$app/stores";
+  import { page } from "$app/stores";
   import Slider from "$components/Slider.svelte";
 
-  let KE_PIDS = $session.constants.KE_PID;
-  $: views = $session.configuration.views;
+  console.log($page);
+  let KE_PIDS = $page.data.constants.KE_PID;
+  $: views = $page.data.configuration.views;
 
   $: {
     if (views && Object.keys(views).length < 2) {
@@ -31,25 +32,25 @@
         .then((d) => d.json())
         .then((d) => {
           views = d.views.views;
-          $session.configuration.views = d.views.views;
-          $session.actions = [
+          $page.data.configuration.views = d.views.views;
+          $page.data.actions = [
             {
-              id: $session.count,
+              id: $page.data.count,
               msg: d.message,
               theme: d.ret ? "alert-info" : "alert-warning",
             },
-            ...$session.actions,
+            ...$page.data.actions,
           ];
         });
       return false;
     } else {
-      $session.actions = [
+      $page.data.actions = [
         {
-          id: $session.count,
+          id: $page.data.count,
           msg: "Set-up this view to enable it!",
           theme: "alert-info",
         },
-        ...$session.actions,
+        ...$page.data.actions,
       ];
       return true;
     }

@@ -1,5 +1,8 @@
 <script>
-  export let segment;
+  /**
+   * @type {string}
+   */
+   export let segment;
 </script>
 
 <div class="m-4">

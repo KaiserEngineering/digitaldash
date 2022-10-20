@@ -1,8 +1,14 @@
 <script>
   import { goto } from "$app/navigation";
-  import { session } from "$app/stores";
+  import { page } from "$app/stores";
 
+  /**
+   * @type {string}
+   */
   let username;
+  /**
+   * @type {string}
+   */
   let password;
 
   function handleSubmit() {
@@ -18,18 +24,18 @@
       .then((d) => d.json())
       .then((d) => {
         if (d.ret) {
-          $session.user = d.user;
+          $page.data.user = d.user;
           goto("/");
         }
         // Only add notification for failed login
         else {
-          $session.actions = [
+          $page.data.actions = [
             {
-              id: $session.count,
+              id: $page.data.count,
               msg: d.message,
               theme: "alert-danger",
             },
-            ...$session.actions,
+            ...$page.data.actions,
           ];
         }
       });

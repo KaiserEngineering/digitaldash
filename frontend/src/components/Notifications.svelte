@@ -1,23 +1,23 @@
 <script>
-  import { session } from "$app/stores";
+  import { page } from "$app/stores";
 
   $: {
-    if ($session.actions && $session.actions.length) {
-      $session.count = $session.count + 1;
+    if ($page.data.actions && $page.data.actions.length) {
+      $page.data.count = $page.data.count + 1;
     }
-    $session.actions.forEach((item, index) => {
-      setTimeout(() => remove(item.id), 3000)
+    $page.data.actions.forEach((item, index) => {
+      setTimeout(() => remove(item.id), 3000);
     });
   }
 
   function remove(id) {
-    $session.actions = $session.actions.filter((action) => action.id != id);
+    $page.data.actions = $page.data.actions.filter((action) => action.id != id);
   }
 </script>
 
-{#if $session.actions && $session.actions.length}
+{#if $page.data.actions && $page.data.actions.length}
   <div class="notifications" id="notifications">
-    {#each $session.actions as action (action.id)}
+    {#each $page.data.actions as action (action.id)}
       <div
         class="alert-dismissible fade show alert {action.theme}"
         role="alert"

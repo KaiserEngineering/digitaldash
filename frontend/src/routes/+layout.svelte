@@ -15,7 +15,7 @@
 <script>
   import "../app.css";
   import Nav from "$components/Nav.svelte";
-  import Notifications from "$components/Notifications.svelte";
+  // import Notifications from "$components/Notifications.svelte";
 
   export let segment = undefined;
   export let title = "KE Digital Dash";
@@ -29,8 +29,8 @@
   <svelte:component this={Nav} {segment} />
 {/if}
 
-<div class="col-sm-12 col-md-6">
+<!-- <div class="col-sm-12 col-md-6">
   <svelte:component this={Notifications} />
-</div>
+</div> -->
 
 <slot />

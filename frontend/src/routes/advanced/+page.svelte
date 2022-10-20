@@ -1,7 +1,7 @@
 <script>
-  import { session } from "$app/stores";
+  import { page } from "$app/stores";
 
-  let configString = JSON.stringify($session.configuration, null, 2);
+  let configString = JSON.stringify($page.data.configuration, null, 2);
 
   function submit() {
     fetch("/api/config", {
@@ -10,16 +10,16 @@
     })
       .then((d) => d.json())
       .then((d) => {
-        $session.configuration = d.config;
+        $page.data.configuration = d.config;
         configString = JSON.stringify(d.config, null, 2);
 
-        $session.actions = [
+        $page.data.actions = [
           {
-            id: $session.count,
+            id: $page.data.count,
             msg: d.message,
             theme: d.ret ? "alert-info" : "alert-danger",
           },
-          ...$session.actions,
+          ...$page.data.actions,
         ];
       });
   }
@@ -40,16 +40,16 @@
     })
       .then((d) => d.json())
       .then((d) => {
-        $session.configuration = d.config;
+        $page.data.configuration = d.config;
         configString = JSON.stringify(d.config, null, 2);
 
-        $session.actions = [
+        $page.data.actions = [
           {
-            id: $session.count,
+            id: $page.data.count,
             msg: d.message,
             theme: d.ret ? "alert-info" : "alert-danger",
           },
-          ...$session.actions,
+          ...$page.data.actions,
         ];
       });
   }
@@ -68,10 +68,8 @@
     on:click={submit}>Save</button
   >
 
-  <button
-    class="mt-2 form-control"
-    type="submit"
-    on:click={reset}>Reset To Default</button
+  <button class="mt-2 form-control" type="submit" on:click={reset}
+    >Reset To Default</button
   >
 </div>
 

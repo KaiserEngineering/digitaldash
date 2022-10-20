@@ -37,7 +37,7 @@ export async function get() {
 }
 
 // Use this to update config
-export async function post({request}) {
+export async function post({ request }) {
   let newConfig = await request.json()
 
   let config = UpdateConfig(newConfig);
@@ -45,7 +45,7 @@ export async function post({request}) {
 }
 
 // Right now lets use this for toggling view
-export async function put({request}) {
+export async function put({ request }) {
   let body = await request.json();
   const id = body.id;
 
@@ -83,10 +83,10 @@ export async function del() {
     config: undefined
   };
 
-  if ( await ResetConfig() ) {
-      res.message = "Config reset!";
-      res.ret = 1;
-      res.config = ReadConfig();
+  if (await ResetConfig()) {
+    res.message = "Config reset!";
+    res.ret = 1;
+    res.config = ReadConfig();
   }
   return { body: res };
 }
