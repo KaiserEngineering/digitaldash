@@ -1,11 +1,10 @@
 import type { Actions } from './$types';
-import { UpdateConfig } from '$lib/server/Config';
+import { UpdateConfig, NormalizeConfigInput } from '$lib/server/Config';
 
 export const actions: Actions = {
   default: async (event) => {
     let attempt = await event.request.formData();
 
-    console.log(attempt)
     let id = attempt.get("id");
 
     let config = event.locals.configuration;
@@ -13,16 +12,9 @@ export const actions: Actions = {
     // Grab the view we are updating
     let view_to_update = config["views"][id];
 
-    let new_config = { ...view_to_update };
-    Object.keys(view_to_update).forEach((item: any) => {
-      let new_value = attempt.get(item);
-      if (new_value) {
-        new_config[item] = new_value;
-      }
-    });
+    let new_config = NormalizeConfigInput(attempt, view_to_update);
 
-    config["views"][id] = new_config;
-    UpdateConfig(JSON.stringify(config));
+    UpdateConfig(JSON.stringify(new_config));
     return { success: true };
   }
 };

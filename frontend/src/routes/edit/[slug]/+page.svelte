@@ -187,7 +187,7 @@
                 <label for="name">View name</label>
                 <input
                   value={view.name}
-                  name="name"
+                  name="basics-name"
                   type="text"
                   class="form-control"
                   id="name"
@@ -200,7 +200,7 @@
                 <label for="background">Background</label>
                 <select
                   value={view.background}
-                  name="background"
+                  name="basics-background"
                   class="custom-select form-control d-block w-100"
                   id="background"
                   required
@@ -230,14 +230,15 @@
               </div>
 
               <div class="col-12">
-                <label for="theme">Vehicle Parameters</label>
+                <!-- svelte-ignore a11y-label-has-associated-control -->
+                <label>Vehicle Parameters</label>
                 <div class="input-group">
                   {#each Array(3) as _, i}
                     <div class="col-4 pl-1 pr-1">
                       <div class="col-12">
                         <select
                           use:pidChange
-                          name="gauge-{i}"
+                          name="gauge-pid-{i}"
                           bind:value={view.gauges[i].pid}
                           class="mb-2 form-control"
                           id="pid-{i}"
@@ -256,7 +257,7 @@
                       <!-- Units for PID -->
                       <div class="col-12">
                         <select
-                          name="units"
+                          name="gauge-unit-{i}"
                           on:blur={(e) =>
                             view.gauges[i]
                               ? (view.gauges[i].unit = e.target.value)
@@ -310,7 +311,7 @@
                       value={alert.message}
                       class="value form-control"
                       type="text"
-                      name="alertMessage"
+                      name="alert-message-{i}"
                     />
                   </div>
 
@@ -321,16 +322,16 @@
                       value={alert.value}
                       class="form-control"
                       type="number"
-                      name="alertValue"
+                      name="alert-value-{i}"
                     />
                   </div>
 
                   <div class="col-sm-3 col-12 pl-1 pr-1">
-                    <label for="alertOP">Operand</label>
+                    <label for="alert-op-{i}">Operand</label>
                     <select
                       required
                       value={alert.op}
-                      name="alertOP"
+                      name="alert-op-{i}"
                       class="form-control"
                     >
                       <option value="">-</option>
@@ -343,14 +344,14 @@
                   </div>
 
                   <div class="col-sm-6 col-12 pl-1 pr-1">
-                    <label class="label" for="alertPID">Parameter</label>
+                    <label class="label" for="alert-pid-{i}">Parameter</label>
 
                     <select
                       use:pidChange
                       value={alert.pid}
-                      name="alert-{i}"
+                      name="alert-pid-{i}"
                       class="value form-control pl-1 pr-1"
-                      id="alertPID"
+                      id="alert-pid-{i}"
                       required
                     >
                       <option value="">-</option>
@@ -367,9 +368,9 @@
                   </div>
 
                   <div class="col-sm-3 col-12 pl-1 pr-1">
-                    <label class="label" for="alertUnit">Unit</label>
+                    <label class="label" for="alert-unit-{i}">Unit</label>
                     <select
-                      name="units"
+                      name="alert-unit-{i}"
                       on:blur={(e) => (alert.unit = e.target.value)}
                       class="form-control value"
                       required><option>-</option></select
@@ -377,7 +378,7 @@
                   </div>
 
                   <div class="col-sm-3 col-12 pl-1 pr-1">
-                    <label class="label" for="alertPriority"
+                    <label class="label" for="alert-priority-{i}"
                       >Priority <i>(Lower equals higher priority)</i></label
                     >
                     <input
@@ -385,7 +386,7 @@
                       value={alert.priority}
                       class="value form-control"
                       type="number"
-                      name="alertPriority"
+                      name="alert-priority-{i}"
                     />
                   </div>
                 </div>
@@ -421,8 +422,6 @@
               <div class="col-sm-3 col-12">
                 <svelte:component
                   this={Slider}
-                  callback={toggleDynamic}
-                  callbackArgs={null}
                   checked={view.dynamic.enabled}
                 />
               </div>
@@ -435,7 +434,7 @@
                   use:pidChange
                   bind:value={view.dynamic.pid}
                   disabled={!view.dynamic.enabled}
-                  name="dynamic-{0}"
+                  name="dynamic-pid"
                   class="form-control"
                   id="dynamicPID"
                   required
@@ -454,7 +453,7 @@
               <div class="col-sm-3 col-12">
                 <label class="label" for="dynamicUnit">Unit</label>
                 <select
-                  name="units"
+                  name="dynamic-unit"
                   on:blur={(e) => (view.dynamic.unit = e.target.value)}
                   disabled={!view.dynamic.enabled}
                   class="form-control value"
@@ -470,7 +469,7 @@
                   disabled={!view.dynamic.enabled}
                   class="form-control"
                   type="number"
-                  name="dynamicValue"
+                  name="dynamic-value"
                 />
               </div>
 
@@ -479,7 +478,7 @@
                 <select
                   required
                   value={view.dynamic.op}
-                  name="dynamicOP"
+                  name="dynamic-op"
                   disabled={!view.dynamic.enabled}
                   class="form-control"
                 >
@@ -502,7 +501,7 @@
                   disabled={!view.dynamic.enabled}
                   class="form-control"
                   type="number"
-                  name="dynamicPriority"
+                  name="dynamic-priority"
                 />
               </div>
             </div>
