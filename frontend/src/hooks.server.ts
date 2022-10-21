@@ -2,6 +2,9 @@ import type { Handle } from "@sveltejs/kit";
 import { checkToken } from "$lib/User";
 import { GetConstants } from "$lib/server/Constants";
 import { ReadFile } from "$lib/server/Util";
+import { Setup } from "$lib/DB";
+
+Setup();
 
 export const handle: Handle = async ({ event, resolve }) => {
   // Create our session object
