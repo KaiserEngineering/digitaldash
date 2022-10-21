@@ -10,6 +10,7 @@
   const pids = Object.keys(KE_PID);
 
   export let inputName: string;
+  export let unitName: string;
   export let pid: string;
   export let unit: string;
 
@@ -45,8 +46,9 @@
     {/each}
   </select>
 </div>
+
 <div class="col-12">
-  <select value={unit} class="form-control m-1">
+  <select name={unitName} value={unit} class="form-control m-1">
     {#each Object.keys(unitOptions) as unitKey}
       <option value={unitKey}>
         {UNIT_LABEL[unitKey]}

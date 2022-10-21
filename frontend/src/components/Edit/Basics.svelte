@@ -31,7 +31,7 @@
         value={view.background}
         name="basics-background"
         class="custom-select form-control d-block w-100"
-        id="background"
+        id="basics-background"
         required
       >
         <option value="">-</option>
@@ -67,6 +67,7 @@
         <div class="col-md-4">
           <PID
             inputName="gauge-pid-{i}"
+            unitName="gauge-unit-{i}"
             pid={view.gauges[i].pid}
             unit={view.gauges[i].unit}
           />
@@ -79,13 +80,13 @@
 <div class="col-12">
   <div class="form-check">
     <input
-      id="dynamic-min-max"
+      id="dynamicMinMax"
       data-bs-toggle="tooltip"
       data-bs-placement="top"
       title="Show default min/max values or show dynamic values based on observed min max"
       class="form-check-input"
       type="checkbox"
-      name="dynamic-min-max"
+      name="dynamicMinMax"
       checked={view.dynamicMinMax}
     />
     <label class="form-check-label" for="dynamic-min-max">

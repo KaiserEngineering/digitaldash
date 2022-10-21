@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { page } from "$app/stores";
   import type { PageData } from "./$types";
   import { keys } from "$lib/Keys";
   import { getContext } from "svelte";
@@ -18,9 +17,13 @@
 
 <form
   method="POST"
-  class="col-sm-12 col-sm-8 pb-4"
+  class="col-sm-12 col-sm-8 pb-4 needs-validation"
   use:enhance={() => {
     return async ({ result }) => {
+      if (result.data.config) {
+        $session.configuration = result.data.config;
+      }
+
       result.data.id = $session.count;
       $session.actions = [result.data];
     };
@@ -29,48 +32,33 @@
   <div id="edit-container" class="container">
     <div class="col-sm-12 order-sm-1">
       <h4 class="mb-3">Editing view #{data.id}</h4>
-      <form method="POST" class="needs-validation">
-        <input type="hidden" value={data.id} name="id" />
+      <input type="hidden" value={data.id} name="id" />
 
-        <Basics {view} {themes} />
+      <Basics {view} {themes} />
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <Alerts {view} />
+      <Alerts {view} />
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <Dynamic {view} />
+      <Dynamic {view} />
 
-        <hr class="mb-4" />
-        <button
-          class="btn btn-primary btn-lg btn-block btn-full-width"
-          type="submit">Update</button
-        >
+      <hr class="mb-4" />
+      <button
+        class="btn btn-primary btn-lg btn-block btn-full-width"
+        type="submit">Update</button
+      >
 
-        <br />
-        <br />
-      </form>
+      <br />
+      <br />
     </div>
   </div>
 </form>
 
 <style>
-  .alertContainer {
-    padding: 5px;
-    margin: 5px;
-    border-radius: 0.5em;
-    border: grey;
-    border-width: 1px;
-    border-style: solid;
-  }
-
-  .delete {
-    background-color: rgb(220, 176, 176);
-  }
-
   .btn-full-width {
     width: 100%;
   }

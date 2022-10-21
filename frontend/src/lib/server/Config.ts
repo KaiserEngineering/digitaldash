@@ -1,12 +1,12 @@
 import { ReadFile, WriteFile, ResetWithGit } from "$lib/server/Util";
-import type { Config } from "../../app";
+import type { View } from "../../app";
 
 export function ReadConfig() {
   return ReadFile("etc/config.json");
 }
 
-export function UpdateConfig(Config: Config) {
-  WriteFile("etc/config.json", Config);
+export function UpdateConfig(config: string) {
+  WriteFile("etc/config.json", config);
 }
 
 export async function ResetConfig() {
@@ -15,27 +15,47 @@ export async function ResetConfig() {
   return { body: res };
 }
 
+type Control = {
+  basics: string[];
+  gauges: string[];
+  alerts: string[];
+  dynamic: string[];
+}
+
 // CODE TO HANDLE OUR FORM INPUT
 export function NormalizeConfigInput(attempt: { get: (arg0: string) => any; }, control_view: { [x: string]: any; }) {
 
-  let control = {
-    basics: ["name", "background", "dynamic-min-max"],
+  FormData.prototype.getNotNull = function monkeyPatchGet(k: string): false | FormDataEntryValue {
+    let newValue = this.get(k);
+
+    if (newValue == null) {
+      return false;
+    }
+
+    return newValue
+  }
+
+  let control: Control = {
+    basics: ["name", "background", "dynamicMinMax"],
     gauges: ["unit", "pid"],
     alerts: ["message", "op", "priority", "unit", "value", "pid"],
     dynamic: ["pid", "op", "enabled", "value", "priority", "unit"]
   }
 
   // Set two options that aren't set via UI
-  let new_config = {
+  let new_config: View = {
     enabled: control_view["enabled"],
     default: control_view["default"],
     gauges: [],
     alerts: [],
-    dynamic: {}
+    name: "",
+    background: "",
+    dynamic: {},
+    dynamicMinMax: false
   };
 
   control["basics"].forEach(item => {
-    new_config[item] = attempt.get("basics- " + item);
+    new_config[item] = attempt.get("basics-" + item);
   });
 
   let dynamic_obj = {};

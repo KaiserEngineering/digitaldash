@@ -14,7 +14,13 @@ export const actions: Actions = {
 
     let new_config = NormalizeConfigInput(attempt, view_to_update);
 
-    UpdateConfig(JSON.stringify(new_config));
-    return { success: true };
+    config.views[id] = new_config;
+
+    UpdateConfig(JSON.stringify(config, null, 2));
+    return {
+      msg: "Config updated",
+      theme: "alert-success",
+      config: config
+    };
   }
 };

@@ -81,6 +81,7 @@
 
           <PID
             inputName="alert-pid-{i}"
+            unitName="alert-unit-{i}"
             pid={view.alerts[i].pid}
             unit={view.alerts[i].unit}
           />

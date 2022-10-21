@@ -3,6 +3,8 @@
   import PID from "./Elements/PID.svelte";
 
   export let view: View;
+
+  let disabled = !view.dynamic.enabled;
 </script>
 
 <h4>Dynamic</h4>
@@ -16,7 +18,7 @@
         <input
           class="form-check-input"
           type="checkbox"
-          value=""
+          bind:checked={disabled}
           name="dynamic-enabled"
           id="dynamic-enabled"
         />
@@ -30,6 +32,7 @@
 
       <PID
         inputName="dynamic-pid"
+        unitName="dynamic-unit"
         pid={view.dynamic.pid}
         unit={view.dynamic.unit}
       />
@@ -40,7 +43,6 @@
       <input
         required
         value={view.dynamic.value}
-        disabled={!view.dynamic.enabled}
         class="form-control"
         type="number"
         name="dynamic-value"
@@ -53,7 +55,6 @@
         required
         value={view.dynamic.op}
         name="dynamic-op"
-        disabled={!view.dynamic.enabled}
         class="form-control"
       >
         <option value="">-</option>
@@ -72,7 +73,6 @@
       <input
         required
         value={view.dynamic.priority}
-        disabled={!view.dynamic.enabled}
         class="form-control"
         type="number"
         name="dynamic-priority"
