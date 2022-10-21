@@ -19,7 +19,7 @@ export const actions: Actions = {
       UpdateToken(token);
       return {
         msg: "Login successful",
-        theme: "alert-info"
+        theme: "alert-success"
       };
     }
     return {

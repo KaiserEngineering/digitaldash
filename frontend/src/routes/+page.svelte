@@ -1,12 +1,12 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import type { ActionData } from "./$types";
   import { keys } from "$lib/Keys";
   import { getContext } from "svelte";
 
   const { session } = getContext(keys.session);
 
   import Slider from "$components/Slider.svelte";
+  import { enhance } from "$app/forms";
 
   let KE_PIDS = $page.data.locals.constants.KE_PID;
   $: views = $session.configuration.views;
@@ -24,12 +24,6 @@
       };
     }
   }
-
-  export let form: ActionData;
-  if (form) {
-    form.id = $session.count;
-    $session.actions.push(form);
-  }
 </script>
 
 {#if views}
@@ -42,6 +36,16 @@
       method="POST"
       action="?/toggle_enabled"
       class="container col-sm-10 col-md-6 pr-4 pl-4"
+      use:enhance={() => {
+        return async ({ result }) => {
+          if (result.data.config) {
+            $session.configuration = result.data.config;
+          }
+
+          result.data.id = $session.count;
+          $session.actions = [result.data];
+        };
+      }}
     >
       <input name="id" value={id} type="hidden" />
       <input
@@ -64,7 +68,7 @@
             >
               <svelte:component
                 this={Slider}
-                checked={$session.configuration.views[id].enabled}
+                {id}
                 formaction="?/toggle_enabled"
               />
             </button>

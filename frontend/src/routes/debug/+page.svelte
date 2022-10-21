@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { redirect } from "@sveltejs/kit";
 
   let content = $page.data.content;
   let logNames: any[] = $page.data.logNames;

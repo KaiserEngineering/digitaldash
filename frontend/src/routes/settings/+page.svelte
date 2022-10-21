@@ -1,19 +1,20 @@
 <script lang="ts">
-  import type { ActionData } from "./$types";
   import { keys } from "$lib/Keys";
   import { getContext } from "svelte";
+  import { enhance } from "$app/forms";
 
   const { session } = getContext(keys.session);
-
-  export let form: ActionData;
-
-  if (form) {
-    form.id = $session.count;
-    $session.actions.push(form);
-  }
 </script>
 
-<form method="POST">
+<form
+  method="POST"
+  use:enhance={() => {
+    return async ({ result }) => {
+      result.data.id = $session.count;
+      $session.actions = [result.data];
+    };
+  }}
+>
   <div class="p-4 col-md-12 order-md-1">
     <div class="row">
       <div class="col-md-6 mb-3">

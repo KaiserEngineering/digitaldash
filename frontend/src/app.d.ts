@@ -15,6 +15,7 @@ export interface View {
   alerts: any[];
   dynamic: Dynamic;
   gauges: Gauge[];
+  dynamicMinMax: boolean;
 }
 
 export interface Dynamic {

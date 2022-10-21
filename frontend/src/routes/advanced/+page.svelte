@@ -1,8 +1,7 @@
 <script lang="ts">
-  import type { ActionData } from "./$types";
-
   import { keys } from "$lib/Keys";
   import { getContext } from "svelte";
+  import { enhance } from "$app/forms";
 
   const { session } = getContext(keys.session);
 
@@ -17,15 +16,19 @@
       invalid = true;
     }
   }
-
-  export let form: ActionData;
-  if (form) {
-    form.id = $session.count;
-    $session.actions.push(form);
-  }
 </script>
 
-<form method="POST" class="col-12 advanced" action="?/updateConfig">
+<form
+  method="POST"
+  class="col-12 advanced"
+  action="?/updateConfig"
+  use:enhance={() => {
+    return async ({ result }) => {
+      result.data.id = $session.count;
+      $session.actions = [result.data];
+    };
+  }}
+>
   {#if invalid}
     <div class="alert alert-danger">Invalid JSON</div>
   {/if}

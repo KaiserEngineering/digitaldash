@@ -1,9 +1,16 @@
 <script lang="ts">
-  export let checked: Boolean = true;
+  import { keys } from "$lib/Keys";
+  import { getContext } from "svelte";
+
+  const { session } = getContext(keys.session);
+
+  export let id;
+
+  $: checked = $session.configuration.views[id].enabled;
 </script>
 
 <label class="switch">
-  <input {checked} type="checkbox" />
+  <input bind:checked type="checkbox" />
   <span class="slider round" />
 </label>
 

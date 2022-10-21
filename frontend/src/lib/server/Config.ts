@@ -19,7 +19,7 @@ export async function ResetConfig() {
 export function NormalizeConfigInput(attempt: { get: (arg0: string) => any; }, control_view: { [x: string]: any; }) {
 
   let control = {
-    basics: ["name", "background", "dynamicMinMax"],
+    basics: ["name", "background", "dynamic-min-max"],
     gauges: ["unit", "pid"],
     alerts: ["message", "op", "priority", "unit", "value", "pid"],
     dynamic: ["pid", "op", "enabled", "value", "priority", "unit"]

@@ -1,4 +1,4 @@
-import { WriteFile } from '$lib/server/Util';
+import { ReadFile, WriteFile } from '$lib/server/Util';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
@@ -20,15 +20,17 @@ export const actions: Actions = {
 
     if (count === 0) {
       return {
-        theme: "alert-error",
+        theme: "alert-danger",
         msg: "Need at least one enabled view",
       };
     }
     WriteFile("etc/config.json", JSON.stringify(config, null, 2));
+    let newConfigValue = ReadFile("etc/config.json");
 
     return {
       msg: "View toggled",
-      theme: "alert-success"
+      theme: "alert-success",
+      config: newConfigValue
     };
   }
 };

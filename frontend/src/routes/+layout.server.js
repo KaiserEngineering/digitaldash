@@ -8,8 +8,6 @@ export async function load({ url, locals }) {
   if (!user && url.pathname != "/login") {
     throw redirect(307, "/login");
   }
-  // @ts-ignore
-  locals.segment = url.pathname;
 
   return { locals };
 }
