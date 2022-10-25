@@ -5,7 +5,10 @@ import node from "@sveltejs/adapter-node";
 const config = {
   preprocess: preprocess(),
   kit: {
-    adapter: node(),
+    adapter: node({ out: "build" }),
+    csrf: {
+      checkOrigin: false,
+    },
   },
 };
 

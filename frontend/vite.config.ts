@@ -8,6 +8,12 @@ const config: UserConfig = {
     alias: {
       $components: resolve("./src/components"),
     },
+    server: {
+      fs: {
+        strict: false,
+        allow: ['..']
+      }
+    }
   },
 };
 
