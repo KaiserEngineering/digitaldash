@@ -115,9 +115,9 @@ def validateConfig(config):
         "alerts": {
             "pid": str,
             "op": str,
-            "value": str,
+            "value": str | int,
             "unit": str,
-            "priority": str,
+            "priority": str | int,
             "message": str,
         },
         "gauges": {"theme": str, "pid": str, "unit": str},
@@ -125,8 +125,8 @@ def validateConfig(config):
             "enabled": None | bool | str,
             "pid": str,
             "op": str,
-            "priority": str,
-            "value": str,
+            "priority": str | int,
+            "value": str | int,
             "unit": str,
         },
     }
