@@ -17,7 +17,7 @@
         name: "Default",
         enabled: false,
         default: 0,
-        background: "bg.jpg",
+        background: "Blue Purple Gradient.png",
         alerts: [],
         dynamic: {},
         gauges: [],
@@ -66,11 +66,7 @@
               data-toggle="tooltip"
               title="Enable/Disable this view"
             >
-              <svelte:component
-                this={Slider}
-                {id}
-                formaction="?/toggle_enabled"
-              />
+              <svelte:component this={Slider} {id} />
             </button>
           </div>
         </div>
