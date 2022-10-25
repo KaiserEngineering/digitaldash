@@ -1,10 +1,10 @@
-import { ReadLog } from '$lib/server/Debug';
+import { ReadLog } from "$lib/server/Debug";
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
   const res = await ReadLog();
 
-  let data = await res.json();
+  const data = await res.json();
   const fileNames: string[] = Object.keys(data).sort();
 
   return {

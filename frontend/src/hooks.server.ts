@@ -11,7 +11,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   event.locals.actions = [];
   event.locals.count = 0;
 
-  if (event.url.pathname == '/login') {
+  if (event.url.pathname == "/login") {
     // skip verifying user, and allow to load website
     const response = await resolve(event);
     return response;
@@ -24,16 +24,16 @@ export const handle: Handle = async ({ event, resolve }) => {
     return new Response(null, {
       status: 302,
       headers: {
-        location: '/login'
-      }
-    })
+        location: "/login",
+      },
+    });
   }
 
   // Set our user locals
   event.locals.user = user;
 
   // Read in our static content
-  event.locals.configuration = ReadFile("/etc/config.json", true)
+  event.locals.configuration = ReadFile("/etc/config.json", true);
 
   event.locals.constants = await GetConstants();
 
@@ -41,8 +41,12 @@ export const handle: Handle = async ({ event, resolve }) => {
   return response;
 };
 
-export async function getSession(event: { locals: { user: { username: any; }; }; }) {
-  return event.locals.user ? {
-    username: event.locals.user.username
-  } : {}
+export async function getSession(event: {
+  locals: { user: { username: any } };
+}) {
+  return event.locals.user
+    ? {
+        username: event.locals.user.username,
+      }
+    : {};
 }

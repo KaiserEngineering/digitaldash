@@ -10,7 +10,7 @@ export function UpdateConfig(config: string) {
 }
 
 export async function ResetConfig() {
-  let res = await ResetWithGit('etc/config.json');
+  const res = await ResetWithGit("etc/config.json");
 
   return { body: res };
 }
@@ -20,30 +20,34 @@ type Control = {
   gauges: string[];
   alerts: string[];
   dynamic: string[];
-}
+};
 
 // CODE TO HANDLE OUR FORM INPUT
-export function NormalizeConfigInput(attempt: { get: (arg0: string) => any; }, control_view: { [x: string]: any; }) {
-
-  FormData.prototype.getNotNull = function monkeyPatchGet(k: string): false | FormDataEntryValue {
-    let newValue = this.get(k);
+export function NormalizeConfigInput(
+  attempt: { get: (arg0: string) => any },
+  control_view: { [x: string]: any }
+) {
+  FormData.prototype.getNotNull = function monkeyPatchGet(
+    k: string
+  ): false | FormDataEntryValue {
+    const newValue = this.get(k);
 
     if (newValue == null) {
       return false;
     }
 
-    return newValue
-  }
+    return newValue;
+  };
 
-  let control: Control = {
+  const control: Control = {
     basics: ["name", "background", "dynamicMinMax"],
     gauges: ["unit", "pid"],
     alerts: ["message", "op", "priority", "unit", "value", "pid"],
-    dynamic: ["pid", "op", "enabled", "value", "priority", "unit"]
-  }
+    dynamic: ["pid", "op", "enabled", "value", "priority", "unit"],
+  };
 
   // Set two options that aren't set via UI
-  let new_config: View = {
+  const new_config: View = {
     enabled: control_view["enabled"],
     default: control_view["default"],
     gauges: [],
@@ -51,15 +55,15 @@ export function NormalizeConfigInput(attempt: { get: (arg0: string) => any; }, c
     name: "",
     background: "",
     dynamic: {},
-    dynamicMinMax: false
+    dynamicMinMax: false,
   };
 
-  control["basics"].forEach(item => {
+  control["basics"].forEach((item) => {
     new_config[item] = attempt.get("basics-" + item);
   });
 
-  let dynamic_obj = {};
-  control["dynamic"].forEach(item => {
+  const dynamic_obj = {};
+  control["dynamic"].forEach((item) => {
     dynamic_obj[item] = attempt.get("dynamic-" + item);
   });
   new_config["dynamic"] = dynamic_obj;
@@ -72,10 +76,10 @@ export function NormalizeConfigInput(attempt: { get: (arg0: string) => any; }, c
     }
 
     // Set default theme across all gauges
-    let gauge_obj = {
-      theme: attempt.get("theme")
+    const gauge_obj = {
+      theme: attempt.get("theme"),
     };
-    control["gauges"].forEach(item => {
+    control["gauges"].forEach((item) => {
       gauge_obj[item] = attempt.get("gauge-" + item + "-" + i);
     });
     new_config["gauges"].push(gauge_obj);
@@ -88,8 +92,8 @@ export function NormalizeConfigInput(attempt: { get: (arg0: string) => any; }, c
       break;
     }
 
-    let alert_obj = {};
-    control["alerts"].forEach(item => {
+    const alert_obj = {};
+    control["alerts"].forEach((item) => {
       alert_obj[item] = attempt.get("alert-" + item + "-" + i);
     });
     new_config["alerts"].push(alert_obj);

@@ -1,18 +1,18 @@
-import type { Actions } from './$types';
-import { UpdateConfig, NormalizeConfigInput } from '$lib/server/Config';
+import type { Actions } from "./$types";
+import { UpdateConfig, NormalizeConfigInput } from "$lib/server/Config";
 
 export const actions: Actions = {
   default: async (event) => {
-    let attempt = await event.request.formData();
+    const attempt = await event.request.formData();
 
-    let id = attempt.get("id");
+    const id = attempt.get("id");
 
-    let config = event.locals.configuration;
+    const config = event.locals.configuration;
 
     // Grab the view we are updating
-    let view_to_update = config["views"][id];
+    const view_to_update = config["views"][id];
 
-    let new_config = NormalizeConfigInput(attempt, view_to_update);
+    const new_config = NormalizeConfigInput(attempt, view_to_update);
 
     config.views[id] = new_config;
 
@@ -20,7 +20,7 @@ export const actions: Actions = {
     return {
       msg: "Config updated",
       theme: "alert-success",
-      config: config
+      config: config,
     };
-  }
+  },
 };

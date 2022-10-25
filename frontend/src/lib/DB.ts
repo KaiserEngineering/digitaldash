@@ -18,10 +18,7 @@ export function Setup() {
 
     const password = HashPassword("dash");
 
-    createDefaultUser.run(
-      "ke",
-      password
-    );
+    createDefaultUser.run("ke", password);
   }
 }
 

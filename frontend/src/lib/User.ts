@@ -2,10 +2,12 @@ import db from "$lib/DB";
 import { createHash } from "crypto";
 
 export function checkToken(sid: string) {
-  let user = User();
+  const user = User();
 
   if (user) {
-    return user.token + "; Path=/; SameSite=Strict; Expires='';" == sid ? user : undefined;
+    return user.token + "; Path=/; SameSite=Strict; Expires='';" == sid
+      ? user
+      : undefined;
   }
   return undefined;
 }
