@@ -64,6 +64,9 @@ export function NormalizeConfigInput(
 
   const dynamic_obj = {};
   control["dynamic"].forEach((item) => {
+    if (!attempt.get("dynamic-" + item)) {
+      return;
+    }
     dynamic_obj[item] = attempt.get("dynamic-" + item);
   });
   new_config["dynamic"] = dynamic_obj;

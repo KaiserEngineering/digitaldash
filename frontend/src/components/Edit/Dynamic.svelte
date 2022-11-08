@@ -4,7 +4,7 @@
 
   export let view: View;
 
-  let disabled = !view.dynamic.enabled;
+  let enabled = view.dynamic.enabled || false;
 </script>
 
 <h4>Dynamic</h4>
@@ -18,7 +18,7 @@
         <input
           class="form-check-input"
           type="checkbox"
-          bind:checked={disabled}
+          bind:checked={enabled}
           name="dynamic-enabled"
           id="dynamic-enabled"
         />
@@ -35,6 +35,7 @@
         unitName="dynamic-unit"
         pid={view.dynamic.pid}
         unit={view.dynamic.unit}
+        {enabled}
       />
     </div>
 
@@ -42,6 +43,7 @@
       <label for="dynamic-value">Value</label>
       <input
         required
+        disabled={!enabled}
         value={view.dynamic.value}
         class="form-control"
         type="number"
@@ -53,6 +55,7 @@
       <label for="dynamic-op">Operand</label>
       <select
         required
+        disabled={!enabled}
         value={view.dynamic.op}
         name="dynamic-op"
         class="form-control"
@@ -72,6 +75,7 @@
       >
       <input
         required
+        disabled={!enabled}
         value={view.dynamic.priority}
         class="form-control"
         type="number"

@@ -21,6 +21,7 @@
         alerts: [],
         dynamic: {},
         gauges: [],
+        dynamicMinMax: false,
       };
     }
   }

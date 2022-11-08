@@ -5,7 +5,7 @@
   export let view: View;
   export let themes: string[];
 
-  let theme: string = view.gauges[0].theme;
+  let theme: string = view.gauges[0] ? view.gauges[0].theme : "";
 </script>
 
 <h4>Basics</h4>
@@ -68,8 +68,8 @@
           <PID
             inputName="gauge-pid-{i}"
             unitName="gauge-unit-{i}"
-            pid={view.gauges[i].pid}
-            unit={view.gauges[i].unit}
+            pid={view.gauges[i] ? view.gauges[i].pid : ""}
+            unit={view.gauges[i] ? view.gauges[i].unit : ""}
           />
         </div>
       {/each}

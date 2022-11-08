@@ -28,7 +28,7 @@ start_python:
 .PHONY: start_python
 
 start_webapp:
-	cd frontend; npm run dev
+	cd frontend; PORT=80 node build/index.js
 .PHONY: start_webapp
 
 run:

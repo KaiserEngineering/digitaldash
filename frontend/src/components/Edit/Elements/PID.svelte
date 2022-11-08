@@ -13,6 +13,7 @@
   export let unitName: string;
   export let pid: string;
   export let unit: string;
+  export let enabled: boolean = true;
 
   function updateUnitOptions() {
     if (!pid) {
@@ -33,6 +34,7 @@
 
 <div class="col-12">
   <select
+    disabled={!enabled}
     name={inputName}
     bind:value={pid}
     class="m-1 form-control"
@@ -48,7 +50,12 @@
 </div>
 
 <div class="col-12">
-  <select name={unitName} value={unit} class="form-control m-1">
+  <select
+    disabled={!enabled}
+    name={unitName}
+    value={unit}
+    class="form-control m-1"
+  >
     {#each Object.keys(unitOptions) as unitKey}
       <option value={unitKey}>
         {UNIT_LABEL[unitKey]}
