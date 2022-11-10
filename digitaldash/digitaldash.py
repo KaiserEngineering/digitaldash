@@ -145,7 +145,7 @@ def setup(self, layouts):
         skipLinearMinMax = False
         linearCount = 0
         for gauge in view["gauges"]:
-            if gauge["theme"] == "Bar (Red)":
+            if gauge["theme"].startswith("Bar"):
                 linearCount = linearCount + 1
         if linearCount > 1:
             skipLinearMinMax = True
