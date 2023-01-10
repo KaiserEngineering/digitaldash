@@ -246,6 +246,15 @@ KE_PID = {
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
         },
     },
+    "0x22F43C": {
+        "name": "CATALYTIC_TEMPERATURE",
+        "shortName": "Cat Temp",
+        "shortDesc": "Catalytic Temperature",
+        "units": {
+            "PID_UNITS_CELSIUS": {"Min": 0, "Max": 1000, "decimals": "0"},
+            "PID_UNITS_FAHRENHEIT": {"Min": 0, "Max": 2000, "decimals": "0"},
+        },
+    },
     "0xDE0802": {
         "name": "BRAKE_PEDAL_STATUS",
         "shortName": "Brake Pedal",
