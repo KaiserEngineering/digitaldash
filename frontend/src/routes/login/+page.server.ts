@@ -15,7 +15,12 @@ export const actions: Actions = {
       const token = jwt.sign({ username: user.username }, "ke-webapp");
       cookies.set(
         "ke_web_app",
-        token + "; Path=/; SameSite=Strict; Expires='';"
+        token,
+        {
+          sameSite: "lax",
+          httpOnly: true,
+          secure: false
+        }
       );
 
       UpdateToken(token);

@@ -5,7 +5,7 @@ export function checkToken(sid: string) {
   const user = User();
 
   if (user) {
-    return user.token + "; Path=/; SameSite=Strict; Expires='';" == sid
+    return user.token == sid
       ? user
       : undefined;
   }
