@@ -64,7 +64,7 @@
     <label>Vehicle Parameters</label>
     <div class="row">
       {#each Array(3) as _, i}
-        <div class="col-md-4">
+        <div class="col-4">
           <PID
             inputName="gauge-pid-{i}"
             unitName="gauge-unit-{i}"
