@@ -1,0 +1,21 @@
+{
+  "module" : "Radial",
+  "colorChanging": true,
+  "degrees": 180,
+    "labels":
+      [
+        {
+        "pos": [40, 36], "font_size": 20, "Max": "1", "data": 1
+        },
+        {
+        "pos": [-40, 36], "font_size": 20, "Min": "1", "data": 1
+        },
+        {
+        "pos": [0, 60], "font_size": 26, "default": "",
+        "data": 1
+        },
+        {
+          "pos": [0, 20], "font_size": 16, "default": "__PID__"
+        }
+    ]
+}
