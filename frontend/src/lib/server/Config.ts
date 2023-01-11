@@ -55,7 +55,7 @@ export function NormalizeConfigInput(
     name: "",
     background: "",
     dynamic: {},
-    dynamicMinMax: false,
+    dynamicMinMax: control_view["dynamicMinMax"],
   };
 
   control["basics"].forEach((item) => {
@@ -80,7 +80,7 @@ export function NormalizeConfigInput(
 
     // Set default theme across all gauges
     const gauge_obj = {
-      theme: attempt.get("theme"),
+      theme: attempt.get("basics-theme"),
     };
     control["gauges"].forEach((item) => {
       gauge_obj[item] = attempt.get("gauge-" + item + "-" + i);

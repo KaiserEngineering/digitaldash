@@ -47,7 +47,7 @@
       <label for="theme">Theme</label>
       <select
         value={theme}
-        name="theme"
+        name="basics-theme"
         class="form-control d-block w-100"
         id="theme"
         required
@@ -86,7 +86,7 @@
       title="Show default min/max values or show dynamic values based on observed min max"
       class="form-check-input"
       type="checkbox"
-      name="dynamicMinMax"
+      name="basics-dynamicMinMax"
       checked={view.dynamicMinMax}
     />
     <label class="form-check-label" for="dynamic-min-max">
