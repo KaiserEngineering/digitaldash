@@ -1,5 +1,6 @@
 <script lang="ts">
-  import "../app.css";
+  import "../app.postcss";
+  import "../app.scss";
   import { page } from "$app/stores";
 
   import { keys } from "$lib/Keys";
