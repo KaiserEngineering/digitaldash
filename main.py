@@ -52,12 +52,12 @@ from etc import config
 
 config.setWorkingPath(WORKING_PATH)
 
-if dataSource is not None:
+if dataSource is None:
     try:
         dataSource = Serial()
         Logger.info("Using serial data source" + str(dataSource))
     except Exception as e:
-        Logger.info("Running without serial data: " + str(e))
+        Logger.error("Running without serial data: " + str(e))
 
 
 class MyHandler(PatternMatchingEventHandler):
