@@ -4,8 +4,12 @@
   import { page } from "$app/stores";
 
   import { keys } from "$lib/Keys";
-  import { getContext, setContext } from "svelte";
+  import { getContext, onMount, setContext } from "svelte";
   import { writable } from "svelte/store";
+
+  onMount(async () => {
+    await import("bootstrap/js/dist/collapse");
+  });
 
   /* create scoped $session store */
   setContext(keys.session, { session: writable() });

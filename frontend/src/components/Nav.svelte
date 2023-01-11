@@ -10,9 +10,9 @@
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarCollapse"
-          aria-controls="navbarCollapse"
           aria-expanded="false"
+          aria-controls="navbarCollapse"
+          data-bs-target="#navbarCollapse"
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon" />
