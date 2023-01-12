@@ -311,7 +311,7 @@ class Serial:
         """Poll the firmware for the current version"""
         ke_firmware_report = [KE_SOL, 0x03, KE_CP_OP_CODES["KE_FIRMWARE_REPORT"]]
         ret = self.ser.write(ke_firmware_report)
-        return ret
+        return str(ret)
 
 def buildUpdateRequirementsBytearray(requirements):
     """Function to build bytearray that is passed to micro on view change."""
