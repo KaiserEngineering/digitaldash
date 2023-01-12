@@ -151,7 +151,14 @@ class GUI(App):
         Logger.info("GUI: %s", self.status)
 
         if self.data_source:
+            self.firmware_version = self.data_source.get_firmware_version()
+            Logger.error(f"VERSION: {self.firmware_version}")
             self.clock_event = Clock.schedule_interval(self.loop, 0)
+        else:
+            self.firmware_version = "n/a"
+
+        self.version_label = Label(text=self.firmware_version)
+        self.app.add_widget(self.version_label)
 
         return self.app
 
