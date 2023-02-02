@@ -4,7 +4,7 @@ import fs from "fs";
 const gui_path: string | boolean = import.meta.env.VITE_KEGUIHome;
 
 export function ReadLog() {
-  const logNames = fs.readdirSync(gui_path + "etc/kivy/logs");
+  const logNames = fs.readdirSync(gui_path + "/etc/kivy/logs");
 
   const logHash: any = {};
   logNames.forEach((log) => {

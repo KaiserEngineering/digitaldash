@@ -1,0 +1,20 @@
+{
+  "views" : {
+    "0":
+      {
+          "name":"Custom config",
+          "enabled" : true,
+          "default" : 1,
+          "background":"black.png",
+          "dynamic": {},
+          "alerts": [],
+          "dynamicMinMax": true,
+          "gauges": [
+          {
+              "theme": "Custom",
+              "pid": "0x010C",
+              "unit" : "PID_UNITS_RPM"
+          }]
+      }
+  }
+}

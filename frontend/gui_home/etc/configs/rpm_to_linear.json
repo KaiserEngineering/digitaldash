@@ -1,0 +1,59 @@
+{
+    "views" : {
+      "0": {
+        "enabled" : true,
+        "default" : 1,
+        "name":"rpm to linear config",
+        "background":"black.png",
+        "dynamicMinMax": true,
+        "dynamic": {
+            "enabled": true,
+            "pid": "0x010C",
+            "unit" : "PID_UNITS_RPM",
+            "op": "<",
+            "value": 500,
+            "priority": 1
+          },
+        "alerts": [],
+        "gauges" : [
+            {
+                "theme": "Stock ST",
+                "pid": "0x010C",
+                "unit" : "PID_UNITS_RPM"
+            },
+            {
+              "theme": "Stock ST",
+                "pid": "0x010F",
+                "unit" : "PID_UNITS_FAHRENHEIT"
+            },
+            {
+                "theme": "Stock ST",
+                "pid": "0x010B",
+                "unit" : "PID_UNITS_PSI"
+             }
+          ]
+        },
+        "1" : {
+          "enabled" : true,
+          "dynamicMinMax": true,
+          "name": "linear",
+          "background":"black.jpg",
+          "dynamic": {
+            "enabled": true,
+            "pid": "0x010C",
+            "unit" : "PID_UNITS_RPM",
+            "op": ">=",
+            "value": 500,
+            "priority": 10
+          },
+          "alerts": [],
+          "gauges": [
+            {
+                "theme": "Bar (Red)",
+                "pid": "0x010C",
+                "unit" : "PID_UNITS_RPM"
+            }
+          ]
+        }
+    }
+}

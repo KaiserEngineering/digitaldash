@@ -1,0 +1,52 @@
+{
+  "views" : {
+    "0" : {
+      "name":"dynamic view 1",
+      "enabled" : true,
+      "default" : 1,
+      "background":"black.png",
+      "dynamicMinMax": true,
+        "dynamic": {
+          "enabled": false,
+          "pid": "0x220461",
+          "op": "<",
+          "priority": 1,
+          "value": 4000,
+          "unit": "PID_UNITS_RPM"
+        },
+        "alerts": [
+        ],
+      "gauges": [
+          {
+              "theme": "Stock ST",
+              "pid": "0x010C",
+              "unit" : "PID_UNITS_RPM"
+          }
+      ]
+    },
+    "1" : {
+      "name":"dynamic view 2",
+      "dynamicMinMax": true,
+      "enabled" : true,
+      "default" : 0,
+      "background":"black.png",
+        "dynamic": {
+          "enabled": true,
+          "pid": "0x220461",
+          "op": ">",
+          "priority": 2,
+          "value": -9999,
+          "unit": "PID_UNITS_CELSIUS"
+        },
+        "alerts": [
+        ],
+      "gauges": [
+          {
+              "theme": "Stock ST",
+              "pid": "0x220461",
+              "unit" : "PID_UNITS_CELSIUS"
+          }
+      ]
+    }
+  }
+}

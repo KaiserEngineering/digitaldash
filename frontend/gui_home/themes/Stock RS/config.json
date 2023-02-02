@@ -1,0 +1,19 @@
+{
+  "degrees": 120,
+  "module" : "Radial",
+    "labels":
+      [
+       {
+       "pos": [85, 25], "font_size": 22, "data": 1, "Max": 1
+       },
+      {
+       "pos": [-85, 25], "font_size": 22, "data": 1, "Min": 1
+       },
+      {
+       "pos": [0, 55], "font_size": 26, "data": 1
+      },
+      {
+        "pos": [0, 30], "font_size": 20, "default": "__PID__"
+      }
+    ]
+}

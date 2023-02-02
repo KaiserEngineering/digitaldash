@@ -1,0 +1,21 @@
+{
+  "module" : "Static",
+  "colorChanging": true,
+  "degrees": 120,
+    "labels":
+      [
+        {
+        "pos": [45, 48], "font_size": 22, "Max": "1", "data": 1
+        },
+        {
+        "pos": [-45, 48], "font_size": 22, "Min": "1", "data": 1
+        },
+        {
+        "pos": [0, 78], "font_size": 35, "default": "",
+        "data": 1
+        },
+        {
+          "pos": [0, 26], "font_size": 20, "default": "__PID__"
+        }
+    ]
+}

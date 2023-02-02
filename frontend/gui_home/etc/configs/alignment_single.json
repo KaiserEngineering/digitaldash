@@ -1,0 +1,43 @@
+{
+  "views" : {
+    "0": {
+      "name":"single config",
+      "enabled" : true,
+      "default" : 1,
+      "theme" : "Stock ST",
+      "background":"alignment.png",
+      "dynamic": {},
+      "alerts": [],
+      "dynamicMinMax": true,
+      "gauges": [
+        {
+            "theme": "Stock ST",
+            "pid": "0x010C",
+            "unit" : "PID_UNITS_RPM"
+          }
+        ]
+    },
+    "1": {
+        "name":"Don't see me",
+        "enabled" : false,
+        "background":"black.png",
+        "dynamicMinMax": true,
+        "dynamic": {
+            "enabled": true,
+            "pid": "0x010C",
+            "op": ">=",
+            "value": 1000,
+            "priority": 10,
+            "unit" : "PID_UNITS_RPM"
+        },
+        "alerts": [],
+        "gauges": [
+          {
+              "theme": "Glow",
+              "pid": "0x010C",
+              "unit" : "PID_UNITS_RPM"
+            }
+          ]
+      }
+  }
+}

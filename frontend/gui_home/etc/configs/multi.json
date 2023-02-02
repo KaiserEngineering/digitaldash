@@ -1,0 +1,39 @@
+{
+  "views" : {
+    "0": {
+            "name": "First view",
+            "enabled" : true,
+            "default" : 1,
+            "dynamicMinMax": true,
+            "background" : "alignment.png",
+            "alerts" : [
+                {
+                    "pid": "0x010C",
+                    "op": ">",
+                    "value": -4000,
+                    "priority": 1,
+                    "message" : "Danger to Manifold",
+                    "unit" : "PID_UNITS_RPM"
+                }
+            ],
+            "dynamic" : {
+            },
+            "gauges" : [
+            {
+                "theme" : "Stock ST",
+                "pid" : "0x010C",
+                "unit" : "PID_UNITS_RPM"
+            },
+            {
+              "theme" : "Stock ST",
+              "pid" : "0x010C",
+              "unit" : "PID_UNITS_RPM"
+          },
+          {
+            "theme" : "Linear",
+            "pid" : "0x010C",
+            "unit" : "PID_UNITS_RPM"
+        }
+        ]}
+    }
+}

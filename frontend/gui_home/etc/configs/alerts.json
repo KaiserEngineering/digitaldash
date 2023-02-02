@@ -1,0 +1,62 @@
+{
+    "views" : {
+      "0" : {
+        "name":"alerts config",
+        "enabled" : true,
+        "default" : 1,
+        "background":"black.png",
+        "dynamicMinMax": true,
+          "dynamic": {},
+          "alerts": [
+            {
+                "pid": "0x010C",
+                "op": "<",
+                "value": 4000,
+                "priority": 1,
+                "message" : "Hello, world",
+                "unit" : "PID_UNITS_RPM"
+            },
+            {
+              "pid": "0x010C",
+              "op": ">=",
+              "value": 4000,
+              "priority": 2,
+              "message" : "Alert two",
+              "unit" : "PID_UNITS_RPM"
+          }
+          ],
+        "gauges": [
+            {
+                "theme": "Stock ST",
+                "pid": "0x010C",
+                "unit" : "PID_UNITS_RPM"
+            }
+        ]
+      },
+    "1" : {
+      "name":"alerts config two",
+      "enabled" : true,
+      "default" : 0,
+      "background":"black.png",
+      "dynamicMinMax": true,
+        "dynamic": {},
+        "alerts": [
+          {
+              "pid": "0x010C",
+              "op": ">",
+              "value": 4000,
+              "priority": 1,
+              "message" : "Alert two",
+              "unit" : "PID_UNITS_RPM"
+          }
+        ],
+      "gauges": [
+          {
+              "theme": "Stock ST",
+              "pid": "0x010C",
+              "unit" : "PID_UNITS_RPM"
+          }
+      ]
+    }
+  }
+}
