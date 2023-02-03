@@ -98,7 +98,9 @@ def findPidsForView(views, Id, dynamicPids):
             not gauge["pid"]
             or str(gauge["pid"].value) + str(gauge["pid"].unit) in pidsList
         ):
-            Logger.info(f"Skipping pid {gauge['pid'].value} as it was already found in PID list")
+            Logger.info(
+                f"Skipping pid {gauge['pid'].value} as it was already found in PID list"
+            )
             continue
         pidsList.append(gauge["pid"])
 
