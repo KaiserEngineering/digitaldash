@@ -186,7 +186,6 @@ def setup(self, layouts):
                     pidsDict[pidUnitHash] = dynamicPID
                 # We only will ever have one dynamic PID right?
                 dynamicPids[Id] = dynamicPID
-                raise ConfigBuildError("Couldn't set dynamic PID")
                 # Replace our string pid value with our new object
                 dynamicConfig["pid"] = dynamicPID
 
