@@ -5,9 +5,7 @@ export function checkToken(sid: string) {
   const user = User();
 
   if (user) {
-    return user.token == sid
-      ? user
-      : undefined;
+    return user.token == sid ? user : undefined;
   }
   return undefined;
 }

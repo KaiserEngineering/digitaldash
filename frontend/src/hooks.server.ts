@@ -46,7 +46,7 @@ export async function getSession(event: {
 }) {
   return event.locals.user
     ? {
-      username: event.locals.user.username,
-    }
+        username: event.locals.user.username,
+      }
     : {};
 }

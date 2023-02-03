@@ -13,15 +13,11 @@ export const actions: Actions = {
       user.password == HashPassword(attempt.get("password"))
     ) {
       const token = jwt.sign({ username: user.username }, "ke-webapp");
-      cookies.set(
-        "ke_web_app",
-        token,
-        {
-          sameSite: "lax",
-          httpOnly: true,
-          secure: false
-        }
-      );
+      cookies.set("ke_web_app", token, {
+        sameSite: "lax",
+        httpOnly: true,
+        secure: false,
+      });
 
       UpdateToken(token);
       return {
