@@ -45,7 +45,7 @@ from kivy.clock import mainthread, Clock
 # Rust import
 import libdigitaldash
 
-from digitaldash.digitaldash import buildFromConfig
+from digitaldash.digitaldash import buildFromConfig, clearWidgets
 from digitaldash.digitaldash import Alert, Dynamic
 from digitaldash.keError import ConfigBuildError
 from _version import __version__
@@ -74,11 +74,16 @@ class MyHandler(PatternMatchingEventHandler):
 
     def rebuild(self, dt):
         Logger.info("Rebuilding config")
-        buildFromConfig(self.DigitalDash, dataSource)
-        if self.DigitalDash.data_source:
-            self.DigitalDash.clock_event = Clock.schedule_interval(
-                self.DigitalDash.loop, 0
-            )
+        try:
+            buildFromConfig(self.DigitalDash, dataSource)
+            if self.DigitalDash.data_source:
+                self.DigitalDash.clock_event = Clock.schedule_interval(
+                    self.DigitalDash.loop, 0
+                )
+        except ConfigBuildError as ex:
+            Logger.error(f"GUI: {ex}")
+            clearWidgets(self.DigitalDash)
+            self.DigitalDash.app.add_widget(Label(text=str(ex)))
 
     @mainthread
     def on_modified(self, event):
@@ -151,14 +156,18 @@ class GUI(App):
             return Label(text=str(ex))
 
         if self.data_source:
-            self.firmware_version = f"FW: {self.data_source.get_firmware_version()}"
+            self.firmware_version = (
+                f"FW: {self.data_source.get_firmware_version()}"
+            )
             Logger.error(f"VERSION: {self.firmware_version}")
             self.clock_event = Clock.schedule_interval(self.loop, 0)
         else:
             self.firmware_version = "FW: N/A"
         self.gui_version = f"GUI: {__version__}"
 
-        self.version_label = Label(text=f"{self.firmware_version} {self.gui_version}")
+        self.version_label = Label(
+            text=f"{self.firmware_version} {self.gui_version}"
+        )
         self.app.add_widget(self.version_label)
 
         return self.app

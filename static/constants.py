@@ -75,7 +75,7 @@ PID_UNIT_LABEL = {
     "PID_UNITS_LPH": "lpm",
     "PID_UNITS_BAR": "bar",
     "PID_UNITS_G_FORCE": "G",
-    "PID_UNITS_NONE": ""
+    "PID_UNITS_NONE": "",
 }
 
 KE_PID = {

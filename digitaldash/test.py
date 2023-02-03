@@ -5,6 +5,7 @@
 # pylint: disable=invalid-name
 import csv
 
+
 class Test:
     """Test instance."""
 
@@ -98,7 +99,6 @@ class Test:
     def initialize_hardware(self):
         """Test initialize_hardware method"""
         return (True, "Hardware: Successfully initiated hardware")
-
 
     @staticmethod
     def get_firmware_version():

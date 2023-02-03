@@ -290,6 +290,20 @@ def setup(self, layouts):
     return [views, containers, callbacks]
 
 
+def clearWidgets(digitaldash, background=False):
+    """
+    Clear widgets from our DigitalDash instance, by default we don't
+    clear the background.
+    """
+    digitaldash.app.clear_widgets()
+    if background:
+        digitaldash.background.clear_widgets()
+    digitaldash.alerts.clear_widgets()
+    digitaldash.alert_callbacks = []
+    digitaldash.dynamic_callbacks = []
+    digitaldash.callbacks = {}
+
+
 def buildFromConfig(self, dataSource=None):
     """Build all our gauges and widgets from the config file provided to self"""
 
@@ -302,12 +316,7 @@ def buildFromConfig(self, dataSource=None):
     # the segfault monster.
     if not self.first_iteration:
         Logger.info("GUI: Clearing widgets for reload")
-        self.app.clear_widgets()
-        self.background.clear_widgets()
-        self.alerts.clear_widgets()
-        self.alert_callbacks = []
-        self.dynamic_callbacks = []
-        self.callbacks = {}
+        clearWidgets(self, background=True)
 
     ret = setup(
         self, config.views(file=self.configFile, jsonData=self.jsonData)
