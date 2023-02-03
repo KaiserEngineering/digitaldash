@@ -24,6 +24,7 @@ from digitaldash.alert import Alert
 from digitaldash.alerts import Alerts
 from digitaldash.pid import PID
 from digitaldash.keProtocol import buildUpdateRequirementsBytearray
+from digitaldash.keError import ConfigBuildError
 
 # Import custom gauges
 from local.gauges import *
@@ -181,11 +182,11 @@ def setup(self, layouts):
                         Logger.error(
                             "GUI: Bailing out: Couldn't set dynamic PID"
                         )
-                        return (0, "Couldn't set dynamic PID")
+                        raise ConfigBuildError("Couldn't set dynamic PID")
                     pidsDict[pidUnitHash] = dynamicPID
                 # We only will ever have one dynamic PID right?
                 dynamicPids[Id] = dynamicPID
-
+                raise ConfigBuildError("Couldn't set dynamic PID")
                 # Replace our string pid value with our new object
                 dynamicConfig["pid"] = dynamicPID
 
@@ -287,13 +288,11 @@ def setup(self, layouts):
             Logger.info("GUI: No pid_byte_code generated for view #%s", Id)
             views[Id]["pid_byte_code"] = ""
 
-    return ([views, containers, callbacks], "Successful setup")
+    return [views, containers, callbacks]
 
 
 def buildFromConfig(self, dataSource=None):
     """Build all our gauges and widgets from the config file provided to self"""
-    self.success = 0
-    self.status = ""
 
     # Current is used to track which viewId we are currently displaying.
     # This is important for skipping dynamic checks that we don't need to check.
@@ -311,14 +310,10 @@ def buildFromConfig(self, dataSource=None):
         self.dynamic_callbacks = []
         self.callbacks = {}
 
-    (ret, msg) = setup(
+    ret = setup(
         self, config.views(file=self.configFile, jsonData=self.jsonData)
     )
-    if ret:
-        self.views, self.containers, self.callbacks = ret
-    else:
-        self.success = 0
-        self.status = msg
+    self.views, self.containers, self.callbacks = ret
 
     # Sort our dynamic and alerts callbacks by priority
     self.dynamic_callbacks = sorted(
@@ -380,5 +375,4 @@ def buildFromConfig(self, dataSource=None):
     self.background.add_widget(self.containers[next(iter(self.containers))])
     self.background.add_widget(self.alerts)
 
-    self.success = 1
-    self.status = "Successful build"
+    Logger.info("GUI: Successful config build")

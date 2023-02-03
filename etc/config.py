@@ -16,7 +16,6 @@ def setWorkingPath(path):
     global WORKINGPATH
     WORKINGPATH = path
 
-
 def views(file=None, jsonData=None):
     """Get data from JSON."""
     # This is for tests so its fine to just die on error

@@ -47,6 +47,7 @@ import libdigitaldash
 
 from digitaldash.digitaldash import buildFromConfig
 from digitaldash.digitaldash import Alert, Dynamic
+from digitaldash.keError import ConfigBuildError
 from _version import __version__
 from etc import config
 
@@ -143,12 +144,11 @@ class GUI(App):
         )
         observer.start()
 
-        buildFromConfig(self, dataSource)
-
-        # If something went wrong in build return a label with the error message:
-        if not self.success:
-            return Label(text=self.status)
-        Logger.info("GUI: %s", self.status)
+        try:
+            buildFromConfig(self, dataSource)
+        except ConfigBuildError as ex:
+            Logger.error(f"GUI: {ex}")
+            return Label(text=str(ex))
 
         if self.data_source:
             self.firmware_version = f"FW: {self.data_source.get_firmware_version()}"
