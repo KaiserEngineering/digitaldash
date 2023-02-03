@@ -98,6 +98,7 @@ def findPidsForView(views, Id, dynamicPids):
             not gauge["pid"]
             or str(gauge["pid"].value) + str(gauge["pid"].unit) in pidsList
         ):
+            Logger.info(f"Skipping pid {gauge['pid'].value} as it was already found in PID list")
             continue
         pidsList.append(gauge["pid"])
 
@@ -127,11 +128,10 @@ def setup(self, layouts):
     containers = {}
     dynamicPids = {}
 
-    # Sort based on default value
+    # We need to parse out dynamic PIDs first since they
+    # apply to all views (except for their own)
     for Id in layouts["views"]:
-        Logger.info("GUI: Starting on view %s", Id)
-        # Make sure a callback key exist for each view Id
-        callbacks.setdefault(Id, [])
+        Logger.info("GUI: Checking for dynamic PIDs for view #%s", Id)
 
         view = layouts["views"][Id]
         # Skip disabled views
@@ -141,23 +141,6 @@ def setup(self, layouts):
             )
             continue
 
-        # FIXME
-        # This is a bandaid on the issue of spacing for linear gauges
-        skipLinearMinMax = False
-        linearCount = 0
-        for gauge in view["gauges"]:
-            if gauge["theme"].startswith("Bar"):
-                linearCount = linearCount + 1
-        if linearCount > 1:
-            skipLinearMinMax = True
-        # FIXME
-
-        # Update our global dictionary with new view values -- if any.
-        findPids(view)
-
-        background = view["background"]
-
-        # Create our callbacks
         if view["dynamic"].keys():
             dynamicConfig = view["dynamic"]
             if dynamicConfig["enabled"]:
@@ -196,6 +179,36 @@ def setup(self, layouts):
                 else:
                     Logger.error(msg)
                     callbacks.setdefault("dynamic", [])
+
+    # Sort based on default value
+    for Id in layouts["views"]:
+        Logger.info("GUI: Starting on view %s", Id)
+        # Make sure a callback key exist for each view Id
+        callbacks.setdefault(Id, [])
+
+        view = layouts["views"][Id]
+        # Skip disabled views
+        if not view["enabled"]:
+            Logger.info(
+                "GUI: Skipping view %s as it is marked as disabled", Id
+            )
+            continue
+
+        # FIXME
+        # This is a bandaid on the issue of spacing for linear gauges
+        skipLinearMinMax = False
+        linearCount = 0
+        for gauge in view["gauges"]:
+            if gauge["theme"].startswith("Bar"):
+                linearCount = linearCount + 1
+        if linearCount > 1:
+            skipLinearMinMax = True
+        # FIXME
+
+        # Update our global dictionary with new view values -- if any.
+        findPids(view)
+
+        background = view["background"]
 
         if len(view["alerts"]) > 0:
             for alert in view["alerts"]:
@@ -278,6 +291,8 @@ def setup(self, layouts):
             "pids": findPidsForView(layouts["views"], Id, dynamicPids),
         }
 
+        for pid in views[Id]["pids"]:
+            print(pid.value)
         # Now we can generate a complete byte array for the PIDs
         if len(views[Id]["pids"]) > 0:
             views[Id]["pid_byte_code"] = buildUpdateRequirementsBytearray(
