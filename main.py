@@ -119,9 +119,6 @@ class GUI(App):
         self.WORKING_PATH = WORKING_PATH
         self.count = 0
 
-        self.success = 1
-        self.status = ""
-
     def new(self, configFile=None, data=None):
         """
         This method can be used to set any values before the app starts, this is useful for
