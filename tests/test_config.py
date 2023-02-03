@@ -33,12 +33,12 @@ def test_config_file_from_cli(mock_window):
         "Can set config file on DD instantiation"
     )
 
-    (views, containers, callbacks) = (None, None, None)
-    (ret, msg) = digitaldash.setup(
+    (views, _containers, _callbacks) = (None, None, None)
+    ret = digitaldash.setup(
         dd, config.views(working_path + "/etc/configs/single.json")
     )
     if ret:
-        (views, containers, callbacks) = ret
+        (views, _containers, _callbacks) = ret
     assert len(views) == 1, print("Only include the enabled views")
 
     path = working_path + "/etc/configs"
