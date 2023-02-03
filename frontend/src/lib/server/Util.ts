@@ -9,7 +9,7 @@ const guiHome: string | boolean = import.meta.env.VITE_KEGUIHome;
 const cache: any = {};
 
 export function ReadFile(File: string) {
-  return JSON.parse(fs.readFileSync(`${guiHome}/${File}`).toString());
+  return JSON.parse(fs.readFileSync(`${guiHome}${File}`).toString());
 }
 
 export function WriteFile(File: string, Value: any) {
