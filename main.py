@@ -96,7 +96,6 @@ class MyHandler(PatternMatchingEventHandler):
 for file in os.listdir(WORKING_PATH + "/digitaldash/kv/"):
     Builder.load_file(WORKING_PATH + "/digitaldash/kv/" + str(file))
 
-
 class GUI(App):
     """
     Main class that initiates kivy app.
@@ -130,6 +129,14 @@ class GUI(App):
         if data:
             global dataSource
             dataSource = data
+
+    def remove_version_label(self, dt):
+        """
+        Remove the firmware/gui version label, this should be auto
+        called with the clock schedule_once function.
+        """
+        Logger.info("Removing firmware/gui version label")
+        self.app.remove_widget(self.version_label)
 
     def build(self):
         """Called at start of application"""
@@ -166,6 +173,8 @@ class GUI(App):
             text=f"{self.firmware_version} {self.gui_version}"
         )
         self.app.add_widget(self.version_label)
+
+        Clock.schedule_once(self.remove_version_label, 25)
 
         return self.app
 
