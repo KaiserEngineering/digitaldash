@@ -135,7 +135,7 @@ class GUI(App):
         Remove the firmware/gui version label, this should be auto
         called with the clock schedule_once function.
         """
-        Logger.info("Removing firmware/gui version label")
+        Logger.info("GUI: Removing firmware/gui version label")
         self.app.remove_widget(self.version_label)
 
     def build(self):
