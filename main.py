@@ -197,7 +197,7 @@ class GUI(App):
                 ex,
             )
 
-    def check_callback(self, callback: Union[Alert, Dynamic], data: List):
+    def check_callback(self, callback: Union[Alert, Dynamic], data: dict):
         """
         We mainthread this function so that someone with crazy toggle fingers
         doesn't beat the race condition.
@@ -220,7 +220,7 @@ class GUI(App):
         self.current = my_callback.viewId
         my_callback.change(self)
 
-    def update_values(self, data: List[float]):
+    def update_values(self, data: dict[float]):
         for widget in self.objectsToUpdate:
             for obj in widget:
                 if obj.pid:
