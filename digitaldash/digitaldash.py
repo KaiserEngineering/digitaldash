@@ -293,8 +293,6 @@ def setup(self, layouts):
             "pids": findPidsForView(layouts["views"], Id, dynamicPids),
         }
 
-        for pid in views[Id]["pids"]:
-            print(pid.value)
         # Now we can generate a complete byte array for the PIDs
         if len(views[Id]["pids"]) > 0:
             views[Id]["pid_byte_code"] = buildUpdateRequirementsBytearray(
