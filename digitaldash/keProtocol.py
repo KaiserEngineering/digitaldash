@@ -27,7 +27,7 @@ class Serial:
             timeout=0.5,
         )
         self.ser.flushInput()
-        self.ser_val = [0, 0, 0, 0, 0, 0]
+        self.ser_val = {}
         self.systemFirmware = [0, 0, 0]
         self.hardwareFirmware = [0, 0, 0]
         self.firmwareVerified = False  # False to do a firmware request
