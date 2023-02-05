@@ -73,9 +73,11 @@ export function NormalizeConfigInput(
 
   // Build our gauges section
   for (let i = 0; i < 3; i++) {
-    // Stop iterating if we have no more gauge inputs (less than 3)
+    // If we are missing a guage, keep going
+    // we don't bail out incase the user removed the
+    // first gauge but has values for the other one/two.
     if (!attempt.get("gauge-pid-" + i)) {
-      break;
+      continue;
     }
 
     // Set default theme across all gauges
