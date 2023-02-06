@@ -1,17 +1,19 @@
 """Main start module"""
 
+# We need to set OS envs before any Kivy widgets are called
+# looking at you Test.
+import os
+import pathlib
+WORKING_PATH = str(pathlib.Path(__file__).parent.absolute())
+os.environ["KIVY_HOME"] = WORKING_PATH + "/etc/kivy/"
+
 # Dependent modules and packages
 import getopt
 import sys
 from digitaldash.test import Test
-import os
-import pathlib
-from typing import List, Optional, Union
+from typing import Optional, Union
 from functools import lru_cache
 from digitaldash.keProtocol import Serial
-
-WORKING_PATH = str(pathlib.Path(__file__).parent.absolute())
-os.environ["KIVY_HOME"] = WORKING_PATH + "/etc/kivy/"
 
 (TESTING, ConfigFile) = (False, None)
 dataSource: Optional[Test | Serial] = None
