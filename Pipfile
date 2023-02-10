@@ -18,7 +18,7 @@ pylint = ">=2.11.1"
 lib-digital-dash = {path = "./libdigitaldash"}
 Pillow = "*"
 PGen = ">=0.2.1"
-Kivy = ">=2.1.0"
+Kivy = {git = "git+https://github.com/craigkai/kivy", ref = "initialize-logger" }
 
 [dev-packages]
 pre-commit = "*"
