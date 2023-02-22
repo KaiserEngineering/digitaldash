@@ -1,6 +1,7 @@
-# Kaiser Engineering Digital Dash GUI
-
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FKaiserEngineering%2Fdigitaldash%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/KaiserEngineering/digitaldash/goto?ref=master)
+[![Lint](https://github.com/KaiserEngineering/shiftlight-configuration-tool/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/KaiserEngineering/shiftlight-configuration-tool/actions/workflows/lint.yml)
+[![Format](https://github.com/KaiserEngineering/shiftlight-configuration-tool/actions/workflows/format.yml/badge.svg)](https://github.com/KaiserEngineering/shiftlight-configuration-tool/actions/workflows/format.yml)
+[![Audit](https://github.com/KaiserEngineering/shiftlight-configuration-tool/actions/workflows/audit.yml/badge.svg)](https://github.com/KaiserEngineering/shiftlight-configuration-tool/actions/workflows/audit.yml)
+[![publish](https://github.com/KaiserEngineering/shiftlight-configuration-tool/actions/workflows/releases.yml/badge.svg)](https://github.com/KaiserEngineering/shiftlight-configuration-tool/actions/workflows/releases.yml)
 
 For more information see the [wiki](https://wiki.kaiserengineering.io/en/gui)
 
