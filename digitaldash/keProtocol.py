@@ -34,6 +34,7 @@ class Serial:
         self.ser_val = [0, 0, 0, 0, 0, 0]
         self.systemFirmware = [0, 0, 0]
         self.hardwareFirmware = [0, 0, 0]
+        self.firmware_version = "UNREAD"
         self.firmwareVerified = False  # False to do a firmware request
         self.data_stream_active = False
         self.requirements = []
@@ -119,6 +120,13 @@ class Serial:
             self.ser_val = key_val
 
             return self.ser_val
+
+        elif (
+            self.rx_buffer[KE_PCKT_CMD_POS]
+            == KE_CP_OP_CODES["KE_FIRMWARE_REPORT"]
+        ):
+            # Payload is ASCII data
+            self.firmware_version = "".join(map(chr, serial_data))
 
     def service(self, **args):
 
@@ -295,6 +303,22 @@ class Serial:
         global KE_CP_OP_CODES
         Logger.info("GUI: Initializing hardware")
 
+        """Poll the firmware for the current version"""
+        ke_firmware_report = [KE_SOL, 0x03, KE_CP_OP_CODES["KE_FIRMWARE_REQ"]]
+
+        # Queue the message
+        self.queued_message = ke_firmware_report
+
+        if self.data_stream_active is True:
+            # Set the flag to transmit the queued message
+            self.message_pending = True
+        else:
+            # No communication is in progress, asynchronously send the message
+            self.ser.write(self.queued_message)
+            self.queued_message = None
+
+        self.firmware_version = "NOT RESPONDING"
+
         return (True, "Hardware: Successfully initiated hardware")
 
     def power_cycle(self):
@@ -312,10 +336,12 @@ class Serial:
 
 
     def get_firmware_version(self)-> str:
-        """Poll the firmware for the current version"""
-        ke_firmware_report = [KE_SOL, 0x03, KE_CP_OP_CODES["KE_FIRMWARE_REPORT"]]
-        ret = self.ser.write(ke_firmware_report)
-        return str(ret)
+        # Wait 50ms to ensure the firmware has been reported
+        for wait in range(10):
+            self.service()
+            time.sleep(0.05)
+
+        return self.firmware_version
 
 def buildUpdateRequirementsBytearray(requirements):
     """Function to build bytearray that is passed to micro on view change."""
