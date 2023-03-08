@@ -136,13 +136,13 @@ class GUI(App):
             global dataSource
             dataSource = data
 
-    def remove_version_label(self, dt):
+    def remove_version_layout(self, _dt):
         """
-        Remove the firmware/gui version label, this should be auto
+        Remove the firmware/gui version label layout, this should be auto
         called with the clock schedule_once function.
         """
         Logger.info("GUI: Removing firmware/gui version label")
-        self.app.remove_widget(self.version_label)
+        self.app.remove_widget(self.version_layout)
 
     def build(self):
         """Called at start of application"""
@@ -174,9 +174,9 @@ class GUI(App):
         self.gui_version = f"GUI: {__version__}"
 
         self.version_label = Label(text=f"{self.firmware_version} {self.gui_version}",pos=(0, 160))
-        layout = RelativeLayout()
-        layout.add_widget(self.version_label)
-        self.app.add_widget(layout)
+        self.version_layout = RelativeLayout()
+        self.version_layout.add_widget(self.version_label)
+        self.app.add_widget(self.version_layout)
 
         return self.app
 
