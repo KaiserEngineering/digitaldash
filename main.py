@@ -42,6 +42,7 @@ from kivy.logger import Logger
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.relativelayout import RelativeLayout
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 from kivy.uix.label import Label
@@ -172,8 +173,10 @@ class GUI(App):
             self.firmware_version = "FW: N/A"
         self.gui_version = f"GUI: {__version__}"
 
-        self.version_label = Label(text=f"{self.firmware_version} {self.gui_version}")
-        self.app.add_widget(self.version_label)
+        self.version_label = Label(text=f"{self.firmware_version} {self.gui_version}",pos=(0, 160))
+        layout = RelativeLayout()
+        layout.add_widget(self.version_label)
+        self.app.add_widget(layout)
 
         return self.app
 
