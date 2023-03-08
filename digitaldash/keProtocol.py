@@ -142,7 +142,7 @@ class Serial:
                 # Look for a start of line byte
                 if byte == KE_SOL:
                     # Check if a current RX is in progress
-                    if self.KE_RX_IN_PROGRESS is False:
+                    if self.KE_RX_IN_PROGRESS is True:
                         # Increment the number of aborted RX messages
                         self.rx_abort_count += 1
 
