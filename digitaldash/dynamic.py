@@ -93,6 +93,9 @@ class Dynamic:
         app.background.add_widget(app.containers[str(self.viewId)])
         app.background.add_widget(app.alerts)
 
+        # Add back our version labels
+        app.background.add_widget(app.version_layout)
+
         # Sort our dynamic and alerts callbacks by priority
         app.dynamic_callbacks = sorted(
             app.callbacks["dynamic"], key=lambda x: x.priority

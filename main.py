@@ -86,10 +86,14 @@ class MyHandler(PatternMatchingEventHandler):
                 self.DigitalDash.clock_event = Clock.schedule_interval(
                     self.DigitalDash.loop, 0
                 )
+            # Add back our version labels
+            self.DigitalDash.background.add_widget(self.DigitalDash.version_layout)
         except ConfigBuildError as ex:
             Logger.error(f"GUI: {ex}")
             clearWidgets(self.DigitalDash)
             self.DigitalDash.app.add_widget(Label(text=str(ex)))
+            # Add back our version labels
+            self.DigitalDash.background.add_widget(self.DigitalDash.version_layout)
 
     @mainthread
     def on_modified(self, event):
@@ -176,7 +180,7 @@ class GUI(App):
         self.version_label = Label(text=f"{self.firmware_version} {self.gui_version}",pos=(0, 160))
         self.version_layout = RelativeLayout()
         self.version_layout.add_widget(self.version_label)
-        self.app.add_widget(self.version_layout)
+        self.background.add_widget(self.version_layout)
 
         return self.app
 
