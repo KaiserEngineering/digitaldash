@@ -176,7 +176,7 @@ class GUI(App):
             self.firmware_version = "FW: N/A"
         self.gui_version = f"GUI: {__version__}"
 
-        self.version_label = Label(text=f"{self.firmware_version} {self.gui_version}",pos=(0, 160))
+        self.version_label = Label(text=f"{self.firmware_version} {self.gui_version}",pos=(0, 30))
         self.version_layout = RelativeLayout()
         self.version_layout.add_widget(self.version_label)
         self.background.add_widget(self.version_layout)
