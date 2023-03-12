@@ -146,7 +146,7 @@ class GUI(App):
         called with the clock schedule_once function.
         """
         Logger.info("GUI: Removing firmware/gui version label")
-        self.app.remove_widget(self.version_layout)
+        self.background.remove_widget(self.version_layout)
 
     def build(self):
         """Called at start of application"""
