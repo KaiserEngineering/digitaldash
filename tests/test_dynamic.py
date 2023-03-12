@@ -7,6 +7,7 @@ from main import GUI
 from etc import config
 from kivy.clock import mainthread, Clock
 from kivy.config import Config
+from kivy.uix.label import Label
 from kivy.uix.anchorlayout import AnchorLayout
 import pathlib
 import pytest
@@ -34,6 +35,8 @@ def my_application(mock_window):
     self.app = AnchorLayout()
     self.data_source = t
     self.working_path = str(pathlib.Path(__file__).parent.absolute())
+    self.version_label = Label(text="Testing")
+    self.version_layout = AnchorLayout()
 
     buildFromConfig(self)
     return self
