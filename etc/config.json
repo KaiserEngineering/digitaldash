@@ -41,6 +41,90 @@
         "unit": "PID_UNITS_CELSIUS"
       },
       "dynamicMinMax": null
+    },
+    "2": {
+      "enabled": true,
+      "default": 1,
+      "gauges": [
+        {
+          "theme": "Stock RS",
+          "unit": "PID_UNITS_FAHRENHEIT",
+          "pid": "0x010F"
+        },
+        {
+          "theme": "Stock RS",
+          "unit": "PID_UNITS_PSI",
+          "pid": "0xC16F"
+        },
+        {
+          "theme": "Stock RS",
+          "unit": "PID_UNITS_FAHRENHEIT",
+          "pid": "0x015C"
+        }
+      ],
+      "alerts": [
+        {
+          "message": "Shift!",
+          "op": ">=",
+          "priority": "0",
+          "unit": "PID_UNITS_RPM",
+          "value": "6499",
+          "pid": "0x010C"
+        }
+      ],
+      "name": "Daily Driver",
+      "background": "Blue Purple Gradient.png",
+      "dynamic": {
+        "pid": "0x015C",
+        "op": ">=",
+        "enabled": "on",
+        "value": "1",
+        "priority": "0",
+        "unit": "PID_UNITS_CELSIUS"
+      },
+      "dynamicMinMax": null
+    },
+    "1": {
+      "enabled": true,
+      "default": 1,
+      "gauges": [
+        {
+          "theme": "Stock RS",
+          "unit": "PID_UNITS_FAHRENHEIT",
+          "pid": "0x010F"
+        },
+        {
+          "theme": "Stock RS",
+          "unit": "PID_UNITS_PSI",
+          "pid": "0xC16F"
+        },
+        {
+          "theme": "Stock RS",
+          "unit": "PID_UNITS_FAHRENHEIT",
+          "pid": "0x015C"
+        }
+      ],
+      "alerts": [
+        {
+          "message": "Shift!",
+          "op": ">=",
+          "priority": "0",
+          "unit": "PID_UNITS_RPM",
+          "value": "6499",
+          "pid": "0x010C"
+        }
+      ],
+      "name": "Daily Driver",
+      "background": "Blue Purple Gradient.png",
+      "dynamic": {
+        "pid": "0x015C",
+        "op": ">=",
+        "enabled": "on",
+        "value": "1",
+        "priority": "0",
+        "unit": "PID_UNITS_CELSIUS"
+      },
+      "dynamicMinMax": null
     }
   }
 }
