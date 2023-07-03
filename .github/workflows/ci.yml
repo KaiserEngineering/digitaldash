@@ -36,9 +36,12 @@ jobs:
       - name: Install OS dependencies
         run: |
           sudo apt-get update
-          sudo apt-get -y install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-mixer-dev libmtdev1
-          sudo apt-get -y install libsmpeg-dev libswscale-dev libavformat-dev libavcodec-dev libjpeg-dev libtiff5-dev libx11-dev libmtdev-dev
-          sudo apt-get -y install build-essential libgl1-mesa-dev libgles2-mesa-dev
+          sudo apt-get -y install build-essential git make autoconf automake libtool \
+          pkg-config cmake ninja-build libasound2-dev libpulse-dev libaudio-dev \
+          libjack-dev libsndio-dev libsamplerate0-dev libx11-dev libxext-dev \
+          libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libwayland-dev \
+          libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev \
+          libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev fcitx-libs-dev
           sudo apt install rustc pipenv
 
       - name: Install pipenv via pip
