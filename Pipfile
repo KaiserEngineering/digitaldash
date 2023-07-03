@@ -19,6 +19,7 @@ lib-digital-dash = {path = "./libdigitaldash"}
 Pillow = "*"
 PGen = ">=0.2.1"
 Kivy = {git = "git+https://github.com/craigkai/kivy", ref = "initialize-logger" }
+exceptiongroup = "*"
 
 [dev-packages]
 pre-commit = "*"
@@ -26,4 +27,4 @@ black = "*"
 Mock = "*"
 
 [requires]
-python_version = "3.10"
+python_version = "3.11"
