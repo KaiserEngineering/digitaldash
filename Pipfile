@@ -19,6 +19,7 @@ lib-digital-dash = {path = "./libdigitaldash"}
 Pillow = "*"
 PGen = ">=0.2.1"
 Kivy = {git = "git+https://github.com/craigkai/kivy", ref = "initialize-logger" }
+RPi.GPIO = {version = "*", sys_platform == 'linux'}
 
 [dev-packages]
 pre-commit = "*"
