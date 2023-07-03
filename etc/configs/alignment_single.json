@@ -4,7 +4,6 @@
       "name":"single config",
       "enabled" : true,
       "default" : 1,
-      "theme" : "Stock ST",
       "background":"alignment.png",
       "dynamic": {},
       "alerts": [],
@@ -33,7 +32,7 @@
         "alerts": [],
         "gauges": [
           {
-              "theme": "Glow",
+              "theme": "Stock ST",
               "pid": "0x010C",
               "unit" : "PID_UNITS_RPM"
             }
