@@ -1,5 +1,6 @@
 """Serial handler class."""
 # pylint: skip-file
+import time
 import serial
 from kivy.logger import Logger, LOG_LEVELS
 from static.constants import KE_CP_OP_CODES
@@ -88,7 +89,6 @@ class Serial:
             self.rx_buffer[KE_PCKT_CMD_POS]
             == KE_CP_OP_CODES["KE_PID_STREAM_REPORT"]
         ):
-
             self.data_stream_active = True
 
             if self.queued_message is not None:
@@ -125,7 +125,6 @@ class Serial:
             self.firmware_version = "".join(map(chr, serial_data))
 
     def service(self, **args):
-
         cpu = CPUTemperature()
 
         if cpu.temperature > 70:
@@ -340,14 +339,14 @@ class Serial:
         ret = self.ser.write(ke_firmware_report)
         return str(ret)
 
-
-    def get_firmware_version(self)-> str:
+    def get_firmware_version(self) -> str:
         # Wait 50ms to ensure the firmware has been reported
         for wait in range(10):
             self.service()
             time.sleep(0.05)
 
         return self.firmware_version
+
 
 def buildUpdateRequirementsBytearray(requirements):
     """Function to build bytearray that is passed to micro on view change."""
