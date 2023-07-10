@@ -23,25 +23,6 @@
 
 <form
     method="POST"
-    action="?/removeView"
-    use:enhance={() => {
-    return async ({ result }) => {
-        handleFormSubmissionResults(result);
-    };
-    }}
->
-    <input
-        name="config"
-        value={JSON.stringify($session.configuration)}
-        type="hidden"
-    />
-    <input name="id" value={id} type="hidden" />
-
-    <button type="submit" class="btn btn-primary m-2">Remove view</button>
-</form>
-
-<form
-    method="POST"
     action="?/toggle_enabled"
     class="container col-sm-10 col-md-6 pr-4 pl-4"
     use:enhance={() => {
@@ -61,15 +42,36 @@
         <div class="text-left col-6">
         <h5>{view.name}</h5>
         </div>
-        <div class="text-right col-6">
-        <button
-            class=""
-            type="submit"
-            data-toggle="tooltip"
-            title="Enable/Disable this view"
-        >
-            <svelte:component this={Slider} {id} />
-        </button>
+
+        <div class="text-right d-flex flex-row col-6">        
+            <button
+                class="slider-button"
+                type="submit"
+                data-toggle="tooltip"
+                title="Enable/Disable this view"
+            >
+                <svelte:component this={Slider} {id} />
+            </button>
+
+            <form
+                class="m-2"
+                method="POST"
+                action="?/removeView"
+                use:enhance={() => {
+                return async ({ result }) => {
+                    handleFormSubmissionResults(result);
+                };
+                }}
+            >
+                <input
+                    name="config"
+                    value={JSON.stringify($session.configuration)}
+                    type="hidden"
+                />
+                <input name="id" value={id} type="hidden" />
+
+                <button type="submit" class="btn btn-primary">Remove view</button>
+            </form>
         </div>
     </div>
 
@@ -149,7 +151,7 @@
       padding: 0.5em;
       margin-top: 1em;
     }
-    button {
+    .slider-button {
       background: none;
       color: inherit;
       border: none;

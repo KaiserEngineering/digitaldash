@@ -39,5 +39,5 @@
       type="hidden"
   />
 
-  <button type="submit" class="btn btn-primary m-2">Add view</button>
+  <button type="submit" class="btn btn-primary">Add view</button>
 </form>

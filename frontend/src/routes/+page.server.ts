@@ -55,12 +55,11 @@ export const actions: Actions = {
 
     const config = JSON.parse(data.get("config") || "{}");
 
-    const lastId: number = Number(Object.keys(config.views)[-1]);
+    const lastId: number = Number(Object.keys(config.views).pop() || 0);
     let newId = 0;
     if (lastId !== undefined) {
       newId = lastId + 1;
     }
-    console.log(newId)
 
     config.views[newId] = {
       name: "View #" + newId,
