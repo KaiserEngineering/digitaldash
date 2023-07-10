@@ -24,6 +24,22 @@
     />
   </div>
 
+  <div class="form-check">
+    <input
+      id="default"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="Should this be the first view shown?"
+      class="form-check-input"
+      type="checkbox"
+      name="basics-default"
+      checked={view.default}
+    />
+    <label class="form-check-label" for="dynamic-min-max">
+      Default
+    </label>
+  </div>
+
   <div class="row">
     <div class="col-6">
       <label for="background">Background</label>

@@ -4,6 +4,7 @@ import { UpdateConfig, NormalizeConfigInput } from "$lib/server/Config";
 export const actions: Actions = {
   default: async (event) => {
     const attempt = await event.request.formData();
+    console.error(attempt)
 
     const id = attempt.get("id");
 

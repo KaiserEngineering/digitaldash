@@ -41,6 +41,9 @@
     <div class="row m-2">
         <div class="text-left col-6">
         <h5>{view.name}</h5>
+        {#if view.default}
+            (Default view)
+        {/if}
         </div>
 
         <div class="text-right d-flex flex-row col-6">        
