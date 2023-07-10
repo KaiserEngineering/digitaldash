@@ -25,10 +25,10 @@ type Control = {
 // CODE TO HANDLE OUR FORM INPUT
 export function NormalizeConfigInput(
   attempt: { get: (arg0: string) => any },
-  control_view: { [x: string]: any }
+  control_view: { [x: string]: any },
 ) {
   FormData.prototype.getNotNull = function monkeyPatchGet(
-    k: string
+    k: string,
   ): false | FormDataEntryValue {
     const newValue = this.get(k);
 

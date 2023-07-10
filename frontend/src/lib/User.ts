@@ -21,7 +21,7 @@ export function UpdateToken(Token: string) {
 
 export function UpdateUserCredentials(Username: string, Password: string) {
   const updateUser = db.prepare(
-    "UPDATE User SET username=?, password=? WHERE rowid=1"
+    "UPDATE User SET username=?, password=? WHERE rowid=1",
   );
   updateUser.run(Username, HashPassword(Password));
 }
