@@ -61,10 +61,12 @@ export const actions: Actions = {
       newId = lastId + 1;
     }
 
+    const numViews = Object.keys(config.views).length;
+
     config.views[newId] = {
       name: "View #" + newId,
-      enabled: false,
-      default: 0,
+      enabled: numViews == 0 ? true : false,
+      default: numViews == 0 ? true : false,
       background: "Blue Purple Gradient.png",
       alerts: [],
       dynamic: {},
