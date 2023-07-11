@@ -27,9 +27,7 @@ Kivy-Garden==0.1.5
 kiwisolver==1.4.4
 lazy-object-proxy==1.9.0
 lgpio==0.0.0.2
-lib-digital-dash @ file:///Users/craigkaiser/kaiserengineering/digitaldash/libdigitaldash
-libdigitaldash @ file:///var/folders/nl/7kwvhz156_5fn5dlwm_fp2gm0000gn/T/.tmp5SysPM/libdigitaldash-0.1.0-cp311-cp311-macosx_11_0_arm64.whl
-markdown-it-py==3.0.0
+-./libdigitaldashmarkdown-it-py==3.0.0
 matplotlib==3.7.1
 maturin==0.14.15
 mccabe==0.7.0
