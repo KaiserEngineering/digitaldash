@@ -4,6 +4,7 @@ import util from "util";
 const execute = util.promisify(exec);
 
 const guiHome: string | boolean = import.meta.env.VITE_KEGUIHome;
+const pythonAlias: string = import.meta.env.VITE_PythonAlias;
 
 // Cache all our goodies
 const cache: any = {};
@@ -17,7 +18,7 @@ export function WriteFile(File: string, Value: any) {
 }
 
 export async function GetPythonDictionary(File: string) {
-  const { stdout, stderr } = await execute(`python3 ${guiHome}/${File}`);
+  const { stdout, stderr } = await execute(`${pythonAlias} ${guiHome}/${File}`);
   if (stderr) {
     console.error("Could not read ${File}");
   } else {
