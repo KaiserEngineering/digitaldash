@@ -27,7 +27,7 @@ Kivy-Garden==0.1.5
 kiwisolver==1.4.4
 lazy-object-proxy==1.9.0
 lgpio==0.0.0.2
--./libdigitaldash
+./libdigitaldash
 markdown-it-py==3.0.0
 matplotlib==3.7.1
 maturin==0.14.15
