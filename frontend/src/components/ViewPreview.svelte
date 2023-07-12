@@ -33,9 +33,9 @@
 >
     <input name="id" value={id} type="hidden" />
     <input
-    name="config"
-    value={JSON.stringify($session.configuration)}
-    type="hidden"
+        name="config"
+        value={JSON.stringify($session.configuration)}
+        type="hidden"
     />
     
     <div class="row m-2">
@@ -73,7 +73,7 @@
                 />
                 <input name="id" value={id} type="hidden" />
 
-                <button type="submit" class="btn btn-primary">Remove view</button>
+                <button type="submit" class="fs-6 btn text-white" style="background-color: #ff4d4d">Remove</button>
             </form>
         </div>
     </div>
@@ -90,7 +90,7 @@
             <div class="col-6 text-left">
             {#if view.gauges[0]}
                 <img
-                class="mx-4 image-overlay my-auto"
+                class="m-4 image-overlay my-auto"
                 src="images/{view.gauges[0].theme}/preview.png"
                 alt="gauge preview"
                 />
