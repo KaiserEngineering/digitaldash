@@ -327,24 +327,37 @@ def buildFromConfig(self, dataSource=None):
     self.current = 0
     self.first_iteration = not hasattr(self, "first_iteration")
 
+    views = config.views(file=self.configFile, jsonData=self.jsonData)
+    default_view_id = None
+    for viewId in views["views"].keys():
+        view = views["views"][viewId]
+        if view["default"]:
+            default_view_id = viewId
+            Logger.info(
+                "GUI: Found default view %s for default view", view["name"]
+            )
+            break
+        if default_view_id is None:
+            Logger.error("GUI: Failed to find a default View!")
+
     # We need to clear the widgets before rebuilding or else we must face
     # the segfault monster.
     if not self.first_iteration:
         Logger.info("GUI: Clearing widgets for reload")
         clearWidgets(self, background=True)
 
-    ret = setup(
-        self, config.views(file=self.configFile, jsonData=self.jsonData)
-    )
+    ret = setup(self, views)
     self.views, self.containers, self.callbacks = ret
 
     # Sort our dynamic and alerts callbacks by priority
     self.dynamic_callbacks = sorted(
         self.callbacks["dynamic"], key=lambda x: x.priority
     )
-    # Since we are building for the first time we can default to index 0
+
+    # Since we are building for the first time we need to set our current list of alerts
+    # to our default view
     self.alert_callbacks = sorted(
-        self.callbacks["0"], key=lambda x: x.priority
+        self.callbacks[default_view_id], key=lambda x: x.priority
     )
 
     (

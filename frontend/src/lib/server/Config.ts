@@ -25,10 +25,10 @@ type Control = {
 // CODE TO HANDLE OUR FORM INPUT
 export function NormalizeConfigInput(
   attempt: { get: (arg0: string) => any },
-  control_view: { [x: string]: any }
+  control_view: { [x: string]: any },
 ) {
   FormData.prototype.getNotNull = function monkeyPatchGet(
-    k: string
+    k: string,
   ): false | FormDataEntryValue {
     const newValue = this.get(k);
 
@@ -40,7 +40,7 @@ export function NormalizeConfigInput(
   };
 
   const control: Control = {
-    basics: ["name", "background", "dynamicMinMax"],
+    basics: ["name", "background", "dynamicMinMax", "default"],
     gauges: ["unit", "pid"],
     alerts: ["message", "op", "priority", "unit", "value", "pid"],
     dynamic: ["pid", "op", "enabled", "value", "priority", "unit"],

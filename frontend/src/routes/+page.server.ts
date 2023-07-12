@@ -33,4 +33,54 @@ export const actions: Actions = {
       config: newConfigValue,
     };
   },
+  removeView: async ({ request }) => {
+    const data = await request.formData();
+
+    const id = data.get("id");
+    const config = JSON.parse(data.get("config"));
+
+    delete config.views[id];
+
+    WriteFile("etc/config.json", JSON.stringify(config, null, 2));
+    const newConfigValue = ReadFile("etc/config.json");
+
+    return {
+      msg: "View removed",
+      theme: "alert-success",
+      config: newConfigValue,
+    };
+  },
+  addView: async ({ request }) => {
+    const data = await request.formData();
+
+    const config = JSON.parse(data.get("config") || "{}");
+
+    const lastId: number = Number(Object.keys(config.views).pop() || 0);
+    let newId = 0;
+    if (lastId !== undefined) {
+      newId = lastId + 1;
+    }
+
+    const numViews = Object.keys(config.views).length;
+
+    config.views[newId] = {
+      name: "View #" + newId,
+      enabled: numViews == 0 ? true : false,
+      default: numViews == 0 ? true : false,
+      background: "Blue Purple Gradient.png",
+      alerts: [],
+      dynamic: {},
+      gauges: [],
+      dynamicMinMax: false,
+    };
+
+    WriteFile("etc/config.json", JSON.stringify(config, null, 2));
+    const newConfigValue = ReadFile("etc/config.json");
+
+    return {
+      msg: "New view ready",
+      theme: "alert-success",
+      config: newConfigValue,
+    };
+  }
 };

@@ -13,7 +13,7 @@ export function Setup() {
     console.log("Creating default user");
     // Default password is 'dash'
     const createDefaultUser = db.prepare(
-      "INSERT INTO User (username, password) VALUES (?, ?)"
+      "INSERT INTO User (username, password) VALUES (?, ?)",
     );
 
     const password = HashPassword("dash");
