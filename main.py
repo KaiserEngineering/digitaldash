@@ -4,6 +4,7 @@
 # looking at you Test.
 import os
 import pathlib
+
 WORKING_PATH = str(pathlib.Path(__file__).parent.absolute())
 os.environ["KIVY_HOME"] = WORKING_PATH + "/etc/kivy/"
 
@@ -87,13 +88,17 @@ class MyHandler(PatternMatchingEventHandler):
                     self.DigitalDash.loop, 0
                 )
             # Add back our version labels
-            self.DigitalDash.background.add_widget(self.DigitalDash.version_layout)
+            self.DigitalDash.background.add_widget(
+                self.DigitalDash.version_layout
+            )
         except ConfigBuildError as ex:
             Logger.error(f"GUI: {ex}")
             clearWidgets(self.DigitalDash)
             self.DigitalDash.app.add_widget(Label(text=str(ex)))
             # Add back our version labels
-            self.DigitalDash.background.add_widget(self.DigitalDash.version_layout)
+            self.DigitalDash.background.add_widget(
+                self.DigitalDash.version_layout
+            )
 
     @mainthread
     def on_modified(self, event):
@@ -105,6 +110,7 @@ class MyHandler(PatternMatchingEventHandler):
 # Load our KV files
 for file in os.listdir(WORKING_PATH + "/digitaldash/kv/"):
     Builder.load_file(WORKING_PATH + "/digitaldash/kv/" + str(file))
+
 
 class GUI(App):
     """
@@ -159,7 +165,7 @@ class GUI(App):
 
         observer = Observer()
         observer.schedule(
-            MyHandler(self), WORKING_PATH + "/etc/", recursive=True
+            MyHandler(self), WORKING_PATH + "/etc/", recursive=False
         )
         observer.start()
 
@@ -170,14 +176,18 @@ class GUI(App):
             return Label(text=str(ex))
 
         if self.data_source:
-            self.firmware_version = f"FW: {self.data_source.get_firmware_version()}"
+            self.firmware_version = (
+                f"FW: {self.data_source.get_firmware_version()}"
+            )
             Logger.error(f"VERSION: {self.firmware_version}")
             self.clock_event = Clock.schedule_interval(self.loop, 0)
         else:
             self.firmware_version = "FW: N/A"
         self.gui_version = f"GUI: {__version__}"
 
-        self.version_label = Label(text=f"{self.firmware_version} {self.gui_version}",pos=(0, 160))
+        self.version_label = Label(
+            text=f"{self.firmware_version} {self.gui_version}", pos=(0, 160)
+        )
         self.version_layout = RelativeLayout()
         self.version_layout.add_widget(self.version_label)
         self.background.add_widget(self.version_layout)
@@ -216,6 +226,11 @@ class GUI(App):
                 ex,
             )
             return False
+        except ValueError as ex:
+            Logger.error(
+                "GUI: Firmware did not provide expected data value type: %s",
+                ex,
+            )
 
     @mainthread
     def change(self, app, my_callback):
