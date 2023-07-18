@@ -83,14 +83,6 @@ def findPidsForView(views, Id, dynamicPids):
     """Only return pids from the pidsDict that apply to this view"""
 
     pidsList = []
-    # We need to retro-actively add our dynamic PIDs into the PIDs array per view
-    for viewId in views:
-        # Check if we have any dynamic PIDs for the other views
-        for dynamicPIDKeys in dynamicPids:
-            if dynamicPIDKeys != str(viewId):
-                pid = dynamicPids[dynamicPIDKeys]
-                if pid not in pidsList:
-                    pidsList.append(pid)
 
     myView = views[Id]
     for gauge in myView["gauges"]:
@@ -105,13 +97,29 @@ def findPidsForView(views, Id, dynamicPids):
         pidsList.append(gauge["pid"])
 
     for alert in myView["alerts"]:
-        if (
-            not alert["pid"]
-            or str(alert["pid"].value) + str(alert["pid"].unit) in pidsList
-        ):
+        # If we have no PID -- skip
+        if not alert["pid"]:
             continue
-        pidsList.append(alert["pid"])
+        if not any(
+            x.value == alert["pid"].value and x.unit == alert["pid"].unit
+            for x in pidsList
+        ):
+            pidsList.append(alert["pid"])
 
+    # We need to retro-actively add our dynamic PIDs into the PIDs array per view
+    for viewId in views:
+        if viewId == Id:
+            continue
+        # Check if we have any dynamic PIDs for the other views
+        for dynamicPIDKeys in dynamicPids:
+            if dynamicPIDKeys != str(viewId):
+                pid = dynamicPids[dynamicPIDKeys]
+
+                if not any(
+                    x.value == pid.value and x.unit == pid.unit
+                    for x in pidsList
+                ):
+                    pidsList.append(pid)
     return pidsList
 
 
