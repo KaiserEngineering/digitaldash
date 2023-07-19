@@ -93,20 +93,6 @@ def findPids(view):
             PIDS_LIST.append(pid_object)
         # Update our view string value to now be our PID object
         view["alerts"][i]["pid"] = pid_object
-
-    dynamicConfig = view["dynamic"]
-    if dynamicConfig["enabled"]:
-        pid_object = PID(**dynamicConfig)
-
-        new_pid = True
-        for pid in PIDS_LIST:
-            if pid.value == pid_object.value and pid.unit == pid_object.unit:
-                new_pid = False
-                break
-        if new_pid:
-            PIDS_LIST.append(pid_object)
-        # Update our view string value to now be our PID object
-        view["dynamic"]["pid"] = pid_object
     return PIDS_LIST
 
 
@@ -129,6 +115,12 @@ def findPidsForView(views: List[Any], Id: str):
                 new_pid = False
                 break
         if new_pid:
+            Logger.info(
+                "GUI: Adding alert PID `%s`:`%s for view #%s",
+                gauge["pid"].value,
+                gauge["pid"].unitLabel,
+                Id,
+            )
             pids_list.append(gauge["pid"])
 
     for alert in view["alerts"]:
@@ -139,32 +131,47 @@ def findPidsForView(views: List[Any], Id: str):
                 and pid.unit == alert["pid"].unit
             ):
                 Logger.info(
-                    f"Skipping alert pid {alert['pid'].value} as it was already found in PID list"
+                    f"GUI: Skipping alert pid {alert['pid'].value} as it was already found in PID list"
                 )
                 new_pid = False
                 break
         if new_pid:
-            pids_list.append(gauge["pid"])
+            Logger.info(
+                "GUI: Adding alert PID `%s`:`%s for view #%s",
+                alert["pid"].value,
+                alert["pid"].unitLabel,
+                Id,
+            )
+            pids_list.append(alert["pid"])
 
     # We need to retro-actively add our dynamic PIDs into the PIDs array per view
     for viewId in views:
-        if viewId == Id:
-            continue
-        current_view = views[viewId]
-        if current_view["dynamic"]["enabled"]:
+        if (
+            views[viewId]["dynamic"]
+            and views[viewId]["dynamic"]["enabled"]
+            # If we have a PID object, we are accounted for, since this is the only location
+            # we make the dynamic PIDs.
+            and type(views[viewId]["dynamic"]["pid"]) is not PID
+        ):
+            pid_object = PID(**views[viewId]["dynamic"])
+
             new_pid = True
             for pid in pids_list:
                 if (
-                    pid.value == current_view["dynamic"]["pid"].value
-                    and pid.unit == alert["pid"].unit
+                    pid.value == pid_object.value
+                    and pid.unit == pid_object.unit
                 ):
                     Logger.info(
-                        f"Skipping dynamic pid {current_view['dynamic']['pid'].value} as it was already found in PID list"
+                        f"Skipping dynamic pid {pid_object.value} as it was already found in PID list"
                     )
                     new_pid = False
+                    pid_object = pid
                     break
             if new_pid:
-                pids_list.append(current_view["dynamic"]["pid"])
+                PIDS_LIST.append(pid_object)
+                if viewId != Id:
+                    pids_list.append(pid_object)
+            views[viewId]["dynamic"]["pid"] = pid_object
     return pids_list
 
 
@@ -215,29 +222,6 @@ def setup(self, layouts):
 
         findPids(view)
         Logger.info("GUI: Found #%s PIDs", len(PIDS_LIST))
-
-        background = view["background"]
-
-        # Set our alert callback
-        if len(view["alerts"]) > 0:
-            for alert in view["alerts"]:
-                alert["viewId"] = Id
-                callbacks.setdefault(Id, []).append(Alert(**alert))
-        else:
-            callbacks.setdefault(Id, [])
-
-        # Set our dynamic callbacks
-        dynamicConfig = view["dynamic"]
-        if dynamicConfig["enabled"]:
-            dynamicObj = Dynamic()
-            dynamicConfig["viewId"] = Id
-
-            (ret, msg) = dynamicObj.new(**dynamicConfig)
-            if ret:
-                callbacks.setdefault("dynamic", []).append(dynamicObj)
-            else:
-                Logger.error(msg)
-                callbacks.setdefault("dynamic", [])
 
         container = FloatLayout(pos_hint={"center_y": 0.5, "center_x": 0.5})
 
@@ -292,14 +276,39 @@ def setup(self, layouts):
             )
         containers[Id] = container
 
-    for Id in layouts["views"]:
+        background = layouts["views"][Id]["background"]
+
+        # Set our alert callback
+        if len(view["alerts"]) > 0:
+            for alert in view["alerts"]:
+                alert["viewId"] = Id
+                callbacks.setdefault(Id, []).append(Alert(**alert))
+        else:
+            callbacks.setdefault(Id, [])
+
+        pid_for_view = findPidsForView(layouts["views"], Id)
+
+        # Set our dynamic callbacks, this has to be after we build our PID objects for dynamic
+        # objects in `findPidsForView`.
+        dynamicConfig = layouts["views"][Id]["dynamic"]
+        if dynamicConfig and dynamicConfig["enabled"]:
+            dynamicObj = Dynamic()
+            dynamicConfig["viewId"] = Id
+
+            (ret, msg) = dynamicObj.new(**dynamicConfig)
+            if ret:
+                callbacks.setdefault("dynamic", []).append(dynamicObj)
+            else:
+                Logger.error(msg)
+                callbacks.setdefault("dynamic", [])
+
         views[Id] = {
             "app": Background(
                 WorkingPath=self.WORKING_PATH, BackgroundSource=background
             ),
             "alerts": FloatLayout(),
             "objectsToUpdate": objectsToUpdate[Id],
-            "pids": findPidsForView(layouts["views"], Id),
+            "pids": pid_for_view,
         }
 
         # Now we can generate a complete byte array for the PIDs
@@ -310,7 +319,6 @@ def setup(self, layouts):
         else:
             Logger.info("GUI: No pid_byte_code generated for view #%s", Id)
             views[Id]["pid_byte_code"] = ""
-
     return [views, containers, callbacks]
 
 

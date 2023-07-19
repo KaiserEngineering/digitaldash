@@ -12,7 +12,6 @@ from main import GUI
 from digitaldash.digitaldash import buildFromConfig
 from kivy.uix.anchorlayout import AnchorLayout
 import pathlib
-import pytest
 import copy
 from unittest.mock import patch
 
