@@ -9,6 +9,8 @@
 # pylint: disable=fixme
 
 
+import copy
+from typing import Any, List
 from kivy.logger import Logger
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
@@ -47,7 +49,7 @@ class Background(AnchorLayout):
 
 
 # We want this variable to be shared across views
-pidsDict = {}
+PIDS_LIST = []
 
 
 def windowWidth():
@@ -60,67 +62,110 @@ def findPids(view):
     for i, gauge in enumerate(view["gauges"]):
         if not gauge["pid"]:
             continue
-        # We concat pid and unit into a key so that we can have duplicate PIDs
-        # with different units
-        pidUnitHash = gauge["pid"] + gauge["unit"]
+        # Create a temp PID instance
+        pid_object = PID(**gauge)
+
         # Do not create a new PID, as we want to share reference objects for same PIDs
-        if pidUnitHash not in pidsDict:
-            pidsDict[pidUnitHash] = PID(**gauge)
-        view["gauges"][i]["pid"] = pidsDict[pidUnitHash]
+        new_pid = True
+        for pid in PIDS_LIST:
+            if pid.value == pid_object.value and pid.unit == pid_object.unit:
+                pid_object = pid
+                new_pid = False
+                break
+        if new_pid:
+            PIDS_LIST.append(pid_object)
+        # Update our view string value to now be our PID object
+        view["gauges"][i]["pid"] = pid_object
 
     for i, alert in enumerate(view["alerts"]):
         if not alert["pid"]:
             continue
-        pidUnitHash = alert["pid"] + alert["unit"]
-        if pidUnitHash not in pidsDict:
-            pidsDict[pidUnitHash] = PID(**alert)
-        view["alerts"][i]["pid"] = pidsDict[pidUnitHash]
+        pid_object = PID(**alert)
 
-    return list(pidsDict.values())
+        # Do not create a new PID, as we want to share reference objects for same PIDs
+        new_pid = True
+        for pid in PIDS_LIST:
+            if pid.value == pid_object.value and pid.unit == pid_object.unit:
+                pid_object = pid
+                new_pid = False
+                break
+        if new_pid:
+            PIDS_LIST.append(pid_object)
+        # Update our view string value to now be our PID object
+        view["alerts"][i]["pid"] = pid_object
+
+    dynamicConfig = view["dynamic"]
+    if dynamicConfig["enabled"]:
+        pid_object = PID(**dynamicConfig)
+
+        new_pid = True
+        for pid in PIDS_LIST:
+            if pid.value == pid_object.value and pid.unit == pid_object.unit:
+                new_pid = False
+                break
+        if new_pid:
+            PIDS_LIST.append(pid_object)
+        # Update our view string value to now be our PID object
+        view["dynamic"]["pid"] = pid_object
+    return PIDS_LIST
 
 
-def findPidsForView(views, Id, dynamicPids):
-    """Only return pids from the pidsDict that apply to this view"""
+def findPidsForView(views: List[Any], Id: str):
+    """Only return pids from the PIDS_LIST that apply to this view"""
 
-    pidsList = []
+    pids_list = []
+    view = views[Id]
 
-    myView = views[Id]
-    for gauge in myView["gauges"]:
-        if (
-            not gauge["pid"]
-            or str(gauge["pid"].value) + str(gauge["pid"].unit) in pidsList
-        ):
-            Logger.info(
-                f"Skipping pid {gauge['pid'].value} as it was already found in PID list"
-            )
-            continue
-        pidsList.append(gauge["pid"])
+    for gauge in view["gauges"]:
+        new_pid = True
+        for pid in pids_list:
+            if (
+                pid.value == gauge["pid"].value
+                and pid.unit == gauge["pid"].unit
+            ):
+                Logger.info(
+                    f"Skipping gauge pid {gauge['pid'].value} as it was already found in PID list"
+                )
+                new_pid = False
+                break
+        if new_pid:
+            pids_list.append(gauge["pid"])
 
-    for alert in myView["alerts"]:
-        # If we have no PID -- skip
-        if not alert["pid"]:
-            continue
-        if not any(
-            x.value == alert["pid"].value and x.unit == alert["pid"].unit
-            for x in pidsList
-        ):
-            pidsList.append(alert["pid"])
+    for alert in view["alerts"]:
+        new_pid = True
+        for pid in pids_list:
+            if (
+                pid.value == alert["pid"].value
+                and pid.unit == alert["pid"].unit
+            ):
+                Logger.info(
+                    f"Skipping alert pid {alert['pid'].value} as it was already found in PID list"
+                )
+                new_pid = False
+                break
+        if new_pid:
+            pids_list.append(gauge["pid"])
 
     # We need to retro-actively add our dynamic PIDs into the PIDs array per view
     for viewId in views:
         if viewId == Id:
             continue
-        # Check if we have any dynamic PIDs for the other views
-        for dynamicPIDKeys in dynamicPids:
-            if dynamicPIDKeys != str(viewId):
-                pid = dynamicPids[dynamicPIDKeys]
-
-                if not any(
-                    x.value == pid.value and x.unit == pid.unit
-                    for x in pidsList
+        current_view = views[viewId]
+        if current_view["dynamic"]["enabled"]:
+            new_pid = True
+            for pid in pids_list:
+                if (
+                    pid.value == current_view["dynamic"]["pid"].value
+                    and pid.unit == alert["pid"].unit
                 ):
-                    pidsList.append(pid)
-    return pidsList
+                    Logger.info(
+                        f"Skipping dynamic pid {current_view['dynamic']['pid'].value} as it was already found in PID list"
+                    )
+                    new_pid = False
+                    break
+            if new_pid:
+                pids_list.append(current_view["dynamic"]["pid"])
+    return pids_list
 
 
 # flake8: noqa: C901
@@ -136,65 +181,11 @@ def setup(self, layouts):
     callbacks = {"dynamic": []}
     views = {}
     containers = {}
-    dynamicPids = {}
-
-    # We need to parse out dynamic PIDs first since they
-    # apply to all views (except for their own)
-    for Id in layouts["views"]:
-        Logger.info("GUI: Checking for dynamic PIDs for view #%s", Id)
-
-        view = layouts["views"][Id]
-        # Skip disabled views
-        if not view["enabled"]:
-            Logger.info(
-                "GUI: Skipping view %s as it is marked as disabled", Id
-            )
-            continue
-
-        if view["dynamic"].keys():
-            dynamicConfig = view["dynamic"]
-            if dynamicConfig["enabled"]:
-                dynamicConfig["viewId"] = Id
-
-                # Keep track of our dynamic PIDs
-                dynamicPID = None
-
-                pidUnitHash = str(dynamicConfig["value"]) + str(
-                    dynamicConfig["unit"]
-                )
-                # Get our already created PID object
-                for myTuple in pidsDict.items():
-                    (key, value) = myTuple
-                    if key == str(pidUnitHash):
-                        dynamicPID = value
-                        break
-
-                if not dynamicPID:
-                    dynamicPID = PID(**dynamicConfig)
-                    if not dynamicPID.value:
-                        Logger.error(
-                            "GUI: Bailing out: Couldn't set dynamic PID"
-                        )
-                        raise ConfigBuildError("Couldn't set dynamic PID")
-                    pidsDict[pidUnitHash] = dynamicPID
-                # We only will ever have one dynamic PID right?
-                dynamicPids[Id] = dynamicPID
-                # Replace our string pid value with our new object
-                dynamicConfig["pid"] = dynamicPID
-
-                dynamicObj = Dynamic()
-                (ret, msg) = dynamicObj.new(**dynamicConfig)
-                if ret:
-                    callbacks.setdefault("dynamic", []).append(dynamicObj)
-                else:
-                    Logger.error(msg)
-                    callbacks.setdefault("dynamic", [])
+    objectsToUpdate = {}
 
     # Sort based on default value
     for Id in layouts["views"]:
         Logger.info("GUI: Starting on view %s", Id)
-        # Make sure a callback key exist for each view Id
-        callbacks.setdefault(Id, [])
 
         view = layouts["views"][Id]
         # Skip disabled views
@@ -203,6 +194,10 @@ def setup(self, layouts):
                 "GUI: Skipping view %s as it is marked as disabled", Id
             )
             continue
+
+        # Make sure a callback key exist for each view Id
+        callbacks.setdefault(Id, [])
+        objectsToUpdate[Id] = []
 
         # FIXME
         # This is a bandaid on the issue of spacing for linear gauges
@@ -216,29 +211,35 @@ def setup(self, layouts):
         # FIXME
 
         # Update our global dictionary with new view values -- if any.
+        Logger.info("GUI: Checking PIDs for view #%s", Id)
+
         findPids(view)
+        Logger.info("GUI: Found #%s PIDs", len(PIDS_LIST))
 
         background = view["background"]
 
+        # Set our alert callback
         if len(view["alerts"]) > 0:
             for alert in view["alerts"]:
                 alert["viewId"] = Id
-                if not alert["pid"]:
-                    continue
-
-                # Get our already created PID object
-                for myTuple in pidsDict.items():
-                    (key, value) = myTuple
-                    if key == str(alert["pid"].value) + str(alert["pid"].unit):
-                        alert["pid"] = value
-                        break
-
                 callbacks.setdefault(Id, []).append(Alert(**alert))
         else:
             callbacks.setdefault(Id, [])
 
+        # Set our dynamic callbacks
+        dynamicConfig = view["dynamic"]
+        if dynamicConfig["enabled"]:
+            dynamicObj = Dynamic()
+            dynamicConfig["viewId"] = Id
+
+            (ret, msg) = dynamicObj.new(**dynamicConfig)
+            if ret:
+                callbacks.setdefault("dynamic", []).append(dynamicObj)
+            else:
+                Logger.error(msg)
+                callbacks.setdefault("dynamic", [])
+
         container = FloatLayout(pos_hint={"center_y": 0.5, "center_x": 0.5})
-        objectsToUpdate = []
 
         numGauges = len(view["gauges"]) or 1
 
@@ -278,7 +279,7 @@ def setup(self, layouts):
                 module = globals()[gauge["module"]]()
             except KeyError:
                 module = Base()
-            objectsToUpdate.append(
+            objectsToUpdate[Id].append(
                 module.buildComponent(
                     skipLinearMinMax=skipLinearMinMax,
                     workingPath=self.WORKING_PATH,
@@ -289,16 +290,16 @@ def setup(self, layouts):
                     **view,
                 )
             )
-
         containers[Id] = container
 
+    for Id in layouts["views"]:
         views[Id] = {
             "app": Background(
                 WorkingPath=self.WORKING_PATH, BackgroundSource=background
             ),
             "alerts": FloatLayout(),
-            "objectsToUpdate": objectsToUpdate,
-            "pids": findPidsForView(layouts["views"], Id, dynamicPids),
+            "objectsToUpdate": objectsToUpdate[Id],
+            "pids": findPidsForView(layouts["views"], Id),
         }
 
         # Now we can generate a complete byte array for the PIDs
@@ -327,15 +328,15 @@ def clearWidgets(digitaldash, background=False):
     digitaldash.callbacks = {}
 
 
-def buildFromConfig(self, dataSource=None):
+def buildFromConfig(self, dataSource=None, views=None):
     """Build all our gauges and widgets from the config file provided to self"""
 
     # Current is used to track which viewId we are currently displaying.
     # This is important for skipping dynamic checks that we don't need to check.
-    self.current = 0
     self.first_iteration = not hasattr(self, "first_iteration")
 
-    views = config.views(file=self.configFile, jsonData=self.jsonData)
+    if views is None:
+        views = config.views(file=self.configFile, jsonData=self.jsonData)
     default_view_id = None
     for viewId in views["views"].keys():
         view = views["views"][viewId]
@@ -345,8 +346,10 @@ def buildFromConfig(self, dataSource=None):
                 "GUI: Found default view %s for default view", view["name"]
             )
             break
-        if default_view_id is None:
-            Logger.error("GUI: Failed to find a default View!")
+    if default_view_id is None:
+        Logger.error("GUI: Failed to find a default View!")
+        raise Exception("No default view found")
+    self.current = default_view_id
 
     # We need to clear the widgets before rebuilding or else we must face
     # the segfault monster.
@@ -374,7 +377,7 @@ def buildFromConfig(self, dataSource=None):
         self.objectsToUpdate,
         self.pids,
         self.pid_byte_code,
-    ) = self.views[next(iter(self.views))].values()
+    ) = self.views[default_view_id].values()
     # Grabbing our first key ^
 
     if self.first_iteration and dataSource and dataSource is not Test:
@@ -416,7 +419,7 @@ def buildFromConfig(self, dataSource=None):
             Logger.error(msg)
 
     self.app.add_widget(self.background)
-    self.background.add_widget(self.containers[next(iter(self.containers))])
+    self.background.add_widget(self.containers[default_view_id])
     self.background.add_widget(self.alerts)
 
     Logger.info("GUI: Successful config build")

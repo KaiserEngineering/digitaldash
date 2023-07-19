@@ -54,3 +54,65 @@ def test_pid_byte_code_caching(my_application):
 def test_respect_enable_flag(my_application):
     """Test that we only see our enabled dynamic checks"""
     assert len(my_application.dynamic_callbacks) == 1
+
+
+def test_re_build_updates_pids(my_application):
+    """After config change we have seen issues with dynamic changes not propagating"""
+
+    assert not any(pid.value == "0x010F" for pid in my_application.pids)
+
+    buildFromConfig(
+        my_application,
+        views={
+            "views": {
+                "0": {
+                    "name": "dynamic view 1",
+                    "enabled": True,
+                    "default": 1,
+                    "background": "black.png",
+                    "dynamicMinMax": True,
+                    "dynamic": {
+                        "enabled": True,
+                        "pid": "0x010F",
+                        "op": ">",
+                        "priority": 2,
+                        "value": 1000,
+                        "unit": "PID_UNITS_CELSIUS",
+                    },
+                    "alerts": [],
+                    "gauges": [
+                        {
+                            "theme": "Stock ST",
+                            "pid": "0x010C",
+                            "unit": "PID_UNITS_RPM",
+                        }
+                    ],
+                },
+                "1": {
+                    "name": "dynamic view 2",
+                    "enabled": True,
+                    "default": 1,
+                    "background": "black.png",
+                    "dynamicMinMax": True,
+                    "dynamic": {
+                        "enabled": True,
+                        "pid": "0x010F",
+                        "op": ">",
+                        "priority": 2,
+                        "value": 1000,
+                        "unit": "PID_UNITS_CELSIUS",
+                    },
+                    "alerts": [],
+                    "gauges": [
+                        {
+                            "theme": "Stock ST",
+                            "pid": "0x010C",
+                            "unit": "PID_UNITS_RPM",
+                        }
+                    ],
+                },
+            }
+        },
+    )
+
+    assert any(pid.value == "0x010F" for pid in my_application.pids)
