@@ -14,6 +14,7 @@ os.environ["KIVY_NO_CONSOLELOG"] = "1"
 # Dependent modules and packages
 import getopt
 import sys
+from sys import platform
 from digitaldash.test import Test
 from typing import Optional, Union
 from functools import lru_cache
@@ -185,8 +186,11 @@ class GUI(App):
             self.firmware_version = "FW: N/A"
         self.gui_version = f"GUI: {__version__}"
 
+        y_pos = 160
+        if platform == "linux" or platform == "linux2":
+            y_pos = 20
         self.version_label = Label(
-            text=f"{self.firmware_version} {self.gui_version}", pos=(0, 20)
+            text=f"{self.firmware_version} {self.gui_version}", pos=(0, y_pos)
         )
         self.version_layout = RelativeLayout()
         self.version_layout.add_widget(self.version_label)
