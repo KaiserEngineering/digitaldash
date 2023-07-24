@@ -146,32 +146,32 @@ def findPidsForView(views: List[Any], Id: str):
 
     # We need to retro-actively add our dynamic PIDs into the PIDs array per view
     for viewId in views:
-        if (
-            views[viewId]["dynamic"]
-            and views[viewId]["dynamic"]["enabled"]
-            # If we have a PID object, we are accounted for, since this is the only location
-            # we make the dynamic PIDs.
-            and type(views[viewId]["dynamic"]["pid"]) is not PID
-        ):
-            pid_object = PID(**views[viewId]["dynamic"])
-
-            new_pid = True
-            for pid in pids_list:
-                if (
-                    pid.value == pid_object.value
-                    and pid.unit == pid_object.unit
-                ):
-                    Logger.info(
-                        f"Skipping dynamic pid {pid_object.value} as it was already found in PID list"
-                    )
-                    new_pid = False
-                    pid_object = pid
-                    break
-            if new_pid:
-                PIDS_LIST.append(pid_object)
+        if views[viewId]["dynamic"] and views[viewId]["dynamic"]["enabled"]:
+            # If we have a PID object, we are accounted for in our global PID_LIST,
+            # since this is the only location we make the dynamic PIDs.
+            if type(views[viewId]["dynamic"]["pid"]) is PID:
+                # Add PID to our list of PIDs if not current view
                 if viewId != Id:
-                    pids_list.append(pid_object)
-            views[viewId]["dynamic"]["pid"] = pid_object
+                    pids_list.append(views[viewId]["dynamic"]["pid"])
+            else:
+                pid_object = PID(**views[viewId]["dynamic"])
+                new_pid = True
+                for pid in pids_list:
+                    if (
+                        pid.value == pid_object.value
+                        and pid.unit == pid_object.unit
+                    ):
+                        Logger.info(
+                            f"Skipping dynamic pid {pid_object.value} as it was already found in PID list"
+                        )
+                        new_pid = False
+                        pid_object = pid
+                        break
+                if new_pid:
+                    PIDS_LIST.append(pid_object)
+                    if viewId != Id:
+                        pids_list.append(pid_object)
+                views[viewId]["dynamic"]["pid"] = pid_object
     return pids_list
 
 
