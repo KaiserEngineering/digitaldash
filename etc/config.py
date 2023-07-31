@@ -160,7 +160,6 @@ def validateConfig(config):
             else:
                 for item in value.keys():
                     if len(view[key]) > 0:
-
                         if isinstance(view[key], dict):
                             if (
                                 not isinstance(view[key][item], value[item])
