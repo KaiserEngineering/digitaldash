@@ -55,7 +55,6 @@ import libdigitaldash
 
 from digitaldash.digitaldash import buildFromConfig, clearWidgets
 from digitaldash.digitaldash import Alert, Dynamic
-from digitaldash.keError import ConfigBuildError
 from _version import __version__
 from etc import config
 
@@ -174,7 +173,9 @@ class GUI(App):
             buildFromConfig(self, dataSource)
         except Exception as ex:
             Logger.error(f"GUI: {ex}")
-            return Label(text=str(ex))
+            layout = RelativeLayout()
+            layout.add_widget(Label(text=str(ex), pos=(0, 200)))
+            return layout
 
         if self.data_source:
             self.firmware_version = (
