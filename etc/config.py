@@ -35,17 +35,28 @@ def views(file=None, jsonData=None):
 
     jsonData = {}
     errorConfig = """
-    {"views": { "0": {
-              "alerts": [{
-          "pid": "0x010C",
-          "op": ">=",
-          "value": -9999,
-          "unit": "PID_UNITS_RPM",
-          "priority": 1,
-          "message": "Config file isn't valid!"
-        }], "default": 1, "theme": "Error", "background": "Black.png",
-              "dynamic": {},"gauges": [], "name": "Error", "enabled": 1}}}
-          """
+    {"views":
+        { "0":
+            {
+                "alerts": [{
+                    "pid": "0x010C",
+                    "op": ">=",
+                    "value": -9999,
+                    "unit": "PID_UNITS_RPM",
+                    "priority": 1,
+                    "message": "Config file isn't valid!"
+                }],
+                "default": 1,
+                "theme": "Error",
+                "background": "Black.png",
+                "dynamic": {},
+                "gauges": [],
+                "name": "Error",
+                "enabled": 1
+            }
+        }
+    }"""
+
     try:
         with open(file, encoding="utf-8") as dataFile:
             jsonData = json.load(dataFile)
