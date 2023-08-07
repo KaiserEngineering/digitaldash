@@ -172,7 +172,7 @@ class GUI(App):
 
         try:
             buildFromConfig(self, dataSource)
-        except ConfigBuildError as ex:
+        except Exception as ex:
             Logger.error(f"GUI: {ex}")
             return Label(text=str(ex))
 
