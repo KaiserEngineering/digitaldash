@@ -12,7 +12,7 @@
     const KE_PIDS = $page.data.locals.constants.KE_PID;
 
     function handleFormSubmissionResults(result: any) {
-        if (result.data.config) {
+        if (result?.data?.config) {
         $session.configuration = result.data.config;
         }
 

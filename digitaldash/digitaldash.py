@@ -348,7 +348,7 @@ def buildFromConfig(self, dataSource=None, views=None):
     default_view_id = None
     for viewId in views["views"].keys():
         view = views["views"][viewId]
-        if view["default"]:
+        if view["enabled"] and view["default"]:
             default_view_id = viewId
             Logger.info(
                 "GUI: Found default view %s for default view", view["name"]
