@@ -94,7 +94,7 @@ class MyHandler(PatternMatchingEventHandler):
             )
         except Exception as ex:
             Logger.error(f"GUI: {ex}")
-            clearWidgets(self.DigitalDash)
+            clearWidgets(self.DigitalDash, background=True)
             self.DigitalDash.app.add_widget(Label(text=str(ex)))
             # Add back our version labels
             self.DigitalDash.background.add_widget(
