@@ -1,8 +1,29 @@
 {
   "views": {
     "0": {
+      "name": "Daily Driver",
       "enabled": true,
       "default": 1,
+      "background": "Blue Purple Gradient.png",
+      "dynamicMinMax": true,
+      "alerts": [
+        {
+          "message": "Shift!",
+          "op": ">=",
+          "priority": 0,
+          "unit": "PID_UNITS_RPM",
+          "value": 6500,
+          "pid": "0x010C"
+        }
+      ],
+      "dynamic": {
+        "pid": "0xDE0302",
+        "op": ">=",
+        "enabled": true,
+        "priority": 0,
+        "value": 1,
+        "unit": "PID_UNITS_NONE"
+      },
       "gauges": [
         {
           "theme": "Stock RS",
@@ -19,112 +40,39 @@
           "unit": "PID_UNITS_FAHRENHEIT",
           "pid": "0x015C"
         }
-      ],
-      "alerts": [
-        {
-          "message": "Shift!",
-          "op": ">=",
-          "priority": "0",
-          "unit": "PID_UNITS_RPM",
-          "value": "6499",
-          "pid": "0x010C"
-        }
-      ],
-      "name": "Daily Driver",
-      "background": "Blue Purple Gradient.png",
-      "dynamic": {
-        "pid": "0x015C",
-        "op": ">=",
-        "enabled": "on",
-        "value": "1",
-        "priority": "0",
-        "unit": "PID_UNITS_CELSIUS"
-      },
-      "dynamicMinMax": null
-    },
-    "2": {
-      "enabled": true,
-      "default": 1,
-      "gauges": [
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_FAHRENHEIT",
-          "pid": "0x010F"
-        },
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_PSI",
-          "pid": "0xC16F"
-        },
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_FAHRENHEIT",
-          "pid": "0x015C"
-        }
-      ],
-      "alerts": [
-        {
-          "message": "Shift!",
-          "op": ">=",
-          "priority": "0",
-          "unit": "PID_UNITS_RPM",
-          "value": "6499",
-          "pid": "0x010C"
-        }
-      ],
-      "name": "Daily Driver",
-      "background": "Blue Purple Gradient.png",
-      "dynamic": {
-        "pid": "0x015C",
-        "op": ">=",
-        "enabled": "on",
-        "value": "1",
-        "priority": "0",
-        "unit": "PID_UNITS_CELSIUS"
-      },
-      "dynamicMinMax": null
+      ]
     },
     "1": {
-      "enabled": true,
-      "default": 1,
-      "gauges": [
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_FAHRENHEIT",
-          "pid": "0x010F"
-        },
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_PSI",
-          "pid": "0xC16F"
-        },
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_FAHRENHEIT",
-          "pid": "0x015C"
-        }
-      ],
+      "name": "Boost",
+      "enabled": false,
+      "dynamicMinMax": true,
+      "default": 0,
+      "background": "Flare.png",
       "alerts": [
         {
           "message": "Shift!",
           "op": ">=",
-          "priority": "0",
+          "priority": 0,
           "unit": "PID_UNITS_RPM",
-          "value": "6499",
+          "value": 6500,
           "pid": "0x010C"
         }
       ],
-      "name": "Daily Driver",
-      "background": "Blue Purple Gradient.png",
       "dynamic": {
-        "pid": "0x015C",
-        "op": ">=",
-        "enabled": "on",
-        "value": "1",
-        "priority": "0",
-        "unit": "PID_UNITS_CELSIUS"
+        "pid": "0xDE0302",
+        "op": "<=",
+        "enabled": true,
+        "unit": "PID_UNITS_NONE",
+        "value": 0,
+        "priority": 10
       },
-      "dynamicMinMax": null
+      "gauges": [
+        {
+          "theme": "Bar (Aura)",
+          "unit": "PID_UNITS_PSI",
+          "pid": "0xC16F"
+        }
+      ]
     }
   }
 }
