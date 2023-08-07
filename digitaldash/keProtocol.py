@@ -339,14 +339,6 @@ class Serial:
         ret = self.ser.write(ke_firmware_report)
         return str(ret)
 
-    def get_firmware_version(self) -> str:
-        # Wait 50ms to ensure the firmware has been reported
-        for wait in range(10):
-            self.service()
-            time.sleep(0.05)
-
-        return self.firmware_version
-
 
 def buildUpdateRequirementsBytearray(requirements):
     """Function to build bytearray that is passed to micro on view change."""
