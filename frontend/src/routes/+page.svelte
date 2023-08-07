@@ -14,7 +14,7 @@
     <p>Select a gauge layout to edit the configuration</p>
   </div>
   {#each Object.keys(views) as id}
-    <ViewPreview {id} view={views[id]} />
+    <svelte:component this={ViewPreview} {id} view={views[id]} />
   {/each}
 {/if}
 
