@@ -15,9 +15,9 @@ export const actions: Actions = {
     };
   },
   reset: async (_) => {
-    ResetConfig();
+    await ResetConfig();
 
-    const res = ReadConfig();
+    const res = await ReadConfig();
 
     return {
       msg: "Config reset to default",

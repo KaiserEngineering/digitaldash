@@ -2,7 +2,7 @@
   import { keys } from "$lib/Keys";
   import { getContext } from "svelte";
   import { enhance } from "$app/forms";
-
+  import { goto } from '$app/navigation';
   const { session } = getContext(keys.session);
 
   let configString = JSON.stringify($session.configuration, null, 2);
@@ -27,6 +27,8 @@
       result.data.id = $session.count;
       $session.configuration = result.data.config;
       $session.actions = [result.data];
+
+      goto('/');
     };
   }}
 >
