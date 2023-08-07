@@ -92,7 +92,7 @@ class MyHandler(PatternMatchingEventHandler):
             self.DigitalDash.background.add_widget(
                 self.DigitalDash.version_layout
             )
-        except ConfigBuildError as ex:
+        except Exception as ex:
             Logger.error(f"GUI: {ex}")
             clearWidgets(self.DigitalDash)
             self.DigitalDash.app.add_widget(Label(text=str(ex)))
