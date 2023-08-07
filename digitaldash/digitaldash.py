@@ -327,10 +327,12 @@ def clearWidgets(digitaldash, background=False):
     Clear widgets from our DigitalDash instance, by default we don't
     clear the background.
     """
-    digitaldash.app.clear_widgets()
-    if background:
-        digitaldash.background.clear_widgets()
-    digitaldash.alerts.clear_widgets()
+    if hasattr(digitaldash, "app"):
+        digitaldash.app.clear_widgets()
+        if background and hasattr(digitaldash, "background"):
+            digitaldash.background.clear_widgets()
+    if hasattr(background, "alerts"):
+        digitaldash.alerts.clear_widgets()
     digitaldash.alert_callbacks = []
     digitaldash.dynamic_callbacks = []
     digitaldash.callbacks = {}
@@ -345,6 +347,7 @@ def buildFromConfig(self, dataSource=None, views=None):
 
     if views is None:
         views = config.views(file=self.configFile, jsonData=self.jsonData)
+
     default_view_id = None
     for viewId in views["views"].keys():
         view = views["views"][viewId]

@@ -14,6 +14,7 @@ os.environ["KIVY_NO_CONSOLELOG"] = "1"
 # Dependent modules and packages
 import getopt
 import sys
+import traceback
 from sys import platform
 from digitaldash.test import Test
 from typing import Optional, Union
@@ -87,18 +88,30 @@ class MyHandler(PatternMatchingEventHandler):
                 self.DigitalDash.clock_event = Clock.schedule_interval(
                     self.DigitalDash.loop, 0
                 )
+
+            # remove from background
+            self.DigitalDash.remove_version_layout(0)
             # Add back our version labels
             self.DigitalDash.background.add_widget(
                 self.DigitalDash.version_layout
             )
         except Exception as ex:
-            Logger.error(f"GUI: {ex}")
+            Logger.error(
+                f"GUI: {''.join(traceback.format_exception(sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2]))}"
+            )
             clearWidgets(self.DigitalDash, background=True)
-            self.DigitalDash.app.add_widget(Label(text=str(ex)))
-            # Add back our version labels
+
+            self.DigitalDash.remove_version_layout(0)
+
+            error_label = Label(text=str(ex), pos=(0, 200))
+            error_layout = RelativeLayout()
+            error_layout.add_widget(error_label)
+
+            self.DigitalDash.background.add_widget(error_layout)
             self.DigitalDash.background.add_widget(
                 self.DigitalDash.version_layout
             )
+            self.DigitalDash.app.add_widget(self.DigitalDash.background)
 
     @mainthread
     def on_modified(self, event):
@@ -152,7 +165,12 @@ class GUI(App):
         called with the clock schedule_once function.
         """
         Logger.info("GUI: Removing firmware/gui version label")
-        self.background.remove_widget(self.version_layout)
+        if hasattr(self, "background") and hasattr(self, "version_layout"):
+            self.background.remove_widget(self.version_layout)
+        else:
+            Logger.error(
+                "GUI: Tried to remove version labels from an object that doesn't have a background attribute"
+            )
 
     def build(self):
         """Called at start of application"""
@@ -169,20 +187,11 @@ class GUI(App):
         )
         observer.start()
 
-        try:
-            buildFromConfig(self, dataSource)
-        except Exception as ex:
-            Logger.error(f"GUI: {ex}")
-            layout = RelativeLayout()
-            layout.add_widget(Label(text=str(ex), pos=(0, 200)))
-            return layout
-
         if self.data_source:
             self.firmware_version = (
                 f"FW: {self.data_source.get_firmware_version()}"
             )
             Logger.error(f"VERSION: {self.firmware_version}")
-            self.clock_event = Clock.schedule_interval(self.loop, 0)
         else:
             self.firmware_version = "FW: N/A"
         self.gui_version = f"GUI: {__version__}"
@@ -195,7 +204,25 @@ class GUI(App):
         )
         self.version_layout = RelativeLayout()
         self.version_layout.add_widget(self.version_label)
+
+        try:
+            buildFromConfig(self, dataSource)
+        except Exception as ex:
+            Logger.error(
+                f"GUI: {''.join(traceback.format_exception(sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2]))}"
+            )
+            error_label = Label(text=str(ex), pos=(0, 200))
+            error_layout = RelativeLayout()
+            error_layout.add_widget(error_label)
+
+            self.app.add_widget(error_layout)
+            self.app.add_widget(self.version_layout)
+            return self.app
+
         self.background.add_widget(self.version_layout)
+
+        if self.data_source:
+            self.clock_event = Clock.schedule_interval(self.loop, 0)
 
         return self.app
 
