@@ -33,7 +33,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   event.locals.user = user;
 
   // Read in our static content
-  event.locals.configuration = ReadFile("/etc/config.json", true);
+  event.locals.configuration = ReadFile("/etc/config.json");
 
   event.locals.constants = await GetConstants();
 
@@ -46,7 +46,7 @@ export async function getSession(event: {
 }) {
   return event.locals.user
     ? {
-        username: event.locals.user.username,
-      }
+      username: event.locals.user.username,
+    }
     : {};
 }

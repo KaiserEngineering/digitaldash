@@ -25,6 +25,7 @@
   use:enhance={() => {
     return async ({ result }) => {
       result.data.id = $session.count;
+      $session.configuration = result.data.config;
       $session.actions = [result.data];
     };
   }}

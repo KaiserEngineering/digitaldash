@@ -10,7 +10,7 @@ export function UpdateConfig(config: string) {
 }
 
 export async function ResetConfig() {
-  const res = await ResetWithGit("etc/config.json");
+  const res = await ResetWithGit("/etc/config.json");
 
   return { body: res };
 }

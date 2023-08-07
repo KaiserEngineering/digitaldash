@@ -1,5 +1,5 @@
 import type { Actions } from "./$types";
-import { ResetConfig } from "$lib/server/Config";
+import { ReadConfig, ResetConfig } from "$lib/server/Config";
 import { WriteFile } from "$lib/server/Util";
 
 export const actions: Actions = {
@@ -17,9 +17,12 @@ export const actions: Actions = {
   reset: async (_) => {
     ResetConfig();
 
+    const res = ReadConfig();
+
     return {
       msg: "Config reset to default",
       theme: "alert-info",
+      config: res
     };
   },
 };
