@@ -28,9 +28,9 @@
             <li class="nav-item">
               <a class="nav-link" href="/advanced">Advanced</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="/debug">Debug</a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
