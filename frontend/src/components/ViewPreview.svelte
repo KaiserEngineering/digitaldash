@@ -13,7 +13,7 @@
 
     function handleFormSubmissionResults(result: any) {
         if (result?.data?.config) {
-        $session.configuration = result.data.config;
+            $session.configuration = result.data.config;
         }
 
         result.data.id = $session.count;

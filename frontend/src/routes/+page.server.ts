@@ -8,6 +8,15 @@ export const actions: Actions = {
     const id = data.get("id");
     const config = JSON.parse(data.get("config"));
 
+
+    // If we are disabling, check if this is the default view
+    if (config.views[id].default && config.views[id].enabled) {
+      return {
+        theme: "alert-danger",
+        msg: "Cannot disable default view",
+      };
+    }
+
     config.views[id].enabled = config.views[id].enabled ? false : true;
 
     let count = 0;
@@ -38,6 +47,13 @@ export const actions: Actions = {
 
     const id = data.get("id");
     const config = JSON.parse(data.get("config"));
+
+    if (config.views[id].default) {
+      return {
+        theme: "alert-danger",
+        msg: "Cannot remove default view",
+      };
+    }
 
     delete config.views[id];
 
@@ -82,5 +98,5 @@ export const actions: Actions = {
       theme: "alert-success",
       config: newConfigValue,
     };
-  }
+  },
 };
