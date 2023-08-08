@@ -330,14 +330,12 @@ class Serial:
         return (ret, msg)
 
     def get_firmware_version(self) -> str:
-        """Poll the firmware for the current version"""
-        ke_firmware_report = [
-            KE_SOL,
-            0x03,
-            KE_CP_OP_CODES["KE_FIRMWARE_REPORT"],
-        ]
-        ret = self.ser.write(ke_firmware_report)
-        return str(ret)
+        # Wait 50ms to ensure the firmware has been reported
+        for wait in range(10):
+            self.service()
+            time.sleep(0.05)
+
+        return self.firmware_version
 
 
 def buildUpdateRequirementsBytearray(requirements):
