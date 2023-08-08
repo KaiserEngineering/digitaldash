@@ -172,21 +172,7 @@ class GUI(App):
                 "GUI: Tried to remove version labels from an object that doesn't have a background attribute"
             )
 
-    def build(self):
-        """Called at start of application"""
-
-        # Our main application object
-        self.app = AnchorLayout()
-
-        self.data_source = dataSource
-        self.working_path = WORKING_PATH
-
-        observer = Observer()
-        observer.schedule(
-            MyHandler(self), WORKING_PATH + "/etc/", recursive=False
-        )
-        observer.start()
-
+    def create_version_layout(self):
         if self.data_source:
             self.firmware_version = (
                 f"FW: {self.data_source.get_firmware_version()}"
@@ -205,12 +191,28 @@ class GUI(App):
         self.version_layout = RelativeLayout()
         self.version_layout.add_widget(self.version_label)
 
+    def build(self):
+        """Called at start of application"""
+
+        # Our main application object
+        self.app = AnchorLayout()
+
+        self.data_source = dataSource
+        self.working_path = WORKING_PATH
+
+        observer = Observer()
+        observer.schedule(
+            MyHandler(self), WORKING_PATH + "/etc/", recursive=False
+        )
+        observer.start()
+
         try:
             buildFromConfig(self, dataSource)
         except Exception as ex:
             Logger.error(
                 f"GUI: {''.join(traceback.format_exception(sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2]))}"
             )
+            self.create_version_layout()
             error_label = Label(text=str(ex), pos=(0, 200))
             error_layout = RelativeLayout()
             error_layout.add_widget(error_label)
@@ -219,6 +221,7 @@ class GUI(App):
             self.app.add_widget(self.version_layout)
             return self.app
 
+        self.create_version_layout()
         self.background.add_widget(self.version_layout)
 
         if self.data_source:
