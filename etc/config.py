@@ -57,34 +57,17 @@ def views(file=None, jsonData=None):
         }
     }"""
 
-    try:
-        with open(file, encoding="utf-8") as dataFile:
-            jsonData = json.load(dataFile)
+    with open(file, encoding="utf-8") as dataFile:
+        jsonData = json.load(dataFile)
 
-            dataFile.close()
+        dataFile.close()
 
-        valid, error = validateConfig(jsonData)
+    valid, error = validateConfig(jsonData)
 
-        if not valid:
-            Logger.error(error)
-            errorConfig = errorConfig.replace(
-                "Config file isn't valid!", error
-            )
-            jsonData = json.loads(errorConfig)
+    if not valid:
+        Logger.error(error)
+        raise Exception(error)
 
-    except Exception as e:
-        # We can shorten the error message by removing the trace/line the
-        # error happened on.
-        errorString = (str(e).split(":", maxsplit=1))[0]
-        errorConfig = errorConfig.replace(
-            "Config file isn't valid!",
-            "Config file isn't valid! Exception Error",
-        )
-        Logger.error(
-            "GUI: Invalid config provided, falling back to default: %s",
-            errorString,
-        )
-        jsonData = json.loads(errorConfig)
     return jsonData
 
 
