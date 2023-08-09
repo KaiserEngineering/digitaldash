@@ -208,7 +208,7 @@ KE_PID = {
         "units": {
             "PID_UNITS_KPA": {"Min": -82, "Max": 170, "decimals": "0"},
             "PID_UNITS_PSI": {"Min": -12, "Max": 24, "decimals": "1"},
-            "PID_UNITS_BAR": {"Min": 0, "Max": 1.70, "decimals": "2"},
+            "PID_UNITS_BAR": {"Min": -1, "Max": 1.70, "decimals": "2"},
         },
     },
     "0x220301": {
@@ -244,6 +244,15 @@ KE_PID = {
         "units": {
             "PID_UNITS_CELSIUS": {"Min": -40, "Max": 200, "decimals": "0"},
             "PID_UNITS_FAHRENHEIT": {"Min": -40, "Max": 400, "decimals": "1"},
+        },
+    },
+    "0x22F43C": {
+        "name": "CATALYTIC_TEMPERATURE",
+        "shortName": "Cat Temp",
+        "shortDesc": "Catalytic Temperature",
+        "units": {
+            "PID_UNITS_CELSIUS": {"Min": 0, "Max": 1000, "decimals": "0"},
+            "PID_UNITS_FAHRENHEIT": {"Min": 0, "Max": 2000, "decimals": "0"},
         },
     },
     "0xDE0802": {
@@ -282,6 +291,14 @@ KE_PID = {
         "name": "CRUISE_CONTROL_OFF_BUTTON",
         "shortName": "OFF Button",
         "shortDesc": "Cruise Control OFF Button",
+        "units": {
+            "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
+        },
+    },
+    "0xC10302": {
+        "name": "CRUISE_CONTROL_OFF_BUTTON_TOGGLE",
+        "shortName": "OFF Button",
+        "shortDesc": "Cruise Control OFF button Toggle",
         "units": {
             "PID_UNITS_NONE": {"Min": 0, "Max": 1, "decimals": "0"},
         },
@@ -326,12 +343,32 @@ KE_PID = {
             "PID_UNITS_NONE": {"Min": 0, "Max": 31, "decimals": "0"},
         },
     },
+    "0xDE1802": {
+        "name": "LATERAL_ACCELERATION",
+        "shortName": "Lat Accel",
+        "shortDesc": "Lateral Acceleration",
+        "units": {
+            "PID_UNITS_G_FORCE": {"Min": -1.5, "Max": 1.5, "decimals": "2"},
+        },
+    },
+    "0xDE1602": {
+        "name": "LONGITUDINAL_ACCELERATION",
+        "shortName": "Long Accel",
+        "shortDesc": "Longitudinal Acceleration",
+        "units": {
+            "PID_UNITS_G_FORCE": {"Min": -1.5, "Max": 1.5, "decimals": "2"},
+        },
+    },
 }
 
 
 def get_constants():
     """Return combined constants dictionary"""
-    return {"KE_PID": KE_PID, "KE_CP_OP_CODES": KE_CP_OP_CODES, "PID_UNITS": PID_UNITS}
+    return {
+        "KE_PID": KE_PID,
+        "KE_CP_OP_CODES": KE_CP_OP_CODES,
+        "PID_UNITS": PID_UNITS,
+    }
 
 
 def export_json():

@@ -1,13 +1,10 @@
 """Serial handler class."""
 # pylint: skip-file
-import serial
 import time
+import serial
 from kivy.logger import Logger, LOG_LEVELS
-import subprocess  # nosec
 from static.constants import KE_CP_OP_CODES
 from static.constants import PID_UNITS
-import os
-import fnmatch
 from gpiozero import CPUTemperature
 
 KE_SOL = 0xFF
@@ -31,9 +28,10 @@ class Serial:
             timeout=0.5,
         )
         self.ser.flushInput()
-        self.ser_val = [0, 0, 0, 0, 0, 0]
+        self.ser_val = {}
         self.systemFirmware = [0, 0, 0]
         self.hardwareFirmware = [0, 0, 0]
+        self.firmware_version = "UNREAD"
         self.firmwareVerified = False  # False to do a firmware request
         self.data_stream_active = False
         self.requirements = []
@@ -83,13 +81,17 @@ class Serial:
 
     def KE_Process_Packet(self):
         # Get the payload
-        serial_data = self.rx_buffer[KE_PCKT_DATA_START_POS : self.rx_byte_count - 1]
+        serial_data = self.rx_buffer[
+            KE_PCKT_DATA_START_POS : self.rx_byte_count - 1
+        ]
 
-        if self.rx_buffer[KE_PCKT_CMD_POS] == KE_CP_OP_CODES["KE_PID_STREAM_REPORT"]:
-
+        if (
+            self.rx_buffer[KE_PCKT_CMD_POS]
+            == KE_CP_OP_CODES["KE_PID_STREAM_REPORT"]
+        ):
             self.data_stream_active = True
 
-            if self.queued_message != None:
+            if self.queued_message is not None:
                 self.ser.write(self.queued_message)
                 self.queued_message = None
             else:
@@ -108,15 +110,21 @@ class Serial:
                     (pid, units, value) = val.split(":")
                     # Link the data to the PID
                     key_val[str(pid)] = value
-            except:
+            except Exception:
                 Logger.error("KE_PID_STREAM_REPORT missing data")
 
             self.ser_val = key_val
 
             return self.ser_val
 
-    def service(self, **args):
+        elif (
+            self.rx_buffer[KE_PCKT_CMD_POS]
+            == KE_CP_OP_CODES["KE_FIRMWARE_REPORT"]
+        ):
+            # Payload is ASCII data
+            self.firmware_version = "".join(map(chr, serial_data))
 
+    def service(self, **args):
         cpu = CPUTemperature()
 
         if cpu.temperature > 70:
@@ -137,12 +145,14 @@ class Serial:
                 # Look for a start of line byte
                 if byte == KE_SOL:
                     # Check if a current RX is in progress
-                    if self.KE_RX_IN_PROGRESS == False:
+                    if self.KE_RX_IN_PROGRESS is True:
                         # Increment the number of aborted RX messages
                         self.rx_abort_count += 1
 
                         # Log the error
-                        Logger.error("[KE] SOL Received before message completion")
+                        Logger.error(
+                            "[KE] SOL Received before message completion"
+                        )
 
                     # Start of a new message, reset the buffer
                     self.rx_buffer = [0] * KE_MAX_PAYLOAD
@@ -162,7 +172,7 @@ class Serial:
                     # Logger.info( "[KE] SOL Received")
 
                 # A Message is in progress
-                elif self.KE_RX_IN_PROGRESS == True:
+                elif self.KE_RX_IN_PROGRESS is True:
                     # Verify the UART buffer has room */
                     if self.rx_byte_count >= KE_MAX_PAYLOAD:
                         # Increment the number of aborted RX messages
@@ -172,7 +182,7 @@ class Serial:
                         Logger.Error("[KE] Maximum payload reached")
 
                         # Indicate an RX has ended
-                        self.KE_RX_IN_PROGRESS == False
+                        self.KE_RX_IN_PROGRESS = False
 
                         # Reset the UART buffer, something has gone horribly wrong
                         self.rx_buffer = [0] * KE_MAX_PAYLOAD
@@ -191,18 +201,15 @@ class Serial:
                     # See if the message is complete
                     if self.rx_byte_count == self.rx_buffer[KE_PCKT_LEN_POS]:
                         # Indicate an RX has ended
-                        self.KE_RX_IN_PROGRESS == False
+                        self.KE_RX_IN_PROGRESS = False
+
+                        # packet = self.rx_buffer[0 : self.rx_byte_count]
 
                         # Increment the number of received RX messages
                         self.rx_count += 1
 
                         # Set the Message complete flag
                         self.KE_PCKT_CMPLT = True
-
-                        packet = self.rx_buffer[0 : self.rx_byte_count]
-
-                        # Log the complete message
-                        # Logger.info( "[KE] Packet Received" )
 
                         self.KE_Process_Packet()
 
@@ -217,7 +224,7 @@ class Serial:
                         # Logger.error("[KE] Payload greater than expected")
 
                         # Indicate an RX has ended
-                        self.KE_RX_IN_PROGRESS == False
+                        self.KE_RX_IN_PROGRESS = False
 
                         # Reset the UART buffer, something has gone horribly wrong
                         self.rx_buffer = [0] * KE_MAX_PAYLOAD
@@ -250,10 +257,12 @@ class Serial:
             num_pids = int((len(pid_byte_code) - 3) / 5)
 
             for i in range(num_pids):
-                spare = pid_byte_code[(i * 5) + 3]
                 units = pid_byte_code[(i * 5) + 4]
                 mode = pid_byte_code[(i * 5) + 5]
-                pid = pid_byte_code[(i * 5) + 6] << 8 | pid_byte_code[(i * 5) + 7]
+                pid = (
+                    pid_byte_code[(i * 5) + 6] << 8
+                    | pid_byte_code[(i * 5) + 7]
+                )
                 Logger.debug(
                     "PID {:d} of {:d}:".format(i + 1, num_pids)
                     + " mode:0x{:02X}".format(mode)
@@ -271,7 +280,7 @@ class Serial:
         # Queue the message
         self.queued_message = pid_byte_code
 
-        if self.data_stream_active == True:
+        if self.data_stream_active is True:
             # Set the flag to transmit the queued message
             self.message_pending = True
         else:
@@ -289,6 +298,22 @@ class Serial:
         global KE_CP_OP_CODES
         Logger.info("GUI: Initializing hardware")
 
+        """Poll the firmware for the current version"""
+        ke_firmware_report = [KE_SOL, 0x03, KE_CP_OP_CODES["KE_FIRMWARE_REQ"]]
+
+        # Queue the message
+        self.queued_message = ke_firmware_report
+
+        if self.data_stream_active is True:
+            # Set the flag to transmit the queued message
+            self.message_pending = True
+        else:
+            # No communication is in progress, asynchronously send the message
+            self.ser.write(self.queued_message)
+            self.queued_message = None
+
+        self.firmware_version = "NOT RESPONDING"
+
         return (True, "Hardware: Successfully initiated hardware")
 
     def power_cycle(self):
@@ -304,6 +329,14 @@ class Serial:
         Logger.info(msg)
         return (ret, msg)
 
+    def get_firmware_version(self) -> str:
+        # Wait 50ms to ensure the firmware has been reported
+        for wait in range(10):
+            self.service()
+            time.sleep(0.05)
+
+        return self.firmware_version
+
 
 def buildUpdateRequirementsBytearray(requirements):
     """Function to build bytearray that is passed to micro on view change."""
@@ -317,14 +350,20 @@ def buildUpdateRequirementsBytearray(requirements):
             pid_byte_code.append(0x00)  # Spare
             pid_byte_code.append(requirement.unit)  # Units
             if len(requirement.value) == 6:
-                pid_byte_code.append((int(requirement.value, 16) >> 8) & 0xFF)  # Mode
+                pid_byte_code.append(
+                    (int(requirement.value, 16) >> 8) & 0xFF
+                )  # Mode
                 pid_byte_code.append(0x00)  # PID byte 0
             else:
-                pid_byte_code.append((int(requirement.value, 16) >> 16) & 0xFF)  # Mode
+                pid_byte_code.append(
+                    (int(requirement.value, 16) >> 16) & 0xFF
+                )  # Mode
                 pid_byte_code.append(
                     (int(requirement.value, 16) >> 8) & 0xFF
                 )  # PID byte 0
-            pid_byte_code.append((int(requirement.value, 16)) & 0xFF)  # PID byte 1
+            pid_byte_code.append(
+                (int(requirement.value, 16)) & 0xFF
+            )  # PID byte 1
 
             index += 1
             byte_count += 5

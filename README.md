@@ -2,13 +2,39 @@
 
 For more information see the [wiki](https://wiki.kaiserengineering.io/en/gui)
 
-## Install Deps
+## Running Locally
 
-Requires Python3.7
+### Install pipenv
 
 ```sh
-pip install -r requirements.txt
+python -m pip install pipenv
 ```
+
+### Install Nodejs
+
+* TODO Instructions on this
+
+### Install Python and Nodejs packages 
+
+```
+make install
+```
+
+### If doing development work install Python dev deps and pre-commit
+
+```sh
+pipenv install --dev
+
+# mac
+brew install pre-commit
+
+# pip
+pip install pre-commit
+
+# conda
+conda install -c conda-forge pre-commit
+```
+
 
 ## Running the DD
 
@@ -21,6 +47,4 @@ make run
 ```bash
 make test
 make lint
-cd libdigitaldash
-cargo test
 ```

@@ -46,14 +46,16 @@ class Base:
 
         self.needle = None
         if notError:
-            self.needle = globals()[themeConfig["module"]](**ARGS, **themeConfig)
+            self.needle = globals()[themeConfig["module"]](
+                **ARGS, **themeConfig
+            )
             (self.needle.sizex, self.needle.sizey) = (512, 512)
             self.needle.pid = ARGS["pid"]
             # Adding widgets that get updated with data
             self.liveWidgets.append(self.needle)
         self.face = Face(**args, workingPath=ARGS.get("workingPath", ""))
 
-        self.gauge = Gauge(Face=self.face, Needle=self.needle)
+        self.gauge = Gauge(face=self.face, needle=self.needle)
         self.container.add_widget(self.face)
 
         # Needle needs to be added after so its on top

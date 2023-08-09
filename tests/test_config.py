@@ -12,13 +12,19 @@ from main import GUI
 from digitaldash.digitaldash import buildFromConfig
 from kivy.uix.anchorlayout import AnchorLayout
 import pathlib
-import pytest
 import copy
+from unittest.mock import patch
 
 working_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
+from kivy.base import EventLoop
 
-def test_config_file_from_cli():
+EventLoop.ensure_window()
+window = EventLoop.window
+
+
+@patch("digitaldash.digitaldash.windowWidth", return_value=window.width)
+def test_config_file_from_cli(mock_window):
     dd = main.GUI()
     dd.working_path = working_path
     dd.new(configFile=working_path + "/etc/configs/single.json")
@@ -26,12 +32,12 @@ def test_config_file_from_cli():
         "Can set config file on DD instantiation"
     )
 
-    (views, containers, callbacks) = (None, None, None)
-    (ret, msg) = digitaldash.setup(
+    (views, _containers, _callbacks) = (None, None, None)
+    ret = digitaldash.setup(
         dd, config.views(working_path + "/etc/configs/single.json")
     )
     if ret:
-        (views, containers, callbacks) = ret
+        (views, _containers, _callbacks) = ret
     assert len(views) == 1, print("Only include the enabled views")
 
     path = working_path + "/etc/configs"
@@ -39,12 +45,17 @@ def test_config_file_from_cli():
     path = r"%s" % path
     with os.scandir(path) as dirs:
         for entry in dirs:
-            json_config = config.views(file=working_path + "/etc/configs/" + entry.name)
+            json_config = config.views(
+                file=working_path + "/etc/configs/" + entry.name
+            )
             (ret, msg) = config.validateConfig(json_config)
-            assert ret == True, print(entry.name + " passes config validation check")
+            assert ret is True, print(
+                entry.name + " passes config validation check"
+            )
 
 
-def my_gui(newConfig):
+@patch("digitaldash.digitaldash.windowWidth", return_value=window.width)
+def my_gui(newConfig, mock_window):
     config.setWorkingPath(working_path)
 
     self = GUI()
@@ -59,7 +70,8 @@ def my_gui(newConfig):
     return self
 
 
-def test_config_programatically():
+@patch("digitaldash.digitaldash.windowWidth", return_value=window.width)
+def test_config_programatically(mock_window):
     dd = main.GUI()
     dd.working_path = working_path
 

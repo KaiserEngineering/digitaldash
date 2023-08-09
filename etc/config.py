@@ -34,42 +34,18 @@ def views(file=None, jsonData=None):
         file = WORKINGPATH + "/etc/config.json"
 
     jsonData = {}
-    errorConfig = """
-    {"views": { "0": {
-              "alerts": [{
-          "pid": "0x010C",
-          "op": ">=",
-          "value": -9999,
-          "unit": "PID_UNITS_RPM",
-          "priority": 1,
-          "message": "Config file isn't valid!"
-        }], "default": 1, "theme": "Error", "background": "Black.png",
-              "dynamic": {},"gauges": [], "name": "Error", "enabled": 1}}}
-          """
-    try:
-        with open(file, encoding="utf-8") as dataFile:
-            jsonData = json.load(dataFile)
 
-            dataFile.close()
+    with open(file, encoding="utf-8") as dataFile:
+        jsonData = json.load(dataFile)
 
-        valid, error = validateConfig(jsonData)
+        dataFile.close()
 
-        if not valid:
-            Logger.error(error)
-            errorConfig = errorConfig.replace("Config file isn't valid!", error)
-            jsonData = json.loads(errorConfig)
+    valid, error = validateConfig(jsonData)
 
-    except Exception as e:
-        # We can shorten the error message by removing the trace/line the
-        # error happened on.
-        errorString = (str(e).split(":", maxsplit=1))[0]
-        errorConfig = errorConfig.replace(
-            "Config file isn't valid!", "Config file isn't valid! Exception Error"
-        )
-        Logger.error(
-            "GUI: Invalid config provided, falling back to default: %s", errorString
-        )
-        jsonData = json.loads(errorConfig)
+    if not valid:
+        Logger.error(error)
+        raise Exception(error)
+
     return jsonData
 
 
@@ -101,28 +77,28 @@ def validateConfig(config):
     requiredValues = {
         "top": {
             "name": str,
-            "enabled": bool,
+            "enabled": None | bool | str,
             "background": str,
             "dynamic": dict,
             "alerts": list,
             "gauges": list,
-            "dynamicMinMax": bool,
+            "dynamicMinMax": None | bool | str,
         },
         "alerts": {
             "pid": str,
             "op": str,
-            "value": int,
+            "value": str | int,
             "unit": str,
-            "priority": int,
+            "priority": str | int,
             "message": str,
         },
         "gauges": {"theme": str, "pid": str, "unit": str},
         "dynamic": {
-            "enabled": bool,
+            "enabled": None | bool | str,
             "pid": str,
             "op": str,
-            "priority": int,
-            "value": int,
+            "priority": str | int,
+            "value": str | int,
             "unit": str,
         },
     }
@@ -156,7 +132,6 @@ def validateConfig(config):
             else:
                 for item in value.keys():
                     if len(view[key]) > 0:
-
                         if isinstance(view[key], dict):
                             if (
                                 not isinstance(view[key][item], value[item])
@@ -168,7 +143,9 @@ def validateConfig(config):
                         else:
                             for myHash in view[key]:
                                 if (
-                                    not isinstance(myHash.get(item), value[item])
+                                    not isinstance(
+                                        myHash.get(item), value[item]
+                                    )
                                     and not myHash.get(item) == "n/a"
                                 ):
                                     error = f"{item} for {myHash[item]} \

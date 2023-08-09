@@ -9,7 +9,7 @@ class Gauge:
     Class for coupling Needle and Face instances.
     """
 
-    def __init__(self, Face=False, Needle=False, **kwargs):
+    def __init__(self, face=False, needle=False, **kwargs):
         """
         Args:
           Face (<digitaldash.face>)             : Gauge face object
@@ -17,14 +17,14 @@ class Gauge:
         """
         super().__init__(**kwargs)
         self.labels = []
-        self.face = ObjectProperty(Face, ObjectType="Face")
+        self.face = ObjectProperty(face, ObjectType="Face")
         self.needle = ObjectProperty(None, ObjectType="Needle")
-        self.buildGauge(Face=Face, Needle=Needle, **kwargs)
+        self.buildGauge(Face=face, Needle=needle, **kwargs)
 
     def buildGauge(self, **args) -> None:
         """Build"""
-        self.needle = args.get("Needle", False)
+        self.needle = args.get("needle", False)
         if self.needle:
             self.needle.setStep()
             self.needle.setData(self.needle.minValue)
-        self.face = args.get("Face", False)
+        self.face = args.get("face", False)

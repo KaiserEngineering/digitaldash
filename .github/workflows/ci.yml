@@ -4,41 +4,63 @@ on: [push]
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.7
-    - name: Install OS dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-mixer-dev libmtdev1
-        sudo apt-get -y install libsmpeg-dev libswscale-dev libavformat-dev libavcodec-dev libjpeg-dev libtiff5-dev libx11-dev libmtdev-dev
-        sudo apt-get -y install build-essential libgl1-mesa-dev libgles2-mesa-dev
-        sudo apt install rustc
+      - name: Check out repository code
+        uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      # Setup Python (faster than using Python container)
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
 
+      - name: Install OS dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install build-essential git make autoconf automake libtool \
+          pkg-config cmake ninja-build libasound2-dev libpulse-dev libaudio-dev \
+          libjack-dev libsndio-dev libsamplerate0-dev libx11-dev libxext-dev \
+          libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libwayland-dev \
+          libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev \
+          libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev fcitx-libs-dev
+          sudo apt install rustc pipenv
 
-    - name: Run Rust tests
-      run: |
-        cd libdigitaldash/
-        cargo test
+      - name: Install pipenv
+        run: |
+          python -m pip install --upgrade pipenv wheel
+      - id: cache-pipenv
+        uses: actions/cache@v1
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
 
-    - name: Run Python tests
-      run: |
-        export DISPLAY=:99.0;
-        /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1280x720x24 -ac +extension GLX
-        make test
+      - name: Install dependencies
+        if: steps.cache-pipenv.outputs.cache-hit != 'true'
+        run: |
+          pipenv install --deploy --dev
+      - name: Install latest pip, setuptools, wheel
+        run: |
+          python -m pip install --upgrade pip setuptools wheel --upgrade-strategy=eager
 
-    - name: Run Linting
-      run: |
-        make lint
-        make clean
+      - name: Install Python dependencies
+        run: |
+          make install
+
+      - name: Run Rust tests
+        run: |
+          cd libdigitaldash/
+          cargo test
+
+      - name: Run Python tests
+        run: |
+          pipenv shell
+          export DISPLAY=:99.0;
+          /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1280x720x24 -ac +extension GLX
+          make test
+
+      - name: Run Linting
+        run: |
+          make lint
+          make clean

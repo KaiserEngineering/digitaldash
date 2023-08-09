@@ -9,6 +9,9 @@
 # pylint: disable=fixme
 
 
+import copy
+from typing import Any, List
+from kivy.logger import Logger
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import StringProperty
@@ -23,6 +26,7 @@ from digitaldash.alert import Alert
 from digitaldash.alerts import Alerts
 from digitaldash.pid import PID
 from digitaldash.keProtocol import buildUpdateRequirementsBytearray
+from digitaldash.keError import ConfigBuildError
 
 # Import custom gauges
 from local.gauges import *
@@ -36,13 +40,21 @@ class Background(AnchorLayout):
     def __init__(self, BackgroundSource="", WorkingPath=""):
         super().__init__()
         Logger.debug(
-            "GUI: Creating new Background obj with source: %s", BackgroundSource
+            "GUI: Creating new Background obj with source: %s",
+            BackgroundSource,
         )
-        self.source = f"{WorkingPath + '/static/imgs/Background/'}{BackgroundSource}"
+        self.source = (
+            f"{WorkingPath + '/static/images/Background/'}{BackgroundSource}"
+        )
 
 
 # We want this variable to be shared across views
-pidsDict = {}
+PIDS_LIST = []
+
+
+def windowWidth():
+    """Return window width, we use a function for testing"""
+    return Window.width
 
 
 def findPids(view):
@@ -50,58 +62,120 @@ def findPids(view):
     for i, gauge in enumerate(view["gauges"]):
         if not gauge["pid"]:
             continue
-        # We concat pid and unit into a key so that we can have duplicate PIDs
-        # with different units
-        pidUnitHash = gauge["pid"] + gauge["unit"]
+        # Create a temp PID instance
+        pid_object = PID(**gauge)
+
         # Do not create a new PID, as we want to share reference objects for same PIDs
-        if not pidUnitHash in pidsDict:
-            pidsDict[pidUnitHash] = PID(**gauge)
-        view["gauges"][i]["pid"] = pidsDict[pidUnitHash]
+        new_pid = True
+        for pid in PIDS_LIST:
+            if pid.value == pid_object.value and pid.unit == pid_object.unit:
+                pid_object = pid
+                new_pid = False
+                break
+        if new_pid:
+            PIDS_LIST.append(pid_object)
+        # Update our view string value to now be our PID object
+        view["gauges"][i]["pid"] = pid_object
 
     for i, alert in enumerate(view["alerts"]):
         if not alert["pid"]:
             continue
-        pidUnitHash = alert["pid"] + alert["unit"]
-        if not pidUnitHash in pidsDict:
-            pidsDict[pidUnitHash] = PID(**alert)
-        view["alerts"][i]["pid"] = pidsDict[pidUnitHash]
+        pid_object = PID(**alert)
 
-    return list(pidsDict.values())
+        # Do not create a new PID, as we want to share reference objects for same PIDs
+        new_pid = True
+        for pid in PIDS_LIST:
+            if pid.value == pid_object.value and pid.unit == pid_object.unit:
+                pid_object = pid
+                new_pid = False
+                break
+        if new_pid:
+            PIDS_LIST.append(pid_object)
+        # Update our view string value to now be our PID object
+        view["alerts"][i]["pid"] = pid_object
+    return PIDS_LIST
 
 
-def findPidsForView(views, Id, dynamicPids):
-    """Only return pids from the pidsDict that apply to this view"""
+def findPidsForView(views: List[Any], Id: str):
+    """Only return pids from the PIDS_LIST that apply to this view"""
 
-    pidsList = []
+    pids_list = []
+    view = views[Id]
+
+    for gauge in view["gauges"]:
+        new_pid = True
+        for pid in pids_list:
+            if (
+                pid.value == gauge["pid"].value
+                and pid.unit == gauge["pid"].unit
+            ):
+                Logger.info(
+                    f"Skipping gauge pid {gauge['pid'].value} as it was already found in PID list"
+                )
+                new_pid = False
+                break
+        if new_pid:
+            Logger.info(
+                "GUI: Adding alert PID `%s`:`%s for view #%s",
+                gauge["pid"].value,
+                gauge["pid"].unitLabel,
+                Id,
+            )
+            pids_list.append(gauge["pid"])
+
+    for alert in view["alerts"]:
+        new_pid = True
+        for pid in pids_list:
+            if (
+                pid.value == alert["pid"].value
+                and pid.unit == alert["pid"].unit
+            ):
+                Logger.info(
+                    f"GUI: Skipping alert pid {alert['pid'].value} as it was already found in PID list"
+                )
+                new_pid = False
+                break
+        if new_pid:
+            Logger.info(
+                "GUI: Adding alert PID `%s`:`%s for view #%s",
+                alert["pid"].value,
+                alert["pid"].unitLabel,
+                Id,
+            )
+            pids_list.append(alert["pid"])
+
     # We need to retro-actively add our dynamic PIDs into the PIDs array per view
     for viewId in views:
-        # Check if we have any dynamic PIDs for the other views
-        for dynamicPIDKeys in dynamicPids:
-            if dynamicPIDKeys != str(viewId):
-                pid = dynamicPids[dynamicPIDKeys]
-                if pid not in pidsList:
-                    pidsList.append(pid)
+        if views[viewId]["dynamic"] and views[viewId]["dynamic"]["enabled"]:
+            # If we have a PID object, we are accounted for in our global PID_LIST,
+            # since this is the only location we make the dynamic PIDs.
+            if type(views[viewId]["dynamic"]["pid"]) is PID:
+                # Add PID to our list of PIDs if not current view
+                if viewId != Id:
+                    pids_list.append(views[viewId]["dynamic"]["pid"])
+            else:
+                pid_object = PID(**views[viewId]["dynamic"])
+                new_pid = True
+                for pid in pids_list:
+                    if (
+                        pid.value == pid_object.value
+                        and pid.unit == pid_object.unit
+                    ):
+                        Logger.info(
+                            f"Skipping dynamic pid {pid_object.value} as it was already found in PID list"
+                        )
+                        new_pid = False
+                        pid_object = pid
+                        break
+                if new_pid:
+                    PIDS_LIST.append(pid_object)
+                    if viewId != Id:
+                        pids_list.append(pid_object)
+                views[viewId]["dynamic"]["pid"] = pid_object
+    return pids_list
 
-    myView = views[Id]
-    for gauge in myView["gauges"]:
-        if (
-            not gauge["pid"]
-            or str(gauge["pid"].value) + str(gauge["pid"].unit) in pidsList
-        ):
-            continue
-        pidsList.append(gauge["pid"])
 
-    for alert in myView["alerts"]:
-        if (
-            not alert["pid"]
-            or str(alert["pid"].value) + str(alert["pid"].unit) in pidsList
-        ):
-            continue
-        pidsList.append(alert["pid"])
-
-    return pidsList
-
-
+# flake8: noqa: C901
 def setup(self, layouts):
     """
     Build all widgets for DigitalDash.
@@ -114,92 +188,42 @@ def setup(self, layouts):
     callbacks = {"dynamic": []}
     views = {}
     containers = {}
-    dynamicPids = {}
+    objectsToUpdate = {}
 
     # Sort based on default value
     for Id in layouts["views"]:
         Logger.info("GUI: Starting on view %s", Id)
-        # Make sure a callback key exist for each view Id
-        callbacks.setdefault(Id, [])
 
         view = layouts["views"][Id]
         # Skip disabled views
         if not view["enabled"]:
-            Logger.info("GUI: Skipping view %s as it is marked as disabled", Id)
+            Logger.info(
+                "GUI: Skipping view %s as it is marked as disabled", Id
+            )
             continue
+
+        # Make sure a callback key exist for each view Id
+        callbacks.setdefault(Id, [])
+        objectsToUpdate[Id] = []
 
         # FIXME
         # This is a bandaid on the issue of spacing for linear gauges
         skipLinearMinMax = False
         linearCount = 0
         for gauge in view["gauges"]:
-            if gauge["theme"] == "Bar (Red)":
+            if gauge["theme"].startswith("Bar"):
                 linearCount = linearCount + 1
         if linearCount > 1:
             skipLinearMinMax = True
         # FIXME
 
         # Update our global dictionary with new view values -- if any.
+        Logger.info("GUI: Checking PIDs for view #%s", Id)
+
         findPids(view)
-
-        background = view["background"]
-
-        # Create our callbacks
-        if view["dynamic"].keys():
-            dynamicConfig = view["dynamic"]
-            if dynamicConfig["enabled"]:
-                dynamicConfig["viewId"] = Id
-
-                # Keep track of our dynamic PIDs
-                dynamicPID = None
-
-                pidUnitHash = str(dynamicConfig["value"]) + str(dynamicConfig["unit"])
-                # Get our already created PID object
-                for myTuple in pidsDict.items():
-                    (key, value) = myTuple
-                    if key == str(pidUnitHash):
-                        dynamicPID = value
-                        break
-
-                if not dynamicPID:
-                    dynamicPID = PID(**dynamicConfig)
-                    if not dynamicPID.value:
-                        Logger.error("GUI: Bailing out: Couldn't set dynamic PID")
-                        return (0, "Couldn't set dynamic PID")
-                    pidsDict[pidUnitHash] = dynamicPID
-                # We only will ever have one dynamic PID right?
-                dynamicPids[Id] = dynamicPID
-
-                # Replace our string pid value with our new object
-                dynamicConfig["pid"] = dynamicPID
-
-                dynamicObj = Dynamic()
-                (ret, msg) = dynamicObj.new(**dynamicConfig)
-                if ret:
-                    callbacks.setdefault("dynamic", []).append(dynamicObj)
-                else:
-                    Logger.error(msg)
-                    callbacks.setdefault("dynamic", [])
-
-        if len(view["alerts"]) > 0:
-            for alert in view["alerts"]:
-                alert["viewId"] = Id
-                if not alert["pid"]:
-                    continue
-
-                # Get our already created PID object
-                for myTuple in pidsDict.items():
-                    (key, value) = myTuple
-                    if key == str(alert["pid"].value) + str(alert["pid"].unit):
-                        alert["pid"] = value
-                        break
-
-                callbacks.setdefault(Id, []).append(Alert(**alert))
-        else:
-            callbacks.setdefault(Id, [])
+        Logger.info("GUI: Found #%s PIDs", len(PIDS_LIST))
 
         container = FloatLayout(pos_hint={"center_y": 0.5, "center_x": 0.5})
-        objectsToUpdate = []
 
         numGauges = len(view["gauges"]) or 1
 
@@ -218,7 +242,9 @@ def setup(self, layouts):
                 break
             if not gauge["pid"] or not isinstance(gauge["pid"], PID):
                 Logger.error(
-                    "GUI: Skipping gauge %s for view %s as PID not found", count, Id
+                    "GUI: Skipping gauge %s for view %s as PID not found",
+                    count,
+                    Id,
                 )
                 continue
 
@@ -227,7 +253,7 @@ def setup(self, layouts):
             subcontainer = RelativeLayout(
                 pos_hint={"top": yTop[count], "center_x": xPosition[count]},
                 size_hint_max_y=200,
-                size_hint_max_x=Window.width / numGauges,
+                size_hint_max_x=windowWidth() / numGauges,
             )
             container.add_widget(subcontainer)
 
@@ -237,7 +263,7 @@ def setup(self, layouts):
                 module = globals()[gauge["module"]]()
             except KeyError:
                 module = Base()
-            objectsToUpdate.append(
+            objectsToUpdate[Id].append(
                 module.buildComponent(
                     skipLinearMinMax=skipLinearMinMax,
                     workingPath=self.WORKING_PATH,
@@ -248,16 +274,41 @@ def setup(self, layouts):
                     **view,
                 )
             )
-
         containers[Id] = container
+
+        background = layouts["views"][Id]["background"]
+
+        # Set our alert callback
+        if len(view["alerts"]) > 0:
+            for alert in view["alerts"]:
+                alert["viewId"] = Id
+                callbacks.setdefault(Id, []).append(Alert(**alert))
+        else:
+            callbacks.setdefault(Id, [])
+
+        pid_for_view = findPidsForView(layouts["views"], Id)
+
+        # Set our dynamic callbacks, this has to be after we build our PID objects for dynamic
+        # objects in `findPidsForView`.
+        dynamicConfig = layouts["views"][Id]["dynamic"]
+        if dynamicConfig and dynamicConfig["enabled"]:
+            dynamicObj = Dynamic()
+            dynamicConfig["viewId"] = Id
+
+            (ret, msg) = dynamicObj.new(**dynamicConfig)
+            if ret:
+                callbacks.setdefault("dynamic", []).append(dynamicObj)
+            else:
+                Logger.error(msg)
+                callbacks.setdefault("dynamic", [])
 
         views[Id] = {
             "app": Background(
                 WorkingPath=self.WORKING_PATH, BackgroundSource=background
             ),
             "alerts": FloatLayout(),
-            "objectsToUpdate": objectsToUpdate,
-            "pids": findPidsForView(layouts["views"], Id, dynamicPids),
+            "objectsToUpdate": objectsToUpdate[Id],
+            "pids": pid_for_view,
         }
 
         # Now we can generate a complete byte array for the PIDs
@@ -268,43 +319,68 @@ def setup(self, layouts):
         else:
             Logger.info("GUI: No pid_byte_code generated for view #%s", Id)
             views[Id]["pid_byte_code"] = ""
+    return [views, containers, callbacks]
 
-    return ([views, containers, callbacks], "Successful setup")
+
+def clearWidgets(digitaldash, background=False):
+    """
+    Clear widgets from our DigitalDash instance, by default we don't
+    clear the background.
+    """
+    if hasattr(digitaldash, "app"):
+        digitaldash.app.clear_widgets()
+        if background and hasattr(digitaldash, "background"):
+            digitaldash.background.clear_widgets()
+    if hasattr(background, "alerts"):
+        digitaldash.alerts.clear_widgets()
+    digitaldash.alert_callbacks = []
+    digitaldash.dynamic_callbacks = []
+    digitaldash.callbacks = {}
 
 
-def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
+def buildFromConfig(self, dataSource=None, views=None):
     """Build all our gauges and widgets from the config file provided to self"""
-    self.success = 0
-    self.status = ""
 
     # Current is used to track which viewId we are currently displaying.
     # This is important for skipping dynamic checks that we don't need to check.
-    self.current = 0
     self.first_iteration = not hasattr(self, "first_iteration")
+
+    if views is None:
+        views = config.views(file=self.configFile, jsonData=self.jsonData)
+
+    default_view_id = None
+    for viewId in views["views"].keys():
+        view = views["views"][viewId]
+        if view["enabled"] and view["default"]:
+            default_view_id = viewId
+            Logger.info(
+                "GUI: Found default view %s for default view", view["name"]
+            )
+            break
+    if default_view_id is None:
+        Logger.error("GUI: Failed to find a default View!")
+        raise Exception("No default view found")
+    self.current = default_view_id
 
     # We need to clear the widgets before rebuilding or else we must face
     # the segfault monster.
     if not self.first_iteration:
         Logger.info("GUI: Clearing widgets for reload")
-        self.app.clear_widgets()
-        self.background.clear_widgets()
-        self.alerts.clear_widgets()
-        self.alert_callbacks = []
-        self.dynamic_callbacks = []
-        self.callbacks = {}
+        clearWidgets(self, background=True)
 
-    (ret, msg) = setup(self, config.views(file=self.configFile, jsonData=self.jsonData))
-    if ret:
-        self.views, self.containers, self.callbacks = ret
-    else:
-        self.success = 0
-        self.status = msg
-        return
+    ret = setup(self, views)
+    self.views, self.containers, self.callbacks = ret
 
     # Sort our dynamic and alerts callbacks by priority
-    self.dynamic_callbacks = sorted(self.callbacks["dynamic"], key=lambda x: x.priority)
-    # Since we are building for the first time we can default to index 0
-    self.alert_callbacks = sorted(self.callbacks["0"], key=lambda x: x.priority)
+    self.dynamic_callbacks = sorted(
+        self.callbacks["dynamic"], key=lambda x: x.priority
+    )
+
+    # Since we are building for the first time we need to set our current list of alerts
+    # to our default view
+    self.alert_callbacks = sorted(
+        self.callbacks[default_view_id], key=lambda x: x.priority
+    )
 
     (
         self.background,
@@ -312,7 +388,7 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         self.objectsToUpdate,
         self.pids,
         self.pid_byte_code,
-    ) = self.views[next(iter(self.views))].values()
+    ) = self.views[default_view_id].values()
     # Grabbing our first key ^
 
     if self.first_iteration and dataSource and dataSource is not Test:
@@ -325,7 +401,8 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
             # Loop in the restart process until we succeed
             while not ret and count < 3:
                 Logger.error(
-                    "Hardware: Running hardware restart, attempt :#%s", str(count)
+                    "Hardware: Running hardware restart, attempt :#%s",
+                    str(count),
                 )
                 (ret, msg) = dataSource.initialize_hardware()
 
@@ -339,18 +416,21 @@ def buildFromConfig(self, dataSource=None) -> [int, AnchorLayout, str]:
         else:
             Logger.info(msg)
         self.data_source = dataSource
-        (ret, msg) = dataSource.updateRequirements(self, self.pid_byte_code, self.pids)
+        (ret, msg) = dataSource.updateRequirements(
+            self, self.pid_byte_code, self.pids
+        )
         if not ret:
             Logger.error(msg)
     elif dataSource:
         # If we have a datasource we should update PIDs
-        (ret, msg) = dataSource.updateRequirements(self, self.pid_byte_code, self.pids)
+        (ret, msg) = dataSource.updateRequirements(
+            self, self.pid_byte_code, self.pids
+        )
         if not ret:
             Logger.error(msg)
 
     self.app.add_widget(self.background)
-    self.background.add_widget(self.containers[next(iter(self.containers))])
+    self.background.add_widget(self.containers[default_view_id])
     self.background.add_widget(self.alerts)
 
-    self.success = 1
-    self.status = "Successful build"
+    Logger.info("GUI: Successful config build")
