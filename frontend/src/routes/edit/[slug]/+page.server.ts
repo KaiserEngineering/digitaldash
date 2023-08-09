@@ -1,8 +1,9 @@
 import type { Actions } from "./$types";
 import { UpdateConfig, NormalizeConfigInput } from "$lib/server/Config";
+import { ReadFile, WriteFile } from "$lib/server/Util";
 
 export const actions: Actions = {
-  default: async (event) => {
+  update: async (event) => {
     const attempt = await event.request.formData();
 
     const id = attempt.get("id");
@@ -39,6 +40,30 @@ export const actions: Actions = {
       msg: "Config updated",
       theme: "alert-success",
       config: config,
+    };
+  },
+  removeView: async ({ request }) => {
+    const data = await request.formData();
+
+    const id = data.get("id");
+    const config = JSON.parse(data.get("config"));
+
+    if (config.views[id].default) {
+      return {
+        theme: "alert-danger",
+        msg: "Cannot remove default view",
+      };
+    }
+
+    delete config.views[id];
+
+    WriteFile("etc/config.json", JSON.stringify(config, null, 2));
+    const newConfigValue = ReadFile("etc/config.json");
+
+    return {
+      msg: "View removed",
+      theme: "alert-success",
+      config: newConfigValue,
     };
   },
 };

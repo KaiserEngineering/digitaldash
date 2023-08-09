@@ -42,30 +42,6 @@ export const actions: Actions = {
       config: newConfigValue,
     };
   },
-  removeView: async ({ request }) => {
-    const data = await request.formData();
-
-    const id = data.get("id");
-    const config = JSON.parse(data.get("config"));
-
-    if (config.views[id].default) {
-      return {
-        theme: "alert-danger",
-        msg: "Cannot remove default view",
-      };
-    }
-
-    delete config.views[id];
-
-    WriteFile("etc/config.json", JSON.stringify(config, null, 2));
-    const newConfigValue = ReadFile("etc/config.json");
-
-    return {
-      msg: "View removed",
-      theme: "alert-success",
-      config: newConfigValue,
-    };
-  },
   addView: async ({ request }) => {
     const data = await request.formData();
 

@@ -55,26 +55,6 @@
             >
                 <svelte:component this={Slider} {id} />
             </button>
-
-            <form
-                class="m-2"
-                method="POST"
-                action="?/removeView"
-                use:enhance={() => {
-                return async ({ result }) => {
-                    handleFormSubmissionResults(result);
-                };
-                }}
-            >
-                <input
-                    name="config"
-                    value={JSON.stringify($session.configuration)}
-                    type="hidden"
-                />
-                <input name="id" value={id} type="hidden" />
-
-                <button type="submit" class="fs-6 btn text-white" style="background-color: #ff4d4d">Remove</button>
-            </form>
         </div>
     </div>
 
