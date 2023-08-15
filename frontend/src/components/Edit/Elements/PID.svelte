@@ -7,7 +7,7 @@
 
   const UNIT_LABEL = $session.constants.PID_UNIT_LABEL;
   const KE_PID = $session.constants.KE_PID;
-  const pids = Object.keys(KE_PID);
+  const pids = Object.keys(KE_PID).sort((a, b) => KE_PID[a].shortDesc > KE_PID[b].shortDesc);
 
   export let inputName: string;
   export let unitName: string;
