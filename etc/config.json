@@ -1,78 +1,78 @@
 {
-  "views": {
-    "0": {
-      "name": "Daily Driver",
-      "enabled": true,
-      "default": 1,
-      "background": "Blue Purple Gradient.png",
-      "dynamicMinMax": true,
-      "alerts": [
-        {
-          "message": "Shift!",
-          "op": ">=",
-          "priority": 0,
-          "unit": "PID_UNITS_RPM",
-          "value": 6500,
-          "pid": "0x010C"
-        }
-      ],
-      "dynamic": {
-        "pid": "0xDE0302",
-        "op": ">=",
+    "views": {
+      "0": {
         "enabled": true,
-        "priority": 0,
-        "value": 1,
-        "unit": "PID_UNITS_NONE"
-      },
-      "gauges": [
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_FAHRENHEIT",
-          "pid": "0x010F"
-        },
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_PSI",
-          "pid": "0xC16F"
-        },
-        {
-          "theme": "Stock RS",
-          "unit": "PID_UNITS_FAHRENHEIT",
-          "pid": "0x015C"
-        }
-      ]
-    },
-    "1": {
-      "name": "Boost",
-      "enabled": false,
-      "dynamicMinMax": true,
-      "default": 0,
-      "background": "Flare.png",
-      "alerts": [
-        {
-          "message": "Shift!",
+        "default": "on",
+        "gauges": [
+          {
+            "theme": "Stock RS",
+            "unit": "PID_UNITS_FAHRENHEIT",
+            "pid": "0x010F"
+          },
+          {
+            "theme": "Stock RS",
+            "unit": "PID_UNITS_PSI",
+            "pid": "0xC16F"
+          },
+          {
+            "theme": "Stock RS",
+            "unit": "PID_UNITS_FAHRENHEIT",
+            "pid": "0x015C"
+          }
+        ],
+        "alerts": [
+          {
+            "message": "Shift!",
+            "op": ">=",
+            "priority": "0",
+            "unit": "PID_UNITS_RPM",
+            "value": "6500",
+            "pid": "0x010C"
+          }
+        ],
+        "name": "Daily Driver",
+        "background": "Blue Purple Gradient.png",
+        "dynamic": {
+          "pid": "0xC10302",
           "op": ">=",
-          "priority": 0,
-          "unit": "PID_UNITS_RPM",
-          "value": 6500,
-          "pid": "0x010C"
-        }
-      ],
-      "dynamic": {
-        "pid": "0xDE0302",
-        "op": "<=",
-        "enabled": true,
-        "unit": "PID_UNITS_NONE",
-        "value": 0,
-        "priority": 10
+          "enabled": "on",
+          "value": "1",
+          "priority": "0",
+          "unit": "PID_UNITS_NONE"
+        },
+        "dynamicMinMax": "on"
       },
-      "gauges": [
-        {
-          "theme": "Bar (Aura)",
-          "unit": "PID_UNITS_PSI",
-          "pid": "0xC16F"
-        }
-      ]
+      "1": {
+        "enabled": false,
+        "default": null,
+        "gauges": [
+          {
+            "theme": "Bar (Aura)",
+            "unit": "PID_UNITS_PSI",
+            "pid": "0xC16F"
+          }
+        ],
+        "alerts": [
+          {
+            "message": "Shift!",
+            "op": ">=",
+            "priority": "0",
+            "unit": "PID_UNITS_RPM",
+            "value": "6500",
+            "pid": "0x010C"
+          }
+        ],
+        "name": "Boost",
+        "background": "Blue Purple Gradient.png",
+        "dynamic": {
+          "pid": "0xC10302",
+          "op": "<=",
+          "enabled": "on",
+          "value": "0",
+          "priority": "10",
+          "unit": "PID_UNITS_NONE"
+        },
+        "dynamicMinMax": "on"
+      }
     }
   }
-}
