@@ -255,6 +255,22 @@ KE_PID = {
             "PID_UNITS_FAHRENHEIT": {"Min": 0, "Max": 2000, "decimals": "0"},
         },
     },
+    "0x0144": {
+        "name": "COMMANDED_AIR_TO_FUEL_RATIO",
+        "shortName": "Cmd AFR",
+        "shortDesc": "Commanded Air-Fuel Ratio",
+        "units": {
+            "PID_UNITS_RATIO": {"Min": 0, "Max": 29.4, "decimals": "2"},
+        },
+    },
+    "0x0134": {
+        "name": "AIR_TO_FUEL_RATIO",
+        "shortName": "AFR",
+        "shortDesc": "Air-Fuel Ratio (Oxygen Sensor 1)",
+        "units": {
+            "PID_UNITS_RATIO": {"Min": 0, "Max": 29.4, "decimals": "2"},
+        },
+    },
     "0xDE0802": {
         "name": "BRAKE_PEDAL_STATUS",
         "shortName": "Brake Pedal",
