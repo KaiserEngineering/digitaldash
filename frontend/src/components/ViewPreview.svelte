@@ -109,13 +109,14 @@
     .pid {
       background-color: #ff4d4d;
       border-radius: 0.5em;
-      padding: 2px;
+      padding: 3%;
+      margin: 4%;
       color: white;
-      font-size: calc(100% + 1.1vw);
+      font-size: 80%;
     }
   
     .image-overlay {
-      width: 50%;
+      max-width: 40%;
       position: absolute;
       top: 25%;
       right: 0;
@@ -126,7 +127,7 @@
     }
   
     .background-preview {
-      height: 13em;
+      max-height: 30em;
     }
   
     .card {

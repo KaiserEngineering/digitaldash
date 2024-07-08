@@ -22,7 +22,7 @@ identify==2.5.24
 idna==3.4
 iniconfig==2.0.0
 isort==5.12.0
-Kivy @ git+https://github.com/craigkai/kivy@0ad885513c21ec38142d9f92405071753b68a18d
+Kivy==2.1.0
 Kivy-Garden==0.1.5
 kiwisolver==1.4.4
 lazy-object-proxy==1.9.0

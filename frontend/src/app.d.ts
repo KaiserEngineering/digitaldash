@@ -3,7 +3,12 @@
 /// <reference types="vite/client" />
 
 export interface Config {
+  splash: { Splash };
   views: { [key: string]: View };
+}
+
+export interface Splash {
+  name: string;
 }
 
 export interface View {
@@ -12,7 +17,7 @@ export interface View {
   default: number;
   background: string;
   theme: string;
-  alerts: Aert[];
+  alerts: Alert[];
   dynamic: Dynamic;
   gauges: Gauge[];
   dynamicMinMax: boolean;

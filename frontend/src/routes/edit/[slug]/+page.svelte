@@ -13,6 +13,7 @@
 
   const { session } = getContext(keys.session);
   const view = $session.configuration.views[data.id];
+  const viewName = $session.configuration.views[data.id].name;
   const themes = $session.constants.themes || [];
 
   function handleFormSubmissionResults(result: any) {
@@ -43,7 +44,7 @@
 >
   <div id="edit-container" class="container">
     <div class="col-sm-12 order-sm-1">
-      <h4 class="mb-3">Editing view #{data.id}</h4>
+      <h4 class="mb-3">Editing <b>{viewName}</b> view</h4>
       <input type="hidden" value={data.id} name="id" />
 
       <Basics {view} {themes} />
@@ -59,35 +60,28 @@
       <Dynamic {view} />
 
       <hr class="mb-4" />
-      <button
-        class="btn btn-primary btn-lg btn-block btn-full-width"
-        type="submit">Update</button
-      >
 
-      <br />
-      <br />
+      <div>
+        <button class="btn btn-primary btn-lg btn-block btn-full-width" type="submit">Update</button>
+        <form
+            method="POST"
+            action="?/removeView"
+            use:enhance={() => {
+            return async ({ result }) => {
+                handleFormSubmissionResults(result);
+            };
+            }}
+        >
 
-      <form
-          class="m-2"
-          method="POST"
-          action="?/removeView"
-          use:enhance={() => {
-          return async ({ result }) => {
-              handleFormSubmissionResults(result);
-          };
-          }}
-      >
-        <div class="row justify-content-center">
-            <input
-                name="config"
-                value={JSON.stringify($session.configuration)}
-                type="hidden"
-            />
-            <input name="id" value={data.id} type="hidden" />
-
-            <button type="submit" class="fs-6 btn text-white" style="background-color: #ff4d4d">Delete View</button>
-          </div>
-      </form>
+          <input
+            name="config"
+            value={JSON.stringify($session.configuration)}
+            type="hidden"
+          />
+          <input name="id" value={data.id} type="hidden" />
+          <button type="submit" class="mt-2 form-control btn btn-primary btn-block btn-full-width" style="background-color: #ff4d4d">Delete View</button>
+        </form>
+      </div>
     </div>
   </div>
 </form>

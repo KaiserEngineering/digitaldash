@@ -1,5 +1,5 @@
 import { ReadFile, WriteFile, ResetWithGit } from "$lib/server/Util";
-import type { View } from "../../app";
+import type { View, Splash } from "../../app";
 
 export function ReadConfig() {
   return ReadFile("etc/config.json");

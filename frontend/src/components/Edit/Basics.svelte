@@ -5,6 +5,9 @@
   export let view: View;
   export let themes: string[];
 
+  const images = import.meta.glob('/static/images/Background/*.{png,jpg}', { eager: true });
+  const imagePaths = Object.keys(images).map((path) => path.replace('/static/images/Background/', ''));
+  
   let theme: string = view.gauges[0] ? view.gauges[0].theme : "";
 </script>
 
@@ -51,10 +54,8 @@
         required
       >
         <option value="">-</option>
-        {#each ["Black.png", "Blue Purple Gradient.png", "Carbon Fiber.png", "Galaxy.png", "Digital Camo.png", "Flare.png", "Jellyfish.png", "Red.png"] as background}
-          <option value={background}
-            >{background.replace(/\.png|\.jpg/, "")}</option
-          >
+        {#each imagePaths as image}
+          <option value={image}>{image.replace(/\.png|\.jpg/, "")}</option>
         {/each}
       </select>
     </div>

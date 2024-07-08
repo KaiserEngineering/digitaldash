@@ -18,6 +18,7 @@
   }
 </script>
 
+<div class="container col-sm-10 col-md-6 pr-4 pl-4">
 <form
   method="POST"
   class="col-12 advanced"
@@ -32,20 +33,25 @@
     };
   }}
 >
+
+  <h1>Advanced</h1>
+  <p>Settings for advanced users, beware of what you change!</p>
+
   {#if invalid}
     <div class="alert alert-danger">Invalid JSON</div>
   {/if}
 
   <textarea name="config" class="form-control" bind:value={configString} />
 
-  <button disabled={invalid} class="mt-2 form-control" type="submit"
+  <button disabled={invalid} class="mt-2 form-control btn btn-primary btn-lg btn-block btn-full-width" type="submit"
     >Save</button
   >
 
-  <button class="mt-2 form-control" type="submit" formaction="?/reset"
+  <button class="mt-2 form-control btn btn-primary btn-block btn-full-width" style="background-color: #ff4d4d" type="submit" formaction="?/reset"
     >Reset To Default</button
   >
 </form>
+</div>
 
 <style>
   textarea {

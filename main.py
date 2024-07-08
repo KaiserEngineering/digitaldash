@@ -4,6 +4,7 @@
 # looking at you Test.
 import os
 import pathlib
+os.environ["KIVY_NO_ARGS"] = "1"
 
 WORKING_PATH = str(pathlib.Path(__file__).parent.absolute())
 os.environ["KIVY_HOME"] = WORKING_PATH + "/etc/kivy/"
