@@ -1,7 +1,10 @@
 <script lang="ts">
   import { page } from "$app/stores";
 
+  import { onMount } from 'svelte';
+
   let content = $page.data.content;
+  let temperature = $page.data.cpuTemp;
   let logNames: any[] = $page.data.logNames;
   let logs = $page.data.logs;
   let current = $page.data.current;
@@ -11,8 +14,16 @@
   }
 </script>
 
-<div class="col-11">
-  <label for="logName">Log:</label>
+<div class="container col-sm-10 col-md-6 pr-4 pl-4">
+
+  <h1>Debug</h1>
+  <p>Debug page, usefull to analyze unexpected issues</p>
+
+
+  <h4>CPU Temperature</h4>
+  <p>{temperature} °C</p>
+
+  <h4>Logs Viewer</h4>
   <select
     id="logName"
     bind:value={current}
@@ -25,7 +36,7 @@
     {/each}
   </select>
 
-  <div class="container col-sm-12 col-md-6 border">
+  <div class="container col-sm-12 col-md-12 border">
     <pre>
       <code>
         {content}
