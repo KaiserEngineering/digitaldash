@@ -309,19 +309,22 @@ class GUI(App):
                 dynamic_change = False
                 # Check dynamic gauges before any alerts in case we make a change
                 for dynamic in self.dynamic_callbacks:
-                    if str(self.current) == str(dynamic.viewId):
-                        pass
-                    else:
-                        my_callback = self.check_callback(dynamic, data)
-                        Logger.debug(
-                            "Checking dynamic callback for PID: %s, OP: %s Value: %s for view %s",
-                            dynamic.pid.value,
-                            dynamic.op,
-                            dynamic.value,
-                            dynamic.viewId,
-                        )
+                    my_callback = self.check_callback(dynamic, data)
+                    Logger.debug(
+                        "Checking dynamic callback for PID: %s, OP: %s Value: %s for view %s",
+                        dynamic.pid.value,
+                        dynamic.op,
+                        dynamic.value,
+                        dynamic.viewId,
+                    )
 
                     if my_callback:
+                        if str(self.current) == str(dynamic.viewId):
+                            Logger.debug(
+                                "GUI: Dynamic callback already active for view %s",
+                                dynamic.viewId,
+                            )
+                            break
                         self.count = 0
                         self.change(self, my_callback)
                         dynamic_change = True
