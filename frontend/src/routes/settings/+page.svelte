@@ -6,6 +6,7 @@
   const { session } = getContext(keys.session);
 </script>
 
+<div class="container col-sm-10 col-md-6 pr-4 pl-4">
 <form
   method="POST"
   use:enhance={() => {
@@ -15,7 +16,8 @@
     };
   }}
 >
-  <div class="p-4 col-md-12 order-md-1">
+    <h1>Settings</h1>
+    <p>Change your username and password credentials</p>
     <div class="row">
       <div class="col-md-6 mb-3">
         <label for="username">Username</label>
@@ -30,8 +32,8 @@
       </div>
     </div>
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit"
+    <button class="mt-2 form-control btn btn-primary btn-lg btn-block btn-full-width" type="submit"
       >Update settings</button
     >
-  </div>
-</form>
+  </form>
+</div>

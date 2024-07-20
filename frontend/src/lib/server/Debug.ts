@@ -19,3 +19,10 @@ export function ReadLog() {
 
   return json(logHash);
 }
+
+export function ReadTemp() {
+  const fileName = fs.readFileSync(gui_path + "frontend/static/cpu_temp.json").toString();
+  const temp = JSON.parse(fileName);
+  
+  return json(temp.temperature);
+}
