@@ -1,38 +1,30 @@
 <script lang="ts">
-  import "../app.postcss";
-  import "../app.scss";
-  import { page } from "$app/stores";
+	import '../app.postcss';
+	import * as Menubar from '$lib/components/ui/menubar';
+	import toast, { Toaster } from 'svelte-french-toast';
 
-  import { keys } from "$lib/Keys";
-  import { getContext, onMount, setContext } from "svelte";
-  import { writable } from "svelte/store";
+	let { children } = $props();
 
-  onMount(async () => {
-    await import("bootstrap/js/dist/collapse");
-  });
-
-  /* create scoped $session store */
-  setContext(keys.session, { session: writable() });
-  const { session } = getContext(keys.session);
-  $session = $page.data.locals;
-
-  import Nav from "$components/Nav.svelte";
-  import Notifications from "$components/Notifications.svelte";
-
-  export let title = "KE Digital Dash";
-  let segment = $page.url.pathname;
+	let title = 'KE Digital Dash';
 </script>
 
 <svelte:head>
-  <title>{title}</title>
+	<title>{title}</title>
 </svelte:head>
 
-{#if segment && segment != "/login"}
-  <svelte:component this={Nav} />
-{/if}
+<div class="flex h-screen flex-col overflow-x-hidden container">
+	<Menubar.Root>
+		<Menubar.Menu>
+			<Menubar.Trigger>Menu</Menubar.Trigger>
+			<Menubar.Content>
+				<Menubar.Item><a href="/">Home</a></Menubar.Item>
+				<Menubar.Item><a href="advanced">Advanced</a></Menubar.Item>
+				<Menubar.Separator />
+			</Menubar.Content>
+		</Menubar.Menu>
+	</Menubar.Root>
 
-<div class="col-sm-12 col-md-6">
-  <svelte:component this={Notifications} />
+	<Toaster></Toaster>
+
+	{@render children()}
 </div>
-
-<slot />

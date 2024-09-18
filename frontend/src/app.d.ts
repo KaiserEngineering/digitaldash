@@ -1,43 +1,46 @@
 /// <reference types="@sveltejs/kit" />
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
+declare global {
+    type View = {
+        id: number;
+        enabled: boolean;
+        background: string;
+        gaugeValue: number;
+        gauges: Gauge[];
+        alerts: Alert[];
+        dynamic: Dynamic
+    };
 
-export interface Config {
-  views: { [key: string]: View };
+    type Config = {
+        views: Record<string, View>;
+    };
+
+    interface Alert {
+        message: string;
+        pid: byte;
+        op: string;
+        priority: number;
+        value: number;
+        unit: string;
+    }
+
+    interface Dynamic {
+        enabled: boolean;
+        pid: byte;
+        op: string;
+        priority: number;
+        value: number;
+        unit: string;
+    }
+
+    interface Gauge {
+        theme: string;
+        unit: string;
+        pid: byte;
+        value: string|number;
+    }
+
 }
 
-export interface View {
-  name: string;
-  enabled: boolean;
-  default: number;
-  background: string;
-  theme: string;
-  alerts: Aert[];
-  dynamic: Dynamic;
-  gauges: Gauge[];
-  dynamicMinMax: boolean;
-}
-
-export interface Alert {
-  message: string;
-  pid: byte;
-  op: string;
-  priority: number;
-  value: number;
-  unit: string;
-}
-
-export interface Dynamic {
-  enabled: boolean;
-  pid: byte;
-  op: string;
-  priority: number;
-  value: number;
-  unit: string;
-}
-
-export interface Gauge {
-  theme: string;
-  unit: string;
-  pid: byte;
-}
+export {};
