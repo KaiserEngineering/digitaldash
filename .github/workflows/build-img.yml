@@ -1,10 +1,12 @@
-name: Build Custom Raspbian Image
+name: Build Custom Image
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - automate-iso-release
+  workflow_run:
+    workflows:
+      - Build Kivy App
+      - Build SvelteKit App
+    types:
+      - completed
 
 jobs:
   build:
@@ -12,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Download Kivy Binary
         uses: actions/download-artifact@v3
@@ -26,19 +28,17 @@ jobs:
           name: sveltekit-build
           path: sveltekit-build/
 
-      - name: Install Dependencies
+      - name: Debug Downloaded Artifacts
         run: |
-          sudo apt-get update
-          sudo apt-get install -y qemu-utils kpartx rsync gzip
-
-      - name: Download Base Raspbian Image
-        run: |
-          curl -L -o raspbian-lite.img https://downloads.raspberrypi.org/raspbian_lite_latest
+          echo "Kivy Binary:"
+          ls -la kivy-binary
+          echo "SvelteKit Build:"
+          ls -la sveltekit-build
 
       - name: Customize Raspbian Image
         run: |
           chmod +x ./scripts/customize_raspbian.sh
-          ./scripts/customize_raspbian.sh kivy-binary/main sveltekit-build/
+          ./scripts/customize_raspbian.sh kivy-binary/ sveltekit-build/
 
       - name: Compress the Image
         run: |
@@ -50,13 +50,3 @@ jobs:
         with:
           name: raspbian-image
           path: dist/custom-raspbian-lite.img.gz
-
-      - name: Release the Image (optional)
-        if: github.event_name == 'push'
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: dist/custom-raspbian-lite.img.gz
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
-          name: "Custom Raspbian Image"
-          body: "This release includes the customized Raspbian image."
