@@ -1,43 +1,13 @@
-/// <reference types="@sveltejs/kit" />
-/// <reference types="svelte" />
-/// <reference types="vite/client" />
-
-export interface Config {
-  views: { [key: string]: View };
+// See https://svelte.dev/docs/kit/types#app.d.ts
+// for information about these interfaces
+declare global {
+	namespace App {
+		// interface Error {}
+		// interface Locals {}
+		// interface PageData {}
+		// interface PageState {}
+		// interface Platform {}
+	}
 }
 
-export interface View {
-  name: string;
-  enabled: boolean;
-  default: number;
-  background: string;
-  theme: string;
-  alerts: Aert[];
-  dynamic: Dynamic;
-  gauges: Gauge[];
-  dynamicMinMax: boolean;
-}
-
-export interface Alert {
-  message: string;
-  pid: byte;
-  op: string;
-  priority: number;
-  value: number;
-  unit: string;
-}
-
-export interface Dynamic {
-  enabled: boolean;
-  pid: byte;
-  op: string;
-  priority: number;
-  value: number;
-  unit: string;
-}
-
-export interface Gauge {
-  theme: string;
-  unit: string;
-  pid: byte;
-}
+export {};

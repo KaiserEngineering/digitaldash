@@ -1,28 +1,10 @@
-import { sveltekit } from "@sveltejs/kit/vite";
-import type { UserConfig } from "vite";
-import { resolve } from "path";
+import { defineConfig } from 'vitest/config';
+import { sveltekit } from '@sveltejs/kit/vite';
 
-const config: UserConfig = {
-  plugins: [sveltekit()],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: '@use "src/variables.scss" as *;'
-      }
-    }
-  },
-  resolve: {
-    alias: {
-      $components: resolve("./src/components"),
-    },
-    server: {
-      fs: {
-        strict: false,
-        allow: ['..']
-      }
-    }
-  },
-};
+export default defineConfig({
+	plugins: [sveltekit()],
 
-
-export default config;
+	test: {
+		include: ['src/**/*.{test,spec}.{js,ts}']
+	}
+});
