@@ -1,7 +1,6 @@
 """Testing basics of DigitalDash."""
 # pylint: skip-file
 
-import libdigitaldash
 from etc import config
 from digitaldash.keLabel import KELabel
 from kivy.uix.anchorlayout import AnchorLayout

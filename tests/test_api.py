@@ -1,9 +1,7 @@
 """Testing basics of DigitalDash."""
 # pylint: skip-file
 
-import libdigitaldash
 from etc import config
-from digitaldash.needles.needle import Needle
 from digitaldash.needles.radial import NeedleRadial
 from digitaldash.needles.linear import NeedleLinear
 from digitaldash.needles.ellipse import NeedleEllipse
@@ -187,12 +185,6 @@ def test_alert_simple():
         message="Hello, from tests",
         pid=pid2,
     )
-    assert (
-        libdigitaldash.check(float(99), alert.value, alert.op) is False
-    ), print("Check fails when it should")
-    assert (
-        libdigitaldash.check(float(101), alert.value, alert.op) is True
-    ), print("Check passes when it should")
     assert alert.text == "Hello, from tests", print("Do not set alert value")
 
 

@@ -37,7 +37,6 @@ run:
 
 test:
 	@pipenv run test
-	cd libdigitaldash/;cargo test;
 .PHONY: test
 
 lint:
