@@ -51,9 +51,6 @@ from watchdog.events import PatternMatchingEventHandler
 from kivy.uix.label import Label
 from kivy.clock import mainthread, Clock
 
-# Rust import
-import libdigitaldash
-
 from digitaldash.digitaldash import buildFromConfig, clearWidgets
 from digitaldash.digitaldash import Alert, Dynamic
 from _version import __version__
@@ -229,15 +226,37 @@ class GUI(App):
 
         return self.app
 
-    @lru_cache(maxsize=128)
-    def rust_check(self, value: float, callback: Union[Alert, Dynamic]):
+    def check(
+        current: float, callback: Union["Alert", "Dynamic"]
+    ) -> Union["Alert", "Dynamic", None]:
+        """
+        Perform a comparison based on the operator value and handle exceptions.
+
+        :param current: The current value to compare.
+        :param callback: An instance of Alert or Dynamic containing value, op, and pid.
+        :return: The callback object if the condition is met; None otherwise.
+        """
         try:
-            # Check if any dynamic changes need to be made
-            if libdigitaldash.check(value, callback.value, callback.op):
-                return callback
+            match callback.op:
+                case 0x203C:  # <
+                    if current < callback.value:
+                        return callback
+                case 0x203E:  # >
+                    if current > callback.value:
+                        return callback
+                case 0x203D:  # ==
+                    if current == callback.value:
+                        return callback
+                case 0x3C3D:  # <=
+                    if current <= callback.value:
+                        return callback
+                case 0x3E3D:  # >=
+                    if current >= callback.value:
+                        return callback
+                case _:  # Default
+                    return None
         except Exception as ex:
-            # Check if this is the error config (i.e. PID = "n/a")
-            # TODO: Do we need this any longer?
+            # Check if this is the error config (i.e., PID = "n/a")
             if callback.pid.value == "n/a":
                 Logger.error("GUI: Config file is invalid: %s", ex)
                 return callback
@@ -247,6 +266,7 @@ class GUI(App):
                 callback.pid.value,
                 ex,
             )
+            return None
 
     def check_callback(self, callback: Union[Alert, Dynamic], data: dict):
         """
@@ -254,7 +274,7 @@ class GUI(App):
         doesn't beat the race condition.
         """
         try:
-            return self.rust_check(float(data[callback.pid.value]), callback)
+            return self.check(float(data[callback.pid.value]), callback)
         except KeyError as ex:
             Logger.error(
                 "GUI: Firmware did not provide expected data value: %s",
