@@ -21,12 +21,12 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          cd sveltekit-app
+          cd frontend
           npm install
 
       - name: Build SvelteKit App
         run: |
-          cd sveltekit-app
+          cd frontend
           npm run build
           cp -r build ../sveltekit-build
 
