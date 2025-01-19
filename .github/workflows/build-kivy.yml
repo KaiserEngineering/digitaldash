@@ -14,13 +14,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Python and Kivy dependencies
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3 python3-pip python3-dev
-          pip3 install --upgrade pip setuptools
-          pip3 install kivy pyinstaller
-          pip3 install -r requirements.txt
+          sudo apt-get install -y python3-dev libsdl2-dev libsdl2-image-dev \
+              libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev \
+              libavformat-dev libavcodec-dev zlib1g-dev gstreamer1.0-plugins-base \
+              gstreamer1.0-plugins-good
+          pip install --upgrade pip setuptools wheel
+          pip install kivy pyinstaller
 
       - name: Build Kivy Binary
         run: |
@@ -31,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: kivy-binary
-          path: kivy-binary/main
+          path: kivy-binary
