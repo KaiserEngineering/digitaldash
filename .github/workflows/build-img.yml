@@ -1,0 +1,62 @@
+name: Build Custom Raspbian Image
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - automate-iso-release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download Kivy Binary
+        uses: actions/download-artifact@v3
+        with:
+          name: kivy-binary
+          path: kivy-binary/
+
+      - name: Download SvelteKit Build
+        uses: actions/download-artifact@v3
+        with:
+          name: sveltekit-build
+          path: sveltekit-build/
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-utils kpartx rsync gzip
+
+      - name: Download Base Raspbian Image
+        run: |
+          curl -L -o raspbian-lite.img https://downloads.raspberrypi.org/raspbian_lite_latest
+
+      - name: Customize Raspbian Image
+        run: |
+          chmod +x ./scripts/customize_raspbian.sh
+          ./scripts/customize_raspbian.sh kivy-binary/main sveltekit-build/
+
+      - name: Compress the Image
+        run: |
+          mkdir -p dist
+          gzip -c custom-raspbian-lite.img > dist/custom-raspbian-lite.img.gz
+
+      - name: Upload Compressed Image
+        uses: actions/upload-artifact@v3
+        with:
+          name: raspbian-image
+          path: dist/custom-raspbian-lite.img.gz
+
+      - name: Release the Image (optional)
+        if: github.event_name == 'push'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: dist/custom-raspbian-lite.img.gz
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+          name: "Custom Raspbian Image"
+          body: "This release includes the customized Raspbian image."

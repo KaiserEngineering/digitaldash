@@ -1,0 +1,35 @@
+name: Build Kivy App
+
+on:
+  push:
+    branches:
+      - automate-iso-release
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Python and Kivy dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip python3-dev
+          pip3 install --upgrade pip setuptools
+          pip3 install kivy pyinstaller
+          pip3 install -r kivy-app/requirements.txt
+
+      - name: Build Kivy Binary
+        run: |
+          cd kivy-app
+          pyinstaller --onefile --windowed main.py
+          mv dist/main ../kivy-binary
+
+      - name: Upload Kivy Binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: kivy-binary
+          path: kivy-binary/main
